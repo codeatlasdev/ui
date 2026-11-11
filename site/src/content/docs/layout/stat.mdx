@@ -27,6 +27,15 @@ It renders a description list (`<dl>`): the label is the `<dt>`, the value the `
 
 A trend is good news when it goes up by default: a rise is green, a fall red. For a metric where down is good (churn, cost, latency) set `trendTone="positive-down"`: the arrow still follows the sign, the colour flips, and the accessible label says "better" or "worse" (`Trend: -1.8%, better`; `Tendência: -1.8%, melhor` in pt-BR). `trendTone="neutral"` shows the change without judging it. A zero change is always neutral. Do not drop `trend` and write the delta in `hint` to avoid a wrong colour.
 
+**Label under the number, sentence case, UI font.** The label sits above the number by default. `labelPlacement="below"` moves it under the number (visually only: the DOM keeps the `<dt>` first, so it still names the `<dd>`), `labelCase="sentence"` drops the uppercase and the overline tracking, and `valueFont="sans"` sets the number in the UI font instead of the display font. A dense dashboard card (a 12px regular sentence-case label, the number in the UI font) needs no selector against `.ca-stat*`:
+
+```svelte
+<Stat label="Pending" value="12" hint="Resend from the row" labelCase="sentence" valueFont="sans" class="dense" />
+<!-- .dense { --ca-stat-label-size: 12px; --ca-stat-label-weight: 400; } -->
+```
+
+The same knobs are tokens, set on the stat or any ancestor (a whole strip, or a theme): `--ca-stat-label-size` (default `var(--ca-font-size-micro)`), `--ca-stat-label-weight` (`semibold`), `--ca-stat-value-font` (`var(--ca-font-display)`), `--ca-stat-value-weight` (the heading weight), `--ca-stat-value-line-height` (`1`) and `--ca-stat-gap` (the gap between label, number and caption). A token set by you always wins over the prop's own value.
+
 <Demo title="Stats in a card" description={"Three card-less stats in one Card, with hint, unit and trend."} src={StatsSrc}><Stats /></Demo>
 
 <Props rows={[
@@ -37,6 +46,9 @@ A trend is good news when it goes up by default: a rise is green, a fall red. Fo
   { name: "trend", type: "number", description: "Relative percent change, already computed: `12.5` renders `+12.5%` and `-2.4` renders `-2.4%` (one decimal). It is not an absolute difference, so pass `(now - before) / before * 100`, not `now - before`. The arrow follows the sign (up, down, none for zero). Announced as \"Trend: +12.5%\"." },
   { name: "trendTone", type: "'positive-up' | 'positive-down' | 'neutral'", description: "Which direction of `trend` is good news. Without it a rise is green and a fall red; `'positive-up'` says the same and `'positive-down'` flips it (churn, cost, latency); `'neutral'` judges neither. Setting it adds \"better\" or \"worse\" to the accessible label. Zero is always neutral." },
   { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Value size: 17px, 24px or 36px." },
+  { name: "labelPlacement", type: "'above' | 'below'", default: "'above'", description: "Where the label sits relative to the number. `'below'` moves it under the number; the DOM order (and so the reading order) is unchanged." },
+  { name: "labelCase", type: "'upper' | 'sentence'", default: "'upper'", description: "`'upper'` is the uppercase overline label; `'sentence'` keeps the text as written, without tracking." },
+  { name: "valueFont", type: "'display' | 'sans'", default: "'display'", description: "Font of the number: the display font or the UI (sans) font." },
   { name: "align", type: "'start' | 'center'", default: "'start'", description: "Text alignment." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded stat, announced as busy. See Skeleton." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },

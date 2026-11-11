@@ -121,6 +121,84 @@ describe("Badge", () => {
 			}
 		);
 
+		it('tone="custom" derives fill, on-fill and subtle pair from `color` (#684)', async () => {
+			const rgb = (c: string) => {
+				const el = document.createElement("span");
+				el.style.color = c;
+				document.body.append(el);
+				const out = getComputedStyle(el).color;
+				el.remove();
+				return out;
+			};
+			const solid = await render(Badge, { tone: "custom", color: "#7c3aed", children: text });
+			const pill = solid.container.querySelector(".ca-badge") as HTMLElement;
+			expect(pill.classList.contains("ca-badge--custom")).toBe(true);
+			expect(pill.classList.contains("ca-badge--inline")).toBe(true);
+			expect(bg(pill)).toBe(rgb("#7c3aed"));
+			expect(await checkA11y(solid.container)).toHaveNoViolations();
+			const subtle = await render(Badge, {
+				tone: "custom",
+				color: "#7c3aed",
+				subtle: true,
+				dot: true,
+				children: text,
+			});
+			const sp = subtle.container.querySelector(".ca-badge") as HTMLElement;
+			expect(bg(sp)).not.toBe(bg(pill));
+			expect(bg(sp)).not.toBe("rgba(0, 0, 0, 0)");
+			expect(getComputedStyle(sp.querySelector(".ca-badge__dot")!).backgroundColor).toBe(
+				rgb("#7c3aed")
+			);
+			expect(await checkA11y(subtle.container)).toHaveNoViolations();
+		});
+
+		it('tone="custom" takes a token reference and holds 4.5:1 in light and dark', async () => {
+			for (const dark of [false, true]) {
+				document.documentElement.classList.toggle("dark", dark);
+				try {
+					for (const color of [
+						"var(--ca-semantic-warning)",
+						"#facc15",
+						"#1e3a8a",
+						"oklch(0.6 0.2 150)",
+					])
+						for (const subtle of [false, true]) {
+							const screen = await render(Badge, { tone: "custom", color, subtle, children: text });
+							expect(
+								await checkA11y(screen.container),
+								`${color} subtle=${subtle} dark=${dark}`
+							).toHaveNoViolations();
+						}
+				} finally {
+					document.documentElement.classList.remove("dark");
+				}
+			}
+		});
+
+		it("--ca-badge-h, -font-size, -weight and -border tune the pill; defaults unchanged", async () => {
+			const base = await render(Badge, { tone: "info", subtle: true, size: "md", children: text });
+			const bp = base.container.querySelector(".ca-badge") as HTMLElement;
+			expect(bp.getBoundingClientRect().height).toBe(24);
+			expect(getComputedStyle(bp).fontWeight).toBe("500");
+			expect(getComputedStyle(bp).borderTopWidth).toBe("0px");
+			const screen = await render(Badge, {
+				tone: "info",
+				subtle: true,
+				size: "md",
+				children: text,
+			});
+			const pill = screen.container.querySelector(".ca-badge") as HTMLElement;
+			pill.style.setProperty("--ca-badge-h", "28px");
+			pill.style.setProperty("--ca-badge-font-size", "12px");
+			pill.style.setProperty("--ca-badge-weight", "400");
+			pill.style.setProperty("--ca-badge-border", "1px solid transparent");
+			const cs = getComputedStyle(pill);
+			expect(pill.getBoundingClientRect().height).toBe(28);
+			expect(cs.fontSize).toBe("12px");
+			expect(cs.fontWeight).toBe("400");
+			expect(cs.borderTopWidth).toBe("1px");
+		});
+
 		it("keeps the anchored badge when tone is not set", async () => {
 			const screen = await render(Badge, { count: 2, children: child });
 			const status = screen.getByRole("status", { name: "2 notifications" }).element();

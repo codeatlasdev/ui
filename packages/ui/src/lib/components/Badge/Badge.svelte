@@ -4,17 +4,21 @@
   import type { Snippet } from 'svelte';
   const t = useMessages(badge);
 
-  type Tone = 'brand' | 'success' | 'danger' | 'warning' | 'info' | 'neutral';
+  type Tone = 'brand' | 'success' | 'danger' | 'warning' | 'info' | 'neutral' | 'custom';
 
   interface Props {
     count?: number;
     /** Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. */
     dot?: boolean;
-    /** Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. */
-    color?: 'brand' | 'success' | 'error' | 'warning';
+    /**
+     * Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set,
+     * except with `tone="custom"`, where it is any CSS colour (`'#7c3aed'`, `'var(--ca-token-status-won)'`)
+     * the pill derives its fill, label and subtle tint from.
+     */
+    color?: 'brand' | 'success' | 'error' | 'warning' | (string & {});
     /**
      * Renders an inline pill (in text flow, children are its label) instead of a corner indicator:
-     * `<Badge tone="danger" subtle dot>Overdue</Badge>`.
+     * `<Badge tone="danger" subtle dot>Overdue</Badge>`. `'custom'` colours the pill from `color`.
      */
     tone?: Tone;
     /** Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. */
@@ -44,6 +48,7 @@
   <span
     class="ca-badge ca-badge--inline ca-badge--{tone} ca-badge--{size} {className}"
     class:ca-badge--subtle={subtle}
+    style={tone === 'custom' ? `--ca-badge-custom: ${color}` : undefined}
   >
     {#if dot}<span class="ca-badge__dot" aria-hidden="true"></span>{/if}
     {@render children?.()}
@@ -129,14 +134,15 @@
       white-space: nowrap;
       vertical-align: middle;
       padding: 0 var(--ca-space-2-5);
-      height: calc(var(--ca-space-5) + var(--ca-space-0-5));
+      height: var(--ca-badge-h, calc(var(--ca-space-5) + var(--ca-space-0-5)));
       min-width: 0;
-      border: none;
-      font-weight: var(--ca-font-weight-medium);
+      border: var(--ca-badge-border, none);
+      font-weight: var(--ca-badge-weight, var(--ca-font-weight-medium));
+      font-size: var(--ca-badge-font-size, var(--ca-font-size-caption));
     }
     .ca-badge--inline.ca-badge--md {
-      height: calc(var(--ca-space-6));
-      font-size: var(--ca-font-size-body2);
+      height: var(--ca-badge-h, calc(var(--ca-space-6)));
+      font-size: var(--ca-badge-font-size, var(--ca-font-size-body2));
     }
     .ca-badge--inline.ca-badge--brand { --ca-badge-tone: var(--ca-brand-text); --ca-badge-muted: color-mix(in oklab, var(--ca-badge-tone) 14%, transparent); --ca-badge-fg: color-mix(in oklab, var(--ca-badge-tone) 65%, var(--ca-text-primary)); --ca-badge-fill: var(--ca-brand-fill); --ca-badge-on: var(--ca-brand-contrast); }
     .ca-badge--inline.ca-badge--success { --ca-badge-tone: var(--ca-semantic-success); --ca-badge-muted: var(--ca-semantic-success-muted, color-mix(in oklab, var(--ca-semantic-success) 14%, transparent)); --ca-badge-fg: var(--ca-semantic-success-fg, color-mix(in oklab, var(--ca-semantic-success) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-semantic-success-fill, var(--ca-semantic-success)); --ca-badge-on: var(--ca-semantic-success-contrast); }
@@ -144,6 +150,15 @@
     .ca-badge--inline.ca-badge--warning { --ca-badge-tone: var(--ca-semantic-warning); --ca-badge-muted: var(--ca-semantic-warning-muted, color-mix(in oklab, var(--ca-semantic-warning) 14%, transparent)); --ca-badge-fg: var(--ca-semantic-warning-fg, color-mix(in oklab, var(--ca-semantic-warning) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-semantic-warning-fill, var(--ca-semantic-warning)); --ca-badge-on: var(--ca-semantic-warning-contrast); }
     .ca-badge--inline.ca-badge--info { --ca-badge-tone: var(--ca-semantic-info); --ca-badge-muted: var(--ca-semantic-info-muted, color-mix(in oklab, var(--ca-semantic-info) 14%, transparent)); --ca-badge-fg: var(--ca-semantic-info-fg, color-mix(in oklab, var(--ca-semantic-info) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-semantic-info-fill, var(--ca-semantic-info)); --ca-badge-on: var(--ca-semantic-info-contrast); }
     .ca-badge--inline.ca-badge--neutral { --ca-badge-tone: var(--ca-text-secondary); --ca-badge-muted: var(--ca-semantic-neutral-muted, var(--ca-action-hover)); --ca-badge-fg: var(--ca-semantic-neutral-fg, color-mix(in oklab, var(--ca-text-secondary) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-text-secondary); --ca-badge-on: var(--ca-surface-base); }
+    /* Custom: every colour derives from one input, --ca-badge-custom (the `color` prop). The solid label is
+       black or white by the colour's OKLab lightness; the subtle pair matches the semantic tones. */
+    .ca-badge--inline.ca-badge--custom {
+      --ca-badge-tone: var(--ca-badge-custom);
+      --ca-badge-muted: color-mix(in oklab, var(--ca-badge-custom) 14%, transparent);
+      --ca-badge-fg: color-mix(in oklab, var(--ca-badge-custom) 35%, var(--ca-text-primary));
+      --ca-badge-fill: var(--ca-badge-custom);
+      --ca-badge-on: oklch(from var(--ca-badge-custom) clamp(0, (0.58 - l) * 1000, 1) 0 0);
+    }
     .ca-badge--inline {
       background: var(--ca-badge-fill);
       color: var(--ca-badge-on);
