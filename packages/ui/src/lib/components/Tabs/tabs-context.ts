@@ -9,6 +9,8 @@ export interface TabsContext {
 	/** Currently selected tab value. */
 	readonly value: string | undefined;
 	readonly variant: TabsVariant;
+	/** The list stretches across its container. */
+	readonly fill: boolean;
 	select(value: string): void;
 	/** A `TabsContent` for `value` is mounted: its trigger may point `aria-controls` at it. */
 	hasPanel(value: string): boolean;

@@ -249,4 +249,81 @@ describe("Tabs variant line", () => {
 		const a = screen.getByTestId("view-a").element() as HTMLElement;
 		expect(getComputedStyle(a).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
 	});
+
+	it("fill stretches the list and its hairline across the container", async () => {
+		await page.viewport(1200, 720);
+		const screen = await render(TabsViews, { variant: "line", fill: true });
+		const list = screen.getByTestId("views").element() as HTMLElement;
+		const root = list.closest(".ca-tabs") as HTMLElement;
+		expect(list.dataset.fill).toBe("");
+		expect(list.getBoundingClientRect().width).toBe(root.getBoundingClientRect().width);
+		expect(getComputedStyle(list).boxShadow).not.toBe("none");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("hugs its tabs without fill", async () => {
+		await page.viewport(1200, 720);
+		const screen = await render(TabsViews, { variant: "line" });
+		const list = screen.getByTestId("views").element() as HTMLElement;
+		const root = list.closest(".ca-tabs") as HTMLElement;
+		expect(list.hasAttribute("data-fill")).toBe(false);
+		expect(list.getBoundingClientRect().width).toBeLessThan(
+			root.getBoundingClientRect().width - 100
+		);
+	});
+
+	it("keeps roving focus and aria-selected with fill", async () => {
+		const screen = await render(TabsViews, { variant: "line", fill: true });
+		(screen.getByTestId("view-a").element() as HTMLElement).focus();
+		await userEvent.keyboard("{ArrowRight}");
+		await expect.element(screen.getByTestId("view-b")).toHaveFocus();
+		await expect.element(screen.getByTestId("view-b")).toHaveAttribute("aria-selected", "true");
+		await expect.element(screen.getByTestId("view-a")).toHaveAttribute("aria-selected", "false");
+	});
+});
+
+describe("Tabs trigger tokens", () => {
+	const TOKENS = {
+		"--ca-tabs-trigger-height": "36px",
+		"--ca-tabs-trigger-padding-x": "12px",
+		"--ca-tabs-trigger-radius": "8px",
+		"--ca-tabs-trigger-font-size": "13px",
+		"--ca-tabs-trigger-line-height": "16.25px",
+	};
+
+	it("the five tokens size the trigger, with no selector on .ca-tabs-*", async () => {
+		const screen = await render(TabsViews, { variant: "line" });
+		const root = screen.getByTestId("views").element().closest(".ca-tabs") as HTMLElement;
+		const a = screen.getByTestId("view-a").element() as HTMLElement;
+		const before = getComputedStyle(a);
+		expect(before.height).not.toBe("36px");
+		for (const [k, v] of Object.entries(TOKENS)) root.style.setProperty(k, v);
+		const after = getComputedStyle(a);
+		expect(after.height).toBe("36px");
+		expect(after.paddingLeft).toBe("12px");
+		expect(after.paddingRight).toBe("12px");
+		expect(after.borderTopLeftRadius).toBe("8px");
+		expect(after.fontSize).toBe("13px");
+		expect(after.lineHeight).toBe("16.25px");
+	});
+
+	it("without tokens the trigger keeps today's sizes", async () => {
+		const screen = await render(TabsViews, {});
+		const a = getComputedStyle(screen.getByTestId("view-a").element() as HTMLElement);
+		const probe = document.createElement("div");
+		probe.style.cssText =
+			"position:absolute;height:var(--ca-control-height-sm);padding-inline:var(--ca-space-3-5);font-size:var(--ca-font-size-body2)";
+		document.body.append(probe);
+		const want = getComputedStyle(probe);
+		expect(a.height).toBe(want.height);
+		expect(a.paddingLeft).toBe(want.paddingLeft);
+		expect(a.fontSize).toBe(want.fontSize);
+		// No line-height token: the trigger inherits the unitless body line height (a ratio of its own
+		// font size), as before the tokens.
+		const ratio =
+			parseFloat(getComputedStyle(document.body).lineHeight) /
+			parseFloat(getComputedStyle(document.body).fontSize);
+		expect(parseFloat(a.lineHeight) / parseFloat(a.fontSize)).toBeCloseTo(ratio, 1);
+		probe.remove();
+	});
 });

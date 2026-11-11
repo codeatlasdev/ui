@@ -69,14 +69,15 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: var(--ca-control-height-sm);
-      padding: 0 var(--ca-space-3-5);
-      border-radius: var(--ca-radius-pill);
+      height: var(--ca-tabs-trigger-height, var(--ca-control-height-sm));
+      padding: 0 var(--ca-tabs-trigger-padding-x, var(--ca-space-3-5));
+      border-radius: var(--ca-tabs-trigger-radius, var(--ca-radius-pill));
       border: none;
       background: transparent;
       color: var(--ca-text-secondary);
       font-family: var(--ca-font-sans);
-      font-size: var(--ca-font-size-body2);
+      font-size: var(--ca-tabs-trigger-font-size, var(--ca-font-size-body2));
+      line-height: var(--ca-tabs-trigger-line-height, inherit);
       font-weight: var(--ca-font-weight-medium);
       gap: var(--ca-space-2);
       cursor: pointer;
@@ -108,7 +109,7 @@
     /* line: no fill; the active tab gets a 2px underline that sits on the list's hairline. */
     :global(.ca-tabs-trigger[data-variant='line']) {
       position: relative;
-      border-radius: var(--ca-radius-sm);
+      border-radius: var(--ca-tabs-trigger-radius, var(--ca-radius-sm));
     }
     :global(.ca-tabs-trigger[data-variant='line']::after) {
       content: '';
