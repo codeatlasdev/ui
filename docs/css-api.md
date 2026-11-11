@@ -672,3 +672,7 @@ A component token is a custom property a component reads before its default: `--
 ## Tour
 
 `.ca-tour` `.ca-tour__head` `.ca-tour__title` `.ca-tour__body` `.ca-tour__foot` `.ca-tour__progress` `.ca-tour__actions` `.ca-tour__primary`; token `--ca-tour-width`; `data-ca-tour-target` on the current step's target (the ring).
+
+## Rating
+
+`.ca-rating` `.ca-rating--sm` `.ca-rating--md` `.ca-rating--readonly` `.ca-rating__label` `.ca-rating__stars` `.ca-rating__option` `.ca-rating__option--half` `.ca-rating__input` `.ca-rating__glyph` `.ca-rating__glyph--fill` `.ca-rating__star`; tokens `--ca-rating-size` `--ca-rating-color` `--ca-rating-empty`; hooks `data-on` (a lit option), `data-disabled`.

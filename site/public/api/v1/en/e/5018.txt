@@ -1,0 +1,29 @@
+<!-- @codeatlasdev/ui demo #5018 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/rating#rating -->
+Element: #5018 Rating (inputs/rating)
+What it shows: Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.
+When to use: Collecting or showing a score out of five, such as service or product reviews.
+Spec:
+- A `Rating` labelled `Service` bound to 4
+- A `Rating` labelled `Food` with `step={0.5}` bound to 3.5
+- A `readonly` `size="sm"` `Rating` labelled `Average` showing 4.5
+Tags: rating, stars, review, score, radiogroup, half steps
+Needs: @codeatlasdev/ui@4.6.0
+Components: Rating
+Live demo: https://ui.codeatlas.com.br/docs/inputs/rating#rating
+
+<script lang="ts">
+  import { Rating } from '@codeatlasdev/ui';
+
+  let service = $state(4);
+  let food = $state(3.5);
+</script>
+
+<div class="ratings">
+  <Rating label="Service" bind:value={service} />
+  <Rating label="Food" step={0.5} bind:value={food} />
+  <Rating label="Average" readonly step={0.5} value={4.5} size="sm" />
+</div>
+
+<style>
+  .ratings { display: grid; gap: var(--ca-space-4); }
+</style>
