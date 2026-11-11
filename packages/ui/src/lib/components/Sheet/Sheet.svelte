@@ -38,6 +38,8 @@
 		swipeToDismiss?: boolean;
 		/** Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. */
 		inline?: boolean;
+		/** Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. */
+		history?: boolean;
 	}
 
 	let {
@@ -49,6 +51,7 @@
 		footer,
 		swipeToDismiss = true,
 		inline = false,
+		history = true,
 	}: Props = $props();
 
 	const DISMISS_RATIO = 0.3;
@@ -125,7 +128,7 @@
 		data-inline={inline ? "" : undefined}
 		style={offset.current > 0 ? `translate: 0 ${offset.current}px` : undefined}
 		{@attach presence.ref}
-		{@attach modalLayer(() => ({ onDismiss: dismiss, closing: !open, inline }))}
+		{@attach modalLayer(() => ({ onDismiss: dismiss, closing: !open, inline, history }))}
 	>
 		<!-- Pointer-only gesture surface; keyboard users dismiss with Escape or the close button. -->
 		<div

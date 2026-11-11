@@ -60,6 +60,8 @@
      * `data-theme-scope` island (a preview frame, an embedded editor). Default false.
      */
     inline?:       boolean;
+    /** Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. */
+    history?:      boolean;
     class?:        string;
     children?:     Snippet;
     actions?:      Snippet;
@@ -78,6 +80,7 @@
     splitSize,
     fullscreenBelow,
     inline      = false,
+    history     = true,
     class: className = '',
     children,
     actions,
@@ -131,7 +134,7 @@
     style:--ca-dialog-split-width={splitSize?.width}
     style:--ca-dialog-split-height={splitSize?.height}
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open, inline }))}
+    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open, inline, history }))}
   >
     {#if chromeless}
       {#if title}

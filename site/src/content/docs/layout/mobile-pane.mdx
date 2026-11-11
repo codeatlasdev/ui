@@ -20,7 +20,7 @@ import ChatSrc from "~/demos/layout/mobile-pane/Chat.svelte?raw";
 </MobilePane>
 ```
 
-The pane is `position: fixed` and covers the viewport, with a header that has a back button. Escape and the back button close it, focus moves into the pane on open and returns to the previous element on close, and the body respects safe-area insets and the virtual keyboard. It replaces hand-rolled fixed panels.
+The pane is a modal `<dialog>` in the top layer that covers the viewport, with a header that has a back button. Escape and the back button close it, focus moves into the pane on open and returns to the opener on close, and the body respects safe-area insets and the virtual keyboard. It replaces hand-rolled fixed panels. With the overlay-history bridge mounted, the browser's Back (the Android back button, the iOS edge swipe) closes it too: see [Back button on mobile](/docs/getting-started/mobile/#back-button-on-mobile).
 
 <Demo title="Chat" description="Open the pane. On a phone the text field rises with the virtual keyboard." src={ChatSrc}><Chat client:visible /></Demo>
 
@@ -32,5 +32,6 @@ The pane is `position: fixed` and covers the viewport, with a header that has a 
   { name: "actions", type: "Snippet", description: "Right side of the header." },
   { name: "headerTitle", type: "Snippet", description: "Replaces the title text in the header (for example avatar plus name). title stays as the accessible name." },
   { name: "scroll", type: "boolean", default: "true", description: "false renders the body as a flex column without its own scroll, for layouts with a scrollable area and a fixed composer." },
+  { name: "history", type: "boolean", default: "true", description: "Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Nothing changes until the app mounts the bridge (see Back button on mobile)." },
   { name: "class", type: "string", default: "''", description: "Extra class names on the pane." },
 ]} />

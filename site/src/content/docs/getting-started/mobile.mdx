@@ -119,6 +119,37 @@ Mobile browsers tint their status bar and toolbar from the page. The package fee
   A translucent (blurred) header at the top edge cannot be sampled correctly. Use `--ca-chrome-surface` (or any opaque color) for fixed bars on the top and bottom edges, and keep `backdrop-filter` for surfaces inside the page.
 </Callout>
 
+## Back button on mobile
+
+On a phone, Back (the Android button, the iOS edge swipe, an installed PWA's Back) should close the open Sheet or MobilePane, not leave the page with the draft and scroll position lost. The package does this with one history entry per open modal layer (Dialog, AlertDialog, Sheet, Drawer, MobilePane, CommandPalette, Lightbox). Popovers, menus and tooltips never take one.
+
+It is opt-in at app level; nothing changes until you mount the bridge once.
+
+```svelte
+<!-- SvelteKit: src/routes/+layout.svelte -->
+<script>
+  import { OverlayHistory } from "@codeatlasdev/ui/kit";
+</script>
+
+<OverlayHistory />
+```
+
+```ts
+// Astro or a plain Vite app: once, in the client entry
+import { bridgeOverlaysToHistory } from "@codeatlasdev/ui";
+bridgeOverlaysToHistory();
+```
+
+`codeatlas-ui init` writes this for you. What you get:
+
+- Back closes the topmost layer and stays on the route; two stacked layers need two presses.
+- Closing by button, Escape or scrim consumes the entry, so the history length is the same after open and close.
+- Reloading with an overlay entry in the history does not reopen the layer; the stale entry is stepped out of once.
+- A link inside a layer navigates once: the entries are unwound first, so the new page is not stacked on top of them.
+- A layer opts out with `history={false}`.
+
+In SvelteKit the entries go through shallow routing (`page.state.caOverlays`); with another router pass an adapter to `bridgeOverlaysToHistory({ push, isStaleEntry })`.
+
 ## Layout components
 
 ### BottomNav and AppShellLayout

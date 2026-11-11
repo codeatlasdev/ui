@@ -35,6 +35,26 @@ describe("init on SvelteKit", () => {
 		expect(read(root, "src/routes/+layout.svelte")).toContain("colorScheme.init()");
 	});
 
+	it("mounts <OverlayHistory /> in a new root layout and adds it to an existing one (#725)", () => {
+		const fresh = project({ "package.json": KIT_PKG });
+		init(fresh, { ...quiet, write: true });
+		const layout = read(fresh, "src/routes/+layout.svelte");
+		expect(layout).toContain('import { OverlayHistory } from "@codeatlasdev/ui/kit"');
+		expect(layout).toContain("<OverlayHistory />");
+
+		const existing = project({
+			"package.json": KIT_PKG,
+			"src/routes/+layout.svelte": `<script>\n\tlet { children } = $props();\n</script>\n\n{@render children()}\n`,
+		});
+		init(existing, { ...quiet, write: true });
+		const patched = read(existing, "src/routes/+layout.svelte");
+		expect(patched.match(/<OverlayHistory \/>/g)).toHaveLength(1);
+		init(existing, { ...quiet, write: true });
+		expect(read(existing, "src/routes/+layout.svelte").match(/<OverlayHistory \/>/g)).toHaveLength(
+			1
+		);
+	});
+
 	it("scaffolds the full setup: caErrorPlugin in vite config and createErrorHandler as handleError", () => {
 		const root = project({ "package.json": KIT_PKG, "vite.config.ts": VITE });
 		init(root, { ...quiet, write: true });
@@ -409,6 +429,34 @@ describe("init on Astro", () => {
 		const root = project({ "package.json": ASTRO_PKG });
 		init(root, { ...quiet, write: true });
 		expect(read(root, "src/layouts/Base.astro")).toContain("colorScheme.init()");
+		expect(read(root, "src/layouts/Base.astro")).toContain("bridgeOverlaysToHistory();");
+	});
+
+	it("adds the overlay-history bridge to an existing layout script (#725)", () => {
+		const root = project({
+			"package.json": ASTRO_PKG,
+			"astro.config.mjs": CONFIG,
+			"src/layouts/Base.astro": LAYOUT,
+		});
+		init(root, { ...quiet, write: true });
+		const once = read(root, "src/layouts/Base.astro");
+		expect(once).toContain(
+			'import { bridgeOverlaysToHistory, colorScheme } from "@codeatlasdev/ui"'
+		);
+		expect(once.match(/bridgeOverlaysToHistory\(\);/g)).toHaveLength(1);
+		// A layout that already calls colorScheme.init() gets the bridge beside it, once.
+		const own = project({
+			"package.json": ASTRO_PKG,
+			"astro.config.mjs": CONFIG,
+			"src/layouts/Base.astro": `---\n---\n<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1" /></head><body><slot /><script>\n\timport { colorScheme } from "@codeatlasdev/ui";\n\tcolorScheme.init();\n</script></body></html>\n`,
+		});
+		init(own, { ...quiet, write: true });
+		init(own, { ...quiet, write: true });
+		const patched = read(own, "src/layouts/Base.astro");
+		expect(patched.match(/bridgeOverlaysToHistory\(\);/g)).toHaveLength(1);
+		expect(patched).toMatch(
+			/import \{ bridgeOverlaysToHistory,\s*colorScheme\s*\} from "@codeatlasdev\/ui"/
+		);
 	});
 
 	// #273: components do not render in Astro without the Svelte integration.

@@ -69,6 +69,8 @@
     /** Runs on confirm. Dialog closes when it resolves (sync or async). */
     onconfirm:     () => void | Promise<void>;
     oncancel?:     () => void;
+    /** Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. */
+    history?:      boolean;
     class?:        string;
   }
 
@@ -87,6 +89,7 @@
     pending      = false,
     onconfirm,
     oncancel,
+    history      = true,
     class: className = '',
   }: Props = $props();
 
@@ -133,7 +136,7 @@
     data-state={open ? 'open' : 'closed'}
     style="--dialog-max-w:400px"
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss, outside: false, initial: 'container', closing: !open }))}
+    {@attach modalLayer(() => ({ onDismiss, outside: false, initial: 'container', closing: !open, history }))}
   >
     <div class="ca-dialog__header">
       <h2 id={ids.part('title')} class="ca-dialog__title">{title}</h2>

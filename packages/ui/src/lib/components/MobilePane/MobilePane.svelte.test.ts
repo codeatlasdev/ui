@@ -22,8 +22,9 @@ afterAll(() => setLocale("en"));
 
 describe("MobilePane", () => {
 	it("is closed by default and renders title, actions and body when open", async () => {
-		const { screen } = await open();
-		expect(screen.container.querySelector(".ca-mobile-pane")).not.toBeNull();
+		await open();
+		// A modal <dialog> moved to <body> (it does not inherit the page's typography).
+		expect(document.body.querySelector(":scope > dialog.ca-mobile-pane")).not.toBeNull();
 		await expect.element(page.getByText("Conversation", { exact: true }).first()).toBeVisible();
 		await expect.element(page.getByRole("button", { name: "Action" })).toBeVisible();
 		await expect.element(page.getByRole("textbox", { name: "Message" })).toBeVisible();

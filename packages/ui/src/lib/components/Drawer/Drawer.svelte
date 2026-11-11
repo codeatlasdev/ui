@@ -41,6 +41,8 @@
     fullBleedBelow?: 'sm' | 'md' | 'lg';
     /** Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. */
     inline?:       boolean;
+    /** Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. */
+    history?:      boolean;
     class?:        string;
     children?:     Snippet;
     actions?:      Snippet;
@@ -59,6 +61,7 @@
     width     = '360px',
     fullBleedBelow,
     inline    = false,
+    history   = true,
     class: className = '',
     children,
     actions,
@@ -96,7 +99,7 @@
     data-inline={inline ? '' : undefined}
     style="--drawer-w:{width};{style ?? ''}"
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open, inline }))}
+    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open, inline, history }))}
   >
     {#if chromeless}
       {#if title}

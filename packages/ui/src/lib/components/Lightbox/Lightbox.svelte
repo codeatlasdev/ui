@@ -47,6 +47,8 @@
 		/** Called instead of the default `<a download>` when the user taps Download. */
 		ondownload?: (item: LightboxItem, index: number) => void;
 		onclose?: () => void;
+		/** Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. */
+		history?: boolean;
 	}
 
 	let {
@@ -57,6 +59,7 @@
 		index = $bindable(0),
 		ondownload,
 		onclose,
+		history = true,
 	}: Props = $props();
 
 	const list = $derived<LightboxItem[]>(items ?? (src ? [{ src, alt }] : []));
@@ -119,7 +122,7 @@
 		aria-labelledby={ids.part("title")}
 		data-state={open ? "open" : "closed"}
 		{@attach presence.ref}
-		{@attach modalLayer(() => ({ onDismiss: dismiss, outside: false, initial: "container", closing: !open }))}
+		{@attach modalLayer(() => ({ onDismiss: dismiss, outside: false, initial: "container", closing: !open, history }))}
 		{onkeydown}
 		onclick={(e) => {
 			// Anything except the media, its caption and the controls dismisses.

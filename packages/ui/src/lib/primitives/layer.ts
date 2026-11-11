@@ -70,6 +70,11 @@ export interface LayerOptions {
 	 * with its own theme or a preview frame. A popover anchors with `position: absolute`. Default false.
 	 */
 	inline?: boolean;
+	/**
+	 * Modal only: whether the overlay-history bridge (`bridgeOverlaysToHistory`) gives this layer a
+	 * browser-history entry, so Back closes it. Default true; popovers, menus and hints never do.
+	 */
+	history?: boolean;
 }
 
 export interface LayerHandle {
@@ -88,6 +93,8 @@ export interface LayerHandle {
 export interface LayerInfo {
 	kind: LayerKind;
 	rect: DOMRect;
+	/** Modal layers: counted by the overlay-history bridge (see `LayerOptions.history`). */
+	history: boolean;
 }
 
 /** Detail of the `layerchange` event on `document`. */
@@ -141,6 +148,18 @@ function topModal(): HTMLElement | undefined {
 function topInteractive(): Entry | undefined {
 	for (let i = stack.length - 1; i >= 0; i--)
 		if (stack[i].kind !== "hint" && !isClosing(stack[i])) return stack[i];
+}
+
+/**
+ * Dismisses the topmost interactive layer as if Escape had been pressed (the layer's own
+ * `onDismiss("escape")` runs, so exit animations and `escape={false}` are honoured). Returns whether
+ * a layer took it. The overlay-history bridge calls it when the browser's Back is pressed.
+ */
+export function dismissTopLayer(): boolean {
+	const top = topInteractive();
+	if (!top || top.opts.escape === false) return false;
+	top.opts.onDismiss?.("escape");
+	return true;
 }
 
 /**
@@ -207,7 +226,11 @@ function listen(on: boolean) {
 }
 
 function announce() {
-	const layers = stack.map((l) => ({ kind: l.kind, rect: l.node.getBoundingClientRect() }));
+	const layers = stack.map((l) => ({
+		kind: l.kind,
+		rect: l.node.getBoundingClientRect(),
+		history: l.kind === "modal" && l.opts.history !== false,
+	}));
 	const detail: LayerChange = {
 		layers,
 		count: layers.length,

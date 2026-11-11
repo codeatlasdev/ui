@@ -78,6 +78,7 @@ AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
 | `pending?` | `boolean` | `false` | Controlled pending state. When omitted, pending is tracked while `onconfirm` is awaited. |
 | `onconfirm` | `() => void \| Promise<void>` |  | Runs on confirm. Dialog closes when it resolves (sync or async). |
 | `oncancel?` | `() => void` |  |  |
+| `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`: Body between the description and the buttons: a confirmation field or a choice.
@@ -823,6 +824,7 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-state` (`open`)
 | `search?` | `(query: string, signal: AbortSignal) => Promise<CommandResult[]>` |  | Async search function. Called with the trimmed query and an `AbortSignal`; must throw / reject with a `DOMException("Aborted", "AbortError")` on abort (the standard `signal.throwIfAborted()` pattern). Returns `CommandResult[]`. |
 | `searchDebounce?` | `number` | `200` | Debounce delay (ms) before `search` is called after the last keystroke. Default 200. |
 | `shortcut?` | `boolean` | `true` | Opens and closes on Mod+K (Cmd+K / Ctrl+K) anywhere in the window. Turn it off for every palette but one when a page has several, or when the app binds its own shortcut. |
+| `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 
 Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet`
 
@@ -1189,6 +1191,7 @@ Dialog: second-layer modal.
 | `splitSize?` | `{ width?: string; height?: string }` |  | Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`. Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`. |
 | `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
 | `inline?` | `boolean` | `false` | Render inside its container instead of the top layer: `position: absolute` over the nearest positioned ancestor, no scrim over the page, no scroll lock, no focus trap, and Escape closes it only from inside. It takes the tokens of its container, so it follows a `data-preset` or `data-theme-scope` island (a preview frame, an embedded editor). Default false. |
+| `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 | `sound?` | `SoundProp` |  | Plays `open` and `close` as the dialog opens and closes (a cue name replaces both) when `@codeatlasdev/ui/sound` is on. |
@@ -1325,6 +1328,7 @@ Drawer: side panel, second layer.
 | `width?` | `string` | `'360px'` | Width (left/right). Default: 360px |
 | `fullBleedBelow?` | `'sm' \| 'md' \| 'lg'` |  | Below this breakpoint (`sm` 600px, `md` 900px, `lg` 1200px) a left/right panel is exactly the viewport width and height (`--ca-vh`), without radius, border or the page strip; safe-area padding is kept. |
 | `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. |
+| `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
@@ -2011,6 +2015,7 @@ Parts: `ca-kpi-grid` `ca-kpi-grid__grid`
 | `index?` | `number` | `0` | `bind:` Current item, bindable. |
 | `ondownload?` | `(item: LightboxItem, index: number) => void` |  | Called instead of the default `<a download>` when the user taps Download. |
 | `onclose?` | `() => void` |  |  |
+| `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 
 Parts: `ca-lightbox` `ca-lightbox__action` `ca-lightbox__caption` `ca-lightbox__caption-text` `ca-lightbox__close` `ca-lightbox__counter` `ca-lightbox__img` `ca-lightbox__meta` `ca-lightbox__nav` `ca-lightbox__nav--next` `ca-lightbox__nav--prev` `ca-lightbox__stage` `ca-lightbox__tools` `ca-lightbox__video`
 
@@ -2283,6 +2288,7 @@ Parts: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading` 
 | `title` | `string` |  | Header title and accessible name of the pane. |
 | `onback?` | `() => void` |  | Called after the back button or Escape closes the pane. |
 | `scroll?` | `boolean` | `true` | `true` (default): the body scrolls. `false`: the body is a non-scrolling flex column, for layouts with their own scrollable area and a fixed composer (chat). |
+| `history?` | `boolean` | `true` | Give the pane a browser-history entry under the overlay-history bridge (Back closes it). Default `true`. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`: Scrollable body.; `actions`: Right side of the header.; `headerTitle`: Replaces the title text in the header (e.g. avatar + name); `title` remains the accessible name.
@@ -2476,6 +2482,10 @@ Parts: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__
 Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
 
 Tokens: `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
+
+## OverlayHistory
+
+`import { OverlayHistory } from "@codeatlasdev/ui/kit"`
 
 ## PageFrame
 
@@ -3115,6 +3125,7 @@ Parts: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `ca-
 | `onclose?` | `() => void` |  |  |
 | `swipeToDismiss?` | `boolean` | `true` | Drag the handle/header down to dismiss (bottom-sheet layout only). Default: true. |
 | `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. |
+| `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 
 Snippets: `children`; `footer`
 
@@ -3968,6 +3979,16 @@ Move `id` per a drop event inside plain arrays: the reorder/move helper apps usu
 function applyMove<T>(lists: Record<string, T[]>, e: DndDropEvent, key: (item: T) => string): Record<string, T[]>
 ```
 
+### bridgeOverlaysToHistory
+
+`import { bridgeOverlaysToHistory } from "@codeatlasdev/ui"`
+
+Keeps one history entry per open modal layer. Returns the function that stops it. Pass an `adapter` to push through a router (SvelteKit's shallow routing) instead of `pushState`.
+
+```ts
+function bridgeOverlaysToHistory(adapter?: OverlayHistoryAdapter): OverlayBridge
+```
+
 ### BUILTIN_PRESETS
 
 `import { BUILTIN_PRESETS } from "@codeatlasdev/ui"`
@@ -4012,8 +4033,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@290: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@292: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@292: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@294: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
@@ -4181,6 +4202,16 @@ Design knobs → root custom properties. Only values that differ from the styles
 
 ```ts
 function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "type" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" | "defaultStyle" >): Record<string, string>
+```
+
+### dismissTopLayer
+
+`import { dismissTopLayer } from "@codeatlasdev/ui"`
+
+Dismisses the topmost interactive layer as if Escape had been pressed (the layer's own `onDismiss("escape")` runs, so exit animations and `escape={false}` are honoured). Returns whether a layer took it. The overlay-history bridge calls it when the browser's Back is pressed.
+
+```ts
+function dismissTopLayer(): boolean
 ```
 
 ### downloadFile
@@ -4613,6 +4644,16 @@ Call `fn` after the scheme, preset or surface style of the page changes (the `cl
 
 ```ts
 function onTokensChange(fn: () => void): () => void
+```
+
+### overlayStep
+
+`import { overlayStep } from "@codeatlasdev/ui"`
+
+What the bridge has to do to bring the history entries in line with the open layers.
+
+```ts
+function overlayStep(open: number, entries: number): "push" | "pop" | "idle"
 ```
 
 ### parseColorInput
@@ -5111,7 +5152,7 @@ Types:
 | `Justify` | `type Justify = (typeof JUSTIFY)[number];` |  |
 | `KbdTokens` | `interface KbdTokens { size?: CssValue; fontSize?: CssValue; leading?: CssValue; }` |  |
 | `LayerChange` | `interface LayerChange { layers: LayerInfo[]; count: number; modal: boolean; }` | Detail of the `layerchange` event on `document`. |
-| `LayerInfo` | `interface LayerInfo { kind: LayerKind; rect: DOMRect; }` |  |
+| `LayerInfo` | `interface LayerInfo { kind: LayerKind; rect: DOMRect; history: boolean; }` |  |
 | `LayerKind` | `type LayerKind = "modal" \| "popover" \| "hint";` | The single layer stack. Every overlay (dialog, sheet, menu, popover, tooltip) goes through `openLayer`, so there is one place for the top layer, Escape / outside press / focus-out, focus restoration, scroll lock and the `layerchange` event hosts listen to. |
 | `LayoutProps` | `interface LayoutProps { gap?: Responsive<Space>; p?: Responsive<Space>; px?: Responsive<Space>; py?: Responsive<Space>; align?: Responsive<Align>; justify?: Responsive<Justify>; direction?: Responsive<Direction>; columns?: Responsive<Columns>; wrap?: Responsive<boolean>; }` | Props shared by every layout primitive. Each one also takes a responsive object. |
 | `Locale` | `type Locale = string;` | BCP 47 language tag. `en` and `pt-BR` are built in; add others with `registerLocale`. |
@@ -5129,6 +5170,8 @@ Types:
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
 | `Oklch` | `interface Oklch { l: number; c: number; h: number; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
+| `OverlayBridge` | `interface OverlayBridge { (): void; entries(): number; unwind(): Promise<void>; }` | Returned by `bridgeOverlaysToHistory`: call it to stop the bridge. |
+| `OverlayHistoryAdapter` | `interface OverlayHistoryAdapter { push(n: number): void \| Promise<void>; isStaleEntry(): boolean; }` |  |
 | `PaletteColor` | `interface PaletteColor { hex: string; oklch: Oklch; share: number; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PasswordScore` | `type PasswordScore = 0 \| 1 \| 2 \| 3;` | 0 = empty, 1 = weak, 2 = fair, 3 = strong. |
@@ -5507,6 +5550,7 @@ Types:
 |---|---|---|
 | `kind` | `LayerKind` |  |
 | `rect` | `DOMRect` |  |
+| `history` | `boolean` | Modal layers: counted by the overlay-history bridge (see `LayerOptions.history`). |
 
 #### LayoutProps
 
@@ -5644,6 +5688,20 @@ Types:
 | `subtle` | `string` |  |
 | `default` | `string` |  |
 | `strong` | `string` |  |
+
+#### OverlayBridge
+
+| Field | Type | Notes |
+|---|---|---|
+| `entries` | `() => number` | History entries the bridge holds right now (one per open history layer). |
+| `unwind` | `() => Promise<void>` | Gives the entries back in one traversal without closing any layer, and resolves when the browser is on the entry under them. A router calls it before it navigates away from a page with open layers, so the new page does not sit on top of stale overlay entries. |
+
+#### OverlayHistoryAdapter
+
+| Field | Type | Notes |
+|---|---|---|
+| `push` | `(n: number) => void \| Promise<void>` | Adds one entry; `n` is how many overlay entries exist afterwards. |
+| `isStaleEntry` | `() => boolean` | True when the current entry is an overlay entry left over from before a reload, with no layer open. |
 
 #### PaletteColor
 
@@ -6334,6 +6392,16 @@ Types:
 | `locale?` | `string` | BCP 47 tag used for separators and symbol placement. Default `"pt-BR"`. |
 
 ## @codeatlasdev/ui/kit
+
+### back
+
+`import { back } from "@codeatlasdev/ui/kit"`
+
+The Back of a page header (`AppForm`, `AppSettings`, `PageShell`): `history.back()` when the user arrived through in-app navigation, else `goto(fallback)` replacing the entry, so Back never leaves the app and never loops between two pages.
+
+```ts
+function back(fallback: string): void
+```
 
 ### caThemeHandle
 
