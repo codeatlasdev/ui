@@ -4,9 +4,16 @@
   let {
     open = $bindable(false),
     disabled = false,
-  }: { open?: boolean; disabled?: boolean } = $props();
+    variant,
+    divided,
+  }: {
+    open?: boolean;
+    disabled?: boolean;
+    variant?: 'boxed' | 'flush';
+    divided?: boolean;
+  } = $props();
 </script>
 
-<Collapsible title="Details" bind:open {disabled}>Collapsible content</Collapsible>
+<Collapsible title="Details" bind:open {disabled} {variant} {divided}>Collapsible content</Collapsible>
 
 <output data-testid="open">{String(open)}</output>

@@ -5,10 +5,17 @@
   let {
     type = 'single',
     value = $bindable(),
-  }: { type?: 'single' | 'multiple'; value?: string | string[] } = $props();
+    variant,
+    divided,
+  }: {
+    type?: 'single' | 'multiple';
+    value?: string | string[];
+    variant?: 'boxed' | 'flush';
+    divided?: boolean;
+  } = $props();
 </script>
 
-<Accordion {type} bind:value>
+<Accordion {type} bind:value {variant} {divided}>
   <AccordionItem value="one" title="First">Content one</AccordionItem>
   <AccordionItem value="two" title="Second">Content two</AccordionItem>
   <AccordionItem value="three" title="Third">Content three</AccordionItem>

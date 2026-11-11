@@ -14,6 +14,8 @@ Total: 836 unique classes across 84 components.
 
 `.ca-accordion` `.ca-accordion-down` `.ca-accordion-item` `.ca-accordion-item__body` `.ca-accordion-item__chevron` `.ca-accordion-item__content` `.ca-accordion-item__header` `.ca-accordion-item__title` `.ca-accordion-item__trigger` `.ca-accordion-up`
 
+Variants are `[data-variant="boxed" | "flush"]` and `[data-divided]` on `.ca-accordion`.
+
 ## Alert
 
 `.ca-alert` `.ca-alert--banner` `.ca-alert--error` `.ca-alert--info` `.ca-alert--success` `.ca-alert--warning` `.ca-alert__bar` `.ca-alert__body` `.ca-alert__close` `.ca-alert__content` `.ca-alert__icon` `.ca-alert__title`
@@ -146,6 +148,8 @@ Contrast state is exposed as `[data-pass]` and `[data-level]` on `.ca-color-fiel
 ## Collapsible
 
 `.ca-collapsible` `.ca-collapsible__body` `.ca-collapsible__chevron` `.ca-collapsible__content` `.ca-collapsible__title` `.ca-collapsible__trigger` `.ca-slide-down` `.ca-slide-up`
+
+Variants are `[data-variant="boxed" | "flush"]` and `[data-divided]` on `.ca-collapsible`.
 
 ## Combobox
 

@@ -12,6 +12,8 @@ import Multiple from "~/demos/surfaces/accordion/Multiple.svelte";
 import MultipleSrc from "~/demos/surfaces/accordion/Multiple.svelte?raw";
 import Controlled from "~/demos/surfaces/accordion/Controlled.svelte";
 import ControlledSrc from "~/demos/surfaces/accordion/Controlled.svelte?raw";
+import Flush from "~/demos/surfaces/accordion/Flush.svelte";
+import FlushSrc from "~/demos/surfaces/accordion/Flush.svelte?raw";
 
 ```svelte
 <script>
@@ -29,11 +31,21 @@ Triggers are buttons with `aria-expanded`. Arrow Up, Arrow Down, Home and End mo
 <Demo title="Multiple" description={"Several items can be open at once."} src={MultipleSrc}><Multiple client:visible /></Demo>
 <Demo title="Controlled" description={"Bind `value` to read or set the open item."} src={ControlledSrc}><Controlled client:visible /></Demo>
 
+<Demo title="Flush in a panel" description={"`variant=\"flush\"` with `divided`: items align to the panel gutter, one hairline between them."} src={FlushSrc}><Flush client:visible /></Demo>
+
+## Variants
+
+- `boxed` (default): every item is a bordered, rounded box. Use it on a page body or a plain background.
+- `flush`: no border, radius or background and no inline padding, so titles, chevrons and bodies sit on the gutter of the container. Use it inside a panel, drawer or side sheet that is already a surface. Triggers keep a `--ca-touch-target` minimum height. Add `divided` to draw a subtle top border between items.
+
+The trigger only reads `--ca-glass-bg` under the `glass` and `frosted` surface styles.
 
 <Props title="Accordion props" rows={[
   { name: "type", type: "'single' | 'multiple'", default: "'single'", description: "Whether one or many items can be open." },
   { name: "value", type: "string | string[]", default: "undefined", description: "Open item value(s): a string for `single` (`''` when none is open), an array for `multiple`. Bindable." },
   { name: "onValueChange", type: "(value: string | string[]) => void", default: "undefined", description: "Called when the open items change." },
+  { name: "variant", type: "'boxed' | 'flush'", default: "'boxed'", description: "`flush` removes the item boxes (border, radius, background, inline padding) for use inside a panel that is already a surface." },
+  { name: "divided", type: "boolean", default: "false", description: "With `flush`: a subtle top border between items." },
   { name: "class", type: "string", default: "''", description: "Extra class names on the root." },
   { name: "children", type: "Snippet", default: "undefined", description: "`AccordionItem` children." },
 ]} />

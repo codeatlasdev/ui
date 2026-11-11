@@ -15,11 +15,23 @@
     type?: 'single' | 'multiple';
     value?: string | string[];
     onValueChange?: (value: string | string[]) => void;
+    /** `boxed` (default): every item is a bordered, rounded box. `flush`: no box, inherits the parent's gutter. */
+    variant?: 'boxed' | 'flush';
+    /** With `variant="flush"`: a subtle top border between items. */
+    divided?: boolean;
     class?: string;
     children?: Snippet;
   }
 
-  let { type = 'single', value = $bindable(), onValueChange, class: className = '', children }: Props = $props();
+  let {
+    type = 'single',
+    value = $bindable(),
+    onValueChange,
+    variant = 'boxed',
+    divided = false,
+    class: className = '',
+    children,
+  }: Props = $props();
 
   const openSet = $derived(
     type === 'multiple'
@@ -71,7 +83,11 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- Keydown only coordinates focus between the real <button> triggers inside. -->
-<div class="ca-accordion {className}" data-orientation="vertical" {onkeydown}>
+<div class="ca-accordion {className}" data-orientation="vertical"
+  data-variant={variant}
+  data-divided={divided ? '' : undefined}
+  {onkeydown}
+>
   {@render children?.()}
 </div>
 
@@ -83,6 +99,10 @@
       flex-direction: column;
       gap: var(--ca-space-1);
       width: 100%;
+    }
+
+    :global(.ca-accordion[data-variant='flush']) {
+      gap: 0;
     }
 }
 </style>
