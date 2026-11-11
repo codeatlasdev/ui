@@ -157,7 +157,9 @@ describe("AppShellLayout: desktop", () => {
 
 		await settledOffset(main);
 		// The spring must land on the target, not within `precision` of it.
-		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 200px)");
+		expect(main().style.getPropertyValue("--ca-main-ml")).toBe(
+			"calc(var(--ca-rail-width) + 200px)"
+		);
 		expect(main().getBoundingClientRect().left).toBe(252);
 		expect(panelWidth()).toBe(200);
 	});
@@ -169,12 +171,14 @@ describe("AppShellLayout: desktop", () => {
 
 		await screen.getByRole("button", { name: "Close navigation" }).click();
 		await settledOffset(main);
-		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 0px)");
+		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(var(--ca-rail-width) + 0px)");
 		expect(main().getBoundingClientRect().left).toBe(52);
 
 		await screen.getByRole("button", { name: "Open navigation" }).click();
 		await settledOffset(main);
-		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 200px)");
+		expect(main().style.getPropertyValue("--ca-main-ml")).toBe(
+			"calc(var(--ca-rail-width) + 200px)"
+		);
 		expect(main().getBoundingClientRect().left).toBe(252);
 		expect((q(".ca-panel") as HTMLElement).getBoundingClientRect().width).toBe(200);
 	});
@@ -212,7 +216,9 @@ describe("AppShellLayout: desktop", () => {
 			// No spring frames: one frame after the click the offset is already the exact target.
 			await new Promise((r) => requestAnimationFrame(() => r(null)));
 			await new Promise((r) => requestAnimationFrame(() => r(null)));
-			expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 0px)");
+			expect(main().style.getPropertyValue("--ca-main-ml")).toBe(
+				"calc(var(--ca-rail-width) + 0px)"
+			);
 			expect(main().getBoundingClientRect().left).toBe(52);
 		} finally {
 			await cdp().send("Emulation.setEmulatedMedia", { features: [] });

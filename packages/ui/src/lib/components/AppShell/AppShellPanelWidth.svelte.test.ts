@@ -42,7 +42,9 @@ describe("panelWidth", () => {
 		await render(Harness, { pathname: "/app/dashboard", panelWidth: 320 });
 		await settledOffset();
 		expect(panel()?.getBoundingClientRect().width).toBe(320);
-		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 320px)");
+		expect(main().style.getPropertyValue("--ca-main-ml")).toBe(
+			"calc(var(--ca-rail-width) + 320px)"
+		);
 		expect(main().getBoundingClientRect().left).toBe(372);
 	});
 

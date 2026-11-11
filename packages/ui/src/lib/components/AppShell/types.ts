@@ -1,6 +1,5 @@
 // ─── AppShell navigation types ────────────────────────────────────────────────
 
-export const RAIL_WIDTH = 52; // px, icon dock
 export const PANEL_WIDTH = 200; // px, side panel (default)
 export const PANEL_MIN_WIDTH = 160; // px, narrowest panel `panelWidth` or the resize handle can reach
 export const PANEL_MAX_WIDTH = 480; // px, widest
@@ -95,6 +94,11 @@ export interface NavModule {
 	 * pending"). Translate it yourself: the shell cannot.
 	 */
 	badgeLabel?: string;
+	/**
+	 * Colour of the `badge`: `'brand'` (default) for something pending, `'error'` for something
+	 * overdue or failed. Colour is not the only signal: say it in `badgeLabel` ("3 overdue").
+	 */
+	badgeTone?: "brand" | "error";
 }
 
 /** Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). */

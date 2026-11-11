@@ -185,6 +185,9 @@ Parts: `ca-app-settings` `ca-app-settings--embedded` `ca-app-settings__actions` 
 | `brandHref?` | `string` |  | Makes the brand a link home: the shell wraps `brand` in one `<a>` in the Rail and one in the mobile header, with a 44px hit area on a coarse pointer (an overhang, the logo keeps its size). Do not put your own `<a>` inside `brand` when you set it. |
 | `brandLabel?` | `string` |  | Accessible name of the brand link (`brandHref`). |
 | `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
+| `railWidth?` | `number` |  | Width of the rail in px (default 52). Sets `--ca-rail-width` on the shell; the content offset, `--ca-shell-inset-left` and the stage inset all follow it. Setting `--ca-rail-width` in CSS (on `:root` or an ancestor) does the same, with no prop. |
+| `railSeparators?` | `boolean` | `true` | Draws the hairlines under the brand and above `railBottom`. `false` removes them, for a rail whose design separates the groups by spacing alone. |
+| `mobileHeader?` | `boolean` | `true` | Renders the header (brand, page title, `mobileHeaderActions`) below 900px. `false` renders none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile, so keep an account entry point elsewhere (`bottomNavOverflow`). |
 | `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
 | `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
@@ -192,7 +195,7 @@ Parts: `ca-app-settings` `ca-app-settings--embedded` `ca-app-settings__actions` 
 
 Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`): A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering while it is true. The content region passes pointer events through to the stage; give a page's panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell paints nothing behind the content when a stage is set, so the stage shows.; `header`; `brand`: Brand mark (logo) shown at the top of the Rail and in the mobile header.; `railBottom`: Items pinned to the bottom of the Rail (avatar, notifications…); `railTop`: Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger.; `bottomNavOverflow`: Extra content in the "More" dialog under the modules (search, account, sign out).; `mobileHeaderActions`: Compact controls rendered at the trailing edge of the single mobile header (session/workspace switcher, account menu…). Below 900px the desktop `header` snippet is hidden, so put anything that must stay reachable here.; `mobileTitle`: Replaces the plain page-title text in the mobile header, e.g. a tappable session title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.; `children`
 
-Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
+Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--no-mobile-header` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
 Variables: `--ca-main-ml` `--ca-panel-w-stored` `--ca-shell-inset-bottom` `--ca-shell-inset-left` `--ca-shell-inset-right` `--ca-shell-inset-top`
 
@@ -2674,7 +2677,7 @@ Snippets: `header`: Title, description and actions.; `toolbar`: Fixed row under 
 
 Parts: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
 
-Variables: `--ca-bg-default` `--ca-focus-ring-color` `--ca-focus-ring-width` `--ca-frame-drag-h` `--ca-frame-gap` `--ca-frame-w`
+Variables: `--ca-bg-default` `--ca-focus-ring-color` `--ca-focus-ring-width` `--ca-frame-border-width` `--ca-frame-drag-h` `--ca-frame-gap` `--ca-frame-pad-x` `--ca-frame-pad-y` `--ca-frame-w`
 
 Data attributes: `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`, `data-mode` (`page` `split`), `data-padded`, `data-sheet`, `data-side` (`left` `right`), `data-width` (`lg` `md` `sm` `xl`)
 
@@ -2952,11 +2955,16 @@ Data attributes: `data-disabled`, `data-state` (`checked` `unchecked`)
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
 | `labels?` | `boolean` | `false` | Shows the module label under each icon (small caption). The button's name is the same either way. |
+| `separators?` | `boolean` | `true` | The hairline under the brand and the one above the bottom slot. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `brand`: Brand mark at the top of the rail. Defaults to the "CA" wordmark.; `top`: Control between the brand and the modules, e.g. a search / ⌘K trigger.; `bottom`: Items pinned to the bottom of the rail (avatar, notifications, etc.)
 
 Parts: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
+
+Variables: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
+
+Tokens: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
 
 ## RangeCalendar
 
@@ -5430,7 +5438,7 @@ Types:
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
 | `NavExtras` | `interface NavExtras { reorder?: Component<NavReorderProps>; itemMenu?: Component<{ label: string; actions: Snippet }>; }` | Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
-| `NavModule` | `interface NavModule { id: string; label: string; fullLabel?: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; fullLabel?: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; badgeTone?: "brand" \| "error"; }` |  |
 | `NavMoreSheetProps` | `interface NavMoreSheetProps { open: boolean; title: string; rest: NavModule[]; visibleCount: number; activeIndex: number; overflow?: Snippet; onPick: (index: number) => void; }` | Props of the opt-in `NavMoreSheet` (see `AppShellLayout.moreSheet`). |
 | `NavReorderEvent` | `interface NavReorderEvent { id: string; from: number; to: number; }` | A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. |
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
@@ -5908,6 +5916,7 @@ Types:
 | `onReorder?` | `(e: NavReorderEvent) => void` | Same as `NavSection.onReorder`, for the items that sit directly in `items` (outside any section). |
 | `badge?` | `number \| "dot"` | Marker on the module's rail icon and bottom-nav tab: a number (capped at 99+) or `'dot'` (something is going on, no count). `0` and `undefined` render nothing. The marker is part of the button's accessible name: "Inbox, 12 unread", or `badgeLabel` when set. |
 | `badgeLabel?` | `string` | Accessible text for `badge`, appended to the module label ("Map, Search running"). Needed for a `'dot'` that should say more than "New", and for a count that is not "unread" ("3 tasks pending"). Translate it yourself: the shell cannot. |
+| `badgeTone?` | `"brand" \| "error"` | Colour of the `badge`: `'brand'` (default) for something pending, `'error'` for something overdue or failed. Colour is not the only signal: say it in `badgeLabel` ("3 overdue"). |
 
 #### NavMoreSheetProps
 

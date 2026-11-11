@@ -13,7 +13,7 @@
 {#if hasModuleBadge(mod)}
   <!-- The count is drawn by CSS, not text: text inside the button joins its visible label ("3 Home"), which the
        name ("Home, 3 unread") cannot contain, and voice control and axe label-in-name fail (#896). -->
-  <span class="ca-nav-module-badge" class:ca-nav-module-badge--dot={mod.badge === 'dot'} data-count={moduleBadgeText(mod) || undefined} aria-hidden="true"></span>
+  <span class="ca-nav-module-badge" class:ca-nav-module-badge--dot={mod.badge === 'dot'} data-tone={mod.badgeTone} data-count={moduleBadgeText(mod) || undefined} aria-hidden="true"></span>
 {/if}
 
 <style>
@@ -41,6 +41,11 @@
     }
     .ca-nav-module-badge[data-count]::after {
       content: attr(data-count);
+    }
+
+    .ca-nav-module-badge[data-tone='error'] {
+      background: var(--ca-semantic-error-fill);
+      color: var(--ca-semantic-error-contrast);
     }
 
     .ca-nav-module-badge--dot {
