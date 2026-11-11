@@ -82,6 +82,14 @@ export function bridgeOverlaysToHistory(
 					entries++;
 					await adapter.push(entries);
 				} else {
+					// A user Back pressed in the same task as this close is already queued ahead of our
+					// `go`. Let it land first: it consumes the entry this close was giving back (`onPop`
+					// lowers `entries`), so there is nothing left to traverse and the page stays put (#858).
+					const hold = Promise.withResolvers<void>();
+					setTimeout(hold.resolve, 0);
+					await hold.promise;
+					if (stopped) break;
+					if (overlayStep(open, entries) !== "pop") continue;
 					const back = entries - open;
 					entries = open;
 					ownPops++;
@@ -114,7 +122,13 @@ export function bridgeOverlaysToHistory(
 			resolve?.();
 			return;
 		}
-		// The user pressed Back: that consumed one of our entries. Close the layer it stood for.
+		// The user pressed Back. When a layer was already closed and its entry not yet given back
+		// (`entries > open`), this Back is that close's traversal: it consumes the entry and the page
+		// stays (#858). Otherwise it consumed the entry of a layer that is still open: close it.
+		if (entries > open) {
+			entries--;
+			return;
+		}
 		if (entries > 0) entries--;
 		dismissTopLayer();
 	};

@@ -88,10 +88,30 @@ describe("bridgeOverlaysToHistory", () => {
 		expect(history.state).toEqual(before);
 	});
 
-	it("a close then Back during the exit is two steps back, never three (#725)", async () => {
-		// Escape has already closed the layer (the exit animation is cosmetic), so a Back right after it is a
-		// new step back, as in any page: the bridge must add nothing to it. Two sentinel entries keep the test
-		// page in the document whatever happens.
+	it("a Back after a close has settled is one more step back, never two (#725)", async () => {
+		// Escape closes the layer and the bridge gives its entry back; a Back after that is a new step back, as
+		// in any page: the bridge must add nothing to it. Two sentinel entries keep the test page in the
+		// document whatever happens.
+		history.pushState({ sentinel: 1 }, "");
+		history.pushState({ sentinel: 2 }, "");
+		const screen = await render(Harness);
+		await screen.getByRole("button", { name: "Open sheet" }).click();
+		await expect.element(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
+		document.dispatchEvent(
+			new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true })
+		);
+		await settle();
+		expect(history.state).toEqual({ sentinel: 2 });
+		history.back();
+		await settle();
+		expect(state().sheet).toBe(false);
+		expect(history.state).toEqual({ sentinel: 1 });
+	});
+
+	it("a Back in the same task as a close is the close: the page keeps its own entry (#858)", async () => {
+		// Escape closes the layer and the bridge starts history.go(-1); a user Back before it lands is a second
+		// traversal. The entry that Back stood for is the one the close already gives back, so the page must
+		// end on sentinel 2, not step past it to sentinel 1.
 		history.pushState({ sentinel: 1 }, "");
 		history.pushState({ sentinel: 2 }, "");
 		const screen = await render(Harness);
@@ -104,8 +124,7 @@ describe("bridgeOverlaysToHistory", () => {
 		await settle();
 		await settle();
 		expect(state().sheet).toBe(false);
-		// The sheet's entry and one more: sentinel 1, not the entry under it.
-		expect(history.state).toEqual({ sentinel: 1 });
+		expect(history.state).toEqual({ sentinel: 2 });
 	});
 
 	it("history={false} layers never get an entry", async () => {
