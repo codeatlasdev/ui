@@ -10,6 +10,7 @@ import type { AxeResults, ElementContext, Result, RunOptions } from "axe-core";
 import type { SurfaceStyle } from "../stores/color-scheme.svelte.js";
 import type { PresetId } from "../tokens/presets.js";
 
+export { auditLayout, type LayoutAuditOptions } from "./layout-audit.js";
 export type { AxeResults, ElementContext, Result, RunOptions };
 
 /**

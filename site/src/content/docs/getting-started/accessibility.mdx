@@ -191,7 +191,20 @@ A theme and viewport matrix is a loop around the same assertion: `withTheme({ sc
 | `withTheme({ scheme, preset, style })` | `() => void` | Applies a scheme, preset and surface style to `<html>` as the theme script does (`.dark`, `data-preset`, `data-style`); the returned function restores the page. Options left out stay as they are. The locale is not a page attribute: wrap the tree in `I18nProvider`. |
 | `coarsePointer()` | `() => void` | Makes `matchMedia` answer as a touch device (`(pointer: coarse)`, `(hover: none)`) for code that reads it from JavaScript; the returned function restores it. CSS media queries cannot be changed from a page, use the runner's emulation for those. |
 | `measure(el, props)` | `{ rect, styles }` | `getBoundingClientRect` plus the computed style properties you name. Measure the same element in two renderings and diff the results to find the exact property that differs. |
+| `auditLayout({ mobile?, intentional? })` | `string[]` | The layout audit that gates every page of this site: no sideways scroll, no overlapping text or controls in `main` and `header`, no clipped text (an ellipsis or a scroll region is fine) and, with `mobile`, every control in `main` at least `--ca-touch-target` square. Empty when clean. Self-contained, so Playwright can run it in the page. |
 
 `options` is the axe `RunOptions`; its `rules` are merged over the exceptions, so `{ rules: { region: { enabled: true } } }` re-enables one. `axe.run` is not reentrant: never run two checks concurrently. Contrast needs real layout and styles, so run in a browser rather than jsdom.
+
+Check a page's layout at a phone width with the same audit:
+
+```ts
+import { auditLayout } from "@codeatlasdev/ui/testing";
+
+test("the home page holds at 390px", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  expect(await page.evaluate(auditLayout, { mobile: true })).toEqual([]);
+});
+```
 
 To test whole pages (landmarks, heading order, `region`), run axe on your routes in light, dark and `forcedColors: "active"` with Playwright and `@axe-core/playwright`. Also test with a keyboard only and with a screen reader on at least one platform.
