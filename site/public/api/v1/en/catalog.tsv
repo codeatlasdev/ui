@@ -386,3 +386,6 @@ id	group	page	title	names	tags	summary
 995	concepts	viewport	A form with the keyboard open		viewport,keyboard,keyboard-aware,sticky-actions,form,mobile,safe-area,concept	A scrollable account form with three TextFields (work email, company, role) and a StickyActions bar with a stretched Continue button, wrapped in the keyboardAware action.
 996	display	chip	Scrolling filter row		chip,chip-row,filter,scroll,touch,horizontal	A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden.
 997	layout	sortable-list	Pipeline stages editor		sortable-list,editable-row,reorder,settings,drag,stages	A pipeline-stages editor: four rows that reorder by grip or menu, each collapsing to a summary on a narrow screen and opening a name, kind and stale-days form.
+998	inputs	copy-field	Single line, icon only and multiline		copy-field,clipboard,copy,secret,api-key,read-only	A CopyField in three forms: single line, icon-only copy and a multiline command.
+999	inputs	copy-field	Masked		copy-field,clipboard,copy,secret,api-key,read-only	A masked CopyField: dots with a reveal toggle; copy always copies the real value.
+5000	inputs	copy-field	Show once		copy-field,clipboard,copy,secret,api-key,read-only	Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.

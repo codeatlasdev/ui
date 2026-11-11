@@ -262,7 +262,7 @@ export const AUDIT = {
 	 * were applied to all entries), `holdout` = 73 random entries not in `first`. `catalog` is the total; the rest,
 	 * `catalog - read`, were never re-read.
 	 */
-	read: { first: 130, holdout: 73, total: 203, catalog: 387, unread: 184 },
+	read: { first: 130, holdout: 73, total: 203, catalog: 390, unread: 187 },
 	fields: {
 		industry: { wrong: 5, checked: 73, review: "pending" as Review },
 		style: { wrong: 0, checked: 73, review: "published" as Review },
@@ -411,6 +411,8 @@ export const ID_RANGES: readonly IdRange[] = [
 	{ kind: "motion", subtype: "transition", from: 360, to: 379 },
 	{ kind: "motion", subtype: "ambient", from: 380, to: 399 },
 	{ kind: "component", subtype: "*", from: 400, to: 999 },
+	// 400-999 filled up in 4.7.0 (#745): components continue at 5000, past every other block.
+	{ kind: "component", subtype: "*", from: 5000, to: 5999 },
 	// Sections: blocks of 100 per subtype.
 	{ kind: "section", subtype: "hero", from: 1000, to: 1099 },
 	{ kind: "section", subtype: "feature", from: 1100, to: 1199 },

@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 387,
+	"count": 390,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "992",
-			"count": 86
+			"last": "5000",
+			"count": 89
 		},
 		{
 			"slug": "surfaces",
@@ -34494,6 +34494,258 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/sortable-list#pipeline-stages-editor",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "998",
+			"group": "inputs",
+			"page": "copy-field",
+			"variant": "Default",
+			"slug": "single-line-icon-only-and-multiline",
+			"title": "Single line, icon only and multiline",
+			"description": "",
+			"summary": "A CopyField in three forms: single line, icon-only copy and a multiline command.",
+			"use": "Webhook URLs, request snippets and IDs a user must copy exactly.",
+			"spec": [
+				"`iconOnly hideLabel`",
+				"`multiline size=\"sm\"`",
+				"`label=\"Webhook URL\"`"
+			],
+			"tags": [
+				"copy-field",
+				"clipboard",
+				"copy",
+				"secret",
+				"api-key",
+				"read-only"
+			],
+			"shape": "square",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"devtools"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"CopyField"
+				],
+				"aliases": [
+					"read-only copy box",
+					"copy box",
+					"show once"
+				],
+				"related": [
+					"012",
+					"999",
+					"5000"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-16",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"CopyField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CopyField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/copy-field#single-line-icon-only-and-multiline",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "999",
+			"group": "inputs",
+			"page": "copy-field",
+			"variant": "Masked",
+			"slug": "masked",
+			"title": "Masked",
+			"description": "`mask` shows dots and a reveal toggle. Copy always copies the real value.",
+			"summary": "A masked CopyField: dots with a reveal toggle; copy always copies the real value.",
+			"use": "API keys and tokens on a settings page.",
+			"spec": [
+				"`mask`",
+				"`copyLabel=\"Copy key\"`",
+				"`description=\"Treat it like a password.\"`"
+			],
+			"tags": [
+				"copy-field",
+				"clipboard",
+				"copy",
+				"secret",
+				"api-key",
+				"read-only"
+			],
+			"shape": "square",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"devtools"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"CopyField"
+				],
+				"aliases": [
+					"read-only copy box",
+					"copy box",
+					"show once"
+				],
+				"related": [
+					"012",
+					"998",
+					"5000"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-16",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"CopyField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CopyField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/copy-field#masked",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5000",
+			"group": "inputs",
+			"page": "copy-field",
+			"variant": "ShowOnce",
+			"slug": "show-once",
+			"title": "Show once",
+			"description": "",
+			"summary": "Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.",
+			"use": "After creating an API key or a recovery code the user must save.",
+			"spec": [
+				"`confirmDisabled={!copied}`",
+				"`mask copyLabel=\"Copy key\"`",
+				"`oncopy={() => (copied = true)}`"
+			],
+			"tags": [
+				"copy-field",
+				"clipboard",
+				"copy",
+				"secret",
+				"api-key",
+				"read-only"
+			],
+			"shape": "square",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"devtools"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"AlertDialog",
+					"Button",
+					"CopyField"
+				],
+				"aliases": [
+					"read-only copy box",
+					"copy box",
+					"show once"
+				],
+				"related": [
+					"012",
+					"998",
+					"999"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-16",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"AlertDialog",
+				"Button",
+				"CopyField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AlertDialog",
+						"Button",
+						"CopyField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/copy-field#show-once",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]
