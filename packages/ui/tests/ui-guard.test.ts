@@ -164,3 +164,18 @@ describe("ui guard: layout rules (#920)", () => {
 		]);
 	});
 });
+
+describe("ui guard: breakpoint convention (#916)", () => {
+	it("max-width is the scale minus 0.02px, min-width the full value", () => {
+		const out = guardSource(
+			"app.css",
+			"@media (max-width: 900px) { .a {} }\n@media (max-width: 1100px) { .b {} }"
+		);
+		expect(out.map((v) => `${v.rule}:${v.line}`)).toEqual(["breakpoint:1", "breakpoint:2"]);
+		expect(out[0]?.message).toContain("899.98px");
+		expect(
+			rules("app.css", "@media (max-width: 899.98px) { .a {} } @media (min-width: 900px) { .b {} }")
+		).toEqual([]);
+		expect(rules("app.css", "@media (min-width: 899.98px) { .a {} }")).toEqual(["breakpoint:1"]);
+	});
+});

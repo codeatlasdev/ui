@@ -15,7 +15,7 @@ These are working rules, not findings about users: they keep screens built by di
 4. **Every flex row says what shrinks.** The growing item gets `min-width: 0` and an ellipsis; the title wins over the actions.
 5. **Action bars stay on one line.** What does not fit goes into a menu (`Toolbar overflow="menu"`).
 6. **Check three widths: 360, 1280, 1920.** No sideways scroll, no one-character column, no empty area over a third of the screen.
-7. **Components answer their container, the page answers the viewport.** Use `@container` inside a component and only the 600 / 900 / 1200 / 1536 scale in `@media`. [Where components switch](/docs/getting-started/mobile/#where-components-switch) lists the library's own widths.
+7. **Components answer their container, the page answers the viewport.** Use `@container` inside a component and only the 600 / 900 / 1200 / 1536 scale in `@media`: `min-width: 900px` from a step up, `max-width: 899.98px` below it, so the two sides never both match at exactly 900px. With a bundler that supports `@custom-media` (Lightning CSS `drafts.customMedia`, PostCSS preset-env), `@import "@codeatlasdev/ui/styles/breakpoints.css"` gives `@media (--ca-md)` and `@media (--ca-below-md)`; in TypeScript the same scale is `BREAKPOINTS`. [Where components switch](/docs/getting-started/mobile/#where-components-switch) lists the library's own widths.
 8. **Flat by default.** Gradient, glow and glass are an exception with a reason.
 9. **`--ca-radius-control` is for one-line elements** (button, field, chip), never a container with several rows.
 

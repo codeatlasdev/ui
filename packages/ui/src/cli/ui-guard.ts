@@ -155,15 +155,21 @@ export function guardSource(
 					`raw size ${px[0]}: use a --ca-space-* or radius token`
 				);
 		}
-		const scale = new Set([600, 900, 1200, 1536]);
-		for (const m of text.matchAll(/@media[^{]*?\((?:max|min)-width:\s*([0-9.]+)px\)/g)) {
-			const w = Math.round(Number(m[1]));
-			if (!scale.has(w))
-				add(
-					offset + (m.index ?? 0),
-					"breakpoint",
-					`@media at ${m[1]}px: use the 600 / 900 / 1200 / 1536 scale, or @container`
-				);
+		// The scale (600 / 900 / 1200 / 1536); max-width sits 0.02px below a step so both sides never
+		// match at the exact width (#916): `max-width: 899.98px`, `min-width: 900px`.
+		const scale = [600, 900, 1200, 1536];
+		for (const m of text.matchAll(/@media[^{]*?\((max|min)-width:\s*([0-9.]+)px\)/g)) {
+			const w = Number(m[2]);
+			const ok =
+				m[1] === "max" ? scale.some((s) => Math.abs(w - (s - 0.02)) < 0.001) : scale.includes(w);
+			if (ok) continue;
+			const near = scale.reduce((a, b) => (Math.abs(b - w) < Math.abs(a - w) ? b : a));
+			const fix = m[1] === "max" ? `${near - 0.02}px` : `${near}px`;
+			add(
+				offset + (m.index ?? 0),
+				"breakpoint",
+				`@media ${m[1]}-width ${m[2]}px: use ${m[1]}-width ${fix} (the 600 / 900 / 1200 / 1536 scale, max-width 0.02px below), or @container`
+			);
 		}
 		for (const decl of values.matchAll(
 			/(padding|margin|gap|row-gap|column-gap)(?:-[a-z-]+)?\s*:\s*([^;{}]+)[;}]?/g
