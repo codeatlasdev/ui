@@ -18,6 +18,8 @@
 		wide = false,
 		alignValue = false,
 		accent = undefined,
+		hover = true,
+		interactive = true,
 	}: {
 		density?: "default" | "compact";
 		frame?: boolean;
@@ -31,6 +33,8 @@
 		wide?: boolean;
 		alignValue?: boolean;
 		accent?: string;
+		hover?: boolean;
+		interactive?: boolean;
 	} = $props();
 
 	let open = $state(true);
@@ -42,7 +46,7 @@
 </script>
 
 <div data-testid="scroller" class:wide>
-	<SimpleTable {density} {frame} {scroll} {stickyColumns} headerCase="sentence" {skeleton}>
+	<SimpleTable {density} {frame} {scroll} {stickyColumns} {hover} headerCase="sentence" {skeleton}>
 		<thead>
 			<tr>
 				<th scope="col"><Checkbox aria-label="Select all" /></th>
@@ -58,10 +62,10 @@
 			</TableGroupRow>
 			{#if open}
 				{#each rows.slice(0, 2) as r (r.id)}
-					<TableRow selected={selected === r.id} onactivate={() => onactivate(r.id)}>
+					<TableRow selected={selected === r.id} onactivate={interactive ? () => onactivate(r.id) : undefined}>
 						<td><Checkbox aria-label={`Select ${r.name}`} /></td>
 						<td class="primary"><a href="#{r.id}">{r.name}</a></td>
-						<td>{r.stage}</td>
+						<td data-testid="stage-{r.id}">{r.stage}</td>
 						<td>Matheus</td>
 						<td>R$ 1.000</td>
 					</TableRow>

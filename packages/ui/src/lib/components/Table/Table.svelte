@@ -29,6 +29,8 @@
     stickyColumns?: number;
     /** `upper` (default): micro uppercase labels. `sentence`: regular-size labels in their own case. */
     headerCase?: 'upper' | 'sentence';
+    /** `true` (default): body rows tint on hover and show a pointer. `false`: no tint and no pointer on a plain row (an interactive `TableRow onactivate` keeps its pointer and focus ring). */
+    hover?: boolean;
   }
   let {
     children,
@@ -40,6 +42,7 @@
     scroll = 'x',
     stickyColumns = 0,
     headerCase = 'upper',
+    hover = true,
   }: Props = $props();
 
   /** Cards mode: caption every cell with its column header unless the author set one. Re-runs
@@ -127,6 +130,7 @@
     class:ca-table--bare={!frame}
     class:ca-table--pinned={stickyColumns > 0 && responsive !== 'cards'}
     class:ca-table--sentence={headerCase === 'sentence'}
+    class:ca-table--no-hover={!hover}
     data-pin={stickyColumns > 0 ? Math.floor(stickyColumns) : undefined}
     data-skeleton={skeleton ? '' : undefined}
     {@attach headerLabels}
@@ -169,28 +173,32 @@
       position: sticky;
       top: 0;
       z-index: 2;
-      background: var(--ca-surface-base);
+      background: var(--ca-table-head-bg, var(--ca-surface-base));
     }
 
     .ca-table :global(th) { border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle); }
 
     .ca-table :global(th) {
-      padding: var(--ca-space-2-5) var(--ca-space-5);
+      padding: var(--ca-table-head-py, var(--ca-space-2-5)) var(--ca-table-cell-px, var(--ca-space-5));
       text-align: left;
-      font-size: var(--ca-font-size-micro);
-      font-weight: var(--ca-font-weight-semibold);
+      font-size: var(--ca-table-head-font-size, var(--ca-font-size-micro));
+      font-weight: var(--ca-table-head-weight, var(--ca-font-weight-semibold));
       color: var(--ca-text-secondary);
       text-transform: uppercase;
       letter-spacing: var(--ca-overline-tracking);
       white-space: nowrap;
-      background: var(--ca-surface-base);
+      background: var(--ca-table-head-bg, var(--ca-surface-base));
     }
+    /* A fixed header height (a cell never gets shorter than its padding + line + border). */
+    .ca-table :global(thead th) { height: var(--ca-table-head-h, auto); box-sizing: border-box; }
 
     .ca-table :global(td) {
-      padding: calc(var(--ca-space-3) + var(--ca-border-width)) var(--ca-space-5);
+      padding: var(--ca-table-cell-py, calc(var(--ca-space-3) + var(--ca-border-width))) var(--ca-table-cell-px, var(--ca-space-5));
       border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-      color: var(--ca-text-secondary);
+      color: var(--ca-table-cell-color, var(--ca-text-secondary));
     }
+    /* A fixed row height at every density: set --ca-table-row-h (and --ca-table-cell-py when it is below the default padding). */
+    .ca-table :global(tbody td) { height: var(--ca-table-row-h, auto); }
 
     .ca-table :global(tbody tr:last-child td) { border-bottom: none; }
 
@@ -200,7 +208,7 @@
     .ca-table :global(td code) { white-space: normal; overflow-wrap: normal; word-break: keep-all; }
     .ca-table :global(td:first-child code) { white-space: nowrap; }
 
-    .ca-table :global(tbody tr:hover td) {
+    .ca-table:not(.ca-table--no-hover) :global(tbody tr:hover td) {
       background: color-mix(in oklab, var(--ca-brand-main) 4%, transparent);
       cursor: pointer;
     }
@@ -223,18 +231,16 @@
 
     /* ── Compact density: rows <= 40px, tokens only ── */
     .ca-table--compact { font-size: var(--ca-font-size-body2); }
-    .ca-table--compact :global(th) { padding-block: var(--ca-space-1-5); }
+    .ca-table--compact :global(th) { padding-block: var(--ca-table-head-py, var(--ca-space-1-5)); }
     .ca-table--compact :global(td) {
-      padding: var(--ca-table-cell-py, var(--ca-space-2)) var(--ca-space-3);
+      padding: var(--ca-table-cell-py, var(--ca-space-2)) var(--ca-table-cell-px, var(--ca-space-3));
       line-height: var(--ca-line-height-snug);
     }
-    /* A fixed compact row height (#683): set --ca-table-row-h (and --ca-table-cell-py) on the table. */
-    .ca-table--compact :global(tbody td) { height: var(--ca-table-row-h, auto); }
-    .ca-table--compact :global(th) { padding-inline: var(--ca-space-3); }
+    .ca-table--compact :global(th) { padding-inline: var(--ca-table-cell-px, var(--ca-space-3)); }
 
     /* ── Sentence-case header labels ── */
     .ca-table--sentence :global(th) {
-      font-size: var(--ca-font-size-label);
+      font-size: var(--ca-table-head-font-size, var(--ca-font-size-label));
       text-transform: none;
       letter-spacing: normal;
     }
@@ -307,7 +313,7 @@
       outline-offset: -2px;
       border-radius: 0;
     }
-    .ca-table :global(tbody tr:hover) { --ca-table-row-bg: color-mix(in oklab, var(--ca-brand-main) 4%, var(--ca-surface-base)); }
+    .ca-table:not(.ca-table--no-hover) :global(tbody tr:hover) { --ca-table-row-bg: color-mix(in oklab, var(--ca-brand-main) 4%, var(--ca-surface-base)); }
     .ca-table :global(tbody tr[aria-selected='true']) { --ca-table-row-bg: color-mix(in oklab, var(--ca-brand-main) 10%, var(--ca-surface-base)); }
     .ca-table :global(tbody tr[aria-selected='true']:hover) { --ca-table-row-bg: color-mix(in oklab, var(--ca-brand-main) 14%, var(--ca-surface-base)); }
     .ca-table :global(tbody tr[aria-selected='true'] td) { background: var(--ca-table-row-bg); }
@@ -346,7 +352,7 @@
     /* Narrow slot, scroll mode: tighter gutters so more columns fit before the region scrolls. */
     @container (max-width: 599.98px) {
       .ca-table:not(.ca-table--cards) :global(th),
-      .ca-table:not(.ca-table--cards) :global(td) { padding-inline: var(--ca-space-3); }
+      .ca-table:not(.ca-table--cards) :global(td) { padding-inline: var(--ca-table-cell-px, var(--ca-space-3)); }
     }
 
     /* ── Cards mode (slot narrower than sm = 600px): a 4-column table still fits a
@@ -415,7 +421,7 @@
       }
 
       .ca-table--cards :global(tbody tr:hover td) { background: transparent; }
-      .ca-table--cards :global(tbody tr:hover) {
+      .ca-table--cards:not(.ca-table--no-hover) :global(tbody tr:hover) {
         background: color-mix(in oklab, var(--ca-brand-main) 4%, transparent);
         cursor: pointer;
       }
