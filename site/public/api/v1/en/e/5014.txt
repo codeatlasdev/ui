@@ -1,0 +1,29 @@
+<!-- @codeatlasdev/ui demo #5014 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/accordion#flush-in-a-panel -->
+Element: #5014 Flush in a panel (surfaces/accordion)
+What it shows: A flush, divided Accordion inside a padded side panel: no item boxes, one hairline between items, text on the panel gutter.
+When to use: Grouped sections inside a surface that already has its own background, border and padding.
+Spec:
+- `<Accordion variant="flush" divided type="multiple" value={['notes']}>`
+- Three `AccordionItem`s: Notes (open), Files, History
+- Wrapped in `<aside class="panel">` with `padding: 0 var(--ca-space-4)` and `max-width: 360px`
+Tags: accordion, flush, panel, divided, sidebar
+Needs: @codeatlasdev/ui@4.6.0
+Components: Accordion, AccordionItem
+Live demo: https://ui.codeatlas.com.br/docs/surfaces/accordion#flush-in-a-panel
+
+<script lang="ts">
+  import { Accordion, AccordionItem } from '@codeatlasdev/ui';
+</script>
+
+<aside class="panel">
+  <Accordion variant="flush" divided type="multiple" value={['notes']}>
+    <AccordionItem value="notes" title="Notes"><p>Items share the panel gutter.</p></AccordionItem>
+    <AccordionItem value="files" title="Files"><p>Attachments.</p></AccordionItem>
+    <AccordionItem value="history" title="History"><p>Activity log.</p></AccordionItem>
+  </Accordion>
+</aside>
+
+<style>
+  .panel { width: 100%; max-width: 360px; padding: 0 var(--ca-space-4); box-sizing: border-box; }
+  p { margin: 0; }
+</style>

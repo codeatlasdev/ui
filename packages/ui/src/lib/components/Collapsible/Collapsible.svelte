@@ -7,6 +7,10 @@
     title: string;
     open?: boolean;
     disabled?: boolean;
+    /** `boxed` (default): bordered, rounded box. `flush`: no box, inherits the parent's gutter. */
+    variant?: 'boxed' | 'flush';
+    /** With `variant="flush"`: a subtle top border separates this section from the previous one. */
+    divided?: boolean;
     onOpenChange?: (open: boolean) => void;
     class?: string;
     children?: Snippet;
@@ -16,6 +20,8 @@
     title,
     open = $bindable(false),
     disabled = false,
+    variant = 'boxed',
+    divided = false,
     onOpenChange,
     class: className = '',
     children,
@@ -47,6 +53,8 @@
 <div
   class="ca-collapsible {className}"
   data-state={dataState}
+  data-variant={variant}
+  data-divided={divided ? '' : undefined}
   data-disabled={disabled ? '' : undefined}
 >
   <button
@@ -93,7 +101,7 @@
       justify-content: space-between;
       width: 100%;
       padding: var(--ca-space-3) var(--ca-space-4);
-      background: var(--ca-glass-bg);
+      background: transparent;
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       border-radius: var(--ca-radius-md);
       cursor: pointer;
@@ -102,6 +110,12 @@
       font-family: inherit;
       text-align: left;
       transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+    }
+
+    /* The trigger is a glass surface only under the glass and frosted styles; elsewhere it is transparent. */
+    :global([data-style='glass']) :global(.ca-collapsible__trigger),
+    :global([data-style='frosted']) :global(.ca-collapsible__trigger) {
+      background: var(--ca-glass-bg);
     }
 
     :global(.ca-collapsible__trigger:hover) {
@@ -145,6 +159,26 @@
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       border-top: none;
       border-radius: 0 0 var(--ca-radius-md) var(--ca-radius-md);
+    }
+
+    /* flush: no box. Padding-inline is 0 so the title, chevron and body sit on the parent's gutter. */
+    :global(.ca-collapsible[data-variant='flush'] > .ca-collapsible__trigger) {
+      --ca-blur-role: none;
+      min-height: var(--ca-touch-target);
+      padding-inline: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+    }
+
+    :global(.ca-collapsible[data-variant='flush'] > .ca-collapsible__content > .ca-collapsible__body) {
+      padding-inline: 0;
+      border: none;
+      border-radius: 0;
+    }
+
+    :global(.ca-collapsible[data-variant='flush'][data-divided]) {
+      border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
     }
 
     @keyframes ca-slide-down {

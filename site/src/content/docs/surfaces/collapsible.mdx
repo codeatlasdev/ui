@@ -10,6 +10,8 @@ import Default from "~/demos/surfaces/collapsible/Default.svelte";
 import DefaultSrc from "~/demos/surfaces/collapsible/Default.svelte?raw";
 import Open from "~/demos/surfaces/collapsible/Open.svelte";
 import OpenSrc from "~/demos/surfaces/collapsible/Open.svelte?raw";
+import Flush from "~/demos/surfaces/collapsible/Flush.svelte";
+import FlushSrc from "~/demos/surfaces/collapsible/Flush.svelte?raw";
 
 ```svelte
 <script>
@@ -24,10 +26,21 @@ The trigger is a button with `aria-expanded`. Use [Accordion](/docs/surfaces/acc
 <Demo title="Default (closed)" src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Open by default" description={"Start expanded and bind `open` to follow the state."} src={OpenSrc}><Open client:visible /></Demo>
 
+## Variants
+
+- `boxed` (default): a bordered, rounded box. Use it on a page body or a plain background, where the section is the surface.
+- `flush`: no border, radius or background, and no inline padding, so the title, chevron and body sit on the gutter of whatever contains them. Use it inside a panel, drawer or side sheet that is already a surface; the trigger keeps a `--ca-touch-target` minimum height. Add `divided` to draw a subtle top border between consecutive sections.
+
+In every variant the trigger is transparent, and only reads `--ca-glass-bg` under the `glass` and `frosted` surface styles.
+
+<Demo title="Flush in a panel" description={"`variant=\"flush\"` with `divided`: sections align to the panel gutter instead of nesting boxes."} src={FlushSrc}><Flush client:visible /></Demo>
+
 <Props rows={[
   { name: "title", type: "string", description: "Trigger label. Required." },
   { name: "open", type: "boolean", default: "false", description: "Expanded state. Bindable." },
   { name: "disabled", type: "boolean", default: "false", description: "Prevents toggling." },
+  { name: "variant", type: "'boxed' | 'flush'", default: "'boxed'", description: "`flush` removes the box (border, radius, background, inline padding) for use inside a panel that is already a surface." },
+  { name: "divided", type: "boolean", default: "false", description: "With `flush`: draws a subtle top border on the section, to separate stacked sections." },
   { name: "onOpenChange", type: "(open: boolean) => void", default: "undefined", description: "Called when the state changes." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
   { name: "children", type: "Snippet", default: "undefined", description: "Panel content." },

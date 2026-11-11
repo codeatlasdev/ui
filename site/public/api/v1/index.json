@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 403,
+	"count": 405,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 364,
+			"component": 366,
 			"motion": 39
 		},
 		"subtype": {
@@ -20,7 +20,7 @@
 			"component/layout": 53,
 			"component/map": 1,
 			"component/navigation": 39,
-			"component/surface": 17,
+			"component/surface": 19,
 			"motion/ambient": 7,
 			"motion/basics": 1,
 			"motion/micro": 9,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 386,
+			"default": 388,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,15 +42,15 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 105,
-			"subtle": 238
+			"subtle": 240
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 33,
 			"hover": 79,
-			"keyboard": 279,
+			"keyboard": 281,
 			"none": 82,
-			"press": 236,
+			"press": 238,
 			"scroll": 22
 		},
 		"layout": {
@@ -58,33 +58,33 @@
 			"full-bleed": 6,
 			"grid": 37,
 			"overlay": 50,
-			"single-column": 136,
+			"single-column": 138,
 			"split": 15,
 			"stack": 148,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 401,
+			"both": 403,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 52,
-			"regular": 338
+			"regular": 340
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 403,
+			"css": 405,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 363,
+			"css": 365,
 			"js-light": 40
 		},
 		"component": {
-			"Accordion": 3,
-			"AccordionItem": 3,
+			"Accordion": 4,
+			"AccordionItem": 4,
 			"Alert": 3,
 			"AlertDialog": 5,
 			"AppForm": 3,
@@ -118,7 +118,7 @@
 			"CodeSnippet": 1,
 			"CodeTab": 1,
 			"CodeTabs": 1,
-			"Collapsible": 2,
+			"Collapsible": 3,
 			"ColorField": 2,
 			"Combobox": 4,
 			"CommandPalette": 2,
@@ -672,6 +672,8 @@
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Rating"],"aliases":["star rating","review stars","score input"],"related":["5006"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5018","path":"inputs/rating/Default","title":"Rating","summary":"Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.","use":"Collecting or showing a score out of five, such as service or product reviews.","tags":["rating","stars","review","score","radiogroup","half steps"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["ChipGroup"],"aliases":["toggle chips","tag picker","filter chips"],"related":["720","721"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5019","path":"inputs/chip-group/MultipleSmall","title":"Multiple, small","summary":"Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.","use":"Combinable one-tap shortcuts in a search form (niches, tags, categories) where the user picks several and unpicks any of them.","tags":["chip-group","chips","multiple","multi-select","toggle","tags","small","filter"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","IconButton","Button"],"aliases":["action bar","composer bar","overflow menu"],"related":["5001"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5020","path":"inputs/toolbar/Composer","title":"Composer bar, overflow menu","summary":"A message action bar that stays on one line: icon buttons move into a More menu when the row is narrow, and Send never leaves.","use":"A composer, reply box or list header whose controls must not wrap and push the primary action out of view on a phone.","tags":["toolbar","overflow","more-menu","action-bar","composer","icon-button","priority"],"names":[]},
-		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","Button"],"aliases":["filter strip","scrolling toolbar","chip row"],"related":["5001"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5021","path":"inputs/toolbar/Scrolling","title":"Filter strip, overflow scroll","summary":"A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.","use":"A quick-filter strip above a list where every option must stay reachable and none should be hidden in a menu.","tags":["toolbar","overflow","scroll","filter-strip","quick-filters"],"names":[]}
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","Button"],"aliases":["filter strip","scrolling toolbar","chip row"],"related":["5001"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5021","path":"inputs/toolbar/Scrolling","title":"Filter strip, overflow scroll","summary":"A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.","use":"A quick-filter strip above a list where every option must stay reachable and none should be hidden in a menu.","tags":["toolbar","overflow","scroll","filter-strip","quick-filters"],"names":[]},
+		{"kind":"component","subtype":"surface","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Collapsible"],"aliases":["flat collapsible","borderless section","panel section"],"related":["073","074","5019"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5022","path":"surfaces/collapsible/Flush","title":"Flush in a panel","summary":"Two flush Collapsibles inside a padded side panel: no box, title and body aligned to the panel gutter, a hairline between sections.","use":"Sections inside a surface that already has its own background, border and padding, such as a context side panel.","tags":["collapsible","flush","panel","divided","sidebar"],"names":[]},
+		{"kind":"component","subtype":"surface","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Accordion","AccordionItem"],"aliases":["flat accordion","borderless accordion","panel sections"],"related":["065","066","5018"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5023","path":"surfaces/accordion/Flush","title":"Flush in a panel","summary":"A flush, divided Accordion inside a padded side panel: no item boxes, one hairline between items, text on the panel gutter.","use":"Grouped sections inside a surface that already has its own background, border and padding.","tags":["accordion","flush","panel","divided","sidebar"],"names":[]}
 	]
 }

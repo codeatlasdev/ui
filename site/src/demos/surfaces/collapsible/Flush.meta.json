@@ -1,0 +1,35 @@
+{
+	"summary": "Two flush Collapsibles inside a padded side panel: no box, title and body aligned to the panel gutter, a hairline between sections.",
+	"use": "Sections inside a surface that already has its own background, border and padding, such as a context side panel.",
+	"spec": [
+		"`<Collapsible title=\"Contact\" variant=\"flush\" open>`",
+		"`<Collapsible title=\"Deal\" variant=\"flush\" divided open>` draws a top border",
+		"Wrapped in `<aside class=\"panel\">` with `padding: 0 var(--ca-space-4)` and `max-width: 360px`"
+	],
+	"tags": ["collapsible", "flush", "panel", "divided", "sidebar"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Collapsible"],
+		"aliases": ["flat collapsible", "borderless section", "panel section"],
+		"related": ["073", "074", "5019"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

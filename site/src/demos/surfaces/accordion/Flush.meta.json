@@ -1,0 +1,35 @@
+{
+	"summary": "A flush, divided Accordion inside a padded side panel: no item boxes, one hairline between items, text on the panel gutter.",
+	"use": "Grouped sections inside a surface that already has its own background, border and padding.",
+	"spec": [
+		"`<Accordion variant=\"flush\" divided type=\"multiple\" value={['notes']}>`",
+		"Three `AccordionItem`s: Notes (open), Files, History",
+		"Wrapped in `<aside class=\"panel\">` with `padding: 0 var(--ca-space-4)` and `max-width: 360px`"
+	],
+	"tags": ["accordion", "flush", "panel", "divided", "sidebar"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Accordion", "AccordionItem"],
+		"aliases": ["flat accordion", "borderless accordion", "panel sections"],
+		"related": ["065", "066", "5018"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

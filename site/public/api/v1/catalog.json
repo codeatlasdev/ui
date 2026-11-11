@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 403,
+	"count": 405,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -11,8 +11,8 @@
 		{
 			"slug": "surfaces",
 			"first": "065",
-			"last": "543",
-			"count": 17
+			"last": "5023",
+			"count": 19
 		},
 		{
 			"slug": "feedback",
@@ -35873,6 +35873,171 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-strip-overflow-scroll",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5022",
+			"group": "surfaces",
+			"page": "collapsible",
+			"variant": "Flush",
+			"slug": "flush-in-a-panel",
+			"title": "Flush in a panel",
+			"description": "",
+			"summary": "Two flush Collapsibles inside a padded side panel: no box, title and body aligned to the panel gutter, a hairline between sections.",
+			"use": "Sections inside a surface that already has its own background, border and padding, such as a context side panel.",
+			"spec": [
+				"`<Collapsible title=\"Contact\" variant=\"flush\" open>`",
+				"`<Collapsible title=\"Deal\" variant=\"flush\" divided open>` draws a top border",
+				"Wrapped in `<aside class=\"panel\">` with `padding: 0 var(--ca-space-4)` and `max-width: 360px`"
+			],
+			"tags": [
+				"collapsible",
+				"flush",
+				"panel",
+				"divided",
+				"sidebar"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "surface",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Collapsible"
+				],
+				"aliases": [
+					"flat collapsible",
+					"borderless section",
+					"panel section"
+				],
+				"related": [
+					"073",
+					"074",
+					"5019"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Collapsible"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Collapsible"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/collapsible#flush-in-a-panel",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5023",
+			"group": "surfaces",
+			"page": "accordion",
+			"variant": "Flush",
+			"slug": "flush-in-a-panel",
+			"title": "Flush in a panel",
+			"description": "",
+			"summary": "A flush, divided Accordion inside a padded side panel: no item boxes, one hairline between items, text on the panel gutter.",
+			"use": "Grouped sections inside a surface that already has its own background, border and padding.",
+			"spec": [
+				"`<Accordion variant=\"flush\" divided type=\"multiple\" value={['notes']}>`",
+				"Three `AccordionItem`s: Notes (open), Files, History",
+				"Wrapped in `<aside class=\"panel\">` with `padding: 0 var(--ca-space-4)` and `max-width: 360px`"
+			],
+			"tags": [
+				"accordion",
+				"flush",
+				"panel",
+				"divided",
+				"sidebar"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "surface",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Accordion",
+					"AccordionItem"
+				],
+				"aliases": [
+					"flat accordion",
+					"borderless accordion",
+					"panel sections"
+				],
+				"related": [
+					"065",
+					"066",
+					"5018"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Accordion",
+				"AccordionItem"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Accordion",
+						"AccordionItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/accordion#flush-in-a-panel",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]
