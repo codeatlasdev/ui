@@ -50,7 +50,7 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
 
 ## Tokens
 
-`--ca-field-gap` (label to box to hint, default `--ca-space-1`) and `--ca-field-label-leading` (default `--ca-line-height-snug`) are shared with `TextArea`; `--ca-tf-gap` and `--ca-tf-label-line-height` set this component only and win.
+`--ca-field-gap` (label to box to hint, default `--ca-space-1`) and the rest of the field family (label and hint tracking and leading, `--ca-input-letter-spacing`, `--ca-input-line-height`) are shared with every field; `--ca-tf-gap`, `--ca-tf-label-line-height` and the other `--ca-tf-*` set this component only and win. The password reveal button reads `--ca-tf-reveal-size`, `--ca-tf-reveal-radius` and `--ca-tf-reveal-icon-size`; `--ca-tf-error-ring: none` keeps the error state to the border colour. See [Field tokens](/docs/getting-started/theming/#field-tokens).
 
 <Props rows={[
   { name: "label", type: "string", description: "Label text." },

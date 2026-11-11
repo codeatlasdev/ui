@@ -31,6 +31,8 @@ The default `locale` is `pt-BR` with Monday-first weeks. The demos below pass `l
 
 An `error` is rendered with `role="alert"` and sets `aria-invalid` and `aria-describedby`. Clicking a field `label` focuses its first segment.
 
+Spacing, label and hint typography and the typed text come from the shared field tokens (`--ca-field-gap`, `--ca-field-label-leading`, `--ca-field-label-tracking`, `--ca-field-hint-leading`, `--ca-field-hint-tracking`, `--ca-input-letter-spacing`, `--ca-input-line-height`); `--ca-date-*` set the date fields only and win. See [Field tokens](/docs/getting-started/theming/#field-tokens).
+
 <Demo title="DatePicker and DateRangePicker" description="Editable segments plus a calendar popover. The range picker shows two months." src={PickersSrc}><Pickers client:visible /></Demo>
 <Demo title="DateField and TimeField" description="Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h." src={FieldsSrc}><Fields client:visible /></Demo>
 <Demo title="Calendar and RangeCalendar" description="Inline calendars. Click a start date, then an end date for the range." src={CalendarsSrc}><Calendars client:visible /></Demo>

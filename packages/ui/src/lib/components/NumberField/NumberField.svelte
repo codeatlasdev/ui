@@ -128,7 +128,7 @@
     .ca-nf {
       display: flex;
       flex-direction: column;
-      gap: var(--ca-space-1);
+      gap: var(--ca-nf-gap, var(--ca-field-gap, var(--ca-space-1)));
     }
 
     /* ── Label ─────────────────────────────────────────────────── */
@@ -136,12 +136,13 @@
       font-size: var(--ca-font-size-label);
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-primary);
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-nf-label-line-height, var(--ca-field-label-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-nf-label-tracking, var(--ca-field-label-tracking, inherit));
       user-select: none;
     }
 
     .ca-nf__req {
-      color: var(--ca-semantic-error);
+      color: var(--ca-field-required-color, var(--ca-semantic-error));
     }
 
     /* ── Wrap ──────────────────────────────────────────────────── */
@@ -219,6 +220,8 @@
       outline: none;
       text-align: center;
       font-size: var(--ca-input-font-size);
+      letter-spacing: var(--ca-nf-letter-spacing, var(--ca-input-letter-spacing, inherit));
+      line-height: var(--ca-nf-line-height, var(--ca-input-line-height, inherit));
       color: var(--ca-text-primary);
       font-family: inherit;
       /* Hide native number spinners */
@@ -234,9 +237,10 @@
     /* ── Helper / error text ───────────────────────────────────── */
     .ca-nf__hint {
       font-size: var(--ca-font-size-caption);
-      color: var(--ca-text-secondary);
+      color: var(--ca-field-hint-color, var(--ca-text-secondary));
       margin: 0;
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-nf-hint-leading, var(--ca-field-hint-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-nf-hint-tracking, var(--ca-field-hint-tracking, inherit));
     }
 
     .ca-nf__hint--error {

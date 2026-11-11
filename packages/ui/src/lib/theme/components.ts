@@ -54,6 +54,8 @@ export interface IconButtonTokens {
 	size?: { sm?: CssValue; md?: CssValue; lg?: CssValue };
 	/** `--ca-icon-btn-touch-size`: the `pointer: coarse` minimum side. @default 44px */
 	touchSize?: CssValue;
+	/** `--ca-icon-btn-letter-spacing`. @default inherited */
+	tracking?: CssValue;
 }
 
 export interface KbdTokens {
@@ -87,10 +89,38 @@ export interface AvatarTokens extends AvatarFallbackTokens {
 }
 
 export interface FieldTokens {
-	/** `--ca-<tf|ta|field>-gap`: space between label, box and hint. @default `--ca-space-1` */
+	/** `--ca-<prefix>-gap`: space between label, box and hint. @default `--ca-space-1` */
 	gap?: CssValue;
-	/** `--ca-<tf|ta|field>-label-line-height`. @default `--ca-line-height-snug` */
+	/** `--ca-<prefix>-label-line-height` (`--ca-field-label-leading` on `components.field`). @default `--ca-line-height-snug` */
 	labelLeading?: CssValue;
+	/** `--ca-<prefix>-label-tracking`. @default inherited */
+	labelTracking?: CssValue;
+	/** `--ca-<prefix>-hint-leading`: line-height of the hint and error text. @default `--ca-line-height-snug` */
+	hintLeading?: CssValue;
+	/** `--ca-<prefix>-hint-tracking`. @default inherited */
+	hintTracking?: CssValue;
+	/** `--ca-<prefix>-letter-spacing` (`--ca-input-letter-spacing` on `components.field`): the text typed in the control. @default `normal` */
+	letterSpacing?: CssValue;
+	/** `--ca-<prefix>-line-height` (`--ca-input-line-height` on `components.field`): the text typed in the control. @default 1 */
+	lineHeight?: CssValue;
+}
+
+export interface TextFieldTokens extends FieldTokens {
+	/** `--ca-tf-reveal-size`: the password reveal button, square. @default `--ca-space-7` */
+	revealSize?: CssValue;
+	/** `--ca-tf-reveal-radius`. @default `--ca-radius-sm` */
+	revealRadius?: CssValue;
+	/** `--ca-tf-reveal-icon-size`: the eye icon. @default 16px (14px for `size="sm"`) */
+	revealIconSize?: CssValue;
+	/** `--ca-tf-error-ring`: `none` leaves the error state to the border colour. @default a 2px ring in the error colour at 18% */
+	errorRing?: CssValue;
+}
+
+export interface ProgressTokens {
+	/** `--ca-progress-track`. @default `--ca-outline-default` */
+	track?: CssValue;
+	/** `--ca-progress-bar`. @default `--ca-brand-main` */
+	bar?: CssValue;
 }
 
 export interface TextAreaTokens extends FieldTokens {
@@ -139,10 +169,14 @@ export interface ComponentTokens {
 	iconButton?: IconButtonTokens;
 	kbd?: KbdTokens;
 	avatar?: AvatarTokens;
-	/** `--ca-field-*`: shared by `TextField` and `TextArea`; the per-component keys win. */
+	/** `--ca-field-*`: shared by TextField, TextArea, Select, Combobox, NumberField and the date fields; the per-component keys win. */
 	field?: FieldTokens;
-	textField?: FieldTokens;
+	textField?: TextFieldTokens;
 	textArea?: TextAreaTokens;
+	select?: FieldTokens;
+	combobox?: FieldTokens;
+	numberField?: FieldTokens;
+	progress?: ProgressTokens;
 	card?: CardTokens;
 	segmented?: SegmentedTokens;
 	emptyState?: EmptyStateTokens;
@@ -152,6 +186,21 @@ const SIZES = ["sm", "md", "lg"] as const;
 
 function put(out: Record<string, string>, name: string, v: CssValue | undefined): void {
 	if (v !== undefined) out[name] = String(v);
+}
+
+/**
+ * One field family. `--ca-field-*` is the shared layer; the text typed in the control keeps its
+ * historical `--ca-input-*` names there, and `--ca-<prefix>-*` everywhere else.
+ */
+function fieldTokens(out: Record<string, string>, prefix: string, f: FieldTokens): void {
+	const shared = prefix === "--ca-field";
+	put(out, `${prefix}-gap`, f.gap);
+	put(out, `${prefix}-${shared ? "label-leading" : "label-line-height"}`, f.labelLeading);
+	put(out, `${prefix}-label-tracking`, f.labelTracking);
+	put(out, `${prefix}-hint-leading`, f.hintLeading);
+	put(out, `${prefix}-hint-tracking`, f.hintTracking);
+	put(out, shared ? "--ca-input-letter-spacing" : `${prefix}-letter-spacing`, f.letterSpacing);
+	put(out, shared ? "--ca-input-line-height" : `${prefix}-line-height`, f.lineHeight);
 }
 
 function buttonSize(out: Record<string, string>, prefix: string, t: ButtonSizeTokens): void {
@@ -181,6 +230,7 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 	if (i) {
 		put(out, "--ca-icon-btn-font-weight", i.weight);
 		put(out, "--ca-icon-btn-touch-size", i.touchSize);
+		put(out, "--ca-icon-btn-letter-spacing", i.tracking);
 		for (const s of SIZES) put(out, `--ca-icon-btn-size-${s}`, i.size?.[s]);
 	}
 	const k = c.kbd;
@@ -204,15 +254,20 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		["--ca-field", c.field],
 		["--ca-tf", c.textField],
 		["--ca-ta", c.textArea],
-	] as const) {
-		if (!f) continue;
-		put(out, `${prefix}-gap`, f.gap);
-		put(
-			out,
-			`${prefix}-${prefix === "--ca-field" ? "label-leading" : "label-line-height"}`,
-			f.labelLeading
-		);
+		["--ca-sel", c.select],
+		["--ca-cb", c.combobox],
+		["--ca-nf", c.numberField],
+	] as const)
+		if (f) fieldTokens(out, prefix, f);
+	const tf = c.textField;
+	if (tf) {
+		put(out, "--ca-tf-reveal-size", tf.revealSize);
+		put(out, "--ca-tf-reveal-radius", tf.revealRadius);
+		put(out, "--ca-tf-reveal-icon-size", tf.revealIconSize);
+		put(out, "--ca-tf-error-ring", tf.errorRing);
 	}
+	put(out, "--ca-progress-track", c.progress?.track);
+	put(out, "--ca-progress-bar", c.progress?.bar);
 	put(out, "--ca-ta-min-height", c.textArea?.minHeight);
 	const card = c.card;
 	if (card) {

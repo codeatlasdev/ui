@@ -207,11 +207,12 @@
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-primary);
       line-height: var(--ca-tf-label-line-height, var(--ca-field-label-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-tf-label-tracking, var(--ca-field-label-tracking, inherit));
       user-select: none;
     }
 
     .ca-tf__req {
-      color: var(--ca-semantic-error);
+      color: var(--ca-field-required-color, var(--ca-semantic-error));
     }
 
     /* ── Input wrapper ─────────────────────────────────────────── */
@@ -238,7 +239,7 @@
 
     .ca-tf__wrap--error {
       border-color: var(--ca-semantic-error);
-      box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
+      box-shadow: var(--ca-tf-error-ring, 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent));
     }
 
     .ca-tf--disabled .ca-tf__wrap {
@@ -258,7 +259,8 @@
       font-size: var(--ca-input-font-size);
       color: var(--ca-text-primary);
       padding: 0;
-      line-height: 1;
+      line-height: var(--ca-tf-line-height, var(--ca-input-line-height, 1));
+      letter-spacing: var(--ca-tf-letter-spacing, var(--ca-input-letter-spacing, normal));
       /* Remove browser autofill background */
       -webkit-text-fill-color: var(--ca-text-primary);
     }
@@ -299,16 +301,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: var(--ca-space-7);
-      height: var(--ca-space-7);
+      width: var(--ca-tf-reveal-size, var(--ca-space-7));
+      height: var(--ca-tf-reveal-size, var(--ca-space-7));
       margin-inline-end: calc(var(--ca-space-1) * -1);
       padding: 0;
       border: none;
-      border-radius: var(--ca-radius-sm);
+      border-radius: var(--ca-tf-reveal-radius, var(--ca-radius-sm));
       background: transparent;
       color: var(--ca-text-hint);
       cursor: pointer;
       transition: color var(--ca-duration-fast) var(--ca-ease-standard);
+    }
+    .ca-tf__reveal :global(svg) {
+      width: var(--ca-tf-reveal-icon-size, auto);
+      height: var(--ca-tf-reveal-icon-size, auto);
     }
     .ca-tf__reveal:hover { color: var(--ca-text-primary); }
     .ca-tf__reveal:focus-visible {
@@ -353,13 +359,16 @@
     }
 
     .ca-tf__below { font-size: var(--ca-font-size-caption); }
+    /* A `below` snippet that renders nothing (a link hidden while there is an error) takes no gap. */
+    .ca-tf__below:empty { display: none; }
 
     /* ── Helper / error text ───────────────────────────────────── */
     .ca-tf__hint {
       font-size: var(--ca-font-size-caption);
-      color: var(--ca-text-secondary);
+      color: var(--ca-field-hint-color, var(--ca-text-secondary));
       margin: 0;
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-tf-hint-leading, var(--ca-field-hint-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-tf-hint-tracking, var(--ca-field-hint-tracking, inherit));
     }
 
     .ca-tf__hint--error {

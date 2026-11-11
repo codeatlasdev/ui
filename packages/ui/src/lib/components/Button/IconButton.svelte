@@ -87,6 +87,7 @@
       cursor: pointer;
       flex-shrink: 0;
       font-weight: var(--ca-icon-btn-font-weight, inherit);
+      letter-spacing: var(--ca-icon-btn-letter-spacing, inherit);
       transition:
         background var(--ca-duration-fast) var(--ca-ease-standard),
         color var(--ca-duration-fast) var(--ca-ease-standard),

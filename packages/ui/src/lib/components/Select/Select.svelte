@@ -222,7 +222,7 @@
     .ca-sel {
       display: flex;
       flex-direction: column;
-      gap: var(--ca-space-1);
+      gap: var(--ca-sel-gap, var(--ca-field-gap, var(--ca-space-1)));
       width: 100%;
     }
 
@@ -231,12 +231,13 @@
       font-size: var(--ca-font-size-label);
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-primary);
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-sel-label-line-height, var(--ca-field-label-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-sel-label-tracking, var(--ca-field-label-tracking, inherit));
       user-select: none;
     }
 
     .ca-sel__req {
-      color: var(--ca-semantic-error);
+      color: var(--ca-field-required-color, var(--ca-semantic-error));
     }
 
     /* ── Trigger ───────────────────────────────────────────────── */
@@ -254,6 +255,8 @@
       cursor: pointer;
       font-family: var(--ca-font-sans);
       font-size: var(--ca-input-font-size);
+      letter-spacing: var(--ca-sel-letter-spacing, var(--ca-input-letter-spacing, inherit));
+      line-height: var(--ca-sel-line-height, var(--ca-input-line-height, inherit));
       color: var(--ca-text-primary);
       width: 100%;
       outline: none;
@@ -368,9 +371,10 @@
     /* ── Hint / error ──────────────────────────────────────────── */
     .ca-sel__hint {
       font-size: var(--ca-font-size-caption);
-      color: var(--ca-text-secondary);
+      color: var(--ca-field-hint-color, var(--ca-text-secondary));
       margin: 0;
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-sel-hint-leading, var(--ca-field-hint-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-sel-hint-tracking, var(--ca-field-hint-tracking, inherit));
     }
 
     .ca-sel__hint--error {

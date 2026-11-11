@@ -338,7 +338,7 @@ A component token is a custom property a component reads before its own default.
 
 - `--ca-<component>-<property>`: the component, every size and part (`--ca-btn-font-weight`).
 - `--ca-<component>-<size or part>-<property>`: one size or part; it wins over the form above (`--ca-btn-lg-font-weight`, `--ca-icon-btn-size-sm`).
-- `<component>` is the class stem (`btn`, `icon-btn`, `kbd`, `avatar`, `tf`, `ta`, `card`, `seg`, `empty`); a token shared by a family uses its name (`--ca-field-gap` for `TextField` and `TextArea`). `<property>` is spelled like the CSS it drives: `font-weight`, `line-height`, `gap`, `padding-x`, `size`.
+- `<component>` is the class stem (`btn`, `icon-btn`, `kbd`, `avatar`, `tf`, `ta`, `card`, `seg`, `empty`); a token shared by a family uses its name (`--ca-field-gap` for every field: `TextField`, `TextArea`, `Select`, `Combobox`, `NumberField` and the date fields). `<property>` is spelled like the CSS it drives: `font-weight`, `line-height`, `gap`, `padding-x`, `size`.
 
 Values are plain CSS. **Unset, a component draws what it always drew.** Set them on `:root`, on a wrapper (no `:global(.ca-*)`) or in the theme, where `mergeTheme` merges per block and size:
 
@@ -349,7 +349,10 @@ export const theme = {
     iconButton: { size: { sm: "36px" } },
     kbd: { size: "var(--ca-space-5)" },
     avatar: { fallbackSize: "0.75rem" },
-    field: { gap: "var(--ca-space-1-5)" },        // TextField and TextArea
+    field: { gap: "var(--ca-space-2)", labelLeading: 1.25, letterSpacing: "-0.006em" }, // every field
+    select: { gap: "6px" },                        // one field family wins over `field`
+    textField: { revealSize: "44px", errorRing: "none" },
+    progress: { track: "var(--ca-surface-overlay)", bar: "var(--ca-brand-fill)" },
     textArea: { minHeight: "var(--ca-space-16)" }, // the visible box, border included
     card: { border: "1px solid var(--ca-outline-subtle)", shadow: "none" },
     segmented: { itemPaddingX: "var(--ca-space-3)" },
@@ -357,6 +360,23 @@ export const theme = {
   },
 };
 ```
+
+### Field tokens
+
+Every field (`TextField`, `TextArea`, `Select`, `Combobox`, `NumberField`, `DateField`, `TimeField`, `DatePicker`, `DateRangePicker`) reads one chain: the component's own token, then the shared `--ca-field-*` one, then the default. Prefixes: `tf`, `ta`, `sel`, `cb`, `nf`, `date`.
+
+| Token (shared name) | Drives | Default |
+|---|---|---|
+| `--ca-<prefix>-gap` (`--ca-field-gap`) | label, box and hint spacing | `--ca-space-1` |
+| `--ca-<prefix>-label-line-height` (`--ca-field-label-leading`) | label line box | `--ca-line-height-snug` |
+| `--ca-<prefix>-label-tracking` (`--ca-field-label-tracking`) | label letter-spacing | inherited |
+| `--ca-<prefix>-hint-leading` (`--ca-field-hint-leading`) | hint and error line box | `--ca-line-height-snug` |
+| `--ca-<prefix>-hint-tracking` (`--ca-field-hint-tracking`) | hint and error letter-spacing | inherited |
+| `--ca-<prefix>-letter-spacing` (`--ca-input-letter-spacing`) | typed text letter-spacing | `normal` in TextField, inherited elsewhere |
+| `--ca-<prefix>-line-height` (`--ca-input-line-height`) | typed text line-height | `1` in TextField, inherited elsewhere |
+| `--ca-field-hint-color`, `--ca-field-required-color` | hint text, required asterisk | `--ca-text-secondary`, `--ca-semantic-error` |
+
+Set `--ca-field-gap` once on a form wrapper and every field in it follows; `--ca-sel-gap` then overrides Select alone. `components.field` is the theme-level form of the shared names, and `select`, `combobox`, `numberField`, `textField`, `textArea` take the same keys (`gap`, `labelLeading`, `labelTracking`, `hintLeading`, `hintTracking`, `letterSpacing`, `lineHeight`). `components.textField` also takes `revealSize`, `revealRadius`, `revealIconSize` and `errorRing` (`none` leaves the error state to the border colour); `components.progress` takes `track` and `bar`; `components.iconButton.tracking` sets `--ca-icon-btn-letter-spacing`. A `below` snippet that renders nothing takes no space.
 
 The 44px touch targets stay unless you set `--ca-btn-touch-height` or `--ca-icon-btn-touch-size`. Each component page lists its tokens under "Tokens"; `get_component` returns them as `tokens`.
 
