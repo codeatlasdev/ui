@@ -4113,6 +4113,7 @@ Parts: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell__
 | `estimateSize?` | `number` | `56` | Height in px assumed for a row until it has been measured. |
 | `overscan?` | `number` | `6` | Rows rendered beyond the viewport on each side. |
 | `height?` | `string` | `'24rem'` | Height of the scrolling area (any CSS length). |
+| `bordered?` | `boolean` | `false` | Draw a border and radius around the scroller. Off by default: the surrounding screen frames the list. |
 | `label` | `string` |  | Accessible name of the scrolling region (required). |
 | `follow?` | `boolean` | `true` | Stay pinned to the newest row while the user is at the bottom. |
 | `hasMore?` | `boolean` | `false` | Older rows exist. Shows the "Load older" button and enables scroll-triggered loading. |
@@ -4123,7 +4124,7 @@ Parts: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell__
 
 Snippets: `item` (`Snippet<[T, number]>`): One row. Rendered inside an `<li>`.; `empty`: Shown while there are no rows.
 
-Parts: `ca-virtual-list` `ca-virtual-list__empty` `ca-virtual-list__head` `ca-virtual-list__item` `ca-virtual-list__list` `ca-virtual-list__loading` `ca-virtual-list__older` `ca-virtual-list__scroller`
+Parts: `ca-virtual-list` `ca-virtual-list--bordered` `ca-virtual-list__empty` `ca-virtual-list__head` `ca-virtual-list__item` `ca-virtual-list__list` `ca-virtual-list__loading` `ca-virtual-list__older` `ca-virtual-list__scroller`
 
 Variables: `--ca-virtual-list-h`
 
