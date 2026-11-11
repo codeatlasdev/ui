@@ -2685,12 +2685,18 @@ Variables: `--ca-nav-color`
 | `value?` | `string` | `''` | The password being typed. It is only read to compute the score and never stored or sent. |
 | `score?` | `(value: string) => PasswordScore` | `passwordScore` | Replaces the built-in `passwordScore`. Return 0 (empty) to 3 (strong). |
 | `labels?` | `Partial<Record<'empty' \| 'weak' \| 'fair' \| 'strong', string>>` |  | Per-instance label text; unset keys use the i18n catalog. |
+| `layout?` | `'stacked' \| 'inline'` | `'stacked'` | `inline`: the bar fills the row and the label sits to its right. Default `stacked` (bar above label). |
+| `hideWhenEmpty?` | `boolean` | `false` | Shows nothing while the score is 0. The live region stays mounted (visually collapsed, still in the accessibility tree), so the first strength after typing starts is announced. |
 | `id?` | `string` |  | Set it to point a field's `aria-describedby` at the meter. |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-pwstrength` `ca-pwstrength__bar` `ca-pwstrength__label` `ca-pwstrength__seg`
 
-Data attributes: `data-on`, `data-score` (`1` `2` `3`)
+Variables: `--ca-pwstrength-empty-bg` `--ca-pwstrength-gap` `--ca-pwstrength-label-leading` `--ca-pwstrength-label-tracking`
+
+Data attributes: `data-layout` (`inline`), `data-on`, `data-score` (`1` `2` `3`)
+
+Tokens: `--ca-pwstrength-empty-bg` `--ca-pwstrength-gap` `--ca-pwstrength-label-leading` `--ca-pwstrength-label-tracking`
 
 ## PhoneField
 
@@ -5253,7 +5259,7 @@ Types:
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5441,6 +5447,7 @@ Types:
 | `card?` | `CardTokens` |  |
 | `segmented?` | `SegmentedTokens` |  |
 | `emptyState?` | `EmptyStateTokens` |  |
+| `passwordStrength?` | `PasswordStrengthTokens` |  |
 
 #### DateRange
 
