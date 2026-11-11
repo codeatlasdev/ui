@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 395,
+	"count": 394,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5001",
-			"count": 90
+			"last": "5004",
+			"count": 91
 		},
 		{
 			"slug": "surfaces",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "5005",
-			"count": 52
+			"last": "5003",
+			"count": 50
 		},
 		{
 			"slug": "charts",
@@ -35025,42 +35025,41 @@
 		},
 		{
 			"id": "5004",
-			"group": "layout",
-			"page": "page-shell",
-			"variant": "IconCount",
-			"slug": "icon-tile-count-and-title-extra",
-			"title": "Icon tile, count and title extra",
-			"description": "icon, count and a titleExtra badge in the PageShell header.",
-			"summary": "A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.",
-			"use": "Product screens that name the list and how many records it holds (\"Deals, 128\", \"Tasks, 12\") without replacing the PageShell header.",
+			"group": "inputs",
+			"page": "toggle",
+			"variant": "Default",
+			"slug": "icon-only-ghost-small-and-disabled",
+			"title": "Icon-only, ghost, small and disabled",
+			"description": "`bind:pressed` holds the state; `onchange` receives the new value.",
+			"summary": "Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.",
+			"use": "A single on/off control such as bold, pin or mute that is not part of a group.",
 			"spec": [
-				"Frame is a flush full `Card` holding the `PageShell`",
-				"`<PageShell title=\"Deals\" description=\"Sales funnel\" icon={Handshake} count={128}>`",
-				"`{#snippet titleExtra()}` renders `<Badge tone=\"warning\" subtle>3 overdue</Badge>`; `{#snippet actions()}` renders a small filled `New deal` button",
-				"Body is a `Card full` with a placeholder line"
+				"Two outlined icon-only toggles with `aria-label=\"Bold\"` and `aria-label=\"Italic\"`, Bold starts pressed",
+				"A ghost toggle with an icon and the label `Pin`",
+				"A `size=\"sm\"` toggle and a `disabled` toggle"
 			],
 			"tags": [
-				"page-shell",
-				"icon",
-				"count",
-				"badge",
-				"title",
-				"header",
-				"layout"
+				"toggle",
+				"pressed",
+				"aria-pressed",
+				"button",
+				"icon-only",
+				"ghost"
 			],
 			"shape": "wide",
 			"index": {
 				"kind": "component",
-				"subtype": "layout",
+				"subtype": "input",
 				"industry": [
-					"saas"
+					"general"
 				],
 				"style": [
 					"default"
 				],
-				"motion": "none",
+				"motion": "subtle",
 				"interaction": [
-					"none"
+					"press",
+					"keyboard"
 				],
 				"layout": "stack",
 				"colorMode": "both",
@@ -35070,24 +35069,19 @@
 				],
 				"cost": "css",
 				"components": [
-					"PageShell",
-					"Card",
-					"Badge",
-					"Button"
+					"Toggle"
 				],
 				"aliases": [
-					"page header",
-					"title with count",
-					"icon tile header"
+					"toggle button",
+					"pressed button",
+					"on off button"
 				],
 				"related": [
-					"185",
-					"187",
-					"600"
+					"060"
 				],
 				"a11y": {
 					"reducedMotion": true,
-					"keyboard": false
+					"keyboard": true
 				},
 				"added": "2026-11-11",
 				"review": {
@@ -35095,107 +35089,18 @@
 				}
 			},
 			"components": [
-				"PageShell",
-				"Card",
-				"Badge",
-				"Button"
+				"Toggle"
 			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"PageShell",
-						"Card",
-						"Badge",
-						"Button"
+						"Toggle"
 					]
 				}
 			],
-			"interactive": false,
-			"demo": "https://ui.codeatlas.com.br/docs/layout/page-shell#icon-tile-count-and-title-extra",
-			"needs": "@codeatlasdev/ui@4.6.0"
-		},
-		{
-			"id": "5005",
-			"group": "layout",
-			"page": "kpi-card",
-			"variant": "IconTile",
-			"slug": "icon-tile",
-			"title": "Icon tile",
-			"description": "",
-			"summary": "Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.",
-			"use": "Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.",
-			"spec": [
-				"`<KpiGrid>` with 4 `KpiCard` items, each with `iconStyle=\"tile\"`",
-				"`<KpiCard title=\"Revenue\" value=\"$48,200\" trend={12.4} icon={DollarSign} iconStyle=\"tile\" />` (brand tone by default)",
-				"Active users uses `tone=\"success\"`; Open incidents `tone=\"warning\"` with `trendTone=\"positive-down\"`; Error rate `tone=\"error\"` with `trendTone=\"positive-down\"`"
-			],
-			"tags": [
-				"kpi-card",
-				"icon",
-				"tile",
-				"tone",
-				"metrics",
-				"dashboard"
-			],
-			"shape": "wide",
-			"index": {
-				"kind": "component",
-				"subtype": "layout",
-				"industry": [
-					"saas",
-					"fintech"
-				],
-				"style": [
-					"default"
-				],
-				"motion": "none",
-				"interaction": [
-					"none"
-				],
-				"layout": "grid",
-				"colorMode": "both",
-				"density": "regular",
-				"tech": [
-					"css"
-				],
-				"cost": "css",
-				"components": [
-					"KpiCard",
-					"KpiGrid"
-				],
-				"aliases": [
-					"stat card with icon",
-					"icon tile metric"
-				],
-				"related": [
-					"175",
-					"985"
-				],
-				"a11y": {
-					"reducedMotion": true,
-					"keyboard": false
-				},
-				"added": "2026-11-11",
-				"review": {
-					"industry": "pending"
-				}
-			},
-			"components": [
-				"KpiCard",
-				"KpiGrid"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"KpiCard",
-						"KpiGrid"
-					]
-				}
-			],
-			"interactive": false,
-			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#icon-tile",
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/toggle#icon-only-ghost-small-and-disabled",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

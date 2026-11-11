@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 395,
+	"count": 394,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 356,
+			"component": 355,
 			"motion": 39
 		},
 		"subtype": {
@@ -16,8 +16,8 @@
 			"component/display": 70,
 			"component/feedback": 38,
 			"component/foundation": 19,
-			"component/input": 90,
-			"component/layout": 52,
+			"component/input": 91,
+			"component/layout": 50,
 			"component/map": 1,
 			"component/navigation": 39,
 			"component/surface": 17,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 378,
+			"default": 377,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -41,22 +41,22 @@
 		"motion": {
 			"expressive": 51,
 			"immersive": 9,
-			"none": 103,
-			"subtle": 232
+			"none": 101,
+			"subtle": 233
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 33,
 			"hover": 79,
-			"keyboard": 273,
-			"none": 80,
-			"press": 232,
+			"keyboard": 274,
+			"none": 78,
+			"press": 233,
 			"scroll": 22
 		},
 		"layout": {
 			"carousel": 4,
 			"full-bleed": 6,
-			"grid": 37,
+			"grid": 36,
 			"overlay": 50,
 			"single-column": 132,
 			"split": 14,
@@ -64,22 +64,22 @@
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 393,
+			"both": 392,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 49,
-			"regular": 333
+			"regular": 332
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 395,
+			"css": 394,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 355,
+			"css": 354,
 			"js-light": 40
 		},
 		"component": {
@@ -96,15 +96,15 @@
 			"AuthCard": 2,
 			"AuthLayout": 1,
 			"Avatar": 17,
-			"Badge": 5,
+			"Badge": 4,
 			"BarChart": 5,
 			"Box": 2,
 			"Breadcrumb": 2,
-			"Button": 110,
+			"Button": 109,
 			"ButtonGroup": 2,
 			"Calendar": 2,
 			"Callout": 1,
-			"Card": 68,
+			"Card": 67,
 			"CardGrid": 1,
 			"Carousel": 3,
 			"CarouselItem": 3,
@@ -167,8 +167,8 @@
 			"InstallPrompt": 2,
 			"Kanban": 2,
 			"Kbd": 6,
-			"KpiCard": 13,
-			"KpiGrid": 12,
+			"KpiCard": 12,
+			"KpiGrid": 11,
 			"Lightbox": 2,
 			"LineChart": 5,
 			"LinkCard": 1,
@@ -196,7 +196,7 @@
 			"NotificationBell": 2,
 			"NumberField": 4,
 			"PageFrame": 1,
-			"PageShell": 10,
+			"PageShell": 9,
 			"Pagination": 3,
 			"PasswordStrength": 2,
 			"PhoneField": 1,
@@ -258,6 +258,7 @@
 			"TimeField": 2,
 			"Timeline": 2,
 			"Toaster": 4,
+			"Toggle": 1,
 			"ToggleGroup": 2,
 			"Toolbar": 1,
 			"Tooltip": 4,
@@ -660,7 +661,6 @@
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","TextField","Select","NumberField","Button"],"aliases":["filter bar","action bar","search bar"],"related":["980","982","992"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"5001","path":"inputs/toolbar/Filters","title":"Filter bar","summary":"A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.","use":"A filter bar above a list or table where the fields have their own widths instead of stretching to the row.","tags":["toolbar","filter-bar","text-field","select","number-field","width","wrap","role-toolbar"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["EmptyState","MasterDetail"],"aliases":["split view","list and detail","inbox layout"],"related":["186"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"5002","path":"layout/master-detail/Inbox","title":"Inbox","summary":"A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.","use":"Inboxes and any list where a row opens a detail: two columns when wide, a full-screen pane with Back on a phone.","tags":["master-detail","inbox","conversation","list","responsive","split"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"airy","tech":["css"],"cost":"css","components":["CenteredPage","AuthCard","Button","SegmentedControl","Stack"],"aliases":["standalone page","invite page","consent screen","interstitial","centred card page"],"related":["172","781"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5003","path":"layout/centered-page/InviteConsent","title":"Invite and consent","summary":"A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.","use":"Transactional pages outside the app shell: accepting an invite, granting consent, a magic-link landing or a notice.","tags":["centered-page","invite","oauth-consent","notice","landmark","safe-area"],"names":[]},
-		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["PageShell","Card","Badge","Button"],"aliases":["page header","title with count","icon tile header"],"related":["185","187","600"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5004","path":"layout/page-shell/IconCount","title":"Icon tile, count and title extra","summary":"A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.","use":"Product screens that name the list and how many records it holds (\"Deals, 128\", \"Tasks, 12\") without replacing the PageShell header.","tags":["page-shell","icon","count","badge","title","header","layout"],"names":[]},
-		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["KpiCard","KpiGrid"],"aliases":["stat card with icon","icon tile metric"],"related":["175","985"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5005","path":"layout/kpi-card/IconTile","title":"Icon tile","summary":"Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.","use":"Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.","tags":["kpi-card","icon","tile","tone","metrics","dashboard"],"names":[]}
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toggle"],"aliases":["toggle button","pressed button","on off button"],"related":["060"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5004","path":"inputs/toggle/Default","title":"Icon-only, ghost, small and disabled","summary":"Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.","use":"A single on/off control such as bold, pin or mute that is not part of a group.","tags":["toggle","pressed","aria-pressed","button","icon-only","ghost"],"names":[]}
 	]
 }

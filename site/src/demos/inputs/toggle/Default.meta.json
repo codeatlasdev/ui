@@ -1,0 +1,35 @@
+{
+	"summary": "Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.",
+	"use": "A single on/off control such as bold, pin or mute that is not part of a group.",
+	"spec": [
+		"Two outlined icon-only toggles with `aria-label=\"Bold\"` and `aria-label=\"Italic\"`, Bold starts pressed",
+		"A ghost toggle with an icon and the label `Pin`",
+		"A `size=\"sm\"` toggle and a `disabled` toggle"
+	],
+	"tags": ["toggle", "pressed", "aria-pressed", "button", "icon-only", "ghost"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Toggle"],
+		"aliases": ["toggle button", "pressed button", "on off button"],
+		"related": ["060"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}
