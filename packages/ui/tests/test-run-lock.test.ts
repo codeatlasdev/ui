@@ -63,8 +63,9 @@ describe("test-run lock", () => {
 			if (done) break;
 			err += new TextDecoder().decode(value);
 		}
-		expect(err).toContain(`pid ${first.pid}`);
-		expect(second.exitCode).toBeNull(); // still waiting, the command has not run
+		// Under load this has failed without a trace (#952): the messages carry what the runs printed.
+		expect(err, `second run stderr:\n${err}`).toContain(`pid ${first.pid}`);
+		expect(second.exitCode, `second run stderr:\n${err}`).toBeNull(); // still waiting
 
 		writeFileSync(marker, "");
 		expect(await first.exited).toBe(0);
@@ -84,8 +85,10 @@ describe("test-run lock", () => {
 			JSON.stringify({ pid: dead.pid, started: new Date().toISOString(), cwd: "/x", cmd: ["gone"] })
 		);
 		const p = run(dir, ["sh", "-c", "echo took-over"]);
-		expect(await p.exited).toBe(0);
-		expect(await new Response(p.stdout).text()).toContain("took-over");
+		const code = await p.exited;
+		const [out, err] = [await new Response(p.stdout).text(), await new Response(p.stderr).text()];
+		expect(code, `exit ${code}\nstdout:\n${out}\nstderr:\n${err}`).toBe(0);
+		expect(out, `stderr:\n${err}`).toContain("took-over");
 	}, 20_000);
 
 	it("--status reports the holder, --reap never waits for it", async () => {
@@ -100,7 +103,9 @@ describe("test-run lock", () => {
 
 		const status = run(dir, ["--status"]);
 		await status.exited;
-		expect(await new Response(status.stdout).text()).toContain(`test lock: pid ${first.pid}`);
+		const said = await new Response(status.stdout).text();
+		const why = `--status stdout:\n${said}\nstderr:\n${await new Response(status.stderr).text()}`;
+		expect(said, why).toContain(`test lock: pid ${first.pid}`);
 		const reap = run(dir, ["--reap"]);
 		expect(await reap.exited).toBe(0);
 
