@@ -27,8 +27,8 @@ const text = { unread: (n: number) => `${n} unread`, fresh: "New" };
 
 describe("NavModule.fullLabel (#715)", () => {
 	it("moduleName keeps the visible label and adds the full one, then the badge", () => {
-		expect(moduleName(modules[0], text)).toBe("CRM (Customer relationships)");
-		expect(moduleName(modules[1], text)).toBe("Home (Overview), 3 unread");
+		expect(moduleName(modules[0], text)).toBe("CRM, Customer relationships");
+		expect(moduleName(modules[1], text)).toBe("Home, 3 unread, Overview");
 		// Without fullLabel nothing changes.
 		expect(moduleName(modules[2], text)).toBe("Plain");
 	});
@@ -40,11 +40,11 @@ describe("NavModule.fullLabel (#715)", () => {
 			onSelect: () => {},
 			labels: true,
 		});
-		const settings = screen.getByRole("button", { name: "CRM (Customer relationships)" });
+		const settings = screen.getByRole("button", { name: "CRM, Customer relationships" });
 		await expect.element(settings).toHaveAttribute("title", "Customer relationships");
 		await expect.element(settings).toHaveTextContent("CRM");
 		await expect
-			.element(screen.getByRole("button", { name: "Home (Overview), 3 unread" }))
+			.element(screen.getByRole("button", { name: "Home, 3 unread, Overview" }))
 			.toBeVisible();
 		const plain = screen.getByRole("button", { name: "Plain" });
 		await expect.element(plain).toHaveAttribute("title", "Plain");
@@ -54,10 +54,10 @@ describe("NavModule.fullLabel (#715)", () => {
 	it("the bottom-nav tab name contains the visible text", async () => {
 		await page.viewport(390, 844);
 		const screen = await render(BottomNav, { modules, activeIndex: 0, onSelect: () => {} });
-		const tab = screen.getByRole("button", { name: "CRM (Customer relationships)" });
+		const tab = screen.getByRole("button", { name: "CRM, Customer relationships" });
 		await expect.element(tab).toHaveTextContent("CRM");
 		await expect
-			.element(screen.getByRole("button", { name: "Home (Overview), 3 unread" }))
+			.element(screen.getByRole("button", { name: "Home, 3 unread, Overview" }))
 			.toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -74,10 +74,10 @@ describe("NavModule.fullLabel (#715)", () => {
 		});
 		void screen;
 		await expect
-			.element(page.getByRole("button", { name: "CRM (Customer relationships)" }))
+			.element(page.getByRole("button", { name: "CRM, Customer relationships" }))
 			.toHaveTextContent("CRM");
 		await expect
-			.element(page.getByRole("button", { name: "Home (Overview), 3 unread" }))
+			.element(page.getByRole("button", { name: "Home, 3 unread, Overview" }))
 			.toBeVisible();
 	});
 });
