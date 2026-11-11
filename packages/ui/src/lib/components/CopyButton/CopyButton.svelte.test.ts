@@ -82,3 +82,17 @@ describe("CopyButton", () => {
 		expect(iconName(btn.element())).toContain("lucide-copy");
 	});
 });
+
+describe("CopyButton tone (#710)", () => {
+	it("tone=neutral draws the neutral look of Button", async () => {
+		for (const variant of ["outlined", "ghost"] as const) {
+			const screen = await render(CopyButton, { value: "x", variant, tone: "neutral" });
+			expect(screen.container.querySelector("button")?.classList).toContain("ca-btn--neutral");
+		}
+	});
+
+	it("keeps the brand look by default", async () => {
+		const screen = await render(CopyButton, { value: "x", variant: "outlined" });
+		expect(screen.container.querySelector("button")?.classList).not.toContain("ca-btn--neutral");
+	});
+});
