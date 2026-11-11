@@ -1,0 +1,111 @@
+---
+title: Astro
+description: What works in an .astro file, what needs a Svelte island, and the rules for SEO, images, icons, fonts, prose and testing on a static Astro site.
+group: Getting started
+order: 17
+---
+
+Setup is in [Installation](/docs/getting-started/installation/) (`caUI(theme)` with `@astrojs/svelte`). This page covers what changes once you build pages in `.astro` files instead of SvelteKit routes. Where AGENTS.md or a recipe says `+layout.svelte`, `app.html` or `hooks.server.ts`, read "the layout `.astro` file" and the `caUI` integration.
+
+## What works where
+
+| Export | In `.astro` | Note |
+|---|---|---|
+| CSS (`styles/global.css`), `ca-*` classes, tokens | yes | import the stylesheet once in the layout |
+| `seoHead`, `seoTags`, the JSON-LD builders (`@codeatlasdev/ui/seo`) | yes | pure functions: render with `<Fragment set:html>` |
+| Theme helpers, `tokens` | yes | plain TypeScript |
+| Any component (`Button`, `Card`, `Dialog`…) | as a Svelte component | renders to HTML at build; add `client:visible` (or `client:load`) only when it must react to input |
+| `<Seo>` | **no** | Astro drops `<svelte:head>`; in dev `caUI` prints a `[ca-ui] <Seo>` warning. Use `seoHead` |
+| `Image` | no | use `astro:assets` (below) |
+| `RouteAnnouncer`, `colorScheme.init()` from a component | no | a static site reloads per page; `init` writes `colorScheme.init()` into the layout's client `<script>` |
+
+The page landmark rule is the same: exactly one `<main id="main" tabindex="-1">` in the layout, and a skip link to it before the header.
+
+```astro
+---
+import { seoHead } from "@codeatlasdev/ui/seo";
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <Fragment set:html={seoHead({ title, description, canonical })} />
+  </head>
+  <body>
+    <a class="ca-sr-only ca-sr-only--focusable" href="#main">Skip to content</a>
+    <main id="main" tabindex="-1"><slot /></main>
+  </body>
+</html>
+```
+
+## Head order and theme-color
+
+`caUI` puts the theme markup (font preloads, `<style id="ca-theme">`, the init script) at the start of every page's `<head>`, right after `<meta charset>` when the head starts with one, so the charset stays within the first 1024 bytes. Keep `<meta charset>` as the first tag of your head.
+
+Do not hand-write `<meta name="theme-color">`: the init script sets it from the active preset and scheme, and updates the tag you wrote instead of adding a second one, so a hard-coded value is overwritten on the first paint.
+
+## Images
+
+The package `Image` is a Svelte component; in Astro use `<Image>` / `<Picture>` from `astro:assets`, which generate the `srcset` and the `width`/`height` that prevent layout shift. The same rules apply:
+
+- `sizes` describes the rendered width of the image at each breakpoint. Measure it: a card that is 350px wide on a phone with `sizes="270px"` downloads a file that is too small and looks soft.
+- Only the largest above-the-fold image (the LCP) gets `loading="eager"` and `fetchpriority="high"`; everything else stays lazy.
+- A purely decorative image has `alt=""`; any other image has an `alt` that says what it shows.
+
+```astro
+<Image src={hero} alt="Lake at sunrise" widths={[480, 960, 1440]}
+  sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" fetchpriority="high" />
+```
+
+## Icons
+
+UI icons come from `@lucide/svelte`. Inside an `.astro` file they render as static SVG; give a decorative icon `aria-hidden="true"` and an explicit `size`, and give an icon-only link an `aria-label`.
+
+Lucide has no brand logos. For social links, use path data from `simple-icons` in a small wrapper, painted with `currentColor` so it follows the theme:
+
+```astro
+---
+// src/components/BrandIcon.astro
+import { siInstagram, siYoutube } from "simple-icons";
+const icons = { instagram: siInstagram, youtube: siYoutube };
+const { name, size = 20 } = Astro.props;
+const icon = icons[name];
+---
+<svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <path d={icon.path} />
+</svg>
+```
+
+```astro
+<a href="https://instagram.com/acme" aria-label="Acme on Instagram"><BrandIcon name="instagram" /></a>
+```
+
+## Fonts
+
+Importing a `@fontsource` package's default entry pulls every subset, and with inlined stylesheets each page carries hundreds of `@font-face` rules. Load one file per face through the theme instead: `fonts` takes a descriptor that emits a single `@font-face`, an optional preload and a metric-matched fallback.
+
+```ts
+// src/theme.ts
+import openSans from "@fontsource-variable/open-sans/files/open-sans-latin-wght-normal.woff2?url";
+import type { ThemeOptions } from "@codeatlasdev/ui/astro";
+
+export const theme: ThemeOptions = {
+  fonts: {
+    body: { family: "Open Sans Variable", src: openSans, weight: "300 800", preload: true, fallback: "Arial" },
+  },
+};
+```
+
+Pick the subset your content uses (`latin` above) and preload only the faces visible above the fold.
+
+## Prose
+
+`.ca-prose` is tuned for documentation: tables, code and callouts. For marketing Markdown (lead paragraphs, larger headings, lists of benefits), write your own prose class in the app, built from the type and spacing tokens, rather than overriding `.ca-prose`.
+
+## Lint and tests
+
+`bunx @codeatlasdev/ui lint src` checks `.svelte`, `.astro` and `.css` files for hex colours, raw px values, inline styles and `:global(.ca-*)`; the literal-text rule runs on `.svelte` templates only. A site that reproduces an existing brand will trip the colour and px rules in its brand sheet by design: keep those values in one file and lint the other paths (`lint src/components src/layouts src/pages`), or mark a single line with `ca-ui-workaround(#<issue>)`.
+
+For end-to-end tests against the built site, start the server with `astro preview --ignore-lock`: Astro refuses a second preview while another one holds its lock, which a test runner's `webServer` will hit.
