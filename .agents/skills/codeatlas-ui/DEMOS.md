@@ -398,4 +398,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5001 | Filter bar | inputs/toolbar | Button, NumberField, Select, TextField, Toolbar |
 | 5002 | Inbox | layout/master-detail | EmptyState, MasterDetail |
 | 5003 | Invite and consent | layout/centered-page | AuthCard, Button, CenteredPage, SegmentedControl, Stack |
-| 5004 | Icon-only, ghost, small and disabled | inputs/toggle | Toggle |
+| 5006 | Icon-only, ghost, small and disabled | inputs/toggle | Toggle |
