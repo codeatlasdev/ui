@@ -11,7 +11,9 @@
 
 <!-- Decorative: the marker is part of the button's accessible name (moduleName), so it is hidden here. -->
 {#if hasModuleBadge(mod)}
-  <span class="ca-nav-module-badge" class:ca-nav-module-badge--dot={mod.badge === 'dot'} aria-hidden="true">{moduleBadgeText(mod)}</span>
+  <!-- The count is drawn by CSS, not text: text inside the button joins its visible label ("3 Home"), which the
+       name ("Home, 3 unread") cannot contain, and voice control and axe label-in-name fail (#896). -->
+  <span class="ca-nav-module-badge" class:ca-nav-module-badge--dot={mod.badge === 'dot'} data-count={moduleBadgeText(mod) || undefined} aria-hidden="true"></span>
 {/if}
 
 <style>
@@ -36,6 +38,9 @@
       align-items: center;
       justify-content: center;
       pointer-events: none;
+    }
+    .ca-nav-module-badge[data-count]::after {
+      content: attr(data-count);
     }
 
     .ca-nav-module-badge--dot {
