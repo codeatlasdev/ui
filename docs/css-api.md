@@ -359,7 +359,7 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## Popover
 
-`.ca-popover-content` `.ca-popover-in` `.ca-popover-out` `.ca-popover__trigger`
+`.ca-popover-content` `.ca-popover-content--compact` `.ca-popover-in` `.ca-popover-out` `.ca-popover__trigger`
 
 ## PreviewStage
 
@@ -609,6 +609,7 @@ A component token is a custom property a component reads before its default: `--
 - **Field variant** `data-ca-field="filled|underline"` on a field root or on `<html>` (prop `variant`, theme key `components.field.variant`) re-declares `--ca-field-bg`, `--ca-field-border-color`, `--ca-field-shadow` and `--ca-radius-control`; `--ca-field-border-width` (theme `components.field.borderWidth`) is read by every field border; theme `components.field.height|radius` emit `--ca-control-height` and `--ca-radius-control`
 - **TextField** `--ca-tf-addon-bg` `--ca-tf-reveal-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-icon-size` `--ca-tf-error-ring` (`none` keeps the border colour only); `--ca-ta-min-height` on TextArea (the visible box, border included); `--ca-radius-control-multiline` (TextArea corner, default the control radius capped at `--ca-radius-lg`, so `controlRadius: pill` never makes it a stadium)
 - **Progress** `--ca-progress-track` `--ca-progress-bar` (theme key `components.progress`)
+- **Popover** `--ca-popover-padding` (default `--ca-space-4`; `--ca-space-2` with `density="compact"`, which adds the class `ca-popover-content--compact`) `--ca-popover-radius` (default `--ca-radius-lg`) `--ca-popover-max-width` (default 320px) `--ca-popover-bg` (default `--ca-overlay-bg`); theme key `components.popover` (`padding`, `radius`, `maxWidth`, `bg`)
 - **Card** `--ca-card-bg` `--ca-card-radius` `--ca-card-border` `--ca-card-shadow` (`--ca-card-padding` and `--ca-card-gap` already existed)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}`
 - **PasswordStrength** `--ca-pwstrength-{gap,empty-bg,label-leading,label-tracking}` (theme key `components.passwordStrength`; props `layout`, `hideWhenEmpty`)

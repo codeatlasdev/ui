@@ -5,6 +5,7 @@ import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./Popover.test.svelte";
 import OpenHarness from "./PopoverOpen.test.svelte";
+import TokenHarness from "./PopoverTokens.test.svelte";
 
 const setup = async () => {
 	const screen = await render(Harness);
@@ -107,5 +108,79 @@ describe("Popover window blur (#663)", () => {
 		window.dispatchEvent(new Event("blur"));
 		await settled();
 		await expect.element(page.getByText("Popover content")).toBeVisible();
+	});
+});
+
+describe("Popover tokens and density (#698)", () => {
+	const panel = () => document.querySelector(".ca-popover-content") as HTMLElement;
+	// offsetWidth ignores the entrance transform (scale 0.96 → 1).
+	const width = () => panel().offsetWidth;
+	// 1px border each side on the material; measure the content box instead of assuming it.
+	const frame = () => {
+		const s = getComputedStyle(panel());
+		return parseFloat(s.borderLeftWidth) + parseFloat(s.borderRightWidth);
+	};
+
+	it("defaults: 16px padding, lg radius, 320px max, overlay fill", async () => {
+		await render(TokenHarness);
+		await expect.element(page.getByTestId("inner")).toBeVisible();
+		const s = getComputedStyle(panel());
+		expect(s.paddingLeft).toBe("16px");
+		expect(s.maxWidth).toBe("320px");
+		expect(width()).toBe(240 + 32 + frame());
+		const probe = document.createElement("div");
+		probe.className = "glass-overlay";
+		document.body.append(probe);
+		expect(s.backgroundColor).toBe(getComputedStyle(probe).backgroundColor);
+		probe.remove();
+	});
+
+	it("--ca-popover-padding: 8px makes 240px of content 256px wide", async () => {
+		document.documentElement.style.setProperty("--ca-popover-padding", "8px");
+		try {
+			await render(TokenHarness);
+			await expect.element(page.getByTestId("inner")).toBeVisible();
+			expect(width()).toBe(256 + frame());
+		} finally {
+			document.documentElement.style.removeProperty("--ca-popover-padding");
+		}
+	});
+
+	it("radius, max-width and bg tokens apply", async () => {
+		const root = document.documentElement.style;
+		root.setProperty("--ca-popover-radius", "3px");
+		root.setProperty("--ca-popover-max-width", "200px");
+		root.setProperty("--ca-popover-bg", "rgb(1, 2, 3)");
+		try {
+			await render(TokenHarness);
+			await expect.element(page.getByTestId("inner")).toBeVisible();
+			const s = getComputedStyle(panel());
+			expect(s.borderTopLeftRadius).toBe("3px");
+			expect(s.maxWidth).toBe("200px");
+			expect(s.backgroundColor).toBe("rgb(1, 2, 3)");
+		} finally {
+			for (const n of ["radius", "max-width", "bg"]) root.removeProperty(`--ca-popover-${n}`);
+		}
+	});
+
+	it('density="compact" gives 8px padding and is axe-clean', async () => {
+		await render(TokenHarness, { density: "compact" });
+		await expect.element(page.getByTestId("inner")).toBeVisible();
+		expect(panel().classList.contains("ca-popover-content--compact")).toBe(true);
+		expect(getComputedStyle(panel()).paddingLeft).toBe("8px");
+		expect(width()).toBe(256 + frame());
+		await settled();
+		expect(await checkA11y(panel())).toHaveNoViolations();
+	});
+
+	it("a padding token wins over compact density", async () => {
+		document.documentElement.style.setProperty("--ca-popover-padding", "4px");
+		try {
+			await render(TokenHarness, { density: "compact" });
+			await expect.element(page.getByTestId("inner")).toBeVisible();
+			expect(getComputedStyle(panel()).paddingLeft).toBe("4px");
+		} finally {
+			document.documentElement.style.removeProperty("--ca-popover-padding");
+		}
 	});
 });

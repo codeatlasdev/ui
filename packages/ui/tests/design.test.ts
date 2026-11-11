@@ -96,6 +96,29 @@ describe("design knobs → tokens", () => {
 			expect(css).toContain(decl);
 	});
 
+	it("components.popover emits the --ca-popover-* tokens (#698)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					popover: {
+						padding: "var(--ca-space-2)",
+						radius: "6px",
+						maxWidth: "280px",
+						bg: "var(--ca-surface-raised)",
+					},
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-popover-padding: var(--ca-space-2);",
+			"--ca-popover-radius: 6px;",
+			"--ca-popover-max-width: 280px;",
+			"--ca-popover-bg: var(--ca-surface-raised);",
+		])
+			expect(css).toContain(decl);
+		expect(themeCSS(defineTheme({ components: { popover: {} } }))).toBe("");
+	});
+
 	it("components.button/iconButton/kbd emit the --ca-btn-*, --ca-icon-btn-* and --ca-kbd-* tokens (#373)", () => {
 		const css = themeCSS(
 			defineTheme({
