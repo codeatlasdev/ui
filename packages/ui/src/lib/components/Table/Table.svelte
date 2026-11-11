@@ -225,9 +225,11 @@
     .ca-table--compact { font-size: var(--ca-font-size-body2); }
     .ca-table--compact :global(th) { padding-block: var(--ca-space-1-5); }
     .ca-table--compact :global(td) {
-      padding: var(--ca-space-2) var(--ca-space-3);
+      padding: var(--ca-table-cell-py, var(--ca-space-2)) var(--ca-space-3);
       line-height: var(--ca-line-height-snug);
     }
+    /* A fixed compact row height (#683): set --ca-table-row-h (and --ca-table-cell-py) on the table. */
+    .ca-table--compact :global(tbody td) { height: var(--ca-table-row-h, auto); }
     .ca-table--compact :global(th) { padding-inline: var(--ca-space-3); }
 
     /* ── Sentence-case header labels ── */
@@ -258,6 +260,9 @@
     .ca-table :global(th[aria-sort] .ca-table-sort) { color: var(--ca-text-primary); }
     .ca-table :global(.ca-table-sort__icon) { flex: none; opacity: 0.4; }
     .ca-table :global(th[aria-sort] .ca-table-sort__icon) { opacity: 1; }
+    /* Numeric columns (#683): the label and its arrow at the end, aligned with the values. */
+    .ca-table :global(th.ca-table-sort-th--end) { text-align: end; }
+    .ca-table :global(th.ca-table-sort-th--end .ca-table-sort) { flex-direction: row-reverse; margin-inline: 0 calc(-1 * var(--ca-space-1-5)); }
 
     /* ── Group (section) rows: spans every column, sticky to the left ── */
     .ca-table :global(tr.ca-table-group > th) {
@@ -267,6 +272,10 @@
       font-size: var(--ca-font-size-label);
       color: var(--ca-text-secondary);
       background: var(--ca-surface-sunken, var(--ca-surface-base));
+    }
+    /* A status rail at the start of a group row (TableGroupRow `accent`, #683). */
+    .ca-table :global(tr.ca-table-group[data-accent] > th) {
+      box-shadow: inset var(--ca-space-0-5) 0 0 var(--ca-table-group-accent);
     }
     .ca-table :global(.ca-table-group__toggle) {
       position: sticky;

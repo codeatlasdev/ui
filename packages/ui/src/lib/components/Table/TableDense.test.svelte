@@ -16,6 +16,8 @@
 		sort = "none",
 		selected = "r2",
 		wide = false,
+		alignValue = false,
+		accent = undefined,
 	}: {
 		density?: "default" | "compact";
 		frame?: boolean;
@@ -27,6 +29,8 @@
 		sort?: "none" | "asc" | "desc";
 		selected?: string;
 		wide?: boolean;
+		alignValue?: boolean;
+		accent?: string;
 	} = $props();
 
 	let open = $state(true);
@@ -45,11 +49,11 @@
 				<TableSortHeader {sort} onsort={onsort}>Name</TableSortHeader>
 				<th scope="col">Stage</th>
 				<th scope="col">Owner</th>
-				<th scope="col">Value</th>
+				{#if alignValue}<TableSortHeader align="end">Value</TableSortHeader>{:else}<th scope="col">Value</th>{/if}
 			</tr>
 		</thead>
 		<tbody>
-			<TableGroupRow colspan={5} collapsible bind:open>
+			<TableGroupRow colspan={5} collapsible bind:open {accent}>
 				{#snippet label()}New <span data-testid="count">2</span>{/snippet}
 			</TableGroupRow>
 			{#if open}

@@ -11,14 +11,16 @@
     children?: Snippet;
     /** `false` draws no arrow while the column is unsorted: only the sorted column shows one (a quiet, mostly-read table). @default true */
     idleIcon?: boolean;
+    /** `end` aligns the label (and its arrow) at the end of the cell, for numeric columns. @default 'start' */
+    align?: 'start' | 'end';
     class?: string;
   }
-  let { sort = 'none', onsort, children, idleIcon = true, class: className = '' }: Props = $props();
+  let { sort = 'none', onsort, children, idleIcon = true, align = 'start', class: className = '' }: Props = $props();
 </script>
 
 <th
   scope="col"
-  class={className}
+  class="{align === 'end' ? 'ca-table-sort-th--end' : ''} {className}"
   aria-sort={sort === 'asc' ? 'ascending' : sort === 'desc' ? 'descending' : undefined}
 >
   <button type="button" class="ca-table-sort" onclick={() => onsort?.()}>
