@@ -20,7 +20,7 @@
 </script>
 
 <Stack gap="3">
-  <VirtualList {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>
+  <VirtualList bordered {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>
     {#snippet item(m)}<div class="row">{m.text}</div>{/snippet}
   </VirtualList>
   <Button size="sm" variant="outlined" onclick={add}>Receive a message</Button>

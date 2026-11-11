@@ -394,3 +394,21 @@ describe("VirtualList height='100%' (#830)", () => {
 		expect(el.scrollHeight).toBeGreaterThan(el.clientHeight);
 	});
 });
+
+describe("VirtualList frame (#913)", () => {
+	const scroller = () => document.querySelector(".ca-virtual-list__scroller") as HTMLElement;
+	it("draws no frame of its own: the screen it sits in decides", async () => {
+		await render(Harness, { initial: 5 });
+		const s = getComputedStyle(scroller());
+		expect(s.borderTopWidth).toBe("0px");
+		expect(s.borderTopLeftRadius).toBe("0px");
+	});
+
+	it("bordered draws today's frame", async () => {
+		const screen = await render(Harness, { initial: 5, bordered: true });
+		const s = getComputedStyle(scroller());
+		expect(Number.parseFloat(s.borderTopWidth)).toBeGreaterThan(0);
+		expect(Number.parseFloat(s.borderTopLeftRadius)).toBeGreaterThan(0);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});

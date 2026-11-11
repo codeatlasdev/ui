@@ -570,7 +570,7 @@ A `Toggle` is a one-item `ToggleGroup`: it wraps its button in `.ca-toggle-group
 
 ## VirtualList
 
-`.ca-virtual-list` `.ca-virtual-list__empty` `.ca-virtual-list__head` `.ca-virtual-list__item` `.ca-virtual-list__list` `.ca-virtual-list__loading` `.ca-virtual-list__older` `.ca-virtual-list__scroller`
+`.ca-virtual-list` `.ca-virtual-list__empty` `.ca-virtual-list__head` `.ca-virtual-list__item` `.ca-virtual-list__list` `.ca-virtual-list__loading` `.ca-virtual-list__older` `.ca-virtual-list__scroller` `.ca-virtual-list--bordered`
 
 ---
 
