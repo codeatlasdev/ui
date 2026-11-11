@@ -472,7 +472,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -770,6 +770,7 @@ Data attributes: `data-state` (`closed` `open`)
 | `minRatio?` | `number` | `4.5` | Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. |
 | `description?` | `string` |  |  |
 | `width?` | `FieldWidth` |  | `full`, `auto`, `fit` or a CSS length (`--ca-field-width`). Default: the width its content needs. |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | `outlined`, `filled` or `underline`; default follows the theme. |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
@@ -801,17 +802,18 @@ Data attributes: `data-disabled`, `data-pass`
 | `description?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `emptyText?` | `string` |  |  |
 | `onchange?` | `(value: string \| string[]) => void` |  |  |
 | `oncreate?` | `(value: string) => void` |  | Called when a new tag is created via `creatable`. Receives the new value string. |
 | `creatable?` | `boolean` | `false` | Show a "Create …" option when the query doesn't match any existing option exactly. |
 | `showCount?` | `boolean` | `false` | Multiple mode: show "N selected" in the trigger instead of the placeholder. Default `false` (the chips already list the selection). |
 
-Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
+Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height`
+Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-state` (`open`)
+Data attributes: `data-ca-field` (`filled` `underline`), `data-disabled`, `data-highlighted`, `data-state` (`open`)
 
 ## CommandPalette
 
@@ -1088,6 +1090,7 @@ Internal (may change in any release): `ca-spin`
 | `granularity?` | `'day' \| 'hour' \| 'minute' \| 'second'` | `'day'` | Adds hour/minute(/second) segments. Default 'day'. |
 | `hourCycle?` | `12 \| 24` |  |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `name?` | `string` |  | Name for the hidden input (ISO string) in native forms. |
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
@@ -1096,7 +1099,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -1129,6 +1132,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `isDateUnavailable?` | `(date: DateValue) => boolean` |  |  |
 | `closeOnDateSelect?` | `boolean` | `true` |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `name?` | `string` |  | Name for the hidden input (ISO string) in native forms. |
 | `triggerLabel?` | `string` |  | aria-label of the calendar button. |
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
@@ -1138,7 +1142,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -1170,6 +1174,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `isDateUnavailable?` | `(date: DateValue) => boolean` |  |  |
 | `closeOnRangeSelect?` | `boolean` | `true` |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `triggerLabel?` | `string` |  | aria-label of the calendar button. |
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
@@ -1178,7 +1183,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -2488,11 +2493,14 @@ Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca
 | `required?` | `boolean` | `false` |  |
 | `name?` | `string` |  |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `onchange?` | `(value: number) => void` |  |  |
 
-Parts: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap`
 
-Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
+Variables: `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
+
+Data attributes: `data-ca-field` (`filled` `underline`)
 
 Tokens: `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
 
@@ -2818,7 +2826,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -3082,16 +3090,17 @@ Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-pad
 | `required?` | `boolean` | `false` |  |
 | `name?` | `string` |  | Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `aria-label?` | `string` |  | Accessible name when there is no visible `label`. The trigger's name is this text followed by the current value, so it still contains the visible text. |
 | `aria-labelledby?` | `string` |  | Id(s) of the element(s) naming the select when there is no visible `label` (followed by the current value, like `aria-label`). |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Parts: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
+Variables: `--ca-anchor-width` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-selected`, `data-state` (`open`)
+Data attributes: `data-ca-field` (`filled` `underline`), `data-disabled`, `data-highlighted`, `data-selected`, `data-state` (`open`)
 
 Tokens: `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
 
@@ -3733,6 +3742,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `revealable?` | `boolean` | `false` | `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `width?` | `FieldWidth` |  | `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
@@ -3746,9 +3756,11 @@ Snippets: `leading`; `trailing`; `below`: Content under the field and its hint, 
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'prefix' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
+Variables: `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
+
+Data attributes: `data-ca-field` (`filled` `underline`)
 
 Tokens: `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
@@ -3801,6 +3813,7 @@ Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__i
 | `granularity?` | `'hour' \| 'minute' \| 'second'` | `'minute'` | Default 'minute'. |
 | `hourCycle?` | `12 \| 24` |  | Default follows the locale (pt-BR → 24h). |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `name?` | `string` |  | Name for the hidden input (ISO string) in native forms. |
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
@@ -3809,7 +3822,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -5152,7 +5165,7 @@ Types:
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5180,6 +5193,7 @@ Types:
 | `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
 | `FieldTokens` | `interface FieldTokens { gap?: CssValue; labelLeading?: CssValue; labelTracking?: CssValue; hintLeading?: CssValue; hintTracking?: CssValue; letterSpacing?: CssValue; lineHeight?: CssValue; }` |  |
+| `FieldVariant` | `type FieldVariant = "outlined" \| "filled" \| "underline";` | How a field is drawn, independent of the surface style. `outlined` is the style's own field. |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
@@ -5328,7 +5342,7 @@ Types:
 | `iconButton?` | `IconButtonTokens` |  |
 | `kbd?` | `KbdTokens` |  |
 | `avatar?` | `AvatarTokens` |  |
-| `field?` | `FieldTokens` | `--ca-field-*`: shared by TextField, TextArea, Select, Combobox, NumberField and the date fields; the per-component keys win. |
+| `field?` | `FieldThemeTokens` | `--ca-field-*`: shared by TextField, TextArea, Select, Combobox, NumberField and the date fields; the per-component keys win. |
 | `textField?` | `TextFieldTokens` |  |
 | `textArea?` | `TextAreaTokens` |  |
 | `select?` | `FieldTokens` |  |

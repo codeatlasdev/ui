@@ -4,6 +4,8 @@
   import { Minus, Plus } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
+  import type { FieldVariant } from '../../theme/components.js';
+  import '../field-variant.css';
   const t = useMessages(numberField);
 
   interface Props {
@@ -25,6 +27,8 @@
     required?:    boolean;
     name?:        string;
     size?:        'sm' | 'md';
+    /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
+    variant?:        FieldVariant;
     onchange?:    (value: number) => void;
   }
 
@@ -44,6 +48,7 @@
     required = false,
     name,
     size     = 'md',
+    variant,
     onchange,
   }: Props = $props();
 
@@ -80,6 +85,7 @@
   class:ca-nf--error={!!error}
   class:ca-nf--disabled={disabled}
   style:--ca-field-width={fieldWidth(width)}
+  data-ca-field={variant}
 >
   {#if label}
     <label for={inputId} class="ca-nf__label" class:ca-sr-only={hideLabel}>
@@ -166,9 +172,9 @@
     .ca-nf__wrap {
       display: inline-flex;
       align-items: stretch;
-      border-radius: var(--ca-radius-control);
+      border-radius: var(--ca-field-radius, var(--ca-radius-control));
       background: var(--ca-field-bg);
-      border: var(--ca-border-width) solid var(--ca-field-border-color);
+      border: var(--ca-field-border-width, var(--ca-border-width)) solid var(--ca-field-border-color);
       box-shadow: var(--ca-field-shadow);
       overflow: hidden;
       height: var(--ca-control-height);

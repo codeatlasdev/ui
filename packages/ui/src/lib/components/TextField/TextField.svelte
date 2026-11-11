@@ -4,6 +4,8 @@
   import { Eye, EyeOff } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
+  import type { FieldVariant } from '../../theme/components.js';
+  import '../field-variant.css';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { textField } from '../../i18n/groups/textField.js';
   const t = useMessages(textField);
@@ -44,6 +46,8 @@
     size?:         'sm' | 'md';
     /** `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. */
     width?:         FieldWidth;
+    /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
+    variant?:         FieldVariant;
     /** Loading placeholder: same size as the loaded field, disabled, announced as busy. */
     skeleton?:     boolean;
     class?:        string;
@@ -78,6 +82,7 @@
     below,
     size         = 'md',
     width,
+    variant,
     skeleton     = false,
     class: className = '',
     name,
@@ -112,7 +117,7 @@
   const inputType = $derived(canReveal && revealed ? 'text' : type);
 </script>
 
-<div class="ca-tf {className}" style:--ca-field-width={fieldWidth(width)} aria-busy={skeleton ? 'true' : undefined} data-skeleton={skeleton ? '' : undefined} class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
+<div class="ca-tf {className}" style:--ca-field-width={fieldWidth(width)} data-ca-field={variant} aria-busy={skeleton ? 'true' : undefined} data-skeleton={skeleton ? '' : undefined} class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
   {#if label}
     <label for={id} class="ca-tf__label" class:ca-sr-only={hideLabel}>
       {label}{#if required && requiredIndicator}<span class="ca-tf__req" aria-hidden="true"> *</span>{/if}
@@ -225,10 +230,10 @@
       align-items: center;
       gap: var(--ca-space-2);
       height: var(--ca-control-height);
-      border-radius: var(--ca-radius-control);
+      border-radius: var(--ca-field-radius, var(--ca-radius-control));
       padding: 0 var(--ca-space-2-5);
       background: var(--ca-field-bg);
-      border: var(--ca-border-width) solid var(--ca-field-border-color);
+      border: var(--ca-field-border-width, var(--ca-border-width)) solid var(--ca-field-border-color);
       box-shadow: var(--ca-field-shadow);
       transition:
         border-color var(--ca-duration-fast) var(--ca-ease-standard),

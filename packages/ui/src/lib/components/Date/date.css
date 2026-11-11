@@ -34,9 +34,9 @@
     gap: var(--ca-space-2);
     min-height: var(--ca-control-height);
     padding: 0 var(--ca-space-2-5);
-    border-radius: var(--ca-radius-control);
+    border-radius: var(--ca-field-radius, var(--ca-radius-control));
     background: var(--ca-field-bg);
-    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    border: var(--ca-field-border-width, var(--ca-border-width)) solid var(--ca-field-border-color);
     box-shadow: var(--ca-field-shadow);
     font-family: var(--ca-font-sans);
     font-size: var(--ca-input-font-size);

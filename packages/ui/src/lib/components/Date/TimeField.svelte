@@ -3,6 +3,7 @@
   import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
+  import type { FieldVariant } from '../../theme/components.js';
   import DateFieldShell from './DateFieldShell.svelte';
   import { FieldState } from './field-state.svelte.js';
   import type { TimeValue } from './types.js';
@@ -31,6 +32,8 @@
     /** Default follows the locale (pt-BR → 24h). */
     hourCycle?:    12 | 24;
     size?:         'sm' | 'md';
+    /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
+    variant?:         FieldVariant;
     /** Name for the hidden input (ISO string) in native forms. */
     name?:         string;
     onchange?:     (value: Time | undefined) => void;
@@ -54,6 +57,7 @@
     granularity = 'minute',
     hourCycle,
     size        = 'md',
+    variant,
     name,
     onchange,
     class: className = '',
@@ -100,6 +104,7 @@
   {readonly}
   {required}
   {size}
+  {variant}
   class={className}
   {name}
   formValue={value?.toString()}

@@ -3,6 +3,8 @@
   import { select } from '../../i18n/groups/select.js';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
+  import type { FieldVariant } from '../../theme/components.js';
+  import '../field-variant.css';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check } from '@lucide/svelte';
@@ -30,6 +32,8 @@
     /** Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. */
     name?:         string;
     size?:         'sm' | 'md';
+    /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
+    variant?:         FieldVariant;
     /** Accessible name when there is no visible `label`. The trigger's name is this text followed by the current value, so it still contains the visible text. */
     'aria-label'?: string;
     /** Id(s) of the element(s) naming the select when there is no visible `label` (followed by the current value, like `aria-label`). */
@@ -51,6 +55,7 @@
     required    = false,
     name,
     size        = 'md',
+    variant,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,
     class: className = '',
@@ -120,7 +125,7 @@
   }
 </script>
 
-<div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled} style:--ca-field-width={fieldWidth(width)}>
+<div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled} style:--ca-field-width={fieldWidth(width)} data-ca-field={variant}>
   {#if label}
     <label for={id} class="ca-sel__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-sel__req" aria-hidden="true"> *</span><span class="ca-sr-only"> ({t().select.required})</span>{/if}
@@ -256,9 +261,9 @@
       gap: var(--ca-space-2);
       height: var(--ca-control-height);
       padding: 0 var(--ca-space-2-5);
-      border-radius: var(--ca-radius-control);
+      border-radius: var(--ca-field-radius, var(--ca-radius-control));
       background: var(--ca-field-bg);
-      border: var(--ca-border-width) solid var(--ca-field-border-color);
+      border: var(--ca-field-border-width, var(--ca-border-width)) solid var(--ca-field-border-color);
       box-shadow: var(--ca-field-shadow);
       cursor: pointer;
       font-family: var(--ca-font-sans);

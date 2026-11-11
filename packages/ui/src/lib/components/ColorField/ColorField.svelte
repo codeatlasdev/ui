@@ -2,6 +2,7 @@
   import TextField from '../TextField/TextField.svelte';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
+  import type { FieldVariant } from '../../theme/components.js';
   import { contrast, formatOklch, parseColorInput, wcagLevel } from '../../utils/color.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { colorField } from '../../i18n/groups/colorField.js';
@@ -33,6 +34,8 @@
     description?: string;
     /** `full`, `auto`, `fit` or a CSS length (`--ca-field-width`). Default: the width its content needs. */
     width?: FieldWidth;
+    /** `outlined`, `filled` or `underline`; default follows the theme. */
+    variant?: FieldVariant;
     disabled?: boolean;
     class?: string;
     onchange?: (value: string) => void;
@@ -47,6 +50,7 @@
     minRatio = 4.5,
     description,
     width,
+    variant,
     disabled = false,
     class: className = '',
     onchange,
@@ -97,6 +101,7 @@
 <div class="ca-color-field {className}" data-disabled={disabled ? '' : undefined} style:--ca-field-width={fieldWidth(width)}>
   <TextField
     size="sm"
+    {variant}
     {label}
     {disabled}
     {description}

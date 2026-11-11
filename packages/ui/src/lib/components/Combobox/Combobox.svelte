@@ -5,6 +5,8 @@
   import { combobox } from '../../i18n/groups/combobox.js';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
+  import type { FieldVariant } from '../../theme/components.js';
+  import '../field-variant.css';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check, X } from '@lucide/svelte';
@@ -38,6 +40,8 @@
     description?:       string;
     required?:          boolean;
     size?:              'sm' | 'md';
+    /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
+    variant?:              FieldVariant;
     emptyText?:         string;
     onchange?:          (value: string | string[]) => void;
     /** Called when a new tag is created via `creatable`. Receives the new value string. */
@@ -64,6 +68,7 @@
     description,
     required          = false,
     size              = 'md',
+    variant,
     emptyText,
     onchange,
     oncreate,
@@ -210,7 +215,7 @@
   }
 </script>
 
-<div class={rootClass} style:--ca-field-width={fieldWidth(width)}>
+<div class={rootClass} style:--ca-field-width={fieldWidth(width)} data-ca-field={variant}>
   {#if label}
     <label for={triggerId} class="ca-combobox__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-combobox__req" aria-hidden="true"> *</span>{/if}
@@ -395,9 +400,9 @@
       width: 100%;
       padding: 0 var(--ca-space-2-5);
       height: var(--ca-control-height);
-      border-radius: var(--ca-radius-control);
+      border-radius: var(--ca-field-radius, var(--ca-radius-control));
       background: var(--ca-field-bg);
-      border: var(--ca-border-width) solid var(--ca-field-border-color);
+      border: var(--ca-field-border-width, var(--ca-border-width)) solid var(--ca-field-border-color);
       box-shadow: var(--ca-field-shadow);
       cursor: pointer;
       font-size: var(--ca-input-font-size);

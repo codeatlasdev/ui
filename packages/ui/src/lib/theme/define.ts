@@ -30,6 +30,7 @@ export type {
 	ComponentTokens,
 	EmptyStateTokens,
 	FieldTokens,
+	FieldVariant,
 	IconButtonTokens,
 	KbdTokens,
 	SegmentedTokens,

@@ -579,6 +579,25 @@
   --ca-chip-border-color:  transparent;
 }
 
+/* Field variants (#763). `data-ca-field` sits on a field's root (the `variant` prop) or on <html> (the theme's
+   `components.field.variant`): how every field is drawn, independent of the surface style. `outlined` is the
+   style's own field and writes nothing. State rules of the controls re-paint `border-color`, so the controls
+   neutralise that for the two borderless variants in `components/field-variant.css`. */
+[data-ca-field="outlined"] {
+  --ca-field-radius:       var(--ca-radius-control);
+}
+[data-ca-field="filled"] {
+  --ca-field-bg:           color-mix(in oklch, var(--ca-text-primary) 6%, var(--ca-surface-base));
+  --ca-field-border-color: transparent;
+  --ca-field-radius:       var(--ca-radius-control);
+}
+[data-ca-field="underline"] {
+  --ca-field-bg:           transparent;
+  --ca-field-border-color: transparent;
+  --ca-field-shadow:       inset 0 calc(-1 * var(--ca-field-border-width, var(--ca-border-width))) 0 var(--ca-outline-control);
+  --ca-field-radius:       0;
+}
+
 /* ── No backdrop-filter (old WebViews, some Android browsers): translucent tints would
  *    show raw page content through glass. Swap them for near-opaque surfaces.
  *    This layer (ca.materials) comes after ca.themes, so it wins over preset tints. */
@@ -650,6 +669,12 @@
   .ca-combobox__content, .ca-tooltip-content, .ca-cmd-dialog, .ca-notif-panel, .ca-toast,
   .ca-dialog, .ca-sheet, .ca-drawer, .ca-alert, .ca-link-card, .ca-form-section,
   .ca-accordion-item, .ca-tabs-list:not([data-variant="line"]), .ca-col-toggle__content, .ca-facet__content {
+    border: 1px solid CanvasText;
+  }
+
+  /* Borderless field variants keep an edge: the UA drops the inset shadow of `underline`. */
+  [data-ca-field="filled"] :is(.ca-tf__wrap, .ca-sel__trigger, .ca-combobox__trigger, .ca-nf__wrap, .ca-date__wrap),
+  [data-ca-field="underline"] :is(.ca-tf__wrap, .ca-sel__trigger, .ca-combobox__trigger, .ca-nf__wrap, .ca-date__wrap) {
     border: 1px solid CanvasText;
   }
 

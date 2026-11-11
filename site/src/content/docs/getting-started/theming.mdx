@@ -376,6 +376,10 @@ Every field (`TextField`, `TextArea`, `Select`, `Combobox`, `NumberField`, `Date
 | `--ca-<prefix>-line-height` (`--ca-input-line-height`) | typed text line-height | `1` in TextField, inherited elsewhere |
 | `--ca-field-hint-color`, `--ca-field-required-color` | hint text, required asterisk | `--ca-text-secondary`, `--ca-semantic-error` |
 
+### Field variant and shape
+
+`variant?: "outlined" | "filled" | "underline"` on every field (TextField, Select, Combobox, NumberField, ColorField and the date fields) sets `data-ca-field` on its root; `components.field.variant` sets it on `<html>` for the whole theme (the init script writes it, only for a non-outlined theme), and a field's own prop wins. `outlined` is the surface style's own field and writes nothing; `filled` is a tinted fill with no border; `underline` is a transparent field with an inset line at the bottom and square corners. Hover, open and error states keep the border transparent and show through the line or ring. Forced-colors mode draws a `CanvasText` border on both. `components.field` also takes `height` (`--ca-control-height`), `radius` (`--ca-radius-control`) and `borderWidth` (`--ca-field-border-width`, read by the field border and the underline).
+
 Set `--ca-field-gap` once on a form wrapper and every field in it follows; `--ca-sel-gap` then overrides Select alone. `components.field` is the theme-level form of the shared names, and `select`, `combobox`, `numberField`, `textField`, `textArea` take the same keys (`gap`, `labelLeading`, `labelTracking`, `hintLeading`, `hintTracking`, `letterSpacing`, `lineHeight`). `components.textField` also takes `revealSize`, `revealRadius`, `revealIconSize` and `errorRing` (`none` leaves the error state to the border colour); `components.progress` takes `track` and `bar`; `components.iconButton.tracking` sets `--ca-icon-btn-letter-spacing`. A `below` snippet that renders nothing takes no space.
 
 The 44px touch targets stay unless you set `--ca-btn-touch-height` or `--ca-icon-btn-touch-size`. Each component page lists its tokens under "Tokens"; `get_component` returns them as `tokens`.

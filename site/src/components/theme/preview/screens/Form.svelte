@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
     Button, Checkbox, DateField, FormSection, Heading, RadioGroup, Select, StickyActions,
-    TextArea, TextField,
+    Switch, TextArea, TextField,
   } from '@codeatlasdev/ui';
   import type { DateValue } from '@codeatlasdev/ui';
 
@@ -51,6 +51,7 @@
       <TextArea label="Notes" bind:value={notes} placeholder="Links, constraints, who to ask." rows={3} />
       <Checkbox bind:checked={notify} label="Email me when the review is done" />
       <Checkbox bind:checked={terms} label="I have read the review guidelines" />
+      <Switch bind:checked={notify} label="Notify the whole team" />
     </FormSection>
 
     <StickyActions>

@@ -328,6 +328,7 @@ export type {
 	ElevationModel,
 	EmptyStateTokens,
 	FieldTokens,
+	FieldVariant,
 	FontDescriptor,
 	FontFallbackMetrics,
 	FontSpec,

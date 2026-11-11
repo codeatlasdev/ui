@@ -48,6 +48,10 @@ export function themeScript(options: ThemeOptions | ResolvedTheme = {}): string 
 			Object.entries(t.themeColor).map(([id, c]) => [id, [c.light, c.dark]])
 		),
 	};
+	// Only a non-default theme variant costs bytes: the default theme's script is unchanged.
+	const fv = t.components.field?.variant;
+	const fieldAttr =
+		fv && fv !== "outlined" ? `h.setAttribute('data-ca-field',${JSON.stringify(fv)});\n` : "";
 	return /* js */ `(function(){try{
 var w=window,h=document.documentElement,ls=null,R=${JSON.stringify(rt)};
 try{ls=w.localStorage}catch(e){}
@@ -65,7 +69,7 @@ h.setAttribute('data-preset',preset);
 h.setAttribute('data-style',style);
 h.setAttribute('data-ca-scheme',${JSON.stringify(t.defaultScheme)});
 h.setAttribute('data-ca-style',${JSON.stringify(t.defaultStyle)});
-var m=w.matchMedia('(prefers-color-scheme: dark)');
+${fieldAttr}var m=w.matchMedia('(prefers-color-scheme: dark)');
 function a(){var d=scheme==='system'?m.matches:scheme==='dark';
   if(isl){h.setAttribute('data-ca-app-dark',d?'1':'0');d=h.classList.contains('dark')}
   else h.classList.toggle('dark',d);

@@ -101,6 +101,8 @@ export interface StudioState {
 	buttonWeight?: number;
 	buttonTracking?: string;
 	buttonGap?: string;
+	/** How every field is drawn (`components.field.variant`). Absent = the surface style's own. */
+	fieldVariant?: "outlined" | "filled" | "underline";
 }
 
 /** What a brand-new studio shows: the package default with a neutral blue brand. */
@@ -246,6 +248,7 @@ export function toThemeOptions(s: StudioState): ThemeOptions {
 				tracking: s.buttonTracking,
 				gap: s.buttonGap,
 			},
+			field: { variant: s.fieldVariant },
 		},
 	};
 	// A built-in preset is only named, never redefined.
@@ -403,6 +406,8 @@ export function sanitizeState(raw: unknown): StudioState {
 	if (num(r.buttonWeight, 100, 900)) s.buttonWeight = r.buttonWeight as number;
 	if (safeText(r.buttonTracking, 12)) s.buttonTracking = r.buttonTracking as string;
 	if (safeText(r.buttonGap, 12)) s.buttonGap = r.buttonGap as string;
+	if (oneOf(r.fieldVariant, ["outlined", "filled", "underline"]))
+		s.fieldVariant = r.fieldVariant as StudioState["fieldVariant"];
 	return s;
 }
 
