@@ -16,7 +16,7 @@
     searchIndex,
     ...rest
   }: {
-    kind: 'shell' | 'header' | 'codetabs' | 'codetabs-pair' | 'steps' | 'callout' | 'cardgrid';
+    kind: 'shell' | 'bleed' | 'header' | 'codetabs' | 'codetabs-pair' | 'steps' | 'callout' | 'cardgrid';
     onnavigate?: (href: string) => void;
     searchIndex?: DocsSearchEntry[] | (() => Promise<DocsSearchEntry[]>);
     [k: string]: unknown;
@@ -57,6 +57,19 @@
       <h2 id="a">Introduction</h2>
       <h2 id="b">Installation</h2>
     </article>
+  </DocsShell>
+{:else if kind === 'bleed'}
+  <DocsShell
+    sections={[{ id: 'guide', label: 'Guide', href: '/guide' }]}
+    active="guide"
+    pathname="/"
+    searchIndex={searchIndex ?? index}
+    {onnavigate}
+    {brand}
+    {...rest}
+  >
+    <section data-ca-bleed data-testid="hero">Hero</section>
+    <p data-testid="last">Last line</p>
   </DocsShell>
 {:else if kind === 'codetabs'}
   <CodeTabs {...rest}>

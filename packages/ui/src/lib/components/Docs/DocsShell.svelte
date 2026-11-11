@@ -63,6 +63,13 @@
      * band under the nav. `inherit` keeps the theme's page mesh.
      */
     surface?: 'flat' | 'inherit';
+    /**
+     * Gutter of the content area. `default` pads it (vertical and horizontal); `none` removes both so
+     * a full-bleed landing meets the header, the footer and the screen edges; `x` / `y` remove one
+     * axis. The narrow-screen clearance for the fixed pager stays. A page can also set
+     * `--ca-docs-main-pt`, `-pb` and `-px` on `:root` or an ancestor; a `data-ca-bleed` child cancels the horizontal gutter.
+     */
+    padding?: 'default' | 'none' | 'x' | 'y';
     children: Snippet;
   }
 
@@ -81,6 +88,7 @@
     menuFooter,
     pager,
     surface = 'flat',
+    padding = 'default',
     children,
   }: Props = $props();
 
@@ -133,7 +141,14 @@
     {@html sidebarScript(sidebarKey)}
   {/if}
 
-  <main class="ca-docs-main" id="main" tabindex="-1">
+  <main
+    class="ca-docs-main"
+    class:ca-docs-main--flush={padding === 'none'}
+    class:ca-docs-main--flush-x={padding === 'x'}
+    class:ca-docs-main--flush-y={padding === 'y'}
+    id="main"
+    tabindex="-1"
+  >
     {#if headings.length > 1}
       <TableOfContents {headings} variant="inline" class="ca-docs-toc-inline" />
     {/if}
@@ -228,15 +243,42 @@
       border-right: var(--ca-border-width) solid var(--ca-outline-subtle);
     }
 
+    /* The gutter is three tokens, so a page can change it or cancel it (`[data-ca-bleed]`) without a
+       negative margin that copies the shell's spacing. `-px` follows the notch on each side. */
+    /* The app sets --ca-docs-main-pt / -pb / -px (on :root or any ancestor); the shell resolves them into
+       private --x-docs-* values that the flush modifiers and [data-ca-bleed] read. */
     .ca-docs-main {
+      --x-docs-pt: var(--ca-docs-main-pt, var(--ca-space-8));
+      --x-docs-pb: var(--ca-docs-main-pb, var(--ca-space-16));
+      --x-docs-px: var(--ca-docs-main-px, var(--ca-gutter));
+      --x-docs-pr: max(var(--x-docs-px), var(--ca-safe-right));
+      --x-docs-pl: max(var(--x-docs-px), var(--ca-safe-left));
       min-width: 0;
       outline: none;
       /* Fluid gutter keeps content off the sidebar, the TOC and the screen edge (plus notches). */
       padding:
-        var(--ca-space-8)
-        max(var(--ca-gutter), var(--ca-safe-right))
-        var(--ca-space-16)
-        max(var(--ca-gutter), var(--ca-safe-left));
+        var(--x-docs-pt)
+        var(--x-docs-pr)
+        var(--x-docs-pb)
+        var(--x-docs-pl);
+    }
+
+    /* `padding`: none / x / y zero the tokens, so `[data-ca-bleed]` and the pager clearance read 0 too. */
+    .ca-docs-main--flush,
+    .ca-docs-main--flush-x {
+      --x-docs-pr: 0px;
+      --x-docs-pl: 0px;
+    }
+    .ca-docs-main--flush,
+    .ca-docs-main--flush-y {
+      --x-docs-pt: 0px;
+      --x-docs-pb: 0px;
+    }
+
+    /* A child of a padded page that spans the content area edge to edge: it cancels the shell's own
+       horizontal gutter by reference, so no `50vw` (which counts the scrollbar) and no private tokens. */
+    :global([data-ca-bleed]) {
+      margin-inline: calc(var(--x-docs-pl, 0px) * -1) calc(var(--x-docs-pr, 0px) * -1);
     }
 
     .ca-docs-toc {
