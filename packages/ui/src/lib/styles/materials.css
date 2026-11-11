@@ -368,7 +368,7 @@
   --ca-panel-shadow:    none;
   --ca-chrome-border:   var(--ca-outline-default);
 
-  /* glass tints → flat solid */
+  /* glass tints → flat solid (--ca-glass-bg too: Collapsible, Panel and Toast read it, #919) */
   --ca-glass-tint-ultra-thin: var(--ca-surface-raised);
   --ca-glass-tint-thin:       var(--ca-surface-raised);
   --ca-glass-tint:            var(--ca-surface-raised);
@@ -414,6 +414,15 @@
 
 /* ── Outlined: border-defined surfaces, no elevation (Swiss, Brutalism, Terminal).
  *    Recipes raise --ca-border-width and swap --ca-mat-*-shadow for hard offsets. ── */
+/* Material shadows off in the styles that separate by border, not elevation (#919: flat leaked them). */
+[data-style="outlined"],
+[data-style="flat"] {
+  --ca-mat-ultra-thin-shadow: 0 0 #0000;
+  --ca-mat-thin-shadow:       0 0 #0000;
+  --ca-mat-regular-shadow:    0 0 #0000;
+  --ca-mat-thick-shadow:      0 0 #0000;
+  --ca-mat-chrome-shadow:     0 0 #0000;
+}
 [data-style="outlined"] {
   --ca-mat-edge: inset 0 0 0 var(--ca-border-width) var(--ca-border-color);
   --ca-mat-ultra-thin-fill: var(--ca-surface-raised);
@@ -421,11 +430,6 @@
   --ca-mat-regular-fill:    var(--ca-surface-raised);
   --ca-mat-thick-fill:      var(--ca-surface-overlay);
   --ca-mat-chrome-fill:     var(--ca-surface-base);
-  --ca-mat-ultra-thin-shadow: 0 0 #0000;
-  --ca-mat-thin-shadow:       0 0 #0000;
-  --ca-mat-regular-shadow:    0 0 #0000;
-  --ca-mat-thick-shadow:      0 0 #0000;
-  --ca-mat-chrome-shadow:     0 0 #0000;
   --ca-overlay-border: var(--ca-border-color);
   --ca-panel-border:   var(--ca-border-color);
   --ca-chrome-border:  var(--ca-border-color);

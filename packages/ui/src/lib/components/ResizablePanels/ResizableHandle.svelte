@@ -124,7 +124,8 @@
     }
     .ca-resizable__handle[data-direction='horizontal']::before { inset-inline: calc(var(--ca-space-1) * -1); }
     .ca-resizable__handle[data-direction='vertical']::before { inset-block: calc(var(--ca-space-1) * -1); }
-    .ca-resizable__handle:hover,
+    /* Hover darkens the line; the brand colour is kept for dragging and keyboard focus (#919). */
+    .ca-resizable__handle:hover { background: var(--ca-outline-default); }
     .ca-resizable__handle[data-active] { background: var(--ca-brand-fill); }
     .ca-resizable__handle:focus-visible {
       outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
