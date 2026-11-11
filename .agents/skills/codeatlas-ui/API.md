@@ -197,6 +197,9 @@ Variables: `--ca-aside-width`
 | `brandHref?` | `string` |  | Makes the brand a link home: the shell wraps `brand` in one `<a>` in the Rail and one in the mobile header, with a 44px hit area on a coarse pointer (an overhang, the logo keeps its size). Do not put your own `<a>` inside `brand` when you set it. |
 | `brandLabel?` | `string` |  | Accessible name of the brand link (`brandHref`). |
 | `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
+| `railWidth?` | `number` |  | Width of the rail in px (default 52). Sets `--ca-rail-width` on the shell; the content offset, `--ca-shell-inset-left` and the stage inset all follow it. Setting `--ca-rail-width` in CSS (on `:root` or an ancestor) does the same, with no prop. |
+| `railSeparators?` | `boolean` | `true` | Draws the hairlines under the brand and above `railBottom`. `false` removes them, for a rail whose design separates the groups by spacing alone. |
+| `mobileHeader?` | `boolean` | `true` | Renders the header (brand, page title, `mobileHeaderActions`) below 900px. `false` renders none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile, so keep an account entry point elsewhere (`bottomNavOverflow`). |
 | `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
 | `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
@@ -204,7 +207,7 @@ Variables: `--ca-aside-width`
 
 Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`): A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering while it is true. The content region passes pointer events through to the stage; give a page's panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell paints nothing behind the content when a stage is set, so the stage shows.; `header`; `brand`: Brand mark (logo) shown at the top of the Rail and in the mobile header.; `railBottom`: Items pinned to the bottom of the Rail (avatar, notifications…); `railTop`: Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger.; `bottomNavOverflow`: Extra content in the "More" dialog under the modules (search, account, sign out).; `mobileHeaderActions`: Compact controls rendered at the trailing edge of the single mobile header (session/workspace switcher, account menu…). Below 900px the desktop `header` snippet is hidden, so put anything that must stay reachable here.; `mobileTitle`: Replaces the plain page-title text in the mobile header, e.g. a tappable session title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.; `children`
 
-Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
+Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--no-mobile-header` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
 Variables: `--ca-main-ml` `--ca-panel-w-stored` `--ca-shell-inset-bottom` `--ca-shell-inset-left` `--ca-shell-inset-right` `--ca-shell-inset-top`
 
@@ -366,18 +369,21 @@ Tokens: `--ca-avatar-group-overlap` `--ca-avatar-group-ring`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `count?` | `number` |  |  |
+| `max?` | `number` | `99` | Anchored badge: counts above `max` show as `max+` (the label keeps the real count). Default 99. |
 | `dot?` | `boolean` | `false` | Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. |
-| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. |
-| `tone?` | `'brand' \| 'success' \| 'danger' \| 'warning' \| 'info' \| 'neutral'` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. |
+| `color?` | `'brand' \| 'success' \| 'error' \| 'warning' \| (string & {})` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set, except with `tone="custom"`, where it is any CSS colour (`'#7c3aed'`, `'var(--ca-token-status-won)'`) the pill derives its fill, label and subtle tint from. |
+| `tone?` | `'brand' \| 'success' \| 'danger' \| 'warning' \| 'info' \| 'neutral' \| 'custom'` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. `'custom'` colours the pill from `color`. |
 | `subtle?` | `boolean` | `false` | Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. |
 | `size?` | `'sm' \| 'md'` | `'sm'` | Pill only: `sm` is 20px high, `md` 24px. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Parts: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
+Parts: `ca-badge` `ca-badge--brand` `ca-badge--custom` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
 
-Variables: `--ca-badge-fg` `--ca-badge-fill` `--ca-badge-muted` `--ca-badge-on` `--ca-badge-tone` `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-fill` `--ca-semantic-info-muted` `--ca-semantic-neutral-fg` `--ca-semantic-neutral-muted` `--ca-semantic-success-fg` `--ca-semantic-success-fill` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-fill` `--ca-semantic-warning-muted`
+Variables: `--ca-badge-border` `--ca-badge-custom` `--ca-badge-fg` `--ca-badge-fill` `--ca-badge-font-size` `--ca-badge-h` `--ca-badge-muted` `--ca-badge-on` `--ca-badge-tone` `--ca-badge-weight` `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-fill` `--ca-semantic-info-muted` `--ca-semantic-neutral-fg` `--ca-semantic-neutral-muted` `--ca-semantic-success-fg` `--ca-semantic-success-fill` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-fill` `--ca-semantic-warning-muted`
+
+Tokens: `--ca-badge-border` `--ca-badge-font-size` `--ca-badge-h` `--ca-badge-weight`
 
 ## BarChart
 
@@ -851,6 +857,9 @@ Data attributes: `data-state` (`closed` `open`)
 | `against?` | `string` |  | Background to measure contrast against (any CSS color). Omit to hide the readout. |
 | `role?` | `'text' \| 'fill'` | `'text'` | Role of `value` in the contrast pair: `text` (value on `against`) or `fill` (against on value). |
 | `minRatio?` | `number` | `4.5` | Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. |
+| `picker?` | `boolean` | `false` | Open a `ColorPicker` in a Popover from the chip instead of the native picker. Writes in `format`. |
+| `alpha?` | `boolean` | `false` | With `picker`: adds the opacity slider, so `value` can carry alpha. |
+| `swatches?` | `string[]` |  | With `picker`: colors to pick from. |
 | `description?` | `string` |  |  |
 | `width?` | `FieldWidth` |  | `full`, `auto`, `fit` or a CSS length (`--ca-field-width`). Default: the width its content needs. |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | `outlined`, `filled` or `underline`; default follows the theme. |
@@ -858,11 +867,36 @@ Data attributes: `data-state` (`closed` `open`)
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Parts: `ca-color-field` `ca-color-field__contrast` `ca-color-field__level` `ca-color-field__native` `ca-color-field__pick` `ca-color-field__ratio` `ca-color-field__swatch`
+Parts: `ca-color-field` `ca-color-field__contrast` `ca-color-field__level` `ca-color-field__native` `ca-color-field__pick` `ca-color-field__popover` `ca-color-field__ratio` `ca-color-field__swatch`
 
-Variables: `--ca-color-field-fill` `--ca-field-width`
+Variables: `--ca-color-field-fill` `--ca-color-field-popover-width` `--ca-field-width`
 
 Data attributes: `data-disabled`, `data-pass`
+
+Tokens: `--ca-color-field-popover-width`
+
+## ColorPicker
+
+`import { ColorPicker } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Names the color area ("Brand color") and groups the controls. |
+| `value?` | `string` | `'oklch(0.6 0.15 250)'` | `bind:` Bindable CSS color. A string that is not a color is ignored. |
+| `format?` | `'oklch' \| 'hex'` | `'oklch'` | What `value` is written as. |
+| `alpha?` | `boolean` | `false` | Adds the opacity slider; `value` then carries alpha. |
+| `swatches?` | `string[]` |  | Colors to pick from, any CSS color. The one equal to `value` shows as checked. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(value: string) => void` |  |  |
+
+Parts: `ca-color-picker` `ca-color-picker__alpha` `ca-color-picker__area` `ca-color-picker__hue` `ca-color-picker__slice` `ca-color-picker__thumb` `ca-color-picker__track`
+
+Variables: `--ca-color-picker-color` `--ca-color-picker-gap` `--ca-color-picker-pos` `--ca-color-picker-radius` `--ca-color-picker-ratio` `--ca-color-picker-thumb-size` `--ca-color-picker-top` `--ca-color-picker-track-height` `--ca-color-picker-width` `--ca-color-picker-x` `--ca-color-picker-y`
+
+Data attributes: `data-disabled`, `data-dragging`
+
+Tokens: `--ca-color-picker-gap` `--ca-color-picker-pos` `--ca-color-picker-radius` `--ca-color-picker-ratio` `--ca-color-picker-thumb-size` `--ca-color-picker-top` `--ca-color-picker-track-height` `--ca-color-picker-width`
 
 ## Combobox
 
@@ -1695,6 +1729,44 @@ Also accepts: `Omit<HTMLAnchorAttributes, 'class' \| 'children' \| 'target' \| '
 
 Parts: `ca-external-link`
 
+## Field
+
+`import { Field } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Visible label, tied to the control by `for`/`id`. |
+| `hideLabel?` | `boolean` | `false` | Keeps the label for assistive tech only. |
+| `description?` | `string` |  | Help text under the control, read after the label. |
+| `error?` | `string` |  | Error under the control: `role="alert"`, and the control gets `aria-invalid`. |
+| `required?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children` (`Snippet<[FieldControlProps]>`): The control. Spread the props it receives onto the element that takes the value.
+
+Parts: `ca-field` `ca-field__description` `ca-field__error`
+
+Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading`
+
+Tokens: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading`
+
+## Fieldset
+
+`import { Fieldset } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `legend` | `string` |  | The group's name: a `<legend>`. |
+| `hideLegend?` | `boolean` | `false` |  |
+| `description?` | `string` |  |  |
+| `error?` | `string` |  | Group-level error: `role="alert"`, and the group gets `aria-invalid`. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Parts: `ca-fieldset` `ca-fieldset__body` `ca-fieldset__description` `ca-fieldset__error` `ca-fieldset__legend`
+
 ## FileUpload
 
 `import { FileUpload } from "@codeatlasdev/ui"`
@@ -2010,6 +2082,20 @@ Parts: `ca-image` `ca-image--contain` `ca-image--cover` `ca-image--ratio`
 
 Variables: `--ca-aspect`
 
+## InputGroup
+
+`import { InputGroup } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`: A `TextField`, `Select` or `NumberField` and `Button` / `IconButton`s, joined into one control.
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
+Parts: `ca-btn` `ca-icon-btn` `ca-input-group`
+
 ## InstallPrompt
 
 `import { InstallPrompt } from "@codeatlasdev/ui"`
@@ -2117,6 +2203,24 @@ KpiGrid: a row of KpiCards (or any equal-weight tiles) that never ends on a part
 Snippets: `children`
 
 Parts: `ca-kpi-grid` `ca-kpi-grid__grid`
+
+## Label
+
+`import { Label } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `required?` | `boolean` | `false` | Adds the required marker (decorative: the control carries `required` / `aria-required`). |
+| `hidden?` | `boolean` | `false` | Keeps the label for assistive tech only. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLLabelAttributes, 'class' \| 'children' \| 'hidden'>`
+
+Parts: `ca-label` `ca-label__req`
+
+Variables: `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color`
 
 ## Lightbox
 
@@ -2599,15 +2703,23 @@ Parts: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn-
 | `onOpenChange?` | `(open: boolean) => void` |  | Called when the user opens or closes the panel, not when the parent sets open. |
 | `count?` | `number` |  | Unread total. Defaults to the unread notifications in the list. |
 | `loading?` | `boolean` | `false` | Shows loading text while keeping loaded notifications visible. |
+| `error?` | `{ onRetry?: () => void; message?: string }` |  | Load failure: shows the message and a retry button (when `onRetry` is set) above any loaded notifications. `loading` wins while it is true. |
+| `side?` | `Side` | `'bottom'` | Panel side of the bell. Default `bottom`; flips when it does not fit. |
+| `align?` | `Align` | `'end'` | Panel alignment on that side. Default `end`. |
+| `sideOffset?` | `number` | `8` | Gap between bell and panel in px. Default 8. |
+| `width?` | `string` |  | Panel width, any CSS length (`420px`, `30rem`). Default 340px; never wider than the viewport. |
+| `max?` | `number` | `99` | The badge shows `max+` above this count. Default 99. The accessible name keeps the real count. |
 | `onRead?` | `(id: string) => void` |  |  |
 | `onReadAll?` | `() => void` |  |  |
 | `onClear?` | `() => void` |  |  |
 | `class?` | `string` | `''` |  |
-| `labels?` | `{ title?: string; markAll?: string; clear?: string; empty?: string; loading?: string; }` | `{}` | Label overrides for i18n. Defaults to English strings. |
+| `labels?` | `{ title?: string; markAll?: string; clear?: string; empty?: string; loading?: string; error?: string; retry?: string; /** `(title) => string`: name of the per-row mark-as-read button. */ markRead?: (title: string) => string; }` | `{}` | Label overrides for i18n. Defaults to English strings. |
 
-Snippets: `children`
+Snippets: `emptyContent`: Replaces the `empty` string when there are no notifications.; `item` (`Snippet<[NotificationItem, NotificationItemControls]>`): Owns one row: `(notification, { close, markRead })`. Replaces the default row, `href` and `icon` included.; `children`
 
-Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca-notif-header` `ca-notif-item` `ca-notif-item--unread` `ca-notif-item__body` `ca-notif-item__btn` `ca-notif-item__dot` `ca-notif-item__dot--default` `ca-notif-item__dot--error` `ca-notif-item__dot--info` `ca-notif-item__dot--success` `ca-notif-item__dot--warning` `ca-notif-item__text` `ca-notif-item__time` `ca-notif-item__title` `ca-notif-list` `ca-notif-panel` `ca-notif-title` `ca-notif-trigger`
+Parts: `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca-notif-error` `ca-notif-header` `ca-notif-item` `ca-notif-item--unread` `ca-notif-item__body` `ca-notif-item__btn` `ca-notif-item__dot` `ca-notif-item__dot--default` `ca-notif-item__dot--error` `ca-notif-item__dot--info` `ca-notif-item__dot--success` `ca-notif-item__dot--warning` `ca-notif-item__icon` `ca-notif-item__read` `ca-notif-item__text` `ca-notif-item__time` `ca-notif-item__title` `ca-notif-list` `ca-notif-panel` `ca-notif-title` `ca-notif-trigger`
+
+Variables: `--ca-available-height` `--ca-notif-body-lines` `--ca-notif-width` `--ca-semantic-error-text`
 
 ## NumberField
 
@@ -2673,7 +2785,7 @@ Parts: `ca-page-frame` `ca-page-frame__aside` `ca-page-frame__body` `ca-page-fra
 
 Internal (may change in any release): `ca-x-aside-layout` `ca-x-aside-main`
 
-Variables: `--ca-aside-width` `--ca-bg-default` `--ca-focus-ring-color` `--ca-focus-ring-width` `--ca-frame-drag-h` `--ca-frame-gap` `--ca-frame-w`
+Variables: `--ca-aside-width` `--ca-bg-default` `--ca-focus-ring-color` `--ca-focus-ring-width` `--ca-frame-border-width` `--ca-frame-drag-h` `--ca-frame-gap` `--ca-frame-pad-x` `--ca-frame-pad-y` `--ca-frame-w`
 
 Data attributes: `data-aside`, `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`, `data-mode` (`page` `split`), `data-padded`, `data-sheet`, `data-side` (`left` `right`), `data-width` (`lg` `md` `sm` `xl`)
 
@@ -2683,6 +2795,7 @@ Data attributes: `data-aside`, `data-bordered`, `data-detent` (`full` `peek`), `
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `scroll?` | `boolean` | `true` | `false`: the page does not scroll itself (the window or an outer shell does): no nested scroller, no tab stop, and the bottom clears `--ca-shell-inset-bottom`. |
 | `title?` | `string` |  |  |
 | `icon?` | `IconComponent` |  | Icon in a decorative tile before the title. Size and tint: `--ca-page-icon-size` and `--ca-page-icon-bg`. |
 | `count?` | `number \| string` |  | A count after the title ("Deals, 128"). The number is part of the heading's accessible name (and so of the region's), through its `aria-label` (it starts with the visible title); the visible badge is not announced twice. |
@@ -2699,9 +2812,9 @@ Data attributes: `data-aside`, `data-bordered`, `data-detent` (`full` `peek`), `
 
 Snippets: `titleExtra`: Anything else inline with the title, after the count (a status badge, a filter chip).; `actions`; `aside`: Companion column (in-page index, summary, help, preview). Next to the content (sticky) when the shell is wide enough, after the content below that. Rendered as `<aside>`.; `children`
 
-Parts: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__count` `ca-page-shell__description` `ca-page-shell__extra` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__heading` `ca-page-shell__icon` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__leading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
+Parts: `ca-page-shell` `ca-page-shell--flow` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__count` `ca-page-shell__description` `ca-page-shell__extra` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__heading` `ca-page-shell__icon` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__leading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
 
-Variables: `--ca-aside-width` `--ca-page-icon-bg` `--ca-page-icon-size` `--ca-reading-width`
+Variables: `--ca-aside-width` `--ca-page-icon-bg` `--ca-page-icon-size` `--ca-page-max` `--ca-reading-width` `--ca-shell-inset-bottom`
 
 ## Pagination
 
@@ -2950,11 +3063,16 @@ Data attributes: `data-disabled`, `data-state` (`checked` `unchecked`)
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
 | `labels?` | `boolean` | `false` | Shows the module label under each icon (small caption). The button's name is the same either way. |
+| `separators?` | `boolean` | `true` | The hairline under the brand and the one above the bottom slot. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `brand`: Brand mark at the top of the rail. Defaults to the "CA" wordmark.; `top`: Control between the brand and the modules, e.g. a search / ⌘K trigger.; `bottom`: Items pinned to the bottom of the rail (avatar, notifications, etc.)
 
 Parts: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
+
+Variables: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
+
+Tokens: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
 
 ## RangeCalendar
 
@@ -3553,14 +3671,19 @@ Stat — a card-less statistic: label, big number, optional unit, trend and hint
 | `trendTone?` | `'positive-up' \| 'positive-down' \| 'neutral'` |  | Which direction of `trend` is good news. `'positive-up'` (the colouring without a tone): a rise is green, a fall red. `'positive-down'` (churn, cost, latency): a fall is green, a rise red. `'neutral'`: no judgement, both muted. Setting a tone also makes the accessible label say "better" or "worse"; a zero change is always neutral. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` | Value size: `'sm'` (17px), `'md'` (24px, the default), `'lg'` (36px). |
 | `align?` | `'start' \| 'center'` | `'start'` | Text alignment inside the stat. |
+| `labelPlacement?` | `'above' \| 'below'` | `'above'` | Where the label sits: `'above'` the number (default) or `'below'` it. Visual only: the `<dt>` stays first in the DOM. |
+| `labelCase?` | `'upper' \| 'sentence'` | `'upper'` | `'upper'` (default): uppercase overline label. `'sentence'`: the text as written, no tracking. |
+| `valueFont?` | `'display' \| 'sans'` | `'display'` | Font of the number: the theme's `'display'` font (default) or the UI `'sans'` font. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__unit` `ca-stat__value`
 
-Variables: `--ca-stat-value-size`
+Variables: `--ca-stat-gap` `--ca-stat-label-size` `--ca-stat-label-weight` `--ca-stat-value-font` `--ca-stat-value-line-height` `--ca-stat-value-size` `--ca-stat-value-weight`
 
-Data attributes: `data-align` (`center`), `data-size` (`lg` `md` `sm`), `data-tone` (`bad` `good` `neutral`)
+Data attributes: `data-align` (`center`), `data-label-case` (`sentence`), `data-label-placement` (`below`), `data-size` (`lg` `md` `sm`), `data-tone` (`bad` `good` `neutral`), `data-value-font` (`sans`)
+
+Tokens: `--ca-stat-gap` `--ca-stat-label-size` `--ca-stat-label-weight` `--ca-stat-value-font` `--ca-stat-value-line-height` `--ca-stat-value-weight`
 
 ## StatusChip
 
@@ -4117,6 +4240,45 @@ Internal (may change in any release): `ca-tooltip-in` `ca-tooltip-out`
 
 Data attributes: `data-state` (`closed`)
 
+## Tour
+
+`import { Tour } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `steps` | `TourStep[]` |  |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable: the tour is showing. |
+| `step?` | `number` | `0` | `bind:` Bindable: index of the current step. |
+| `onclose?` | `(reason: 'done' \| 'skip') => void` |  | Called when the last step is done or the tour is skipped / dismissed. |
+
+Parts: `ca-tour` `ca-tour__actions` `ca-tour__body` `ca-tour__foot` `ca-tour__head` `ca-tour__progress` `ca-tour__title`
+
+Variables: `--ca-tour-width`
+
+Data attributes: `data-ca-tour-target`
+
+Tokens: `--ca-tour-width`
+
+## TreeView
+
+`import { TreeView } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `nodes` | `TreeNode[]` |  |  |
+| `aria-label` | `string` |  | Accessible name of the tree. |
+| `selected?` | `string` |  | `bind:` Bindable selected node id. |
+| `expanded?` | `string[]` | `[]` | `bind:` Bindable expanded node ids. |
+| `loadChildren?` | `(node: TreeNode) => Promise<TreeNode[]>` |  | Loads a node's children on first expand (lazy tree). |
+| `onselect?` | `(node: TreeNode) => void` |  |  |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-tree` `ca-tree__group` `ca-tree__item` `ca-tree__label` `ca-tree__row` `ca-tree__toggle`
+
+Variables: `--ca-tree-depth` `--ca-tree-indent` `--ca-tree-row-h`
+
+Tokens: `--ca-tree-indent` `--ca-tree-row-h`
+
 ## Turnstile
 
 `import { Turnstile } from "@codeatlasdev/ui/forms"`
@@ -4293,8 +4455,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@292: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@294: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@295: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@297: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
@@ -4636,6 +4798,16 @@ Font weights: light 300, regular 400, medium 500, bold 600.
 const fontWeight: { readonly light: 300; readonly regular: 400; readonly medium: 500; readonly bold: 600; }
 ```
 
+### formatColor
+
+`import { formatColor } from "@codeatlasdev/ui"`
+
+A CSS color string for an OKLCH triple and alpha: `oklch(L C H)` (with `/ alpha` only when translucent) or `#rrggbb` (`#rrggbbaa` when translucent, gamut-clipped).
+
+```ts
+function formatColor(color: Oklch, alpha: number, format: "oklch" | "hex"): string
+```
+
 ### formatCurrency
 
 `import { formatCurrency } from "@codeatlasdev/ui"`
@@ -4864,6 +5036,16 @@ const MATERIAL_BLUR_VARS: Record<Thickness, string>
 
 ```ts
 const MATERIAL_CSS_VARS: Record<Thickness, string>
+```
+
+### maxChroma
+
+`import { maxChroma } from "@codeatlasdev/ui"`
+
+The largest chroma that still fits the sRGB gamut at lightness `l` and hue `h` (0 at black and white), found by bisection to 0.0005. A color picker draws its chroma axis up to it so the area never offers a color the screen would clip.
+
+```ts
+function maxChroma(l: number, h: number): number
 ```
 
 ### mergeTheme
@@ -5377,7 +5559,7 @@ Types:
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
-| `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
+| `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| "auto" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. `"auto"` is comfortable under a coarse pointer (touch targets stay 44px) and compact under a fine one (mouse, trackpad), where spacing, control heights and body text shrink together (#999). |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `Direction` | `type Direction = (typeof DIRECTION)[number];` |  |
@@ -5423,7 +5605,7 @@ Types:
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
 | `NavExtras` | `interface NavExtras { reorder?: Component<NavReorderProps>; itemMenu?: Component<{ label: string; actions: Snippet }>; }` | Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
-| `NavModule` | `interface NavModule { id: string; label: string; fullLabel?: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; fullLabel?: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; badgeTone?: "brand" \| "error"; }` |  |
 | `NavMoreSheetProps` | `interface NavMoreSheetProps { open: boolean; title: string; rest: NavModule[]; visibleCount: number; activeIndex: number; overflow?: Snippet; onPick: (index: number) => void; }` | Props of the opt-in `NavMoreSheet` (see `AppShellLayout.moreSheet`). |
 | `NavReorderEvent` | `interface NavReorderEvent { id: string; from: number; to: number; }` | A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. |
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
@@ -5901,6 +6083,7 @@ Types:
 | `onReorder?` | `(e: NavReorderEvent) => void` | Same as `NavSection.onReorder`, for the items that sit directly in `items` (outside any section). |
 | `badge?` | `number \| "dot"` | Marker on the module's rail icon and bottom-nav tab: a number (capped at 99+) or `'dot'` (something is going on, no count). `0` and `undefined` render nothing. The marker is part of the button's accessible name: "Inbox, 12 unread", or `badgeLabel` when set. |
 | `badgeLabel?` | `string` | Accessible text for `badge`, appended to the module label ("Map, Search running"). Needed for a `'dot'` that should say more than "New", and for a count that is not "unread" ("3 tasks pending"). Translate it yourself: the shell cannot. |
+| `badgeTone?` | `"brand" \| "error"` | Colour of the `badge`: `'brand'` (default) for something pending, `'error'` for something overdue or failed. Colour is not the only signal: say it in `badgeLabel` ("3 overdue"). |
 
 #### NavMoreSheetProps
 
@@ -8333,6 +8516,16 @@ Dominant colors of an RGBA pixel buffer (`ImageData.data`), by k-means in OKLab 
 function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefined; maxSamples?: number | undefined; minDistance?: number | undefined; }): PaletteColor[]
 ```
 
+### formatColor
+
+`import { formatColor } from "@codeatlasdev/ui/utils/color"`
+
+A CSS color string for an OKLCH triple and alpha: `oklch(L C H)` (with `/ alpha` only when translucent) or `#rrggbb` (`#rrggbbaa` when translucent, gamut-clipped).
+
+```ts
+function formatColor(color: Oklch, alpha: number, format: "oklch" | "hex"): string
+```
+
 ### formatOklch
 
 `import { formatOklch } from "@codeatlasdev/ui/utils/color"`
@@ -8341,6 +8534,16 @@ function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefi
 
 ```ts
 function formatOklch(options: Oklch): string
+```
+
+### maxChroma
+
+`import { maxChroma } from "@codeatlasdev/ui/utils/color"`
+
+The largest chroma that still fits the sRGB gamut at lightness `l` and hue `h` (0 at black and white), found by bisection to 0.0005. A color picker draws its chroma axis up to it so the area never offers a color the screen would clip.
+
+```ts
+function maxChroma(l: number, h: number): number
 ```
 
 ### oklchHex
@@ -8353,6 +8556,16 @@ Opaque `#rrggbb` for an OKLCH triple (gamut-clipped).
 function oklchHex(options: Oklch): string
 ```
 
+### oklchSlice
+
+`import { oklchSlice } from "@codeatlasdev/ui/utils/color"`
+
+RGBA pixels (row-major, `width * height * 4`) of the OKLCH slice at hue `h`: lightness 1 on the top row to 0 on the bottom, chroma 0 on the left column to `cmax` on the right. A pixel outside the sRGB gamut is fully transparent, so the area shows only colors the screen can display.
+
+```ts
+function oklchSlice(h: number, width: number, height: number, cmax: number): Uint8ClampedArray<ArrayBuffer>
+```
+
 ### parseColorInput
 
 `import { parseColorInput } from "@codeatlasdev/ui/utils/color"`
@@ -8361,6 +8574,16 @@ Parse what a user types into a color field: `#rgb`, `#rrggbb`, `rgb()`, `oklch()
 
 ```ts
 function parseColorInput(input: string): { hex: string; oklch: Oklch; alpha: number; css: string } | null
+```
+
+### peakChroma
+
+`import { peakChroma } from "@codeatlasdev/ui/utils/color"`
+
+The highest chroma any lightness reaches at hue `h` inside sRGB (the tip of its gamut triangle).
+
+```ts
+function peakChroma(h: number): number
 ```
 
 ### pickBrand
