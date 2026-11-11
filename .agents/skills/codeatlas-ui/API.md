@@ -232,11 +232,15 @@ Tokens: `--ca-aspect`
 | `onpause?` | `(e: Event) => void` |  | Called when playback pauses. |
 | `onended?` | `(e: Event) => void` |  | Called when the audio reaches its end. |
 | `onerror?` | `(e: Event) => void` |  | Called when the audio cannot be loaded or played. |
+| `tone?` | `'brand' \| 'inherit'` | `'brand'` | Colours. `brand` (default): played bars and the play button use the brand fill. `inherit`: everything is drawn from the surrounding text colour (`currentColor`), so the player reads on any surface, such as the brand-filled outgoing `MessageBubble`. |
+| `variant?` | `'default' \| 'voice'` | `'default'` | `voice` draws a round, filled play button (the text colour as fill, `--ca-audio-surface` for the glyph). |
 | `class?` | `string` | `''` | Extra class on the root. |
 
-Parts: `ca-audio` `ca-audio__bar` `ca-audio__bar--played` `ca-audio__error` `ca-audio__meta` `ca-audio__rate` `ca-audio__scrub` `ca-audio__wave`
+Parts: `ca-audio` `ca-audio--inherit` `ca-audio--voice` `ca-audio__bar` `ca-audio__bar--played` `ca-audio__error` `ca-audio__meta` `ca-audio__rate` `ca-audio__scrub` `ca-audio__wave`
 
-Variables: `--ca-audio-bar-gap` `--ca-audio-bar-w` `--ca-audio-wave-h`
+Variables: `--ca-audio-bar-gap` `--ca-audio-bar-w` `--ca-audio-max-w` `--ca-audio-min-w` `--ca-audio-surface` `--ca-audio-wave-h`
+
+Tokens: `--ca-audio-bar-gap` `--ca-audio-bar-w` `--ca-audio-max-w` `--ca-audio-min-w` `--ca-audio-surface` `--ca-audio-wave-h`
 
 ## AuthCard
 
@@ -2342,7 +2346,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children'>`
 
 Parts: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__quote--button` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__retry` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--failed` `ca-bubble__status--read`
 
-Variables: `--ca-bubble-avatar` `--ca-bubble-radius` `--ca-bubble-tail`
+Variables: `--ca-audio-surface` `--ca-bubble-avatar` `--ca-bubble-radius` `--ca-bubble-tail`
 
 Data attributes: `data-grouped` (`last` `middle` `single`)
 
