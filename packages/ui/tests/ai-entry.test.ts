@@ -312,3 +312,43 @@ describe("llms.txt links the agent-readable .txt form of every page and recipe (
 		expect(head).toContain("/llms/<group>/<slug>.txt");
 	});
 });
+
+describe("llms.txt lists what the library does not provide yet (#941)", () => {
+	const notProvided = [
+		{ number: 770, title: "TreeView component" },
+		{ number: 774, title: "EventCalendar (@codeatlasdev/ui/calendar)" },
+	];
+
+	it("links each open request to its issue, so an agent comments instead of rebuilding", () => {
+		const out = buildLlmsIndex({ docs: [], recipes: [], groups: [], notProvided });
+		expect(out).toContain("## Not provided yet");
+		expect(out).toContain("[TreeView component](https://github.com/codeatlasdev/ui/issues/770)");
+		expect(out).toContain(
+			"[EventCalendar (@codeatlasdev/ui/calendar)](https://github.com/codeatlasdev/ui/issues/774)"
+		);
+	});
+
+	it("has no such section when nothing is pending", () => {
+		expect(buildLlmsIndex({ docs: [], recipes: [], groups: [], notProvided: [] })).not.toContain(
+			"Not provided yet"
+		);
+		expect(buildLlmsIndex({ docs: [], recipes: [], groups: [] })).not.toContain("Not provided yet");
+	});
+});
+
+describe("not-provided.json (#941)", () => {
+	it("drops a commit-style prefix and keeps the oldest request first", async () => {
+		const { toRequests } = await import("../../../scripts/not-provided.ts");
+		expect(
+			toRequests([
+				{ number: 820, title: "feat: AppShellLayout Rail overflow" },
+				{ number: 672, title: "docs+feat: adoption path for SPAs" },
+				{ number: 770, title: "TreeView component" },
+			])
+		).toEqual([
+			{ number: 672, title: "adoption path for SPAs" },
+			{ number: 770, title: "TreeView component" },
+			{ number: 820, title: "AppShellLayout Rail overflow" },
+		]);
+	});
+});

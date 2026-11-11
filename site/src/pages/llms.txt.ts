@@ -1,3 +1,4 @@
+import notProvided from "~/data/not-provided.json";
 import { CATALOG } from "~/demos/catalog";
 import { demoSource } from "~/lib/demo-source";
 import { loadDocs } from "~/lib/docs";
@@ -25,6 +26,7 @@ export async function GET() {
 		href: (slug) => `${SITE}${docHref(slug)}`,
 		version: pkg.version,
 		counts: { demos: CATALOG.length },
+		notProvided,
 	});
 	return new Response(text, { headers: { "content-type": "text/plain; charset=utf-8" } });
 }
