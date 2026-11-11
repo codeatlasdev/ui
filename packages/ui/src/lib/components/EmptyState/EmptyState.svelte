@@ -90,7 +90,7 @@
       font-weight: var(--ca-empty-title-weight, var(--ca-font-weight-semibold));
       color: var(--ca-text-primary);
       margin: 0;
-      line-height: var(--ca-empty-title-leading, inherit);
+      line-height: var(--ca-empty-title-leading, revert-layer);
       letter-spacing: var(--ca-empty-title-tracking, var(--ca-heading-tracking));
       text-transform: var(--ca-heading-case);
     }
