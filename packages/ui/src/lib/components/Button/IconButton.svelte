@@ -21,6 +21,12 @@
     /** Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. */
     loading?: boolean;
     'aria-label': string;
+    /** Renders an `<a>` with the icon button look, for icon-only links (`tel:`, a maps app, an external page). */
+    href?: string;
+    /** Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. */
+    target?: string;
+    /** Anchor `rel`, used with `href`. */
+    rel?: string;
     class?: string;
     children?: Snippet;
     onclick?: (e: MouseEvent) => void;
@@ -33,6 +39,9 @@
     disabled = false,
     loading = false,
     'aria-label': ariaLabel,
+    href,
+    target,
+    rel: relProp,
     class: className = '',
     children,
     onclick,
@@ -46,6 +55,9 @@
   });
 
   const isDisabled = $derived(disabled || loading);
+  const rel = $derived(
+    target === '_blank' ? [...new Set([...(relProp ?? '').split(/\s+/).filter(Boolean), 'noopener', 'noreferrer'])].join(' ') : relProp
+  );
 
   // Tell assistive tech when the busy state ends (aria-busy alone is not announced on change).
   let wasLoading = false;
@@ -56,25 +68,49 @@
   const spinnerSize = $derived(size === 'lg' ? 22 : size === 'md' ? 18 : 16);
 </script>
 
-<button
-  {...rest}
-  type="button"
-  disabled={isDisabled}
-  aria-label={ariaLabel}
-  class="ca-icon-btn ca-icon-btn--{variant} ca-icon-btn--{size} {className}"
-  class:ca-icon-btn--neutral={tone === 'neutral' && variant === 'outlined'}
-  class:ca-icon-btn--danger={tone === 'danger' && (variant === 'outlined' || variant === 'text')}
-  class:ca-icon-btn--loading={loading}
-  aria-disabled={isDisabled}
-  aria-busy={loading || undefined}
-  {onclick}
->
-  {#if loading}
-    <Spinner size={spinnerSize} />
-  {:else}
-    {@render children?.()}
-  {/if}
-</button>
+{#if href}
+  <a
+    {...rest}
+    {href}
+    {target}
+    {rel}
+    aria-label={ariaLabel}
+    class="ca-icon-btn ca-icon-btn--{variant} ca-icon-btn--{size} {className}"
+    class:ca-icon-btn--neutral={tone === 'neutral' && variant === 'outlined'}
+    class:ca-icon-btn--danger={tone === 'danger' && (variant === 'outlined' || variant === 'text')}
+    class:ca-icon-btn--loading={loading}
+    aria-disabled={isDisabled || undefined}
+    aria-busy={loading || undefined}
+    tabindex={isDisabled ? -1 : undefined}
+    onclick={isDisabled ? (e) => e.preventDefault() : onclick}
+  >
+    {#if loading}
+      <Spinner size={spinnerSize} />
+    {:else}
+      {@render children?.()}
+    {/if}
+  </a>
+{:else}
+  <button
+    {...rest}
+    type="button"
+    disabled={isDisabled}
+    aria-label={ariaLabel}
+    class="ca-icon-btn ca-icon-btn--{variant} ca-icon-btn--{size} {className}"
+    class:ca-icon-btn--neutral={tone === 'neutral' && variant === 'outlined'}
+    class:ca-icon-btn--danger={tone === 'danger' && (variant === 'outlined' || variant === 'text')}
+    class:ca-icon-btn--loading={loading}
+    aria-disabled={isDisabled}
+    aria-busy={loading || undefined}
+    {onclick}
+  >
+    {#if loading}
+      <Spinner size={spinnerSize} />
+    {:else}
+      {@render children?.()}
+    {/if}
+  </button>
+{/if}
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;

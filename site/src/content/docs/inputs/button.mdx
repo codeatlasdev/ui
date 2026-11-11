@@ -92,3 +92,11 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
 ```svelte
 <Button variant="ghost" tone="danger">Disconnect</Button>
 ```
+
+## IconButton as a link
+
+`href` renders an `<a>` with the icon button look: middle-click, copy link and a link role for assistive tech, the same size, focus ring and touch target. `target="_blank"` adds `noopener noreferrer`; a disabled link leaves the tab order and does not navigate.
+
+```svelte
+<IconButton href="tel:+5511999990000" aria-label="Call Ana"><Phone size={16} /></IconButton>
+```
