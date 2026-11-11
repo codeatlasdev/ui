@@ -331,3 +331,66 @@ describe("VirtualList scroll chaining (#711)", () => {
 		expect(style.overscrollBehaviorX).not.toBe("contain");
 	});
 });
+
+describe("VirtualList swapping the list (#865)", () => {
+	it(
+		"opens a different list at its end even when the user had scrolled up",
+		async () => {
+			const screen = await render(Harness, { props: { initial: 120 } });
+			await settle();
+			const el = scroller(screen.container);
+			el.scrollTop = el.scrollHeight / 2;
+			await settle();
+			expect(el.scrollHeight - el.scrollTop - el.clientHeight).toBeGreaterThan(200);
+			screen.component.swap(1000, 80);
+			await waitFor(() => rowOf(screen.container, 1079) !== null);
+			await settle();
+			expect(el.scrollHeight - el.scrollTop - el.clientHeight).toBeLessThan(2);
+			expect(rowOf(screen.container, 1079)).not.toBeNull();
+		},
+		SLOW_FLOW
+	);
+
+	it(
+		"keeps following the tail when rows are appended to the same list",
+		async () => {
+			const screen = await render(Harness, { props: { initial: 120 } });
+			await settle();
+			const el = scroller(screen.container);
+			screen.component.append(5);
+			await waitFor(() => rowOf(screen.container, 125) !== null);
+			await settle();
+			expect(el.scrollHeight - el.scrollTop - el.clientHeight).toBeLessThan(2);
+		},
+		SLOW_FLOW
+	);
+
+	it(
+		"does not pull a scrolled-up reader down when rows are appended",
+		async () => {
+			const screen = await render(Harness, { props: { initial: 120 } });
+			await settle();
+			const el = scroller(screen.container);
+			el.scrollTop = el.scrollHeight / 2;
+			await settle();
+			const at = el.scrollTop;
+			screen.component.append(5);
+			await settle();
+			expect(Math.abs(el.scrollTop - at)).toBeLessThanOrEqual(1);
+		},
+		SLOW_FLOW
+	);
+});
+
+describe("VirtualList height='100%' (#830)", () => {
+	it("bounds the scroller to a percentage of its parent", async () => {
+		const screen = await render(Harness, { props: { initial: 200, height: "100%" } });
+		const host = screen.container as HTMLElement;
+		host.style.height = "200px";
+		host.style.width = "300px";
+		await settle();
+		const el = scroller(host);
+		expect(el.getBoundingClientRect().height).toBeCloseTo(200, 0);
+		expect(el.scrollHeight).toBeGreaterThan(el.clientHeight);
+	});
+});
