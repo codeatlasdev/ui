@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #5026 "Settings page" (layout/sortable-list).
+What it shows: A complete settings page: AppSettings tabs with a reorderable list of pipeline stages (grip, menu, Edit on a phone) and a notifications tab of switches. When to use: The configuration screen of a CRM: editable lists such as stages, tags or loss reasons next to plain toggles, with one Save action.
+Spec:
+- `<AppSettings title={m.title} description={m.description} {tabs}>`
+- `<SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label={m.stages.list}>`
+- `<EditableRow label={stage.name}>`
+- `<FormSection title={m.email.title} layout="list">`
+- `<SettingItem label={m.email.newDeal} description={m.email.newDealHint}>`
+Names: Settings editor page | Pipeline stages settings | Configurações do funil | Ajustes del embudo
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5026 Settings page → file, what changed, https://ui.codeatlas.com.br/docs/layout/sortable-list#settings-page; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5026.txt   Components API: ca-ui-mcp get_component(AppSettings)

@@ -2,7 +2,7 @@
 	"summary": "A complete record page: a PageShell with a back link, an edit action and a summary aside, around a Card that holds a RecordList of the company's contacts.",
 	"use": "The detail screen of one CRM record (company, account, project): facts beside the page, related records as dense rows that stack on a phone.",
 	"spec": [
-		"`<PageShell title={m.title} description={m.description} backHref=\"/companies\" backLabel={m.back} asideLabel={m.aside}>`",
+		"`<PageShell title={m.title} description={m.description} backHref=\"#companies\" backLabel={m.back} asideLabel={m.aside}>`",
 		"`<Card full flush title={m.contacts.title} headingLevel={2}>`",
 		"`<RecordList columns=\"minmax(0,1.4fr) minmax(0,1fr) 6rem\" actions labels={m.contacts.labels} aria-label={m.contacts.list}>`",
 		"`<RecordCell label={m.contacts.role}>`"

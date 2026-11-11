@@ -410,3 +410,7 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5021 | Filter strip, overflow scroll | inputs/toolbar | Button, Toolbar |
 | 5022 | Flush in a panel | surfaces/collapsible | Collapsible |
 | 5023 | Flush in a panel | surfaces/accordion | Accordion, AccordionItem |
+| 5024 | Deals page | display/kanban | Button, Kanban, PageShell |
+| 5025 | Inbox page | layout/master-detail | Avatar, ConversationItem, EmptyState, MasterDetail, MessageBubble, TextField |
+| 5026 | Settings page | layout/sortable-list | AppSettings, Button, Divider, EditableRow, FormSection, SettingItem, SortableList, Switch, TextField |
+| 5027 | Record page | layout/record-list | Avatar, Button, Card, DropdownMenu, DropdownMenuItem, IconButton, PageShell, RecordCell, RecordList, RecordRow |
