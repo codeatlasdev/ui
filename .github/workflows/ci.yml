@@ -1,12 +1,7 @@
 name: CI
-# The land gate (#822): "CI ok" is required on main and PRs merge through the merge queue
-# (merge_group), which tests queued PRs together so two PRs that pass alone cannot break main.
-# Runner-native (ubuntu-24.04, no containers): one build shared through artifacts, browser suites
-# sharded, jobs skipped when the files they cover did not change. Branch rules require only
-# "CI ok", so shards can change without touching repository settings. Runs on fork PRs too.
+# After merge, not before (#859): the land gate is local (validate + affected tests on a tree rebased onto main),
+# and these full suites run on main, where a red run is fixed forward. Releases still run the full suites locally.
 on:
-  pull_request:
-  merge_group:
   push:
     branches: [main]
   workflow_dispatch:
@@ -18,13 +13,11 @@ on:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
 
-# Browser suites run once per land, in the merge queue (and on push to main): a PR run checks Validate + build only,
-# because the queue tests the combined tree that actually merges (#838).
 jobs:
   changes:
     name: Changed areas
@@ -33,13 +26,11 @@ jobs:
     permissions:
       pull-requests: read
     outputs:
-      # A queue run tests the combined tree of several PRs: run everything.
-      package: ${{ github.event_name == 'merge_group' || steps.filter.outputs.package == 'true' }}
-      site: ${{ github.event_name == 'merge_group' || steps.filter.outputs.site == 'true' }}
+      package: ${{ steps.filter.outputs.package == 'true' }}
+      site: ${{ steps.filter.outputs.site == 'true' }}
     steps:
       - uses: actions/checkout@v7
       - id: filter
-        if: github.event_name != 'merge_group'
         uses: dorny/paths-filter@v4
         with:
           # Anything shared (lockfile, root config, CI) counts as a package change: run everything.
@@ -88,7 +79,7 @@ jobs:
   components:
     name: Component tests (${{ matrix.shard }}/2)
     needs: changes
-    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -116,9 +107,9 @@ jobs:
   throttled:
     name: Component tests (CPU throttled)
     needs: changes
-    # In the queue: the 40x cases (slow-CPU behaviour stays a merge gate). The 150x cases run after merge (push to main)
-    # and on demand: on the 4-vCPU runner one hung for 15 min with no output, outside every test timeout (#844).
-    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    # 40x and 150x. On the 4-vCPU runner a 150x case once hung for 15 min with no output, outside every test timeout
+    # (#844): the hook and teardown timeouts and the verbose reporter make the next hang name its test.
+    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -130,13 +121,13 @@ jobs:
       # One worker: the throttled page is the only load on the runner. Verbose, so a hang names its test.
       - run: >-
           bun run --cwd packages/ui test:browser throttled --maxWorkers=1 --hookTimeout=120000 --teardownTimeout=60000
-          --reporter=verbose ${{ github.event_name == 'merge_group' && '-t 40x' || '' }}
+          --reporter=verbose
 
   site:
     name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
     needs: [changes, build]
     # Docs-only or repo-meta changes (AGENTS.md, skills, issue templates) skip the browser suites.
-    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
+    if: ${{ !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -178,7 +169,7 @@ jobs:
     # Pixels only change when code, styles or the site change; always run when regenerating.
     # Baselines are rendered only here (ubuntu-24.04 pinned: fonts/libs come from the image).
     # On demand only: baselines are native darwin renders compared locally and at release (AGENTS.md "Tests"); the
-    # linux set is regenerated here when someone wants it, so it is never a PR or queue check.
+    # linux set is regenerated here when someone wants it, so it is never a merge check.
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -219,38 +210,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A '**/__screenshots__/**'
           git diff --cached --quiet || (git commit -m "test: update ${{ matrix.suite }} visual baselines" && git pull --rebase && git push)
-
-  preview:
-    name: Site preview
-    # Fork PRs get no secrets; they still get the full test matrix above.
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: build
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v7
-      # Puts the pinned wrangler (site devDependency) on the path; the action would try npm.
-      - uses: ./.github/actions/setup
-      - uses: actions/download-artifact@v8
-        with:
-          name: build
-      - uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: site
-          command: pages deploy dist --project-name codeatlas-ui --branch pr-${{ github.event.pull_request.number }}
-      - name: Comment preview URL
-        env:
-          GH_TOKEN: ${{ github.token }}
-          URL: https://pr-${{ github.event.pull_request.number }}.codeatlas-ui.pages.dev
-        run: |
-          body="Site preview: $URL"
-          gh pr comment ${{ github.event.pull_request.number }} --edit-last --body "$body" 2>/dev/null \
-            || gh pr comment ${{ github.event.pull_request.number }} --body "$body"
 
   ok:
     name: CI ok

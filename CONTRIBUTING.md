@@ -91,7 +91,7 @@ If you find the issue is already fixed or obsolete, prove it with a test that pa
 
 **Test first.** A bug fix starts with a regression test that reproduces the problem: run it, watch it fail on the current code, then fix until it passes, and put that fail-before/pass-after evidence in the PR. Tests prove behavior; tests that only pad coverage (wiring, copies, mock echoes, incidental defaults) are rejected.
 
-> **CI is the land gate.** `CI ok` is required on `main`, and PRs merge through the merge queue, which tests queued PRs together. Locally, the pre-push hook runs `bun run validate` (skipped for a tree that already passed it); `bun run test` runs what your change affects (seconds); `bun run test:full` and `bun run test:vrt` run everything and are what a release runs. PR titles are checked (`pr-title.yml`).
+> **The land gate is local.** A PR is merged after `bun run validate` and `bun run test` pass on a tree rebased onto the latest `main` (the pre-push hook runs `validate`, skipped for a tree that already passed it). CI runs the full suites on `main` after the merge; `bun run test:full` and `bun run test:vrt` run everything and are what a release runs. PR titles are checked (`pr-title.yml`).
 
 CI (`.github/workflows/ci.yml`) runs the same gates. Locally, both must exit with code 0:
 

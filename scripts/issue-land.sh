@@ -45,53 +45,23 @@ for f in $(git status --porcelain --untracked-files=all | awk '{print $2}'); do
 done
 git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and manifest after rebase"
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { git status --short; echo "uncommitted changes in $WT" >&2; exit 1; }
-# Short local check: `validate` (it marks the tree, so the pre-push hook below does not run it again) and the
-# unit, component and screenshot tests the diff affects (`bun run test`; it never builds the site). The site build,
+# The gate (#859): `validate` (it marks the tree, so the pre-push hook below does not run it again) and the unit,
+# component and screenshot tests the diff affects (`bun run test`; it never builds the site). The site build,
 # the route sweep and every browser suite run on CI in the merge queue. A screenshot mismatch means the change moved
 # pixels: run `bun run test:vrt:update` in $WT, review the images, commit them and rerun this script.
 # `bun scripts/test-changed.ts --land` is still the offline gate when CI is unavailable.
 bun run validate
-# A shared file (tokens, styles, theme, primitives, a test setup file) widens the affected set to every component
-# test, ~2,300 browser tests: locally that run hit a different timing test on most lands, and the merge queue runs the
-# same set on a clean runner anyway. So a shared change is gated by CI only; a local change runs its tests here.
-if [ "$(bun scripts/test-changed.ts --print-budget)" = landShared ]; then
-	echo "shared change: every component test runs in the merge queue, not here"
-else
-	sh scripts/test-changed.sh
-fi
+# A shared file (tokens, styles, theme, primitives, a test setup file) widens this to every component test: with
+# no CI before the merge (#859), that local run is the gate for a shared change.
+sh scripts/test-changed.sh
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
 # local branch (checked out here), failing after the merge (#103). `issue.ts done` removes both.
 # GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
-gh pr merge "$PR" --squash --auto >/dev/null
-# The queue merges when CI passes on the combined tree, or removes the PR when it fails.
-# DROPPED: the queue removed it (neither auto-merge armed nor a queue entry), or the PR's own `CI ok` failed:
-# GitHub then keeps auto-merge armed and would wait forever.
-# MERGED, WAITING, or DROPPED: the queue removed it (neither auto-merge armed nor a queue entry), or the PR's own
-# `CI ok` failed (GitHub then keeps auto-merge armed and would wait forever).
-pr_state() {
-	gh api graphql -F n="$PR" -f query='query($n:Int!){repository(owner:"codeatlasdev",name:"ui"){pullRequest(number:$n){state isInMergeQueue autoMergeRequest{enabledAt} commits(last:1){nodes{commit{checkSuites(first:20){nodes{checkRuns(first:1,filterBy:{checkName:"CI ok"}){nodes{conclusion}}}}}}}}}}' \
-		-q '.data.repository.pullRequest | if .state != "OPEN" then .state
-			elif ([.commits.nodes[0].commit.checkSuites.nodes[].checkRuns.nodes[].conclusion] | index("FAILURE")) and (.isInMergeQueue | not) then "DROPPED"
-			elif .isInMergeQueue or .autoMergeRequest then "WAITING" else "DROPPED" end'
-}
-DEADLINE=$(( $(date +%s) + 45 * 60 ))
-while :; do
-	STATE=$(pr_state)
-	# The queue removes a PR about a second before GitHub marks it merged: confirm a drop once (#854).
-	if [ "$STATE" = DROPPED ]; then
-		sleep 15
-		STATE=$(pr_state)
-	fi
-	[ "$STATE" = MERGED ] && break
-	if [ "$STATE" != WAITING ] || [ "$(date +%s)" -gt "$DEADLINE" ]; then
-		gh pr checks "$PR" || true
-		echo "#$N did not merge (state $STATE): see the checks above" >&2
-		exit 1
-	fi
-	sleep 20
-done
+# Merged at once (#859): the gate is the local one above, on a tree rebased onto the latest main. The full suites run
+# on main after the merge (ci.yml, push); a red main is fixed forward.
+gh pr merge "$PR" --squash >/dev/null
 gh api -X DELETE "repos/{owner}/{repo}/git/refs/heads/$BRANCH" >/dev/null 2>&1 || true
 cd "$ROOT" && git fetch -q origin main && bun scripts/issue.ts done "$N"
 echo "#$N landed"
