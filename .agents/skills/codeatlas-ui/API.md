@@ -2315,6 +2315,8 @@ Data attributes: `data-disabled`, `data-state` (`open`)
 
 Snippets: `avatar`: Avatar beside incoming bubbles. Shown on `single` and `last`; other positions reserve its width.; `quote`: Reply preview rendered at the top of the bubble in a tinted block.; `children`: Message body. Whitespace is preserved and long words wrap.; `footer`: Extra footer content rendered before the time.
 
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children'>`
+
 Parts: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--read`
 
 Variables: `--ca-bubble-avatar` `--ca-bubble-radius` `--ca-bubble-tail`
