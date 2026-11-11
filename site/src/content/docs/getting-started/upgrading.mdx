@@ -53,6 +53,28 @@ Each entry has one of three verdicts in `MIGRATION.md`:
   `NavModule` has always been `basePath` and `items`. A `path` / `sections` shape in an old snippet never shipped, so there is no codemod for it: rename the fields by hand.
 </Callout>
 
+### The modal DOM of 2.0.0
+
+Since 2.0.0 (the release that dropped bits-ui) `.ca-overlay` is the modal `<dialog>` itself, not a separate backdrop element. Dialog, AlertDialog, Drawer, Sheet, CommandPalette and DocsSearch all render `dialog.ca-overlay`, the panel classes (`.ca-dialog`, `.ca-drawer`, ...) place it, and the scrim is its `::backdrop`. A rule written for the old overlay element now paints the panel:
+
+```css
+/* before: darkened the scrim element. now: makes every dialog and drawer see-through */
+.ca-overlay { background-color: rgb(0 0 0 / .3); backdrop-filter: none; }
+```
+
+Style the scrim through its two tokens, or target the pseudo-element:
+
+```css
+:root {
+  --ca-scrim-color: rgb(0 0 0 / .3);
+  --ca-scrim-blur: none; /* default: blur(4px) saturate(180%) */
+}
+/* or, for a single rule */
+dialog.ca-overlay::backdrop { background: rgb(0 0 0 / .3); }
+```
+
+`--ca-scrim-color` is set per preset and scheme; `--ca-scrim-blur: none` drops the blur on every modal at once. Search your app CSS for `.ca-overlay` when upgrading from 1.x and move each rule to `::backdrop` (scrim) or to the panel class (`.ca-dialog`, `.ca-drawer`) if it was meant for the surface.
+
 ## Deprecation warnings
 
 A renamed or replaced API keeps working for one major and logs a `[ca-ui]` warning in development (never in production builds) that names the migration id, for example `migration v3-glasscard-to-card`. Look the id up in `MIGRATION.md` or `get_migration`.
