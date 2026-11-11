@@ -199,7 +199,7 @@ export function buildLlmsIndex(i: {
 					title: "llms-full.txt",
 					href: `${SITE}/llms-full.txt`,
 					description:
-						"the core pages in full and a summary (props tables) of every other page, in one file small enough to paste whole",
+						"the core pages in full and a summary (prop names) of every other page, in one file small enough to paste whole",
 				},
 				{
 					title: "Page with demo sources",

@@ -8,9 +8,9 @@ import { demoSources, mdxToMarkdown } from "../scripts/mdx-to-markdown.ts";
 // llms-full.txt is the file an agent pastes whole into its context window, so its size is a hard limit of
 // the reader, not a style preference: past a few hundred KB it stops fitting next to the task. That is why this
 // is a CAP and not a snapshot of today's size. Pages come and go, so the file does not grow with them: the pages
-// of CORE_PAGES are in full, every other page is a heading, its props tables and a link to its own file.
+// of CORE_PAGES are in full, every other page is a heading, its prop names and a link to its own file.
 // The cap leaves real headroom (the file is ~270 KB), so an ordinary docs PR never trips it; if it does, a core
-// page grew too much or a page has a props table that belongs in prose.
+// page grew too much (props are one line of names per table, #989).
 const CAP = 358_000;
 const DOCS = join(import.meta.dir, "../../../site/src/content/docs");
 const DEMOS = join(import.meta.dir, "../../../site/src/demos");
@@ -74,7 +74,7 @@ describe("llms-full.txt has a fixed shape (#436)", () => {
 		}
 	});
 
-	it("gives every other page a summary, its props tables and the link to its file", () => {
+	it("gives every other page a summary, its prop names and the link to its file", () => {
 		const others = pages.filter((p) => !core.has(p.slug));
 		expect(others.length).toBeGreaterThan(100);
 		for (const p of others) {
@@ -94,14 +94,13 @@ describe("llms-full.txt has a fixed shape (#436)", () => {
 		expect(full).not.toContain(sources.find((x) => x.length > 400) ?? "");
 	});
 
-	it("keeps the props table of a component, without its description column", () => {
+	it("lists a component's props by name on one line; types stay in the page's file (#989)", () => {
 		const s = section(pages.find((p) => p.slug === "inputs/button") as (typeof pages)[number]);
-		expect(s).toContain("| Prop | Type | Default |");
-		expect(s).toMatch(/\| `variant` \| `[^\n]+` \| 'filled' \|/);
-		expect(s).not.toContain("| Description |");
+		expect(s).toMatch(/\*\*Props:\*\* `variant`[^\n]*`size`/);
+		expect(s).not.toContain("| Prop |");
 	});
 
-	it("a props table keeps only the table: the prose that follows it stays in the page's file", () => {
+	it("a props table becomes one line of names: the prose that follows it stays in the page file", () => {
 		const md = [
 			"### Props",
 			"",
@@ -116,7 +115,7 @@ describe("llms-full.txt has a fixed shape (#436)", () => {
 			"```",
 		].join("\n");
 		const out = propsSummary(md);
-		expect(out).toContain("| `title` | `string` | required |");
+		expect(out).toBe("**Props:** `title`");
 		expect(out).not.toContain("A paragraph that explains");
 		expect(out).not.toContain("<Seo");
 	});
@@ -139,7 +138,7 @@ describe("llms-full.txt has a fixed shape (#436)", () => {
 			expect(Buffer.byteLength(page.body)).toBeGreaterThan(100_000);
 			expect(cost([page])).toBeLessThan(1_000);
 			const out = buildLlmsFull({ site, docs: [page] });
-			expect(out).toContain("| `size` | `'sm' \\| 'md'` | 'md' |");
+			expect(out).toContain("**Props:** `size`");
 			expect(out).not.toContain("A long paragraph of prose.");
 		});
 

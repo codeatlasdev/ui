@@ -1,5 +1,5 @@
 // Assembles the site's llms-full.txt, the file an agent pastes whole into its context. Its shape does not depend
-// on how many pages exist: the core path is in full, every other page is a heading, its props tables and a link
+// on how many pages exist: the core path is in full, every other page is a heading, its prop names and a link
 // to its own complete file (/llms/<slug>.txt, with the prose and the demo sources). tests/llms-budget.test.ts
 // asserts that shape and a size cap.
 import { CONSUMER_GUIDE, ENTRY_PAGES, llmsPagePath } from "./ai-entry.ts";
@@ -37,27 +37,23 @@ export const CORE_PAGES: readonly string[] = [
 ];
 
 /**
- * The props tables of a page as compact markdown: `| Prop | Type | Default |`, no description column. The
- * names, types and defaults are what an agent needs to write the call; the descriptions are in the page's file.
+ * The props tables of a page as one line each: `**Props:** \`a\`, \`b\``. Types, defaults and descriptions are in the
+ * page's own file and in get_component.
  */
 export function propsSummary(markdown: string): string {
+	// A full table per page outgrew the cap (#989).
 	return markdown
 		.split(/\n(?=### )/)
 		.filter((block) => /^### [^\n]*\n\n\| Prop \|/.test(block))
-		.map((block) =>
-			// The heading and the table only: prose and examples after the table are in the page's file.
-			block
+		.map((block) => {
+			const names = block
 				.split("\n")
-				.filter((line, i) => i < 2 || line.startsWith("|"))
-				.map((line) => {
-					if (!line.startsWith("|")) return line;
-					// Cells are split on `|` that is not escaped as `\|` (a union type in a cell).
-					const cells = line.split(/(?<!\\)\|/);
-					return `|${cells[1]}|${cells[2]}|${cells[3]}|`;
-				})
-				.join("\n")
-		)
-		.join("\n\n");
+				.filter((line) => line.startsWith("|") && !/^\|\s*(Prop|-)/.test(line))
+				.map((line) => line.split(/(?<!\\)\|/)[1]?.trim())
+				.filter(Boolean);
+			return `**Props:** ${names.join(", ")}`;
+		})
+		.join("\n");
 }
 
 /**
