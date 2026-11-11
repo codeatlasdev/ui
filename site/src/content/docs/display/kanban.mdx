@@ -10,6 +10,8 @@ import Pipeline from "~/demos/display/kanban/Pipeline.svelte";
 import PipelineSrc from "~/demos/display/kanban/Pipeline.svelte?raw";
 import Totals from "~/demos/display/kanban/Totals.svelte";
 import TotalsSrc from "~/demos/display/kanban/Totals.svelte?raw";
+import DealsPage from "~/demos/display/kanban/DealsPage.svelte";
+import DealsPageSrc from "~/demos/display/kanban/DealsPage.svelte?raw";
 
 ```svelte
 <script>
@@ -90,6 +92,84 @@ Each column title is a heading, `<h2>` by default (inside a `PageShell` it follo
 Below 600px of its own width (or with `compact`) the board shows one stage per screen. The stages are one horizontal swipe track (`scroll-snap`, one column per screen): swiping changes the stage and the `role="tablist"` strip (colour dot, label, count, 44px tall, arrow keys) follows it; a tab press scrolls the track. Holding a card near the left or right edge scrolls to the neighbouring stage, so a drag can end in another stage without the menu. `swipeStages={false}` goes back to one visible column at a time with the tabs as the only way to change stage. The "Move to…" menu is always there as the non-drag path.
 
 Touch drags start with a press and hold (350 ms) so the page still scrolls. `dragHandle` adds a grip to each card that starts a drag at once: `auto` (default) shows it under `pointer: coarse`, `always` shows it everywhere, `none` leaves the press and hold alone. On a desktop board `snap="columns"` makes a swipe on a touch laptop or tablet land on a column edge.
+
+## Recipe: a deals board page
+
+The pipeline screen of a CRM: a `PageShell` with the title, a deal count and the primary action, around a `Kanban` with one money total per column. Copy it whole and change the data, the copy and the stage names. The board needs a parent with a height (`.board` below), and on a phone it becomes one stage per screen with the tab strip, so nothing else is needed for 390px.
+
+```ts
+// src/lib/messages.ts (the keys the deals page reads)
+export const m = {
+  deals: {
+    title: "Deals",
+    description: "Drag a deal to the next stage.",
+    add: "New deal",
+    board: "Deals pipeline",
+    stages: { new: "New", talking: "Talking", won: "Won" },
+  },
+} as const;
+```
+
+```svelte
+<!-- src/routes/(app)/deals/+page.svelte -->
+<script lang="ts">
+  import { Button, Kanban, PageShell, type KanbanColumn, type KanbanMove } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
+  import { Plus } from "@lucide/svelte";
+
+  type Deal = { id: string; name: string; company: string; value: number };
+
+  let columns = $state<KanbanColumn<Deal>[]>([
+    { id: "new", label: m.deals.stages.new, color: "var(--ca-info-main)", items: [] },
+    { id: "talking", label: m.deals.stages.talking, color: "var(--ca-warning-main)", items: [] },
+    { id: "won", label: m.deals.stages.won, color: "var(--ca-success-main)", items: [] },
+  ]);
+
+  const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  const sum = (c: KanbanColumn<Deal>) => money.format(c.items.reduce((acc, d) => acc + d.value, 0));
+  const count = $derived(columns.reduce((n, c) => n + c.items.length, 0));
+
+  // The server orders each column newest first: a drop never picks a position.
+  function onmove({ card, from, to }: KanbanMove<Deal>) {
+    const src = columns.find((c) => c.id === from.column);
+    const dst = columns.find((c) => c.id === to.column);
+    if (!src || !dst) return;
+    src.items = src.items.filter((d) => d.id !== card.id);
+    dst.items = [card, ...dst.items];
+    // persist the move here; put the old columns back when it fails
+  }
+</script>
+
+<svelte:head><title>{m.deals.title}</title></svelte:head>
+
+<PageShell title={m.deals.title} description={m.deals.description} {count}>
+  {#snippet actions()}
+    <Button variant="filled" size="sm" href="/deals/new">
+      {#snippet leading()}<Plus size={14} />{/snippet}
+      {m.deals.add}
+    </Button>
+  {/snippet}
+
+  <div class="board">
+    <Kanban {columns} getId={(d) => d.id} label={m.deals.board} {onmove}>
+      {#snippet card(deal)}
+        <strong class="name">{deal.name}</strong>
+        <span class="meta">{deal.company}</span>
+        <span class="meta">{money.format(deal.value)}</span>
+      {/snippet}
+      {#snippet summary(column)}{sum(column)}{/snippet}
+    </Kanban>
+  </div>
+</PageShell>
+
+<style>
+  .board { display: flex; height: calc(var(--ca-vh) - 14rem); min-height: 20rem; }
+  .name { display: block; font-size: var(--ca-font-size-body2); color: var(--ca-text-primary); }
+  .meta { display: block; font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); font-variant-numeric: tabular-nums; }
+</style>
+```
+
+<Demo title="Deals page" description="The recipe in a 30rem frame. Drag a deal to another stage, or narrow the window below 600px for the tab strip." src={DealsPageSrc}><DealsPage client:visible /></Demo>
 
 <Props for="Kanban" rows={[
   { name: "columns", type: "KanbanColumn<T>[]", default: "required", description: "`{ id, label, color?, items, total?, hasMore?, loading?, loadingMore? }` per column. `color` is any CSS colour or token." },

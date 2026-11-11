@@ -1,0 +1,44 @@
+{
+	"summary": "A complete inbox: ConversationItem rows in the master, a MessageBubble thread with a reply field in the detail, an empty state until a row is picked.",
+	"use": "The messages screen of a CRM or helpdesk: two columns when wide, and on a phone the thread opens as a full-screen pane with Back.",
+	"spec": [
+		"`<MasterDetail bind:selected detailTitle={current?.name ?? ''} listWidth=\"18rem\" masterLabel={m.list}>`",
+		"`<ConversationItem title={t.name} time={t.time} preview={last(t)} unread={t.unread} active={selected === t.id}`",
+		"`<MessageBubble direction={msg.mine ? 'out' : 'in'} time={msg.time}>`",
+		"`<EmptyState title={m.empty} />`"
+	],
+	"tags": ["master-detail", "inbox", "conversation", "message-bubble", "crm", "chat", "recipe"],
+	"names": ["Inbox page", "Messages screen", "Caixa de entrada", "Bandeja de entrada"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"Avatar",
+			"ConversationItem",
+			"EmptyState",
+			"MasterDetail",
+			"MessageBubble",
+			"TextField"
+		],
+		"aliases": ["inbox screen", "chat screen", "messages page"],
+		"related": ["5002", "186"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

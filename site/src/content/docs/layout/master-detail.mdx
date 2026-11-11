@@ -8,6 +8,8 @@ import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
 import Inbox from "~/demos/layout/master-detail/Inbox.svelte";
 import InboxSrc from "~/demos/layout/master-detail/Inbox.svelte?raw";
+import InboxPage from "~/demos/layout/master-detail/InboxPage.svelte";
+import InboxPageSrc from "~/demos/layout/master-detail/InboxPage.svelte?raw";
 
 ```svelte
 <script>
@@ -27,6 +29,80 @@ Wide: the master next to the detail, with `empty` until a row is selected. Narro
 The detail is one DOM node and the split is a container query, so the first paint is right (no squeezed desktop layout flashing before hydration) and a draft in the composer survives crossing the breakpoint. The breakpoint is measured on the component's own width, so it works inside a shell with a panel.
 
 <Demo title="Inbox" description="Narrow the window below 900px to see the detail become a full-screen pane." src={InboxSrc}><Inbox client:visible /></Demo>
+
+## Recipe: an inbox page
+
+Conversations on the left, the selected thread on the right, an empty state until a row is picked. Wide, the two sit side by side; on a phone the list fills the screen and the thread opens as a full-screen pane with a Back button, from the same mount (no `MobilePane` of your own: `MasterDetail` already is one below its breakpoint). Give it a parent with a height, and make the detail a column with the messages growing and the reply field last.
+
+```ts
+// src/lib/messages.ts (the keys the inbox reads)
+export const m = {
+  inbox: {
+    title: "Inbox",
+    list: "Conversations",
+    empty: "Select a conversation",
+    compose: "Message",
+    composePlaceholder: "Write a reply…",
+  },
+} as const;
+```
+
+```svelte
+<!-- src/routes/(app)/inbox/+page.svelte -->
+<script lang="ts">
+  import { Avatar, ConversationItem, EmptyState, MasterDetail, MessageBubble, TextField } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
+
+  type Message = { id: string; mine: boolean; text: string; time: string };
+  type Thread = { id: string; name: string; time: string; unread: number; messages: Message[] };
+
+  let { data }: { data: { threads: Thread[] } } = $props();
+
+  let selected = $state<string | null>(null);
+  const current = $derived(data.threads.find((t) => t.id === selected));
+  const last = (t: Thread) => t.messages[t.messages.length - 1]?.text ?? "";
+</script>
+
+<svelte:head><title>{m.inbox.title}</title></svelte:head>
+
+<div class="inbox">
+  <MasterDetail bind:selected detailTitle={current?.name ?? ""} listWidth="20rem" masterLabel={m.inbox.list}>
+    {#snippet master()}
+      {#each data.threads as t (t.id)}
+        <ConversationItem title={t.name} time={t.time} preview={last(t)} unread={t.unread} active={selected === t.id} onclick={() => (selected = t.id)}>
+          {#snippet avatar()}<Avatar alt={t.name} size="lg" />{/snippet}
+        </ConversationItem>
+      {/each}
+    {/snippet}
+
+    {#snippet detail()}
+      {#if current}
+        <div class="thread">
+          <ul class="messages">
+            {#each current.messages as msg (msg.id)}
+              <li><MessageBubble direction={msg.mine ? "out" : "in"} time={msg.time}>{msg.text}</MessageBubble></li>
+            {/each}
+          </ul>
+          <div class="composer"><TextField label={m.inbox.compose} placeholder={m.inbox.composePlaceholder} /></div>
+        </div>
+      {/if}
+    {/snippet}
+
+    {#snippet empty()}<EmptyState title={m.inbox.empty} />{/snippet}
+  </MasterDetail>
+</div>
+
+<style>
+  .inbox { height: var(--ca-vh); }
+  .thread { display: flex; flex-direction: column; min-height: 100%; }
+  .messages { flex: 1; list-style: none; margin: 0; padding: var(--ca-space-4); display: flex; flex-direction: column; gap: var(--ca-space-2); }
+  .composer { padding: var(--ca-space-3) var(--ca-space-4); }
+</style>
+```
+
+Put this page in a layout whose `<main>` has no padding of its own, or inside the [app shell](/docs/getting-started/recipes/#app-shell) with the shell's content area as the parent.
+
+<Demo title="Inbox page" description="The recipe in a 26rem frame. Narrow the window below 900px and pick a conversation: the thread opens as a full-screen pane." src={InboxPageSrc}><InboxPage client:visible /></Demo>
 
 <Props rows={[
   { name: "selected", type: "string | null", default: "null", description: "Selected row id (bindable). Back and Escape set it to null." },
