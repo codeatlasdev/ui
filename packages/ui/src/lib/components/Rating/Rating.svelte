@@ -73,6 +73,7 @@
     role="img"
     aria-label={t().rating.summary(label, value, max)}
   >
+    <span class="ca-rating__label" class:ca-sr-only={hideLabel}>{label}</span>
     {#each Array.from({ length: max }) as _, i (i)}
       <span class="ca-rating__star" style="--ca-rating-fill:{fill(i + 1) * 100}%" aria-hidden="true">
         <Star class="ca-rating__glyph" />
@@ -86,9 +87,10 @@
     <div class="ca-rating__stars" role="radiogroup" aria-labelledby="{uid}-label" aria-disabled={disabled ? 'true' : undefined} {@attach ends}>
       {#each options as v (v)}
         {@const half = v % 1 !== 0}
-        <label class="ca-rating__option" class:ca-rating__option--half={half} data-on={value >= v ? '' : undefined}>
+        <label for="{uid}-{v}" class="ca-rating__option" class:ca-rating__option--half={half} data-on={value >= v ? '' : undefined}>
           <input
             type="radio"
+            id="{uid}-{v}"
             class="ca-rating__input"
             name={name ?? uid}
             value={v}
@@ -97,9 +99,7 @@
             aria-label={t().rating.option(v)}
             onchange={() => set(v)}
           />
-          {#if !half || step === 0.5}
-            <Star class="ca-rating__glyph" aria-hidden="true" />
-          {/if}
+          <Star class="ca-rating__glyph" aria-hidden="true" />
         </label>
       {/each}
     </div>
@@ -121,8 +121,9 @@
       display: inline-flex;
       inline-size: var(--x-star);
       block-size: var(--x-star);
-      color: var(--ca-rating-empty, var(--ca-outline-default));
+      color: var(--ca-rating-empty, var(--ca-outline-control));
     }
+    .ca-rating[data-disabled] .ca-rating__option { cursor: not-allowed; }
     /* Half steps: two half-width options per star, the second draws the star clipped to its right half. */
     .ca-rating__stars:has(.ca-rating__option--half) .ca-rating__option { inline-size: calc(var(--x-star) / 2); overflow: hidden; }
     .ca-rating__stars:has(.ca-rating__option--half) .ca-rating__option:not(.ca-rating__option--half) :global(.ca-rating__glyph) { transform: translateX(-50%); }
@@ -133,7 +134,7 @@
     :global(.ca-rating__glyph) { inline-size: var(--x-star); block-size: var(--x-star); flex: none; }
     .ca-rating__option:has(input:focus-visible) { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: 1px; border-radius: var(--ca-radius-xs); }
     .ca-rating[data-disabled] .ca-rating__option { color: var(--ca-text-disabled); }
-    .ca-rating__star { position: relative; display: inline-flex; color: var(--ca-rating-empty, var(--ca-outline-default)); inline-size: var(--x-star); block-size: var(--x-star); }
+    .ca-rating__star { position: relative; display: inline-flex; color: var(--ca-rating-empty, var(--ca-outline-control)); inline-size: var(--x-star); block-size: var(--x-star); }
     .ca-rating--readonly .ca-rating__star :global(.ca-rating__glyph--fill) {
       position: absolute;
       inset: 0;

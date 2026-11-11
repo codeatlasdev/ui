@@ -56,4 +56,37 @@ describe("Rating (#767)", () => {
 			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
 		}
 	});
+
+	it("an unlit star reads as a control boundary (outline-control, >= 3:1), not a divider", async () => {
+		const screen = await render(Harness, { initial: 1 });
+		const probe = document.createElement("span");
+		probe.style.color = "var(--ca-outline-control)";
+		screen.container.append(probe);
+		const unlit = screen.container.querySelectorAll<HTMLElement>(".ca-rating__option")[4];
+		expect(getComputedStyle(unlit).color).toBe(getComputedStyle(probe).color);
+		probe.remove();
+	});
+
+	it("read-only shows its label (hideLabel hides it visually), the image name is unchanged", async () => {
+		const screen = await render(Harness, { initial: 4, readonly: true });
+		await expect.element(screen.getByText("Service", { exact: true })).toBeVisible();
+		await expect.element(screen.getByRole("img", { name: "Service: 4 of 5 stars" })).toBeVisible();
+		const hidden = await render(Harness, { initial: 4, readonly: true, hideLabel: true });
+		const label = hidden.container.querySelector(".ca-rating__label");
+		expect(label?.classList.contains("ca-sr-only")).toBe(true);
+		expect(await checkA11y(hidden.container)).toHaveNoViolations();
+	});
+
+	it("disabled: a click changes nothing", async () => {
+		const screen = await render(Harness, { initial: 2, disabled: true });
+		await screen.getByRole("radio", { name: "4 stars" }).click({ force: true });
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("2");
+	});
+
+	it("half steps: arrows move by 0.5", async () => {
+		const screen = await render(Harness, { initial: 2, step: 0.5 });
+		(screen.getByRole("radio", { name: "2 stars" }).element() as HTMLElement).focus();
+		await userEvent.keyboard("{ArrowRight}");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("2.5");
+	});
 });
