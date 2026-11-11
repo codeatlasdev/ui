@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 392,
+	"count": 393,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "5002",
-			"count": 49
+			"last": "5003",
+			"count": 50
 		},
 		{
 			"slug": "charts",
@@ -34925,6 +34925,102 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/master-detail#inbox",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5003",
+			"group": "layout",
+			"page": "centered-page",
+			"variant": "InviteConsent",
+			"slug": "invite-and-consent",
+			"title": "Invite and consent",
+			"description": "Opens a full-page invite; switch to Consent for an OAuth screen.",
+			"summary": "A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.",
+			"use": "Transactional pages outside the app shell: accepting an invite, granting consent, a magic-link landing or a notice.",
+			"spec": [
+				"`<CenteredPage maxWidth=\"sm\" mainId={null}>` with a `brand` snippet holding `<strong>Acme</strong>`",
+				"`AuthCard` titled `Join Acme` (subtitle `Ana invited you to the Design workspace.`) or `Allow Notes to sign in?` with an Accept/Allow filled full-width Button and an outlined Close/Deny Button, chosen by `kind`",
+				"A `SegmentedControl` (Invite, Consent) bound to `kind` under the card",
+				"Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`"
+			],
+			"tags": [
+				"centered-page",
+				"invite",
+				"oauth-consent",
+				"notice",
+				"landmark",
+				"safe-area"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "airy",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"CenteredPage",
+					"AuthCard",
+					"Button",
+					"SegmentedControl",
+					"Stack"
+				],
+				"aliases": [
+					"standalone page",
+					"invite page",
+					"consent screen",
+					"interstitial",
+					"centred card page"
+				],
+				"related": [
+					"172",
+					"781"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"AuthCard",
+				"Button",
+				"CenteredPage",
+				"SegmentedControl",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AuthCard",
+						"Button",
+						"CenteredPage",
+						"SegmentedControl",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/centered-page#invite-and-consent",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

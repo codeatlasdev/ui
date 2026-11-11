@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #5003 "Invite and consent" (layout/centered-page).
+What it shows: A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen. When to use: Transactional pages outside the app shell: accepting an invite, granting consent, a magic-link landing or a notice.
+Spec:
+- `<CenteredPage maxWidth="sm" mainId={null}>` with a `brand` snippet holding `<strong>Acme</strong>`
+- `AuthCard` titled `Join Acme` (subtitle `Ana invited you to the Design workspace.`) or `Allow Notes to sign in?` with an Accept/Allow filled full-width Button and an outlined Close/Deny Button, chosen by `kind`
+- A `SegmentedControl` (Invite, Consent) bound to `kind` under the card
+- Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5003 Invite and consent → file, what changed, https://ui.codeatlas.com.br/docs/layout/centered-page#invite-and-consent; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5003.txt   Components API: ca-ui-mcp get_component(AuthCard)
