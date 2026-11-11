@@ -62,3 +62,31 @@ describe("Alert", () => {
 		expect(onclose).toHaveBeenCalledOnce();
 	});
 });
+
+describe("Alert variant=banner (#769)", () => {
+	const body = createRawSnippet(() => ({
+		render: () => "<span>Scheduled maintenance tonight</span>",
+	}));
+
+	it("spans its container edge to edge, square, with no side bar", async () => {
+		const screen = await render(Alert, { severity: "warning", variant: "banner", children: body });
+		const el = screen.container.querySelector(".ca-alert") as HTMLElement;
+		const cs = getComputedStyle(el);
+		expect(el.classList).toContain("ca-alert--banner");
+		expect(cs.borderTopLeftRadius).toBe("0px");
+		expect(cs.borderLeftWidth).toBe("0px");
+		expect(el.getBoundingClientRect().width).toBe(screen.container.getBoundingClientRect().width);
+		expect(getComputedStyle(el.querySelector(".ca-alert__bar") as HTMLElement).display).toBe(
+			"none"
+		);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("stays a rounded inline alert by default", async () => {
+		const screen = await render(Alert, { severity: "warning", children: body });
+		expect(
+			getComputedStyle(screen.container.querySelector(".ca-alert") as HTMLElement)
+				.borderTopLeftRadius
+		).not.toBe("0px");
+	});
+});

@@ -8,13 +8,15 @@
   interface Props {
     severity: 'success' | 'warning' | 'error' | 'info';
     title?: string;
+    /** `inline` (default) is a card in the flow; `banner` spans its container edge to edge, square, for a page-wide notice (maintenance, trial ending) at the top of a page or shell. */
+    variant?: 'inline' | 'banner';
     closable?: boolean;
     onclose?: () => void;
     class?: string;
     children?: Snippet;
   }
 
-  let { severity, title, closable = false, onclose, class: className = '', children }: Props = $props();
+  let { severity, title, variant = 'inline', closable = false, onclose, class: className = '', children }: Props = $props();
 
   const icons = {
     success: CheckCircle2,
@@ -26,7 +28,7 @@
   let Icon = $derived(icons[severity]);
 </script>
 
-<div class="ca-alert ca-alert--{severity} {className}" role="alert" aria-live="polite">
+<div class="ca-alert ca-alert--{severity} {className}" class:ca-alert--banner={variant === 'banner'} role="alert" aria-live="polite">
   <div class="ca-alert__bar" aria-hidden="true"></div>
   <span class="ca-alert__icon" aria-hidden="true">
     <Icon size={18} stroke-width={2} />
@@ -65,6 +67,22 @@
       overflow: hidden;
       border: var(--ca-border-width) solid var(--ca-alert-border-color);
       box-shadow: var(--ca-alert-shadow);
+    }
+
+    /* Banner: page-wide, square, the severity border on the bottom edge only, padding aligned with the page. */
+    .ca-alert--banner {
+      width: 100%;
+      border-radius: 0;
+      border-width: 0 0 var(--ca-border-width);
+      box-shadow: none;
+      align-items: center;
+      padding-inline: var(--ca-page-px);
+    }
+    .ca-alert--banner .ca-alert__bar {
+      display: none;
+    }
+    @media (max-width: 599.98px) {
+      .ca-alert--banner { padding-inline: var(--ca-page-px-sm); }
     }
 
     .ca-alert__bar {
