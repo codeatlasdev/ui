@@ -50,3 +50,7 @@ The label sits above the field. `description` is hidden while an `error` is show
   { name: "onfocus", type: "(e: FocusEvent) => void", description: "Called when the textarea gains focus." },
   { name: "onblur", type: "(e: FocusEvent) => void", description: "Called when the textarea loses focus." },
 ]} />
+
+## Corners
+
+A TextArea takes the control radius capped at `--ca-radius-lg`: with `controlRadius: "pill"` single-line fields become pills and a multi-line field keeps rounded corners instead of becoming a stadium. Set `--ca-radius-control-multiline` to choose it yourself.
