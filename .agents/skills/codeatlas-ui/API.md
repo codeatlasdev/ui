@@ -4216,6 +4216,26 @@ Internal (may change in any release): `ca-tooltip-in` `ca-tooltip-out`
 
 Data attributes: `data-state` (`closed`)
 
+## TreeView
+
+`import { TreeView } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `nodes` | `TreeNode[]` |  |  |
+| `aria-label` | `string` |  | Accessible name of the tree. |
+| `selected?` | `string` |  | `bind:` Bindable selected node id. |
+| `expanded?` | `string[]` | `[]` | `bind:` Bindable expanded node ids. |
+| `loadChildren?` | `(node: TreeNode) => Promise<TreeNode[]>` |  | Loads a node's children on first expand (lazy tree). |
+| `onselect?` | `(node: TreeNode) => void` |  |  |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-tree` `ca-tree__group` `ca-tree__item` `ca-tree__label` `ca-tree__row` `ca-tree__toggle`
+
+Variables: `--ca-tree-depth` `--ca-tree-indent` `--ca-tree-row-h`
+
+Tokens: `--ca-tree-indent` `--ca-tree-row-h`
+
 ## Turnstile
 
 `import { Turnstile } from "@codeatlasdev/ui/forms"`

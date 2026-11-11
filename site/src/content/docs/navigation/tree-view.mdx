@@ -1,0 +1,23 @@
+---
+title: TreeView
+description: A hierarchical list (files, categories, org charts) with the tree keyboard model, single selection and children loaded on first expand.
+group: Navigation
+---
+import Props from "~/components/docs/Props.astro";
+
+`TreeView` follows the tree pattern: one Tab stop, arrow keys to move, Right to expand or enter, Left to collapse or go to the parent, Home and End for the ends, Enter or Space to select. A node with `hasChildren` and no `children` loads them through `loadChildren` the first time it opens, with a spinner and `aria-busy` while it waits.
+
+```svelte
+<TreeView aria-label="Files" {nodes} bind:selected bind:expanded loadChildren={(node) => api.list(node.id)} />
+```
+
+Tokens: `--ca-tree-row-h`, `--ca-tree-indent`. Under a coarse pointer a row is `--ca-touch-target` tall.
+
+<Props for="TreeView" rows={[
+  { name: "nodes", type: "TreeNode[]", description: "{ id, label, children?, hasChildren?, disabled? }." },
+  { name: "aria-label", type: "string", description: "Accessible name of the tree." },
+  { name: "selected", type: "string", description: "Bindable selected node id." },
+  { name: "expanded", type: "string[]", default: "[]", description: "Bindable expanded node ids." },
+  { name: "loadChildren", type: "(node: TreeNode) => Promise<TreeNode[]>", description: "Loads a node's children on first expand." },
+  { name: "onselect", type: "(node: TreeNode) => void", description: "Called when a node is selected." },
+]} />
