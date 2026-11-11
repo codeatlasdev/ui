@@ -185,9 +185,15 @@ describe("compact table knobs (#683)", () => {
 	it("--ca-table-row-h sets the compact row height", async () => {
 		await page.viewport(...VIEWPORTS.desktop);
 		await render(Harness);
-		(document.querySelector("table") as HTMLElement).style.setProperty("--ca-table-row-h", "36px");
+		const table = document.querySelector("table") as HTMLElement;
 		const row = document.querySelector("tbody tr[data-row]") as HTMLElement;
-		expect(Math.round(row.getBoundingClientRect().height)).toBe(36);
+		// Taller than the content: the row is exactly the token (the border counts inside it).
+		table.style.setProperty("--ca-table-row-h", "48px");
+		expect(Math.round(row.getBoundingClientRect().height)).toBe(48);
+		// Shorter than padding + line: lower --ca-table-cell-py with it, as the docs say.
+		table.style.setProperty("--ca-table-row-h", "32px");
+		table.style.setProperty("--ca-table-cell-py", "var(--ca-space-1)");
+		expect(Math.round(row.getBoundingClientRect().height)).toBe(32);
 	});
 
 	it("TableGroupRow accent draws a rail at the start of the row", async () => {
