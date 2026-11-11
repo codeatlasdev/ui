@@ -16,6 +16,8 @@
     /** Text of the closed trigger when this option is selected ("Queue of Ana" for "Ana"). Defaults to `label`. */
     triggerLabel?: string;
     disabled?: boolean;
+    /** Section header this option sits under. Consecutive options with the same `group` share one `role="group"`; options without one render ungrouped. */
+    group?:    string;
   }
 
   interface Props {
@@ -65,6 +67,18 @@
   }: Props = $props();
 
   const id       = uid('sel');
+
+  // Consecutive options with the same `group` form one section; `i` stays the index into `options`,
+  // which is what the listbox navigates, so headers (not options) are never highlighted or typed to.
+  const sections = $derived.by(() => {
+    const out: { key: number; group: string | undefined; items: { option: Option; i: number }[] }[] = [];
+    options.forEach((option, i) => {
+      const last = out[out.length - 1];
+      if (last && last.group === option.group) last.items.push({ option, i });
+      else out.push({ key: i, group: option.group, items: [{ option, i }] });
+    });
+    return out;
+  });
   // `''` is a legitimate option value ("All"); only an unmatched/undefined value means "no selection".
   const selected = $derived(options.find(o => o.value === value));
 
@@ -179,6 +193,30 @@
     />
   {/if}
 
+  {#snippet optionRow(option: Option, i: number)}
+    <!-- Keyboard is handled by the listbox container (aria-activedescendant); options are not tab stops. -->
+    <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
+    <div
+      id="{id}-opt-{i}"
+      role="option"
+      class="ca-sel__item"
+      aria-selected={option.value === value}
+      aria-disabled={option.disabled ? 'true' : undefined}
+      data-disabled={option.disabled ? '' : undefined}
+      data-highlighted={listbox.isHighlighted(i) ? '' : undefined}
+      data-selected={option.value === value ? '' : undefined}
+      onclick={() => choose(option)}
+      onpointermove={() => !option.disabled && listbox.highlight(i)}
+    >
+      <span class="ca-sel__item-label">{option.label}</span>
+      {#if option.value === value}
+        <span class="ca-sel__check" aria-hidden="true">
+          <Check size={14} strokeWidth={2.4} />
+        </span>
+      {/if}
+    </div>
+  {/snippet}
+
   <FloatingLayer
     anchor={trigger}
     {open}
@@ -197,28 +235,19 @@
     onkeydown={onListKeydown}
     {onMounted}
   >
-    {#each options as option, i (option.value)}
-      <!-- Keyboard is handled by the listbox container (aria-activedescendant); options are not tab stops. -->
-      <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
-      <div
-        id="{id}-opt-{i}"
-        role="option"
-        class="ca-sel__item"
-        aria-selected={option.value === value}
-        aria-disabled={option.disabled ? 'true' : undefined}
-        data-disabled={option.disabled ? '' : undefined}
-        data-highlighted={listbox.isHighlighted(i) ? '' : undefined}
-        data-selected={option.value === value ? '' : undefined}
-        onclick={() => choose(option)}
-        onpointermove={() => !option.disabled && listbox.highlight(i)}
-      >
-        <span class="ca-sel__item-label">{option.label}</span>
-        {#if option.value === value}
-          <span class="ca-sel__check" aria-hidden="true">
-            <Check size={14} strokeWidth={2.4} />
-          </span>
-        {/if}
-      </div>
+    {#each sections as section (section.key)}
+      {#if section.group !== undefined}
+        <div class="ca-sel__group" role="group" aria-labelledby="{id}-grp-{section.key}">
+          <div id="{id}-grp-{section.key}" class="ca-sel__group-label">{section.group}</div>
+          {#each section.items as item (item.option.value)}
+            {@render optionRow(item.option, item.i)}
+          {/each}
+        </div>
+      {:else}
+        {#each section.items as item (item.option.value)}
+          {@render optionRow(item.option, item.i)}
+        {/each}
+      {/if}
     {/each}
   </FloatingLayer>
 
@@ -339,6 +368,14 @@
       box-shadow: var(--ca-shadow-lg);
       padding: var(--ca-space-1);
       outline: none;
+    }
+
+    :global(.ca-sel__group-label) {
+      padding: var(--ca-space-1-5) var(--ca-space-2-5) var(--ca-space-1);
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-secondary);
+      user-select: none;
     }
 
     :global(.ca-sel__item) {

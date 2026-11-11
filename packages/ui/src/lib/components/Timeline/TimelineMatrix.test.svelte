@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Check, Wrench } from "@lucide/svelte";
+	import { createRawSnippet } from "svelte";
 	import Timeline from "./Timeline.svelte";
 	import type { TimelineItem } from "./Timeline.svelte";
 
@@ -15,9 +17,17 @@
 			variant: "error",
 		},
 	];
+
+	const detail = createRawSnippet(() => ({ render: () => "<p>Detail of the call</p>" }));
+	const rich: TimelineItem[] = [
+		{ label: "Message in", icon: Check, meta: "120 ms", variant: "success" },
+		{ label: "Tool call", icon: Wrench, meta: "failed", variant: "error", children: detail, open: true },
+		{ label: "Collapsed", meta: "3 s", children: detail },
+	];
 </script>
 
 <div data-testid="matrix" style="display:grid;gap:24px;padding:16px;width:360px">
 	<Timeline {items} />
 	<Timeline items={[{ label: "Single item", date: "10/02/2025" }]} />
+	<Timeline items={rich} />
 </div>

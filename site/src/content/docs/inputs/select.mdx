@@ -34,7 +34,7 @@ Spacing, label and hint typography and the typed text come from the shared field
 
 <Props rows={[
   { name: "value", type: "string", description: "Bindable selected value. `undefined` means no selection and shows the placeholder; `\"\"` is a valid value when an option declares it." },
-  { name: "options", type: "Array<{ value: string; label: string; disabled?: boolean }>", description: "Option items." },
+  { name: "options", type: "Array<{ value: string; label: string; disabled?: boolean; triggerLabel?: string; group?: string }>", description: "Option items. `group` puts consecutive options under one section header." },
   { name: "placeholder", type: "string", default: "'Select…' (localized)", description: "Text shown when `value` is `undefined` or matches no option. The default comes from the active i18n catalog." },
   { name: "label", type: "string", description: "Visible label above the trigger." },
   { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown. For a field in a toolbar, table or grid that already shows its name." },
@@ -60,5 +60,17 @@ An option's `triggerLabel` is what the closed trigger shows once it is selected;
 <Select label="View as" bind:value options={[
   { value: "me", label: "My queue" },
   { value: "ana", label: "Ana", triggerLabel: "Queue of Ana" },
+]} />
+```
+
+## Grouped options
+
+Give options a `group` to render section headers. Consecutive options with the same `group` share one `role="group"` whose `aria-labelledby` is the header; the header is not an option, so arrow keys, Home/End and typeahead never land on it. Options without a `group` render exactly as before.
+
+```svelte
+<Select label="Field" bind:value options={[
+  { value: "name", label: "Name", group: "Contact" },
+  { value: "email", label: "Email", group: "Contact" },
+  { value: "company", label: "Company", group: "Account" },
 ]} />
 ```

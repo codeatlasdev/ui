@@ -1,6 +1,10 @@
+import { Check } from "@lucide/svelte";
+import { createRawSnippet } from "svelte";
 import { describe, expect, it } from "vitest";
+import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import Timeline from "./Timeline.svelte";
 
 const items = [
@@ -60,5 +64,74 @@ describe("Timeline", () => {
 		const screen = await render(Timeline, { items: [{ label: "Single" }] });
 		expect(screen.container.querySelector(".ca-timeline__connector")).toBeNull();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("Timeline icon, meta and detail (#811)", () => {
+	const detail = createRawSnippet(() => ({ render: () => "<p>Tool call payload</p>" }));
+	const rich = [
+		{ label: "Message in", icon: Check, meta: "120 ms", variant: "success" as const },
+		{ label: "Tool call", meta: "failed", children: detail, variant: "error" as const },
+		{ label: "Effect" },
+	];
+
+	it("renders a decorative icon in the track and the meta badge in the header", async () => {
+		const screen = await render(Timeline, { items: rich });
+		const first = screen.container.querySelector(".ca-timeline__item") as HTMLElement;
+		const icon = first.querySelector(".ca-timeline__icon") as HTMLElement;
+		expect(icon.getAttribute("aria-hidden")).toBe("true");
+		expect(icon.querySelector("svg")).not.toBeNull();
+		expect(first.querySelector(".ca-timeline__dot")).toBeNull();
+		expect(first.querySelector(".ca-timeline__meta")?.textContent).toBe("120 ms");
+		expect(screen.container.querySelectorAll(".ca-timeline__meta")).toHaveLength(2);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("a detail snippet is a real disclosure: closed by default, toggled by a button", async () => {
+		const screen = await render(Timeline, { items: rich });
+		const toggle = screen.getByRole("button", { name: /Tool call/ });
+		await expect.element(toggle).toHaveAttribute("aria-expanded", "false");
+		const region = screen.container.querySelector(
+			`#${toggle.element().getAttribute("aria-controls")}`
+		) as HTMLElement;
+		expect(region.hidden).toBe(true);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+
+		await toggle.click();
+		await expect.element(toggle).toHaveAttribute("aria-expanded", "true");
+		expect(region.hidden).toBe(false);
+		await expect.element(screen.getByText("Tool call payload")).toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+
+		await toggle.click();
+		await expect.element(toggle).toHaveAttribute("aria-expanded", "false");
+		expect(region.hidden).toBe(true);
+	});
+
+	it("an item without detail has no button; the toggle opens with Enter and Space", async () => {
+		const screen = await render(Timeline, { items: rich });
+		expect(screen.getByRole("button").elements()).toHaveLength(1);
+		const toggle = screen.getByRole("button", { name: /Tool call/ });
+		toggle.element().focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(toggle).toHaveAttribute("aria-expanded", "true");
+		await userEvent.keyboard(" ");
+		await expect.element(toggle).toHaveAttribute("aria-expanded", "false");
+	});
+
+	it("the disclosure hit area is at least the touch target high", async () => {
+		const screen = await render(Timeline, { items: rich });
+		const toggle = screen.getByRole("button", { name: /Tool call/ }).element();
+		expect(toggle.getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
+	});
+
+	it("items with defaultOpen start expanded", async () => {
+		const screen = await render(Timeline, {
+			items: [{ label: "Open one", children: detail, open: true }],
+		});
+		await expect
+			.element(screen.getByRole("button", { name: /Open one/ }))
+			.toHaveAttribute("aria-expanded", "true");
+		await expect.element(screen.getByText("Tool call payload")).toBeVisible();
 	});
 });

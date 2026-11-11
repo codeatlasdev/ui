@@ -262,3 +262,23 @@ describe("Button per-size gap (#697)", () => {
 		expect(getComputedStyle(mdBtn).columnGap).toBe("8px");
 	});
 });
+
+describe('Button align="start" (#811)', () => {
+	it("pins a lone label to the inline start of a full-width button", async () => {
+		const screen = await render(Button, {
+			children: label("Add node"),
+			fullWidth: true,
+			align: "start",
+		});
+		const btn = screen.container.querySelector(".ca-btn") as HTMLElement;
+		btn.parentElement?.style.setProperty("inline-size", "320px");
+		const text = btn.querySelector("span") as HTMLElement;
+		const pad = Number.parseFloat(getComputedStyle(btn).paddingInlineStart);
+		const border = Number.parseFloat(getComputedStyle(btn).borderInlineStartWidth);
+		expect(text.getBoundingClientRect().left - btn.getBoundingClientRect().left).toBeCloseTo(
+			pad + border,
+			0
+		);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});

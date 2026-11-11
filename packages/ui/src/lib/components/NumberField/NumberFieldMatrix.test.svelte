@@ -1,5 +1,6 @@
 <script lang="ts">
 	import NumberField from "./NumberField.svelte";
+	import Select from "../Select/Select.svelte";
 </script>
 
 <div
@@ -16,4 +17,9 @@
 	<NumberField label="Disabled" disabled value={7} />
 	<NumberField label="Decimal step" step={0.5} value={2.5} />
 	<NumberField label="Large value" value={123456789} />
+	<NumberField label="With unit" value={5}>
+		{#snippet suffix()}
+			<Select hideLabel label="Unit" value="m" options={[{ value: "m", label: "Minutes" }]} />
+		{/snippet}
+	</NumberField>
 </div>

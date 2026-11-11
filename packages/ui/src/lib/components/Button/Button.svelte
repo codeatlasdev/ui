@@ -11,7 +11,7 @@
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';
   type Tone = 'brand' | 'neutral' | 'danger';
-  type Align = 'center' | 'between';
+  type Align = 'center' | 'between' | 'start';
 
   /** Own props, shared by both renderings. */
   interface Own {
@@ -43,7 +43,8 @@
     trailingHint?: boolean;
     /**
      * `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a
-     * fixed width). The loading spinner stays in the leading slot. Default `'center'`.
+     * fixed width); `'start'` pins everything to the start (a vertical list of full-width actions).
+     * The loading spinner stays in the leading slot. Default `'center'`.
      */
     align?: Align;
     onclick?: (e: MouseEvent) => void;
@@ -164,6 +165,7 @@
     class:ca-btn--neutral={neutral}
     class:ca-btn--danger={danger}
     class:ca-btn--between={align === 'between'}
+    class:ca-btn--start={align === 'start'}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
     aria-disabled={isDisabled}
@@ -189,6 +191,7 @@
     class:ca-btn--neutral={neutral}
     class:ca-btn--danger={danger}
     class:ca-btn--between={align === 'between'}
+    class:ca-btn--start={align === 'start'}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
     aria-disabled={isDisabled}
@@ -381,10 +384,12 @@
       align-items: center;
     }
 
-    /* align="between": label at the start, trailing slot at the end. The spinner is the leading
+    /* align="between": label at the start, trailing slot at the end; align="start": all at the start. The spinner is the leading
        slot, so loading does not move it. */
     .ca-btn--between,
-    .ca-btn--between.ca-btn--full-width {
+    .ca-btn--between.ca-btn--full-width,
+    .ca-btn--start,
+    .ca-btn--start.ca-btn--full-width {
       justify-content: flex-start;
     }
     .ca-btn--between .ca-btn__trailing {

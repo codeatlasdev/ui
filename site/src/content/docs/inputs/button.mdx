@@ -79,7 +79,7 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
   { name: "leading", type: "Snippet", description: "Content before the label. Replaced by a spinner while loading." },
   { name: "trailing", type: "Snippet", description: "Content after the label." },
   { name: "trailingHint", type: "boolean", default: "false", description: "Marks `trailing` as a keyboard hint: hidden below `md` and under `(pointer: coarse)`, with no reserved gap (adds `ca-btn__trailing--hint`)." },
-  { name: "align", type: "'center' | 'between'", default: "'center'", description: "`'between'` pins the label to the start and `trailing` to the end (adds `ca-btn--between`). The loading spinner stays in the leading slot." },
+  { name: "align", type: "'center' | 'between' | 'start'", default: "'center'", description: "`'between'` pins the label to the start and `trailing` to the end (adds `ca-btn--between`); `'start'` pins everything to the start, for a vertical list of full-width actions (adds `ca-btn--start`). The loading spinner stays in the leading slot." },
   { name: "onclick", type: "(e: MouseEvent) => void", description: "Click handler. Not called while disabled or loading." },
   { name: "aria-label", type: "string", description: "Accessible name for icon-only buttons." },
   { name: "class", type: "string", description: "Extra classes on the root element." },

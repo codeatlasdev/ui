@@ -18,6 +18,8 @@
     value: string;
     label: string;
     disabled?: boolean;
+    /** Section header this option sits under. Consecutive visible options with the same `group` share one `role="group"`; a group with no match for the query is hidden with its header. Options without one render ungrouped. */
+    group?: string;
   }
 
   interface Props {
@@ -131,11 +133,40 @@
   // All items fed into the listbox: filtered options + optional create row
   interface CreateRow { _create: true; label: string; value: string }
   type Row = ComboboxOption | CreateRow;
+  // Grouped options are gathered under their group (placed where it first appears) so that list order, listbox
+  // index and visual order agree; ungrouped options keep their place. Without any `group` this is `filtered`.
+  let ordered = $derived.by(() => {
+    if (!filtered.some(o => o.group !== undefined)) return filtered;
+    const out: ComboboxOption[] = [];
+    const placed = new Set<string>();
+    for (const o of filtered) {
+      if (o.group === undefined) out.push(o);
+      else if (!placed.has(o.group)) {
+        placed.add(o.group);
+        out.push(...filtered.filter(x => x.group === o.group));
+      }
+    }
+    return out;
+  });
   let rows = $derived<Row[]>(
     showCreate
-      ? [...filtered, { _create: true, label: t().combobox.create(query.trim()), value: query.trim() } as CreateRow]
-      : filtered
+      ? [...ordered, { _create: true, label: t().combobox.create(query.trim()), value: query.trim() } as CreateRow]
+      : ordered
   );
+
+  // `rows` already has each group contiguous, so a section is a run of equal `group`. `i` stays the index into
+  // `rows`, which the listbox navigates, so headers are never highlighted or typed to. A group with no match
+  // has no rows, hence no section and no header. Ungrouped rows (and "Create …") are not wrapped.
+  let sections = $derived.by(() => {
+    const out: { key: number; group: string | undefined; items: { row: Row; i: number }[] }[] = [];
+    rows.forEach((row, i) => {
+      const group = '_create' in row ? undefined : (row as ComboboxOption).group;
+      const last = out[out.length - 1];
+      if (last && last.group === group) last.items.push({ row, i });
+      else out.push({ key: i, group, items: [{ row, i }] });
+    });
+    return out;
+  });
 
   let rootClass = $derived(
     ['ca-combobox', multiple ? 'ca-combobox--multiple' : '', size === 'sm' ? 'ca-combobox--sm' : '', !!error ? 'ca-combobox--error' : '', className]
@@ -291,6 +322,31 @@
     <p id="{triggerId}-hint" class="ca-combobox__hint">{description}</p>
   {/if}
 
+  {#snippet optionRow(row: Row, i: number)}
+    {@const isCreate = '_create' in row && row._create}
+    {@const selected = !isCreate && isSelected((row as ComboboxOption).value)}
+    {@const parts = isCreate ? null : splitMatch(row.label, query)}
+    <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
+    <div
+      id="{triggerId}-opt-{i}"
+      role="option"
+      class="ca-combobox__item"
+      class:ca-combobox__item--create={isCreate}
+      aria-selected={selected}
+      aria-disabled={(row as ComboboxOption).disabled ? 'true' : undefined}
+      data-disabled={(row as ComboboxOption).disabled ? '' : undefined}
+      data-highlighted={listbox.isHighlighted(i) ? '' : undefined}
+      data-selected={selected ? '' : undefined}
+      onclick={() => choose(row)}
+      onpointermove={() => !(row as ComboboxOption).disabled && listbox.highlight(i)}
+    >
+      <span class="ca-combobox__item-label">{#if parts}{parts[0]}<Highlight>{parts[1]}</Highlight>{parts[2]}{:else}{row.label}{/if}</span>
+      {#if selected}
+        <Check size={14} class="ca-combobox__item-check" />
+      {/if}
+    </div>
+  {/snippet}
+
   <FloatingLayer
     anchor={trigger}
     {open}
@@ -327,29 +383,19 @@
       aria-multiselectable={multiple ? 'true' : undefined}
       class="ca-combobox__viewport"
     >
-      {#each rows as row, i (row.value)}
-        {@const isCreate = '_create' in row && row._create}
-        {@const selected = !isCreate && isSelected((row as ComboboxOption).value)}
-        {@const parts = isCreate ? null : splitMatch(row.label, query)}
-        <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
-        <div
-          id="{triggerId}-opt-{i}"
-          role="option"
-          class="ca-combobox__item"
-          class:ca-combobox__item--create={isCreate}
-          aria-selected={selected}
-          aria-disabled={(row as ComboboxOption).disabled ? 'true' : undefined}
-          data-disabled={(row as ComboboxOption).disabled ? '' : undefined}
-          data-highlighted={listbox.isHighlighted(i) ? '' : undefined}
-          data-selected={selected ? '' : undefined}
-          onclick={() => choose(row)}
-          onpointermove={() => !(row as ComboboxOption).disabled && listbox.highlight(i)}
-        >
-          <span class="ca-combobox__item-label">{#if parts}{parts[0]}<Highlight>{parts[1]}</Highlight>{parts[2]}{:else}{row.label}{/if}</span>
-          {#if selected}
-            <Check size={14} class="ca-combobox__item-check" />
-          {/if}
-        </div>
+      {#each sections as section (section.key)}
+        {#if section.group !== undefined}
+          <div class="ca-combobox__group" role="group" aria-labelledby="{triggerId}-grp-{section.key}">
+            <div id="{triggerId}-grp-{section.key}" class="ca-combobox__group-label">{section.group}</div>
+            {#each section.items as item (item.row.value)}
+              {@render optionRow(item.row, item.i)}
+            {/each}
+          </div>
+        {:else}
+          {#each section.items as item (item.row.value)}
+            {@render optionRow(item.row, item.i)}
+          {/each}
+        {/if}
       {/each}
     </div>
     {#if rows.length === 0}
@@ -510,6 +556,14 @@
       max-height: 240px;
       overflow-y: auto;
       padding: var(--ca-space-1);
+    }
+
+    :global(.ca-combobox__group-label) {
+      padding: var(--ca-space-1-5) var(--ca-space-2-5) var(--ca-space-1);
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-secondary);
+      user-select: none;
     }
 
     :global(.ca-combobox__item) {
