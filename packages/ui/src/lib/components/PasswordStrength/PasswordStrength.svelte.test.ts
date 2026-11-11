@@ -3,6 +3,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import PasswordStrength from "./PasswordStrength.svelte";
 import Harness from "./PasswordStrength.test.svelte";
+import HideHarness from "./PasswordStrengthHide.test.svelte";
 
 const filled = (c: HTMLElement) => c.querySelectorAll(".ca-pwstrength__seg[data-on]").length;
 
@@ -69,5 +70,72 @@ describe("PasswordStrength", () => {
 		expect(screen.container.querySelector(".ca-pwstrength__label")?.textContent).toContain(
 			"Password strength"
 		);
+	});
+
+	it("layout inline puts the bar and label in one row (#703)", async () => {
+		const stacked = await render(PasswordStrength, { value: "abc" });
+		const root = stacked.container.querySelector(".ca-pwstrength") as HTMLElement;
+		expect(root.getAttribute("data-layout")).toBe("stacked");
+		expect(getComputedStyle(root).display).toBe("grid");
+		const inline = await render(PasswordStrength, { value: "abc", layout: "inline" });
+		const row = inline.container.querySelector(".ca-pwstrength") as HTMLElement;
+		expect(row.getAttribute("data-layout")).toBe("inline");
+		expect(getComputedStyle(row).display).toBe("flex");
+		const bar = row.querySelector(".ca-pwstrength__bar") as HTMLElement;
+		const label = row.querySelector(".ca-pwstrength__label") as HTMLElement;
+		expect(label.getBoundingClientRect().left).toBeGreaterThanOrEqual(
+			bar.getBoundingClientRect().right
+		);
+		expect(bar.getBoundingClientRect().width).toBeGreaterThan(label.getBoundingClientRect().width);
+		expect(await checkA11y(inline.container)).toHaveNoViolations();
+	});
+
+	it("tokens set the gap, empty segment colour and label typography (#703)", async () => {
+		const screen = await render(PasswordStrength, { value: "", layout: "inline" });
+		const row = screen.container.querySelector(".ca-pwstrength") as HTMLElement;
+		const seg = row.querySelector(".ca-pwstrength__seg") as HTMLElement;
+		const label = row.querySelector(".ca-pwstrength__label") as HTMLElement;
+		row.style.setProperty("--ca-pwstrength-gap", "12px");
+		row.style.setProperty("--ca-pwstrength-empty-bg", "rgb(1, 2, 3)");
+		row.style.setProperty("--ca-pwstrength-label-leading", "20px");
+		row.style.setProperty("--ca-pwstrength-label-tracking", "2px");
+		expect(getComputedStyle(row).columnGap).toBe("12px");
+		seg.style.transition = "none";
+		expect(getComputedStyle(seg).backgroundColor).toBe("rgb(1, 2, 3)");
+		expect(getComputedStyle(label).lineHeight).toBe("20px");
+		expect(getComputedStyle(label).letterSpacing).toBe("2px");
+	});
+
+	it("hideWhenEmpty hides the meter but keeps the live region mounted (#703)", async () => {
+		const screen = await render(PasswordStrength, { value: "", hideWhenEmpty: true });
+		const root = screen.container.querySelector(".ca-pwstrength") as HTMLElement;
+		const live = screen.container.querySelector("[aria-live]") as HTMLElement;
+		expect(root).not.toBeNull();
+		expect(live).not.toBeNull();
+		expect(root.hasAttribute("data-empty")).toBe(true);
+		expect(root.getBoundingClientRect().height).toBeLessThanOrEqual(1);
+		expect(live.textContent?.trim()).toBe("");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("hideWhenEmpty: the first strength after typing is announced in the same live node (#703)", async () => {
+		const screen = await render(HideHarness, {});
+		const live = screen.container.querySelector("[aria-live]") as HTMLElement;
+		await screen.getByLabelText("Password").fill("abc");
+		await expect.element(screen.getByText("Weak")).toBeVisible();
+		expect(screen.container.querySelector("[aria-live]")).toBe(live);
+		expect(live.textContent).toContain("Weak");
+		const root = screen.container.querySelector(".ca-pwstrength") as HTMLElement;
+		expect(root.hasAttribute("data-empty")).toBe(false);
+		expect(root.getBoundingClientRect().height).toBeGreaterThan(0);
+		await screen.getByLabelText("Password").fill("");
+		expect(root.hasAttribute("data-empty")).toBe(true);
+	});
+
+	it("without hideWhenEmpty an empty meter still shows its prompt (#703)", async () => {
+		const screen = await render(PasswordStrength, { value: "" });
+		const root = screen.container.querySelector(".ca-pwstrength") as HTMLElement;
+		expect(root.hasAttribute("data-empty")).toBe(false);
+		expect(root.getBoundingClientRect().height).toBeGreaterThan(0);
 	});
 });

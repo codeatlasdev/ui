@@ -49,7 +49,7 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 | `type` | `{}` | The type scale by role: `title`, `heading`, `body`, `label`, `caption`, `num`, each with `size`, `leading`, `tracking` and `weight`. Overrides the role everywhere, library components included. See [Typography](/docs/foundation/typography/#roles). |
 | `motion` | `{}` | `scale` (multiplier on every duration), `easing` (`"standard"`, `"emphasized"`, `"spring"`, `"linear"` or `"steps"`) and `enter` (`"default"` or `"none"`). `enter: "none"` makes dialogs, drawers, sheets, menus, popovers, tooltips and toasts appear and leave in place while hover and focus color transitions keep `scale` (it sets `--ca-enter-scale: 0`); `MotionStage` demos render their final state. |
 | `noise` | `0` | Film-grain over the page background, from `0` to `0.12`. |
-| `components` | `{}` | [Component tokens](#component-tokens) of `button`, `iconButton`, `kbd`, `avatar`, `field`, `textArea`, `card`, `segmented` and `emptyState`. |
+| `components` | `{}` | [Component tokens](#component-tokens) of `button`, `iconButton`, `kbd`, `avatar`, `field`, `textArea`, `card`, `segmented`, `emptyState` and `passwordStrength`. |
 | `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). Prefer preset role colors (below) for palettes. |
 
 `defineTheme(options)` resolves the options (defaults, validation) and `themeCSS(resolved)` returns the CSS string. You rarely call them yourself; the integrations do. Invalid input fails the build: a preset `id` that clashes with a built-in, a color that is not `#rrggbb`, or a `defaultPreset` that does not exist.
@@ -351,7 +351,7 @@ A component token is a custom property a component reads before its own default.
 
 - `--ca-<component>-<property>`: the component, every size and part (`--ca-btn-font-weight`).
 - `--ca-<component>-<size or part>-<property>`: one size or part; it wins over the form above (`--ca-btn-lg-font-weight`, `--ca-icon-btn-size-sm`).
-- `<component>` is the class stem (`btn`, `icon-btn`, `kbd`, `avatar`, `tf`, `ta`, `card`, `seg`, `empty`); a token shared by a family uses its name (`--ca-field-gap` for every field: `TextField`, `TextArea`, `Select`, `Combobox`, `NumberField` and the date fields). `<property>` is spelled like the CSS it drives: `font-weight`, `line-height`, `gap`, `padding-x`, `size`.
+- `<component>` is the class stem (`btn`, `icon-btn`, `kbd`, `avatar`, `tf`, `ta`, `card`, `seg`, `empty`, `pwstrength`); a token shared by a family uses its name (`--ca-field-gap` for every field: `TextField`, `TextArea`, `Select`, `Combobox`, `NumberField` and the date fields). `<property>` is spelled like the CSS it drives: `font-weight`, `line-height`, `gap`, `padding-x`, `size`.
 
 Values are plain CSS. **Unset, a component draws what it always drew.** Set them on `:root`, on a wrapper (no `:global(.ca-*)`) or in the theme, where `mergeTheme` merges per block and size:
 
@@ -370,6 +370,7 @@ export const theme = {
     card: { border: "1px solid var(--ca-outline-subtle)", shadow: "none" },
     segmented: { itemPaddingX: "var(--ca-space-3)" },
     emptyState: { titleSize: "1rem" },
+    passwordStrength: { gap: "12px", emptyBg: "var(--ca-surface-overlay)" },
   },
 };
 ```

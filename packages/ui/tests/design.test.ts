@@ -248,6 +248,29 @@ describe("design knobs → tokens", () => {
 			expect(css).toContain(decl);
 	});
 
+	it("components.passwordStrength emits the --ca-pwstrength-* tokens (#703)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					passwordStrength: {
+						gap: "12px",
+						emptyBg: "var(--ca-surface-overlay)",
+						labelLeading: "1.4",
+						labelTracking: "0.01em",
+					},
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-pwstrength-gap: 12px;",
+			"--ca-pwstrength-empty-bg: var(--ca-surface-overlay);",
+			"--ca-pwstrength-label-leading: 1.4;",
+			"--ca-pwstrength-label-tracking: 0.01em;",
+		])
+			expect(css).toContain(decl);
+		expect(themeCSS(defineTheme({ components: { passwordStrength: {} } }))).toBe("");
+	});
+
 	it("components.field emits height, radius, border width and the variant (#763)", () => {
 		const css = themeCSS(
 			defineTheme({
