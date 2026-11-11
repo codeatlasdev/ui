@@ -266,8 +266,9 @@
     return () => vo.disconnect();
   });
 
-  // Initial scroll: the bottom (newest), once the first rows are measured.
-  let started = false;
+  // Initial scroll: the bottom (newest), once the first rows are measured. Also re-armed when the
+  // list is replaced by a different one (#865).
+  let started = $state(false);
   $effect(() => {
     if (started || !scroller || keys.length === 0) return;
     started = true;
@@ -291,6 +292,22 @@
       prevKeys = next.slice();
       prevOffsets = nextOffsets.slice();
       if (before.length === 0 || next.length === 0 || before === next) return;
+
+      // A different list (the previous first row is gone, so it is neither a prepend nor an
+      // append): forget the old list's scroll state and measurements and open at the end, like a
+      // fresh mount.
+      if (!next.includes(before[0])) {
+        sizes.clear();
+        atBottom = true;
+        pinnedAt = -1;
+        anchor = null;
+        restoring = false;
+        scrollTop = 0;
+        started = false;
+        pendingAppended = 0;
+        announced = next.length;
+        return;
+      }
 
       const k = next.indexOf(before[0]);
       const prepended = k > 0 ? k : 0;
@@ -408,11 +425,13 @@
 @layer ca.components {
     .ca-virtual-list {
       min-width: 0;
+      /* A percentage height resolves against the parent, not an auto-height root (#830). */
+      height: var(--ca-virtual-list-h);
     }
 
     .ca-virtual-list__scroller {
       position: relative;
-      height: var(--ca-virtual-list-h);
+      height: 100%;
       overflow-y: auto;
       overscroll-behavior-y: contain;
       /* Anchoring is done by hand (keyed): the browser heuristic fights absolute rows. */

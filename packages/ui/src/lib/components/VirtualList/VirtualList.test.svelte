@@ -11,9 +11,10 @@
 		loadingMore?: boolean;
 		follow?: boolean;
 		withEmpty?: boolean;
+		height?: string;
 		onloadmore?: () => void | Promise<void>;
 	}
-	let { initial = 0, hasMore = false, loadingMore = false, follow = true, withEmpty = false, onloadmore }: Props = $props();
+	let { initial = 0, hasMore = false, loadingMore = false, follow = true, withEmpty = false, height = "320px", onloadmore }: Props = $props();
 
 	// Variable heights (1 to 3 lines) so measured sizes differ from the estimate.
 	const row = (id: number): Row => ({ id, lines: 1 + (Math.abs(id) % 3) });
@@ -40,9 +41,13 @@
 		const older = Array.from({ length: n }, () => row(--oldest));
 		items = [...older.reverse(), ...items];
 	}
+	/** Replaces the list with another one (ids `from` .. `from + n - 1`), like switching conversations. */
+	export function swap(from: number, n: number) {
+		items = Array.from({ length: n }, (_, i) => row(from + i));
+	}
 </script>
 
-<VirtualList {items} getKey={(r) => r.id} label="Messages" height="320px" {follow} {hasMore} {loadingMore} {onloadmore}>
+<VirtualList {items} getKey={(r) => r.id} label="Messages" {height} {follow} {hasMore} {loadingMore} {onloadmore}>
 	{#snippet item(r)}
 		<div data-key={r.id} class="row" style="padding: 4px 8px">
 			<span>Message {r.id}</span>
