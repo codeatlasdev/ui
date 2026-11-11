@@ -16,7 +16,11 @@ export interface PrRef {
 
 /** Our PR for a branch: same head name AND opened from this repository (a fork can reuse the slug). */
 export function ownPr(prs: PrRef[], branch: string): PrRef | undefined {
-	return prs.find((p) => p.headRefName === branch && p.headRepositoryOwner.login === REPO_OWNER);
+	// Only an open PR is current: a closed one (#839) would leave the branch unpushed and PR-less (#938).
+	return prs.find(
+		(p) =>
+			p.state === "OPEN" && p.headRefName === branch && p.headRepositoryOwner.login === REPO_OWNER
+	);
 }
 
 /** Open PRs already linked to the issue (`Closes #n`) that are not ours: the issue is taken. */
