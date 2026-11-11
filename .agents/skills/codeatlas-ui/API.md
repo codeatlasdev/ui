@@ -2814,9 +2814,11 @@ Data attributes: `data-aside`, `data-bordered`, `data-detent` (`full` `peek`), `
 
 Snippets: `titleExtra`: Anything else inline with the title, after the count (a status badge, a filter chip).; `actions`; `aside`: Companion column (in-page index, summary, help, preview). Next to the content (sticky) when the shell is wide enough, after the content below that. Rendered as `<aside>`.; `children`
 
-Parts: `ca-page-shell` `ca-page-shell--flow` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__count` `ca-page-shell__description` `ca-page-shell__extra` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__heading` `ca-page-shell__icon` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__leading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
+Parts: `ca-page-shell` `ca-page-shell--flow` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__count` `ca-page-shell__description` `ca-page-shell__extra` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__heading` `ca-page-shell__icon` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__leading` `ca-page-shell__meta` `ca-page-shell__more` `ca-page-shell__title` `ca-page-shell__title--display`
 
 Variables: `--ca-aside-width` `--ca-page-icon-bg` `--ca-page-icon-size` `--ca-page-max` `--ca-reading-width` `--ca-shell-inset-bottom`
+
+Data attributes: `data-collapse`, `data-measuring`, `data-overflowed`, `data-shown`
 
 ## Pagination
 
