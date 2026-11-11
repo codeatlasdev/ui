@@ -45,8 +45,10 @@
     void bridge.unwind().then(() => settled).then(() => goto(target));
   });
 
-  afterNavigate(({ type, delta }) => {
-    trackNavigation(type, delta);
+  afterNavigate((nav) => {
+    const { type } = nav;
+    // Only a popstate navigation carries a history delta.
+    trackNavigation(type, type === 'popstate' ? nav.delta : undefined);
     if (type === 'popstate') {
       afterPop?.();
       afterPop = undefined;

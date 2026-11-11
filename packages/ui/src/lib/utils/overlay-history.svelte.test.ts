@@ -11,6 +11,7 @@ const state = () =>
 		string,
 		boolean
 	>;
+// real-time: popstate after history.go/back is delivered by the browser's own traversal, which no fake clock owns.
 const settle = () => new Promise((r) => setTimeout(r, 120));
 const back = async () => {
 	history.back();
@@ -83,12 +84,15 @@ describe("bridgeOverlaysToHistory", () => {
 		expect(history.state).toEqual(before);
 	});
 
-	it("Back pressed during the exit animation closes once and leaves no entry", async () => {
+	it("a close then Back during the exit is two steps back, never three (#725)", async () => {
+		// Escape has already closed the layer (the exit animation is cosmetic), so a Back right after it is a
+		// new step back, as in any page: the bridge must add nothing to it. Two sentinel entries keep the test
+		// page in the document whatever happens.
+		history.pushState({ sentinel: 1 }, "");
+		history.pushState({ sentinel: 2 }, "");
 		const screen = await render(Harness);
-		const before = history.state;
 		await screen.getByRole("button", { name: "Open sheet" }).click();
 		await expect.element(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
-		// Close by Escape and press Back in the same tick, while the exit animation still plays.
 		document.dispatchEvent(
 			new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true })
 		);
@@ -96,12 +100,8 @@ describe("bridgeOverlaysToHistory", () => {
 		await settle();
 		await settle();
 		expect(state().sheet).toBe(false);
-		expect(history.state).toEqual(before);
-		// Opening again works and takes exactly one entry.
-		const length = history.length;
-		await screen.getByRole("button", { name: "Open sheet" }).click();
-		await expect.element(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
-		expect(history.length).toBeLessThanOrEqual(length + 1);
+		// The sheet's entry and one more: sentinel 1, not the entry under it.
+		expect(history.state).toEqual({ sentinel: 1 });
 	});
 
 	it("history={false} layers never get an entry", async () => {
