@@ -74,7 +74,7 @@ Place one `Seo` per page, in the route or layout that knows the page's data.
 
 ## Seo in Astro
 
-`<Seo>` writes through `<svelte:head>`, and `@astrojs/svelte` renders a component to its body only: in an `.astro` page the head tags are dropped, with no error. Use `seoHead` there. It takes the same props as `Seo`, is built by the same function (`seoTags`), and returns the head as a string, so the two cannot drift.
+`<Seo>` writes through `<svelte:head>`, and `@astrojs/svelte` renders a component to its body only: in an `.astro` page the head tags are dropped, with no error. Use `seoHead` there. With `caUI` in `astro.config`, a `<Seo>` that renders in an Astro page prints `[ca-ui] <Seo> "…" rendered in an Astro page, where <svelte:head> is dropped` in the `astro dev` terminal (once per title; nothing in `astro build`, nothing in production output), so the drop is no longer silent while you work. `seoHead` takes the same props as `Seo`, is built by the same function (`seoTags`), and returns the head as a string, so the two cannot drift.
 
 ```astro
 ---

@@ -126,7 +126,7 @@ export function seoTags(props: SeoProps): SeoTags {
 	};
 }
 
-const escapeHtml = (s: string) =>
+export const escapeHtml = (s: string) =>
 	s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 /** Everything of the head except `<title>`, as HTML: the part `<Seo>` injects next to its own `<title>`. */
