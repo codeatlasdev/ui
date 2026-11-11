@@ -96,11 +96,12 @@
     max-height: calc(var(--ca-vh) * 0.85);
     height: fit-content;
 
-    /* Solid surface, NOT glass. The scrim already separates it from the page. */
-    background: var(--ca-surface-floating, var(--ca-surface-overlay));
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    /* Solid by default (the scrim already separates it from the page); the --ca-sheet-* tokens make it glass.
+       The blur is the `sheet` role in surface.css (data-ca-blur). */
+    background: var(--ca-sheet-bg);
+    border: var(--ca-border-width) solid var(--ca-sheet-border);
     border-radius: var(--ca-radius-xl);
-    box-shadow: var(--ca-shadow-xl);
+    box-shadow: var(--ca-sheet-shadow);
 
     display: flex;
     flex-direction: column;

@@ -400,25 +400,21 @@ The 44px touch targets stay unless you set `--ca-btn-touch-height` or `--ca-icon
 
 ## Dialogs, drawers and the scrim
 
-Since 2.0.0 (the release that dropped bits-ui) `.ca-overlay` is the modal `<dialog>` itself, not a separate backdrop element. Dialog, AlertDialog, Drawer, Sheet, CommandPalette and DocsSearch all render `dialog.ca-overlay`, the panel classes (`.ca-dialog`, `.ca-drawer`, ...) place it, and the scrim is its `::backdrop`. A rule written for the old overlay element now paints the panel:
+`.ca-overlay` is the modal `<dialog>` itself, so a rule on it paints the panel; the scrim is `dialog.ca-overlay::backdrop`. Style the scrim with `--ca-scrim-color` (set per preset and scheme) and `--ca-scrim-blur` (`none` drops the blur on every modal). Moving 1.x `.ca-overlay` rules: see [Upgrading](/docs/getting-started/upgrading/#the-modal-dom-of-200).
 
-```css
-/* before: darkened the scrim element. now: makes every dialog and drawer see-through */
-.ca-overlay { background-color: rgb(0 0 0 / .3); backdrop-filter: none; }
-```
+### Sheet role: Dialog, AlertDialog, Drawer
 
-Style the scrim through its two tokens, or target the pseudo-element:
+Like the `overlay`, `panel` and `chrome` roles, they read `--ca-sheet-bg` (`--ca-surface-floating`), `--ca-sheet-blur` (`none`), `--ca-sheet-border` (`--ca-outline-subtle`) and `--ca-sheet-shadow` (`--ca-shadow-xl`). On `:root` they turn all three glass, no selector:
 
 ```css
 :root {
-  --ca-scrim-color: rgb(0 0 0 / .3);
-  --ca-scrim-blur: none; /* default: blur(4px) saturate(180%) */
+  --ca-sheet-bg: color-mix(in oklab, var(--ca-surface-overlay) 70%, transparent);
+  --ca-sheet-blur: blur(24px) saturate(180%);
+  --ca-sheet-border: transparent;
 }
-/* or, for a single rule */
-dialog.ca-overlay::backdrop { background: rgb(0 0 0 / .3); }
 ```
 
-`--ca-scrim-color` is set per preset and scheme; `--ca-scrim-blur: none` drops the blur on every modal at once. Search your app CSS for `.ca-overlay` when upgrading from 1.x and move each rule to `::backdrop` (scrim) or to the panel class (`.ca-dialog`, `.ca-drawer`) if it was meant for the surface.
+`prefers-reduced-transparency` drops the blur and fills with `--ca-glass-tint-solid`.
 
 ## Glass and frosted styles: blur rules
 
