@@ -618,6 +618,7 @@ Parts: `ca-chart-scope`
 | `indeterminate?` | `boolean` | `false` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `name?` | `string` |  | Native `name`, so the checkbox is part of `FormData` on a plain form submit (value `on`). |
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
@@ -791,6 +792,7 @@ Data attributes: `data-disabled`, `data-pass`
 | `searchPlaceholder?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `ariaLabel?` | `string` |  | Accessible name when there is no visible `label`. |
 | `class?` | `string` | `''` |  |
 | `error?` | `string` |  |  |
@@ -1069,6 +1071,7 @@ Internal (may change in any release): `ca-spin`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -1103,6 +1106,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -1143,6 +1147,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -2468,6 +2473,7 @@ Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca
 | `max?` | `number` |  |  |
 | `step?` | `number` | `1` |  |
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `error?` | `string` |  |  |
@@ -3062,6 +3068,7 @@ Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-pad
 | `options` | `Option[]` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
@@ -3503,6 +3510,7 @@ Tokens: `--ca-swatch-color`
 | `checked?` | `boolean` | `false` | `bind:` |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `name?` | `string` |  | Native `name`, so the switch is part of `FormData` on a plain form submit (value `on` when checked). |
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
@@ -3769,6 +3777,7 @@ Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__i
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |

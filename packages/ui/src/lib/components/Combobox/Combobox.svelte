@@ -26,6 +26,8 @@
     searchPlaceholder?: string;
     disabled?:          boolean;
     label?:             string;
+    /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
+    hideLabel?:         boolean;
     /** Accessible name when there is no visible `label`. */
     ariaLabel?:         string;
     class?:             string;
@@ -51,6 +53,7 @@
     searchPlaceholder,
     disabled          = false,
     label,
+    hideLabel         = false,
     ariaLabel,
     class: className  = '',
     error,
@@ -205,7 +208,7 @@
 
 <div class={rootClass}>
   {#if label}
-    <label for={triggerId} class="ca-combobox__label">
+    <label for={triggerId} class="ca-combobox__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-combobox__req" aria-hidden="true"> *</span>{/if}
     </label>
   {/if}
