@@ -2,6 +2,7 @@
 // layers `@deck.gl/core` + `@deck.gl/maplibre` (maplibre-gl) or `@deck.gl/mapbox` (mapbox-gl).
 export type { Rgba } from "./color.js";
 export { rgbaCss, tokenColor } from "./color.js";
+export type { EngineLoader } from "./loader.js";
 export { default as MapControls } from "./MapControls.svelte";
 export { default as MapStage } from "./MapStage.svelte";
 export type { MapColors, MapTheme } from "./theme.svelte.js";

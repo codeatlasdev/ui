@@ -30,6 +30,13 @@ describe("MapStage", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("draws the map with the module the app imports through engineModule (#712)", async () => {
+		const engineModule = vi.fn(() => import("maplibre-gl"));
+		const { map } = await mount({ engineModule });
+		expect(engineModule).toHaveBeenCalledTimes(1);
+		expect(map.isStyleLoaded()).toBe(true);
+	});
+
 	it("starts with the style of the resolved scheme", async () => {
 		colorScheme.setPreference("dark");
 		const { map } = await mount();
