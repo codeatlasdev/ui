@@ -11,8 +11,10 @@ on:
         type: boolean
         default: false
 
+# One group per commit: a group keeps a single pending run and cancels it when the next push arrives,
+# so a land sequence left intermediate commits untested (#1023). Every push to main gets its full run.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: false
 
 permissions:
@@ -26,8 +28,9 @@ jobs:
     permissions:
       pull-requests: read
     outputs:
-      package: ${{ steps.filter.outputs.package == 'true' }}
-      site: ${{ steps.filter.outputs.site == 'true' }}
+      # A manual run tests everything: paths-filter finds no change against the default branch (#1023).
+      package: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.package == 'true' }}
+      site: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.site == 'true' }}
     steps:
       - uses: actions/checkout@v7
       - id: filter
