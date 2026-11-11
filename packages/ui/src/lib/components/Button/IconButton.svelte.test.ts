@@ -2,6 +2,7 @@ import { createRawSnippet } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { settled } from "../../../../tests/settled";
 import IconButton from "./IconButton.svelte";
 
 const icon = createRawSnippet(() => ({
@@ -140,6 +141,8 @@ describe("IconButton configurable disabled look (#708)", () => {
 		btn.style.setProperty("--ca-icon-btn-disabled-color", "rgb(1, 2, 3)");
 		btn.style.setProperty("--ca-icon-btn-disabled-border-color", "rgb(4, 5, 6)");
 		btn.style.setProperty("--ca-icon-btn-disabled-border-width", "3px");
+		// The button transitions colour, border and opacity (150 ms): read the end state, not the first frame.
+		await settled();
 		expect(css(btn, "opacity")).toBe("0.5");
 		expect(css(btn, "color")).toBe("rgb(1, 2, 3)");
 		expect(css(btn, "border-top-color")).toBe("rgb(4, 5, 6)");

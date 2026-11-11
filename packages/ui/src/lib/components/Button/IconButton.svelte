@@ -199,7 +199,7 @@
     .ca-icon-btn--outlined:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn--outlined[aria-disabled='true']:not(.ca-icon-btn--loading) {
       background: transparent;
-      border-color: var(--ca-icon-btn-disabled-border-color, var(--ca-outline-default));
+      border: var(--ca-icon-btn-disabled-border-width, var(--ca-border-width)) solid var(--ca-icon-btn-disabled-border-color, var(--ca-outline-default));
     }
     .ca-icon-btn--text:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn--text[aria-disabled='true']:not(.ca-icon-btn--loading) {

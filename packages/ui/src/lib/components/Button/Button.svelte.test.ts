@@ -239,6 +239,8 @@ describe("configurable disabled look (#708)", () => {
 		btn.style.setProperty("--ca-btn-disabled-border-color", css(on, "border-top-color"));
 		btn.style.setProperty("--ca-btn-disabled-border-width", "2px");
 		btn.style.setProperty("--ca-btn-disabled-opacity", "0.5");
+		// The button transitions colour, border and opacity (150 ms): read the end state, not the first frame.
+		await settled();
 		expect(css(btn, "color")).toBe(css(on, "color"));
 		expect(css(btn, "border-top-color")).toBe(css(on, "border-top-color"));
 		expect(css(btn, "border-top-width")).toBe("2px");
