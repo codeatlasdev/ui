@@ -89,6 +89,20 @@ describe("helpers", () => {
 		);
 		expect(headFirst("<html><head><b>", "<b>")).toBe("<html><head><b>");
 	});
+
+	// #926: <meta charset> must stay in the first 1024 bytes, so the theme goes right after it.
+	it("headFirst keeps an existing <meta charset> first", () => {
+		expect(headFirst('<html><head><meta charset="utf-8"><title>t</title>', "<b>")).toBe(
+			'<html><head><meta charset="utf-8"><b><title>t</title>'
+		);
+		expect(headFirst("<html><head>\n  <meta charset=utf-8 />\n  <title>t</title>", "<b>")).toBe(
+			"<html><head>\n  <meta charset=utf-8 /><b>\n  <title>t</title>"
+		);
+		// A charset later in the head (after other markup) is not moved past it: head-first as before.
+		expect(headFirst('<html><head><title>t</title><meta charset="utf-8">', "<b>")).toBe(
+			'<html><head><b><title>t</title><meta charset="utf-8">'
+		);
+	});
 });
 
 describe("SvelteKit: caThemeHandle puts the theme before every stylesheet", () => {
