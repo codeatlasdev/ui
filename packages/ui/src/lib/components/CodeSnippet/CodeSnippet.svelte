@@ -1,8 +1,10 @@
 <script lang="ts">
   import { useMessages } from '../../i18n/state.svelte.js';
   import { codeSnippet } from '../../i18n/groups/codeSnippet.js';
-  import { Copy, Check } from '@lucide/svelte';
+  import { Copy, Check, TriangleAlert } from '@lucide/svelte';
+  import { onDestroy } from 'svelte';
   import { copyToClipboard } from '../../utils/index.js';
+  import { announce } from '../../utils/announce.js';
   import { highlight } from '../../utils/highlighter.js';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
   const t = useMessages(codeSnippet);
@@ -16,6 +18,8 @@
   let { code, language = 'svelte', class: className = '' }: Props = $props();
 
   let copied = $state(false);
+  let failed = $state(false);
+  let timer: ReturnType<typeof setTimeout> | undefined;
   let highlightedHtml = $state<string | null>(null);
 
   // Both themes are emitted as --shiki-light / --shiki-dark; CSS picks one with light-dark(),
@@ -30,10 +34,15 @@
   });
 
   async function handleCopy() {
-    await copyToClipboard(code);
-    copied = true;
-    setTimeout(() => { copied = false; }, 2000);
+    const ok = await copyToClipboard(code);
+    copied = ok;
+    failed = !ok;
+    announce(ok ? t().codeSnippet.copied : t().codeSnippet.failed, ok ? 'polite' : 'assertive');
+    clearTimeout(timer);
+    timer = setTimeout(() => { copied = false; failed = false; }, 2000);
   }
+
+  onDestroy(() => clearTimeout(timer));
 </script>
 
 <div class="ca-code-snippet glass-overlay {className}">
@@ -42,12 +51,15 @@
     <button
       class="ca-code-snippet__copy"
       type="button"
-      aria-label={copied ? t().codeSnippet.copied : t().codeSnippet.copyCode}
+      aria-label={copied ? t().codeSnippet.copied : failed ? t().codeSnippet.failed : t().codeSnippet.copyCode}
       onclick={handleCopy}
     >
       {#if copied}
         <Check size={14} stroke-width={2.5} />
         <span>{t().codeSnippet.copied}</span>
+      {:else if failed}
+        <TriangleAlert size={14} stroke-width={2} />
+        <span>{t().codeSnippet.failed}</span>
       {:else}
         <Copy size={14} stroke-width={2} />
         <span>{t().codeSnippet.copy}</span>

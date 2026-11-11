@@ -919,6 +919,33 @@ Parts: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'oncopy' \| 'aria-label'>`
 
+## CopyField
+
+`import { CopyField } from "@codeatlasdev/ui"`
+
+CopyField: a read-only value (an API key, a webhook URL, a recovery code, a curl command) with a copy button beside it. Single line by default; `multiline` wraps a long value in a code box. `mask` hides the value behind dots with a reveal toggle (copy always copies the real value).
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `value` | `string` |  | The value shown and copied. |
+| `label` | `string` |  | Names the value box. Visible above it unless `hideLabel`. |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`). |
+| `description?` | `string` |  | Help text under the box, read as the box's description. |
+| `multiline?` | `boolean` | `false` | Wraps the value on several lines (a command, a base64 key) instead of truncating one line. |
+| `mask?` | `boolean` | `false` | Shows dots instead of the value, with a reveal toggle. Copy still copies the real value. |
+| `copyLabel?` | `string` |  | Visible label of the copy button. Default: the localized "Copy". |
+| `iconOnly?` | `boolean` | `false` | An icon-only copy button (compact), named from `label`. |
+| `toast?` | `string` |  | Success toast message after copying. Omit for no toast. |
+| `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `class?` | `string` | `''` |  |
+| `oncopy?` | `(value: string) => void` |  |  |
+
+Parts: `ca-cf` `ca-cf--multiline` `ca-cf--sm` `ca-cf__desc` `ca-cf__label` `ca-cf__row` `ca-cf__value`
+
+Variables: `--ca-cf-gap` `--ca-field-gap` `--ca-field-label-leading`
+
+Tokens: `--ca-cf-gap`
+
 ## DataTable
 
 `import { DataTable } from "@codeatlasdev/ui/table"` (generic: `TData extends RowData`)

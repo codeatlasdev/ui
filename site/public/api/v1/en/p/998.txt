@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #998 "Single line, icon only and multiline" (inputs/copy-field).
+What it shows: A CopyField in three forms: single line, icon-only copy and a multiline command. When to use: Webhook URLs, request snippets and IDs a user must copy exactly.
+Spec:
+- `iconOnly hideLabel`
+- `multiline size="sm"`
+- `label="Webhook URL"`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #998 Single line, icon only and multiline → file, what changed, https://ui.codeatlas.com.br/docs/inputs/copy-field#single-line-icon-only-and-multiline; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/998.txt   Components API: ca-ui-mcp get_component(CopyField)

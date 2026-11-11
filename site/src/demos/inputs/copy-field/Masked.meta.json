@@ -1,0 +1,31 @@
+{
+	"summary": "A masked CopyField: dots with a reveal toggle; copy always copies the real value.",
+	"use": "API keys and tokens on a settings page.",
+	"spec": ["`mask`", "`copyLabel=\"Copy key\"`", "`description=\"Treat it like a password.\"`"],
+	"tags": ["copy-field", "clipboard", "copy", "secret", "api-key", "read-only"],
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CopyField"],
+		"aliases": ["read-only copy box", "copy box", "show once"],
+		"related": ["012", "998", "5000"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

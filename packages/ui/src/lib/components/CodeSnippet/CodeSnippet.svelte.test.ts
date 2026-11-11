@@ -11,6 +11,8 @@ const CODE = "const answer: number = 42;\nconsole.log(answer);";
 
 afterEach(() => {
 	vi.restoreAllMocks();
+	// The announcer is one shared live region: a "Copiado" from an earlier test must not satisfy this one.
+	for (const region of document.querySelectorAll("[data-ca-announcer]")) region.textContent = "";
 });
 
 // These tests assert the Portuguese wording of the catalog.
@@ -47,6 +49,19 @@ describe("CodeSnippet", () => {
 		await expect.element(screen.getByRole("button", { name: "Copiado" })).toBeInTheDocument();
 
 		// label reverts after the 2s timeout
+		await expect.element(screen.getByRole("button", { name: "Copiar código" })).toBeInTheDocument();
+	});
+
+	it("a rejected clipboard write never shows Copied and announces the error (#745)", async () => {
+		vi.spyOn(navigator.clipboard, "writeText").mockRejectedValue(new Error("denied"));
+		const screen = await render(CodeSnippet, { code: CODE, language: "typescript" });
+
+		await screen.getByRole("button", { name: "Copiar código" }).click();
+		await settled();
+		await expect
+			.poll(() => document.querySelector('[data-ca-announcer="assertive"]')?.textContent)
+			.toBe("Não foi possível copiar");
+		expect(screen.container.textContent).not.toContain("Copiado");
 		await expect.element(screen.getByRole("button", { name: "Copiar código" })).toBeInTheDocument();
 	});
 

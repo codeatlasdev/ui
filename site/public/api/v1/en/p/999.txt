@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #999 "Masked" (inputs/copy-field).
+What it shows: A masked CopyField: dots with a reveal toggle; copy always copies the real value. When to use: API keys and tokens on a settings page.
+Spec:
+- `mask`
+- `copyLabel="Copy key"`
+- `description="Treat it like a password."`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #999 Masked → file, what changed, https://ui.codeatlas.com.br/docs/inputs/copy-field#masked; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/999.txt   Components API: ca-ui-mcp get_component(CopyField)

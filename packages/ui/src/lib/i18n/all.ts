@@ -26,6 +26,7 @@ import { combobox } from "./groups/combobox.js";
 import { commandPalette } from "./groups/commandPalette.js";
 import { common } from "./groups/common.js";
 import { copyButton } from "./groups/copyButton.js";
+import { copyField } from "./groups/copyField.js";
 import { dataTable } from "./groups/dataTable.js";
 import { dialog } from "./groups/dialog.js";
 import { docs } from "./groups/docs.js";
@@ -93,6 +94,7 @@ export const groups = {
 	combobox,
 	commandPalette,
 	copyButton,
+	copyField,
 	externalLink,
 	exportMenu,
 	liveList,

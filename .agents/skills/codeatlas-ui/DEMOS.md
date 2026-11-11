@@ -392,3 +392,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 995 | A form with the keyboard open | concepts/viewport | Button, StickyActions, TextField |
 | 996 | Scrolling filter row | display/chip | Chip, ChipRow |
 | 997 | Pipeline stages editor | layout/sortable-list | EditableRow, IconButton, NumberField, Select, SortableList, TextField |
+| 998 | Single line, icon only and multiline | inputs/copy-field | CopyField |
+| 999 | Masked | inputs/copy-field | CopyField |
+| 5000 | Show once | inputs/copy-field | AlertDialog, Button, CopyField |

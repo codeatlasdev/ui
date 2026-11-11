@@ -1,0 +1,35 @@
+{
+	"summary": "Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.",
+	"use": "After creating an API key or a recovery code the user must save.",
+	"spec": [
+		"`confirmDisabled={!copied}`",
+		"`mask copyLabel=\"Copy key\"`",
+		"`oncopy={() => (copied = true)}`"
+	],
+	"tags": ["copy-field", "clipboard", "copy", "secret", "api-key", "read-only"],
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AlertDialog", "Button", "CopyField"],
+		"aliases": ["read-only copy box", "copy box", "show once"],
+		"related": ["012", "998", "999"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

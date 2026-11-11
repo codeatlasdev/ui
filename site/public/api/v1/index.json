@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 387,
+	"count": 390,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 348,
+			"component": 351,
 			"motion": 39
 		},
 		"subtype": {
@@ -16,7 +16,7 @@
 			"component/display": 70,
 			"component/feedback": 38,
 			"component/foundation": 19,
-			"component/input": 86,
+			"component/input": 89,
 			"component/layout": 48,
 			"component/map": 1,
 			"component/navigation": 39,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 370,
+			"default": 373,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,15 +42,15 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 101,
-			"subtle": 226
+			"subtle": 229
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 33,
 			"hover": 79,
-			"keyboard": 267,
+			"keyboard": 270,
 			"none": 78,
-			"press": 227,
+			"press": 230,
 			"scroll": 22
 		},
 		"layout": {
@@ -58,35 +58,35 @@
 			"full-bleed": 6,
 			"grid": 36,
 			"overlay": 50,
-			"single-column": 127,
+			"single-column": 130,
 			"split": 13,
 			"stack": 144,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 385,
+			"both": 388,
 			"light": 2
 		},
 		"density": {
 			"airy": 12,
 			"compact": 49,
-			"regular": 326
+			"regular": 329
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 387,
+			"css": 390,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 347,
+			"css": 350,
 			"js-light": 40
 		},
 		"component": {
 			"Accordion": 3,
 			"AccordionItem": 3,
 			"Alert": 3,
-			"AlertDialog": 4,
+			"AlertDialog": 5,
 			"AppForm": 2,
 			"AppList": 1,
 			"AppSettings": 1,
@@ -100,7 +100,7 @@
 			"BarChart": 5,
 			"Box": 2,
 			"Breadcrumb": 2,
-			"Button": 106,
+			"Button": 107,
 			"ButtonGroup": 2,
 			"Calendar": 2,
 			"Callout": 1,
@@ -124,6 +124,7 @@
 			"ContextMenu": 2,
 			"ConversationItem": 1,
 			"CopyButton": 3,
+			"CopyField": 3,
 			"DataTable": 3,
 			"DataTableColumnHeader": 1,
 			"DateField": 2,
@@ -649,6 +650,9 @@
 		{"kind":"component","subtype":"foundation","style":["default"],"motion":"subtle","interaction":["press","scroll","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","Switch"],"aliases":["full height hero","min-height floor","first screen","text scaling","continuation cue"],"related":["993","995"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"994","path":"concepts/viewport/Hero","title":"A hero that is a floor","summary":"A phone-sized scrollable frame holding a hero (eyebrow, heading, lead, filled Button) and a second section, with a switch for 200% text and a long translation and a switch for a continuation cue.","use":"Showing that a hero is a floor (min-height) so larger text grows it instead of clipping, and that without a visible cue the next section can read as the end of the page.","tags":["viewport","hero","min-height","false-floor","scroll-cue","reflow","concept"],"names":[]},
 		{"kind":"component","subtype":"foundation","style":["default"],"motion":"none","interaction":["scroll","keyboard","press"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","StickyActions","TextField"],"aliases":["on-screen keyboard","sticky action bar","keyboard aware form","mobile form"],"related":["993","994"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"995","path":"concepts/viewport/Keyboard","title":"A form with the keyboard open","summary":"A scrollable account form with three TextFields (work email, company, role) and a StickyActions bar with a stretched Continue button, wrapped in the keyboardAware action.","use":"A form that stays operable with the on-screen keyboard open: the page scrolls, the focused field comes into view and the action bar rides above the keyboard and the safe area.","tags":["viewport","keyboard","keyboard-aware","sticky-actions","form","mobile","safe-area","concept"],"names":[]},
 		{"kind":"component","subtype":"display","style":["default"],"motion":"none","interaction":["press","keyboard","scroll"],"layout":"single-column","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["Chip","ChipRow"],"aliases":["filter row","scrolling chips","chip scroller"],"related":["118","115"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"996","path":"display/chip/Row","title":"Scrolling filter row","summary":"A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden.","use":"A filter or message-type row on a phone that must scroll without clipping the 44px touch area of its chips.","tags":["chip","chip-row","filter","scroll","touch","horizontal"],"names":[]},
-		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["drag","press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["EditableRow","IconButton","NumberField","Select","SortableList","TextField"],"aliases":["reorderable list","settings list editor","stage editor"],"related":["118"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"997","path":"layout/sortable-list/Stages","title":"Pipeline stages editor","summary":"A pipeline-stages editor: four rows that reorder by grip or menu, each collapsing to a summary on a narrow screen and opening a name, kind and stale-days form.","use":"Settings screens that edit an ordered list of records (stages, tags, loss reasons, quick replies) with inline fields.","tags":["sortable-list","editable-row","reorder","settings","drag","stages"],"names":[]}
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["drag","press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["EditableRow","IconButton","NumberField","Select","SortableList","TextField"],"aliases":["reorderable list","settings list editor","stage editor"],"related":["118"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"997","path":"layout/sortable-list/Stages","title":"Pipeline stages editor","summary":"A pipeline-stages editor: four rows that reorder by grip or menu, each collapsing to a summary on a narrow screen and opening a name, kind and stale-days form.","use":"Settings screens that edit an ordered list of records (stages, tags, loss reasons, quick replies) with inline fields.","tags":["sortable-list","editable-row","reorder","settings","drag","stages"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["CopyField"],"aliases":["read-only copy box","copy box","show once"],"related":["012","999","5000"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"998","path":"inputs/copy-field/Default","title":"Single line, icon only and multiline","summary":"A CopyField in three forms: single line, icon-only copy and a multiline command.","use":"Webhook URLs, request snippets and IDs a user must copy exactly.","tags":["copy-field","clipboard","copy","secret","api-key","read-only"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["CopyField"],"aliases":["read-only copy box","copy box","show once"],"related":["012","998","5000"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"999","path":"inputs/copy-field/Masked","title":"Masked","summary":"A masked CopyField: dots with a reveal toggle; copy always copies the real value.","use":"API keys and tokens on a settings page.","tags":["copy-field","clipboard","copy","secret","api-key","read-only"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AlertDialog","Button","CopyField"],"aliases":["read-only copy box","copy box","show once"],"related":["012","998","999"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"5000","path":"inputs/copy-field/ShowOnce","title":"Show once","summary":"Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.","use":"After creating an API key or a recovery code the user must save.","tags":["copy-field","clipboard","copy","secret","api-key","read-only"],"names":[]}
 	]
 }

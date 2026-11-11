@@ -1,0 +1,46 @@
+---
+title: CopyField
+description: A read-only value with a copy button for API keys, webhook URLs, recovery codes and commands. Optional mask with a reveal toggle.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Default from "~/demos/inputs/copy-field/Default.svelte";
+import DefaultSrc from "~/demos/inputs/copy-field/Default.svelte?raw";
+import Masked from "~/demos/inputs/copy-field/Masked.svelte";
+import MaskedSrc from "~/demos/inputs/copy-field/Masked.svelte?raw";
+import ShowOnce from "~/demos/inputs/copy-field/ShowOnce.svelte";
+import ShowOnceSrc from "~/demos/inputs/copy-field/ShowOnce.svelte?raw";
+
+```svelte
+<script>
+  import { CopyField } from "@codeatlasdev/ui";
+</script>
+
+<CopyField label="Webhook URL" value={url} />
+```
+
+The value sits in a read-only box (`role="textbox"`, `aria-readonly`) named by `label`. One click selects all of it (`user-select: all`), a long token wraps instead of scrolling the page sideways, and the copy button is a [CopyButton](/docs/inputs/copy-button/): it announces `Copied` and reports a failed write as an error, never as a success.
+
+<Demo title="Single line, icon only and multiline" src={DefaultSrc}><Default client:visible /></Demo>
+<Demo title="Masked" description="`mask` shows dots and a reveal toggle. Copy always copies the real value." src={MaskedSrc}><Masked client:visible /></Demo>
+
+## Show a secret once
+
+There is no separate component: compose an [AlertDialog](/docs/feedback/alert-dialog/) with a masked `CopyField`. AlertDialog has no close button and ignores scrim clicks, and `confirmDisabled` keeps the confirm button off until the user has copied. Escape still closes the dialog, so say in the description that the secret is gone once it closes.
+
+<Demo title="Show once" src={ShowOnceSrc}><ShowOnce client:visible /></Demo>
+
+<Props rows={[
+  { name: "value", type: "string", description: "The value shown and copied." },
+  { name: "label", type: "string", description: "Names the value box. Visible above it unless `hideLabel`." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Keeps the label for assistive tech only." },
+  { name: "description", type: "string", description: "Help text under the box, read as its description." },
+  { name: "multiline", type: "boolean", default: "false", description: "Wraps a long value on several lines instead of truncating one line." },
+  { name: "mask", type: "boolean", default: "false", description: "Shows dots with a reveal toggle." },
+  { name: "copyLabel", type: "string", default: "'Copy' (localized)", description: "Visible label of the copy button." },
+  { name: "iconOnly", type: "boolean", default: "false", description: "An icon-only copy button named `Copy: <label>`." },
+  { name: "toast", type: "string", description: "Success toast message after copying." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Control size." },
+  { name: "oncopy", type: "(value: string) => void", description: "Called after a successful copy." },
+]} />
