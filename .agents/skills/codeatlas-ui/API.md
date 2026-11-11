@@ -472,7 +472,11 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
 
 ## Callout
 
@@ -801,7 +805,7 @@ Data attributes: `data-disabled`, `data-pass`
 
 Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width`
+Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-state` (`open`)
 
@@ -1059,7 +1063,11 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
 
 ## DatePicker
 
@@ -1095,7 +1103,11 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
 
 ## DateRangePicker
 
@@ -1129,7 +1141,11 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
 
 ## Dialog
 
@@ -1831,9 +1847,9 @@ Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'oncli
 
 Parts: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
 
-Variables: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
+Variables: `--ca-icon-btn-font-weight` `--ca-icon-btn-letter-spacing` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
 
-Tokens: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
+Tokens: `--ca-icon-btn-font-weight` `--ca-icon-btn-letter-spacing` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
 
 ## Image
 
@@ -2436,6 +2452,10 @@ Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca
 
 Parts: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused`
 
+Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
+
+Tokens: `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
+
 ## OverlayHistory
 
 `import { OverlayHistory } from "@codeatlasdev/ui/kit"`
@@ -2679,11 +2699,11 @@ Parts: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indetermi
 
 Internal (may change in any release): `ca-progress-shimmer`
 
-Variables: `--ca-progress-height`
+Variables: `--ca-progress-bar` `--ca-progress-height` `--ca-progress-track`
 
 Data attributes: `data-size` (`lg` `md` `sm`)
 
-Tokens: `--ca-progress-height`
+Tokens: `--ca-progress-bar` `--ca-progress-height` `--ca-progress-track`
 
 ## RadarChart
 
@@ -2758,7 +2778,11 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
 
 ## RecordCell
 
@@ -3023,9 +3047,11 @@ Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-pad
 
 Parts: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width`
+Variables: `--ca-anchor-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-selected`, `data-state` (`open`)
+
+Tokens: `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
 
 ## Seo
 
@@ -3678,9 +3704,9 @@ Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'si
 
 Parts: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-tf-addon-bg` `--ca-tf-gap` `--ca-tf-label-line-height`
+Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
-Tokens: `--ca-tf-addon-bg` `--ca-tf-gap` `--ca-tf-label-line-height`
+Tokens: `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
 ## ThemeIsland
 
@@ -3737,7 +3763,11 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
 
 ## Timeline
 
@@ -5056,7 +5086,7 @@ Types:
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: FieldTokens; textArea?: TextAreaTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5083,13 +5113,13 @@ Types:
 | `EmptyStateTokens` | `interface EmptyStateTokens { padding?: CssValue; titleSize?: CssValue; titleWeight?: CssValue; }` |  |
 | `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
-| `FieldTokens` | `interface FieldTokens { gap?: CssValue; labelLeading?: CssValue; }` |  |
+| `FieldTokens` | `interface FieldTokens { gap?: CssValue; labelLeading?: CssValue; labelTracking?: CssValue; hintLeading?: CssValue; hintTracking?: CssValue; letterSpacing?: CssValue; lineHeight?: CssValue; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
 | `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
-| `IconButtonTokens` | `interface IconButtonTokens { weight?: CssValue; size?: { sm?: CssValue; md?: CssValue; lg?: CssValue }; touchSize?: CssValue; }` |  |
+| `IconButtonTokens` | `interface IconButtonTokens { weight?: CssValue; size?: { sm?: CssValue; md?: CssValue; lg?: CssValue }; touchSize?: CssValue; tracking?: CssValue; }` |  |
 | `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
 | `IconProps` | `type IconProps = { size?: number \| string; class?: string; "stroke-width"?: number \| string; };` | Props the library passes to icon components. |
 | `Justify` | `type Justify = (typeof JUSTIFY)[number];` |  |
@@ -5232,9 +5262,13 @@ Types:
 | `iconButton?` | `IconButtonTokens` |  |
 | `kbd?` | `KbdTokens` |  |
 | `avatar?` | `AvatarTokens` |  |
-| `field?` | `FieldTokens` | `--ca-field-*`: shared by `TextField` and `TextArea`; the per-component keys win. |
-| `textField?` | `FieldTokens` |  |
+| `field?` | `FieldTokens` | `--ca-field-*`: shared by TextField, TextArea, Select, Combobox, NumberField and the date fields; the per-component keys win. |
+| `textField?` | `TextFieldTokens` |  |
 | `textArea?` | `TextAreaTokens` |  |
+| `select?` | `FieldTokens` |  |
+| `combobox?` | `FieldTokens` |  |
+| `numberField?` | `FieldTokens` |  |
+| `progress?` | `ProgressTokens` |  |
 | `card?` | `CardTokens` |  |
 | `segmented?` | `SegmentedTokens` |  |
 | `emptyState?` | `EmptyStateTokens` |  |
@@ -5405,8 +5439,13 @@ Types:
 
 | Field | Type | Notes |
 |---|---|---|
-| `gap?` | `CssValue` | `--ca-<tf\|ta\|field>-gap`: space between label, box and hint. @default `--ca-space-1` |
-| `labelLeading?` | `CssValue` | `--ca-<tf\|ta\|field>-label-line-height`. @default `--ca-line-height-snug` |
+| `gap?` | `CssValue` | `--ca-<prefix>-gap`: space between label, box and hint. @default `--ca-space-1` |
+| `labelLeading?` | `CssValue` | `--ca-<prefix>-label-line-height` (`--ca-field-label-leading` on `components.field`). @default `--ca-line-height-snug` |
+| `labelTracking?` | `CssValue` | `--ca-<prefix>-label-tracking`. @default inherited |
+| `hintLeading?` | `CssValue` | `--ca-<prefix>-hint-leading`: line-height of the hint and error text. @default `--ca-line-height-snug` |
+| `hintTracking?` | `CssValue` | `--ca-<prefix>-hint-tracking`. @default inherited |
+| `letterSpacing?` | `CssValue` | `--ca-<prefix>-letter-spacing` (`--ca-input-letter-spacing` on `components.field`): the text typed in the control. @default `normal` |
+| `lineHeight?` | `CssValue` | `--ca-<prefix>-line-height` (`--ca-input-line-height` on `components.field`): the text typed in the control. @default 1 |
 
 #### FontDescriptor
 
@@ -5452,6 +5491,7 @@ Types:
 | `weight?` | `CssValue` | `--ca-icon-btn-font-weight`. @default inherited |
 | `size?` | `{ sm?: CssValue; md?: CssValue; lg?: CssValue }` | `--ca-icon-btn-size-<size>`: width and height. @default 32px / 40px / 48px |
 | `touchSize?` | `CssValue` | `--ca-icon-btn-touch-size`: the `pointer: coarse` minimum side. @default 44px |
+| `tracking?` | `CssValue` | `--ca-icon-btn-letter-spacing`. @default inherited |
 
 #### IconProps
 
