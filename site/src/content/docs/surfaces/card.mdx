@@ -62,6 +62,10 @@ Avoid a lone card on the last row too: with five cards, use five columns, or thr
 .plans .plan-cta { margin-top: auto; }
 ```
 
+## Nested cards
+
+A card inside a card takes a concentric radius, the outer radius minus the outer padding, so the gap between the two edges stays even round the corner. Two frames rarely help, though: in development a `Card` directly inside another prints a `nested-surface` warning. Prefer a heading, a `Divider` or plain sections inside one card.
+
 ## Tokens
 
 Material, elevation, tone and variant still decide the paint; these replace one part of it: `--ca-card-bg` (a solid fill), `--ca-card-radius`, `--ca-card-border` (a shorthand, default none), `--ca-card-shadow` (`none` for flat), plus `--ca-card-padding` and `--ca-card-gap`.

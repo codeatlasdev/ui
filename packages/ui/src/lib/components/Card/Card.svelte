@@ -92,6 +92,13 @@
   );
   // A padded wrapper inside the padded card doubles the space (20px + 20px). Check the real
   // computed padding once, in dev only: devWarn is a no-op in production builds.
+  function checkNested(el: HTMLElement) {
+    if (el.parentElement?.closest('.ca-card'))
+      devWarn(
+        'nested-surface',
+        '<Card> inside another <Card> (nested-surface): the inner card takes a concentric radius, but two frames rarely help. Use a plain section, a Divider or `variant="outlined"` content inside one card.'
+      );
+  }
   function checkDoublePadding(el: HTMLElement) {
     if (flush || step === 'none') return;
     const child = el.querySelector(':scope > :not(.ca-card__header):not(.ca-liquid-glass)');
@@ -118,6 +125,7 @@
   data-padding={flush ? undefined : step}
   data-gap={gap === undefined ? undefined : (gapStep ?? 'custom')}
   {@attach checkDoublePadding}
+  {@attach checkNested}
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
 >
@@ -150,6 +158,13 @@
       box-shadow: var(--ca-card-shadow, var(--ca-surface-shadow), var(--ca-surface-edge), var(--ca-surface-glow));
     }
 
+    /* A card inside a card takes a concentric radius: the outer radius minus the outer padding (#915). Keyed
+       on the outer card's padding step, because a custom property set on every card would resolve on the inner one. */
+    :global(.ca-card) :global(.ca-card) { --ca-surface-radius: max(0px, calc(var(--ca-radius-lg) - var(--ca-card-padding))); }
+    :global(.ca-card[data-padding='sm']) :global(.ca-card) { --ca-surface-radius: max(0px, calc(var(--ca-radius-lg) - var(--ca-space-3))); }
+    :global(.ca-card[data-padding='lg']) :global(.ca-card) { --ca-surface-radius: max(0px, calc(var(--ca-radius-lg) - var(--ca-space-8))); }
+    :global(.ca-card[data-padding='none']) :global(.ca-card),
+    :global(.ca-card--flush) :global(.ca-card) { --ca-surface-radius: var(--ca-radius-lg); }
     :global(.ca-card[data-padding='none']) { padding: 0; }
     :global(.ca-card[data-padding='sm'])   { padding: var(--ca-space-3); }
     :global(.ca-card[data-padding='md'])   { padding: var(--ca-space-5); }
