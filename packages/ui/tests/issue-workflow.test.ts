@@ -54,6 +54,13 @@ describe("issue:start", () => {
 		expect(ownPr([fork(90, branch), ours(95, branch)], branch)?.number).toBe(95);
 	});
 
+	it("does not adopt our own closed PR for the branch: a new one is opened (#938)", () => {
+		const branch = "fix/836-receita-de-modal-popover-nativo-anima";
+		const closed = { ...ours(839, branch), state: "CLOSED" };
+		expect(ownPr([closed], branch)).toBeUndefined();
+		expect(ownPr([closed, ours(937, branch)], branch)?.number).toBe(937);
+	});
+
 	it("stops when someone else already has an open PR linked to the issue (#89)", () => {
 		const branch = "fix/88-unit-tests-fail-on-windows-path";
 		expect(

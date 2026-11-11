@@ -111,7 +111,9 @@ async function start(n: string) {
 			(await $`git rev-parse --verify --quiet ${branch}`.cwd(ROOT).quiet().nothrow()).exitCode ===
 			0;
 		if (exists) await $`git worktree add ${dir} ${branch}`.cwd(ROOT);
-		else await $`git worktree add -b ${branch} ${dir} origin/main`.cwd(ROOT);
+		// --no-track: tracking origin/main would make issue-land's plain `git push` refuse (#938); the
+		// first `push -u` below sets the branch's own upstream.
+		else await $`git worktree add --no-track -b ${branch} ${dir} origin/main`.cwd(ROOT);
 		await $`bun install --frozen-lockfile`.cwd(dir);
 	}
 
