@@ -51,8 +51,6 @@ describe("NavModule.fullLabel (#715)", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
-	// The badged tab ("Home") is checked by the name only: a counted BottomNav tab fails axe on main for a
-	// reason outside fullLabel (badge before the label in DOM order): #896.
 	it("the bottom-nav tab name contains the visible text", async () => {
 		await page.viewport(390, 844);
 		const screen = await render(BottomNav, { modules, activeIndex: 0, onSelect: () => {} });
