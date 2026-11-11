@@ -3117,17 +3117,18 @@ Parts: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-sectio
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `fullWidth?` | `boolean` | `false` |  |
+| `sizing?` | `'equal' \| 'content'` | `'equal'` | `equal`: one shared column width. `content`: each segment is as wide as its label. |
 | `class?` | `string` | `''` |  |
 | `aria-label?` | `string` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
 Parts: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 
-Variables: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
+Variables: `--ca-seg-gap` `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
 
-Data attributes: `data-fullwidth`, `data-no-motion`, `data-state` (`on`)
+Data attributes: `data-fullwidth`, `data-no-motion`, `data-sizing` (`content`), `data-state` (`on`)
 
-Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
+Tokens: `--ca-seg-gap` `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
 
 ## Select
 
