@@ -10,7 +10,7 @@
 
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';
-  type Tone = 'brand' | 'neutral';
+  type Tone = 'brand' | 'neutral' | 'danger';
   type Align = 'center' | 'between';
 
   /** Own props, shared by both renderings. */
@@ -19,7 +19,8 @@
     variant?: Variant;
     /**
      * `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a
-     * secondary action beside a brand `filled` one. Other variants ignore it.
+     * secondary action beside a brand `filled` one. `'danger'` draws them in the error colour, for a quiet
+     * destructive action (Remove, Disconnect) where the filled `destructive` is too loud. Other variants ignore it.
      */
     tone?: Tone;
     size?: Size;
@@ -116,6 +117,7 @@
 
   const isDisabled = $derived(disabled || loading);
   const neutral = $derived(tone === 'neutral' && (variant === 'outlined' || variant === 'ghost'));
+  const danger = $derived(tone === 'danger' && (variant === 'outlined' || variant === 'ghost'));
 
   // A new tab must not reach `window.opener`: add the tokens to whatever `rel` the caller passed (#290).
   const rel = $derived(
@@ -160,6 +162,7 @@
     {rel}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
     class:ca-btn--neutral={neutral}
+    class:ca-btn--danger={danger}
     class:ca-btn--between={align === 'between'}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
@@ -184,6 +187,7 @@
     disabled={isDisabled}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
     class:ca-btn--neutral={neutral}
+    class:ca-btn--danger={danger}
     class:ca-btn--between={align === 'between'}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
@@ -341,6 +345,22 @@
     .ca-btn--neutral:active:not(:disabled) {
       background: var(--ca-action-selected);
       color: var(--ca-text-primary);
+    }
+
+    /* Danger tone (outlined, ghost): a quiet destructive action. Label, border and tints come from the error
+       semantic; the tints stop at 10% so the label keeps 4.5:1 on them in every preset (#700, contrast.test.ts). */
+    .ca-btn--danger.ca-btn--outlined {
+      border-color: var(--ca-semantic-error);
+      color: var(--ca-semantic-error);
+    }
+    .ca-btn--danger.ca-btn--ghost {
+      color: var(--ca-semantic-error);
+    }
+    .ca-btn--danger:hover:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-semantic-error) 6%, transparent);
+    }
+    .ca-btn--danger:active:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-semantic-error) 10%, transparent);
     }
 
     /* Destructive */
