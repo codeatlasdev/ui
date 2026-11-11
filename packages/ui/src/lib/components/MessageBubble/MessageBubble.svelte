@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Check, CheckCheck, Clock } from '@lucide/svelte';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { chat } from '../../i18n/groups/chat.js';
@@ -22,7 +23,8 @@
    * Usage:
    *   <MessageBubble direction="out" time="14:32" status="read">Hello</MessageBubble>
    */
-  interface Props {
+  // Rest attributes reach the row: `data-msg` for a scroll anchor, `id`, handlers (#723).
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children'> {
     /** `in` aligns to the start (received), `out` to the end (sent). */
     direction?: Direction;
     /** Position inside a run from one sender; drives the tail, spacing, sender name and avatar. */
@@ -58,6 +60,7 @@
     children,
     footer,
     class: className = '',
+    ...rest
   }: Props = $props();
 
   let showSender = $derived(
@@ -73,6 +76,7 @@
 </script>
 
 <div
+  {...rest}
   class="ca-bubble-row ca-bubble-row--{direction} {className}"
   data-grouped={grouped}
   class:ca-bubble-row--reacted={hasReactions}

@@ -3,6 +3,7 @@ import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { touchTarget } from "../../../../tests/touch-target";
+import ConversationItem from "./ConversationItem.svelte";
 import Harness from "./ConversationItem.test.svelte";
 
 const item = (c: Element) => c.querySelector(".ca-conversation") as HTMLElement;
@@ -135,5 +136,25 @@ describe("ConversationItem", () => {
 		await userEvent.tab();
 		const cs = getComputedStyle(item(screen.container));
 		expect(cs.outlineStyle !== "none" || cs.boxShadow !== "none").toBe(true);
+	});
+});
+
+describe("ConversationItem rest attributes (#723)", () => {
+	it("forwards data-*, id and handlers to the row, button or link", async () => {
+		let entered = 0;
+		for (const href of [undefined, "/c/1"]) {
+			const screen = await render(ConversationItem, {
+				title: "Ana",
+				href,
+				id: `row-${href ?? "b"}`,
+				"data-conversation": "c1",
+				onpointerenter: () => entered++,
+			} as never);
+			const root = screen.container.querySelector(".ca-conversation") as HTMLElement;
+			expect(root.id).toBe(`row-${href ?? "b"}`);
+			expect(root.dataset.conversation).toBe("c1");
+			root.dispatchEvent(new PointerEvent("pointerenter"));
+		}
+		expect(entered).toBe(2);
 	});
 });
