@@ -3628,6 +3628,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLTableRowElement>, 'children' \| 'onclick'
 |---|---|---|---|
 | `sort?` | `'none' \| 'asc' \| 'desc'` | `'none'` | Current sort direction of this column. `none` renders the idle icon and no `aria-sort`. |
 | `onsort?` | `() => void` |  | Called when the header button is pressed; the caller owns the sort state and the next direction. |
+| `idleIcon?` | `boolean` | `true` | `false` draws no arrow while the column is unsorted: only the sorted column shows one (a quiet, mostly-read table). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`: Column label.
