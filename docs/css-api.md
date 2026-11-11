@@ -277,6 +277,8 @@ Tokens: `--ca-kanban-col-width` (column width, default `clamp(15rem, 22vw, 20rem
 
 `.ca-kpi` `.ca-kpi__chart` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value`
 
+Icon tile (`iconStyle="tile"`): `.ca-kpi__inner` carries `data-icon-style="tile"` and `data-tone="brand|success|warning|error"`, and `.ca-kpi__icon` becomes the tile. Tokens (set on the card or `.ca-kpi__icon`): `--ca-kpi-tile-size` (default `var(--ca-space-10)`), `--ca-kpi-tile-bg` (default the tone at 14%), `--ca-kpi-tile-fg` (default the tone).
+
 The trend element (`.ca-kpi__trend`, `.ca-stat__trend`) carries `data-tone="good|bad|neutral"`: the verdict behind its colour. `--up`/`--down` only say which way the number moved; with `trendTone="positive-down"` a `--down` trend is `good`. Target `data-tone` to restyle the colour, never `--up`/`--down`.
 
 ## Lightbox
@@ -343,7 +345,9 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## PageShell
 
-`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-page-shell__title--display` `.ca-shell__content`
+`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__count` `.ca-page-shell__extra` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__heading` `.ca-page-shell__icon` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-page-shell__title--display` `.ca-shell__content`
+
+Header: `.ca-page-shell__icon` is the decorative tile (`icon`), `.ca-page-shell__heading` holds the `<h1>`, `.ca-page-shell__count` (`count`) and `.ca-page-shell__extra` (`titleExtra`). Tokens: `--ca-page-icon-size` (default `var(--ca-space-10)`), `--ca-page-icon-bg` (default `color-mix(in oklab, var(--ca-brand-main) 14%, transparent)`).
 
 ## Pagination
 

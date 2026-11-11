@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 393,
+	"count": 395,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 354,
+			"component": 356,
 			"motion": 39
 		},
 		"subtype": {
@@ -17,7 +17,7 @@
 			"component/feedback": 38,
 			"component/foundation": 19,
 			"component/input": 90,
-			"component/layout": 50,
+			"component/layout": 52,
 			"component/map": 1,
 			"component/navigation": 39,
 			"component/surface": 17,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 376,
+			"default": 378,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -41,7 +41,7 @@
 		"motion": {
 			"expressive": 51,
 			"immersive": 9,
-			"none": 101,
+			"none": 103,
 			"subtle": 232
 		},
 		"interaction": {
@@ -49,37 +49,37 @@
 			"drag": 33,
 			"hover": 79,
 			"keyboard": 273,
-			"none": 78,
+			"none": 80,
 			"press": 232,
 			"scroll": 22
 		},
 		"layout": {
 			"carousel": 4,
 			"full-bleed": 6,
-			"grid": 36,
+			"grid": 37,
 			"overlay": 50,
 			"single-column": 132,
 			"split": 14,
-			"stack": 144,
+			"stack": 145,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 391,
+			"both": 393,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 49,
-			"regular": 331
+			"regular": 333
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 393,
+			"css": 395,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 353,
+			"css": 355,
 			"js-light": 40
 		},
 		"component": {
@@ -96,15 +96,15 @@
 			"AuthCard": 2,
 			"AuthLayout": 1,
 			"Avatar": 17,
-			"Badge": 4,
+			"Badge": 5,
 			"BarChart": 5,
 			"Box": 2,
 			"Breadcrumb": 2,
-			"Button": 109,
+			"Button": 110,
 			"ButtonGroup": 2,
 			"Calendar": 2,
 			"Callout": 1,
-			"Card": 67,
+			"Card": 68,
 			"CardGrid": 1,
 			"Carousel": 3,
 			"CarouselItem": 3,
@@ -167,8 +167,8 @@
 			"InstallPrompt": 2,
 			"Kanban": 2,
 			"Kbd": 6,
-			"KpiCard": 12,
-			"KpiGrid": 11,
+			"KpiCard": 13,
+			"KpiGrid": 12,
 			"Lightbox": 2,
 			"LineChart": 5,
 			"LinkCard": 1,
@@ -196,7 +196,7 @@
 			"NotificationBell": 2,
 			"NumberField": 4,
 			"PageFrame": 1,
-			"PageShell": 9,
+			"PageShell": 10,
 			"Pagination": 3,
 			"PasswordStrength": 2,
 			"PhoneField": 1,
@@ -659,6 +659,8 @@
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AlertDialog","Button","CopyField"],"aliases":["read-only copy box","copy box","show once"],"related":["012","998","999"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"5000","path":"inputs/copy-field/ShowOnce","title":"Show once","summary":"Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.","use":"After creating an API key or a recovery code the user must save.","tags":["copy-field","clipboard","copy","secret","api-key","read-only"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","TextField","Select","NumberField","Button"],"aliases":["filter bar","action bar","search bar"],"related":["980","982","992"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"5001","path":"inputs/toolbar/Filters","title":"Filter bar","summary":"A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.","use":"A filter bar above a list or table where the fields have their own widths instead of stretching to the row.","tags":["toolbar","filter-bar","text-field","select","number-field","width","wrap","role-toolbar"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["EmptyState","MasterDetail"],"aliases":["split view","list and detail","inbox layout"],"related":["186"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"5002","path":"layout/master-detail/Inbox","title":"Inbox","summary":"A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.","use":"Inboxes and any list where a row opens a detail: two columns when wide, a full-screen pane with Back on a phone.","tags":["master-detail","inbox","conversation","list","responsive","split"],"names":[]},
-		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"airy","tech":["css"],"cost":"css","components":["CenteredPage","AuthCard","Button","SegmentedControl","Stack"],"aliases":["standalone page","invite page","consent screen","interstitial","centred card page"],"related":["172","781"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5003","path":"layout/centered-page/InviteConsent","title":"Invite and consent","summary":"A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.","use":"Transactional pages outside the app shell: accepting an invite, granting consent, a magic-link landing or a notice.","tags":["centered-page","invite","oauth-consent","notice","landmark","safe-area"],"names":[]}
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"airy","tech":["css"],"cost":"css","components":["CenteredPage","AuthCard","Button","SegmentedControl","Stack"],"aliases":["standalone page","invite page","consent screen","interstitial","centred card page"],"related":["172","781"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5003","path":"layout/centered-page/InviteConsent","title":"Invite and consent","summary":"A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.","use":"Transactional pages outside the app shell: accepting an invite, granting consent, a magic-link landing or a notice.","tags":["centered-page","invite","oauth-consent","notice","landmark","safe-area"],"names":[]},
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["PageShell","Card","Badge","Button"],"aliases":["page header","title with count","icon tile header"],"related":["185","187","600"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5004","path":"layout/page-shell/IconCount","title":"Icon tile, count and title extra","summary":"A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.","use":"Product screens that name the list and how many records it holds (\"Deals, 128\", \"Tasks, 12\") without replacing the PageShell header.","tags":["page-shell","icon","count","badge","title","header","layout"],"names":[]},
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["KpiCard","KpiGrid"],"aliases":["stat card with icon","icon tile metric"],"related":["175","985"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5005","path":"layout/kpi-card/IconTile","title":"Icon tile","summary":"Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.","use":"Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.","tags":["kpi-card","icon","tile","tone","metrics","dashboard"],"names":[]}
 	]
 }

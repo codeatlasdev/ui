@@ -10,6 +10,8 @@ import Dashboard from "~/demos/layout/page-shell/Dashboard.svelte";
 import DashboardSrc from "~/demos/layout/page-shell/Dashboard.svelte?raw";
 import AsideReading from "~/demos/layout/page-shell/AsideReading.svelte";
 import AsideReadingSrc from "~/demos/layout/page-shell/AsideReading.svelte?raw";
+import IconCount from "~/demos/layout/page-shell/IconCount.svelte";
+import IconCountSrc from "~/demos/layout/page-shell/IconCount.svelte?raw";
 
 ```svelte
 <script>
@@ -45,6 +47,14 @@ The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLay
 
 <Demo title="Dashboard page" description="KPI cards and a content card inside a PageShell." src={DashboardSrc}><Dashboard /></Demo>
 
+## Icon tile, count and title extras
+
+`icon` renders a decorative tile (22px icon in a brand-tinted rounded square) before the title; `count` renders a subtle `Badge` after it; `titleExtra` is a snippet for anything else inline with the title (a status badge, a filter chip). Size and tint of the tile come from `--ca-page-icon-size` (default `--ca-space-10`) and `--ca-page-icon-bg` (default the brand at 14%).
+
+The count is part of the page's name: the `<h1>` reads "Deals, 128" to a screen reader (through its `aria-label`, which starts with the visible title; the visible badge is `aria-hidden` so it is not announced twice) and the `role="region"` named by it carries the same name. Below 900px inside an `AppShellLayout` the title is hidden because the mobile header shows it, but the icon tile, the count and `titleExtra` stay visible. A zero count shows; omit `count` to hide the badge.
+
+<Demo title="Icon tile, count and title extra" description="icon, count and a titleExtra badge in the PageShell header." src={IconCountSrc}><IconCount /></Demo>
+
 ## Aside and reading width
 
 Pass an `aside` snippet for a companion column (in-page index, summary, help, preview). When the shell itself is at least 60rem wide the aside sits next to the content (about 17rem, sticky); below that it follows the content. The breakpoint is the shell's width, not the viewport's, so an open `AppShellLayout` panel is accounted for. It renders as `<aside>`; name it with `asideLabel` when a page has more than one complementary landmark.
@@ -55,6 +65,9 @@ Pass an `aside` snippet for a companion column (in-page index, summary, help, pr
 
 <Props rows={[
   { name: "title", type: "string", description: "Page title." },
+  { name: "icon", type: "IconComponent", description: "Icon in a decorative tile before the title (`--ca-page-icon-size`, `--ca-page-icon-bg`)." },
+  { name: "count", type: "number | string", description: "A subtle `Badge` after the title. Part of the heading's accessible name (\"Deals, 128\"). `0` shows." },
+  { name: "titleExtra", type: "Snippet", description: "Inline with the title, after the count (a status badge, a chip)." },
   { name: "description", type: "string", description: "Supporting text under the title." },
   { name: "gap", type: "number", default: "undefined", description: "Vertical gap between the header and the content, in px. Omit for `--ca-space-7` (28px at the default density)." },
   { name: "maxWidth", type: "string", default: "undefined", description: "Maximum width of the content column, any CSS length. Omit for 80rem (1280px at the default 4px spacing unit)." },

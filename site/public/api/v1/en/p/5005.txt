@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #5005 "Icon tile" (layout/kpi-card).
+What it shows: Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends. When to use: Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.
+Spec:
+- `<KpiGrid>` with 4 `KpiCard` items, each with `iconStyle="tile"`
+- `<KpiCard title="Revenue" value="$48,200" trend={12.4} icon={DollarSign} iconStyle="tile" />` (brand tone by default)
+- Active users uses `tone="success"`; Open incidents `tone="warning"` with `trendTone="positive-down"`; Error rate `tone="error"` with `trendTone="positive-down"`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5005 Icon tile → file, what changed, https://ui.codeatlas.com.br/docs/layout/kpi-card#icon-tile; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5005.txt   Components API: ca-ui-mcp get_component(KpiCard)
