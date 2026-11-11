@@ -369,7 +369,6 @@
   --ca-chrome-border:   var(--ca-outline-default);
 
   /* glass tints → flat solid (--ca-glass-bg too: Collapsible, Panel and Toast read it, #919) */
-  --ca-glass-bg:              var(--ca-surface-raised);
   --ca-glass-tint-ultra-thin: var(--ca-surface-raised);
   --ca-glass-tint-thin:       var(--ca-surface-raised);
   --ca-glass-tint:            var(--ca-surface-raised);
