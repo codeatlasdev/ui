@@ -5,5 +5,7 @@
 #   sh scripts/test-changed.sh [test-changed args]
 set -e
 cd "$(dirname "$0")/.."
-BUDGET=$(bun scripts/test-changed.ts --print-budget "$@")
+# CA_TEST_BUDGET overrides the choice: a land (scripts/issue-land.sh) gates on the result, not on the 60 s a day-to-day
+# run promises, because a change to a component used everywhere (Button) legitimately selects many tests (#881).
+BUDGET=${CA_TEST_BUDGET:-$(bun scripts/test-changed.ts --print-budget "$@")}
 exec bun scripts/test-run.ts --budget="$BUDGET" bun scripts/test-changed.ts "$@"
