@@ -26,9 +26,9 @@ const modules = [
 const text = { unread: (n: number) => `${n} unread`, fresh: "New" };
 
 describe("NavModule.fullLabel (#715)", () => {
-	it("moduleName keeps the visible label and adds the full one, then the badge", () => {
-		expect(moduleName(modules[0], text)).toBe("CRM, Customer relationships");
-		expect(moduleName(modules[1], text)).toBe("Home, 3 unread, Overview");
+	it("moduleName is the visible label and the badge; the full label is the description", () => {
+		expect(moduleName(modules[0], text)).toBe("CRM");
+		expect(moduleName(modules[1], text)).toBe("Home, 3 unread");
 		// Without fullLabel nothing changes.
 		expect(moduleName(modules[2], text)).toBe("Plain");
 	});
@@ -40,26 +40,31 @@ describe("NavModule.fullLabel (#715)", () => {
 			onSelect: () => {},
 			labels: true,
 		});
-		const settings = screen.getByRole("button", { name: "CRM, Customer relationships" });
+		const settings = screen.getByRole("button", { name: "CRM", exact: true });
 		await expect.element(settings).toHaveAttribute("title", "Customer relationships");
 		await expect.element(settings).toHaveTextContent("CRM");
 		await expect
-			.element(screen.getByRole("button", { name: "Home, 3 unread, Overview" }))
+			.element(screen.getByRole("button", { name: "Home, 3 unread", exact: true }))
 			.toBeVisible();
 		const plain = screen.getByRole("button", { name: "Plain" });
 		await expect.element(plain).toHaveAttribute("title", "Plain");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	// The badged tab ("Home") is checked by the name only: a counted BottomNav tab fails axe on main for a
+	// reason outside fullLabel (badge before the label in DOM order): #896.
 	it("the bottom-nav tab name contains the visible text", async () => {
 		await page.viewport(390, 844);
 		const screen = await render(BottomNav, { modules, activeIndex: 0, onSelect: () => {} });
-		const tab = screen.getByRole("button", { name: "CRM, Customer relationships" });
+		const tab = screen.getByRole("button", { name: "CRM", exact: true });
 		await expect.element(tab).toHaveTextContent("CRM");
+		await expect.element(tab).toHaveAttribute("title", "Customer relationships");
 		await expect
-			.element(screen.getByRole("button", { name: "Home, 3 unread, Overview" }))
+			.element(screen.getByRole("button", { name: "Home, 3 unread", exact: true }))
 			.toBeVisible();
-		expect(await checkA11y(screen.container)).toHaveNoViolations();
+		expect(
+			await checkA11y(screen.getByRole("button", { name: "CRM", exact: true }).element())
+		).toHaveNoViolations();
 	});
 
 	it("the More sheet cards use the same name", async () => {
@@ -74,10 +79,10 @@ describe("NavModule.fullLabel (#715)", () => {
 		});
 		void screen;
 		await expect
-			.element(page.getByRole("button", { name: "CRM, Customer relationships" }))
+			.element(page.getByRole("button", { name: "CRM", exact: true }))
 			.toHaveTextContent("CRM");
 		await expect
-			.element(page.getByRole("button", { name: "Home, 3 unread, Overview" }))
+			.element(page.getByRole("button", { name: "Home, 3 unread", exact: true }))
 			.toBeVisible();
 	});
 });

@@ -72,8 +72,8 @@ export interface NavModule {
 	/**
 	 * Full name when the visible `label` is an abbreviation ("CRM" for "Customer relationships").
 	 * It is the rail tooltip, the panel and mobile header title, and part of the accessible name.
-	 * The accessible name keeps what is on screen first (WCAG 2.5.3, label in name): "CRM, 3 unread,
-	 * Customer relationships". Defaults to `label`.
+	 * The accessible name stays the visible `label` (WCAG 2.5.3, label in name); the full label is the
+	 * control's description (its `title`), read after the name. Defaults to `label`.
 	 */
 	fullLabel?: string;
 	icon: IconComponent;
@@ -256,14 +256,8 @@ export function moduleName(
 	mod: NavModule,
 	text: { unread: (count: number) => string; fresh: string }
 ): string {
-	// What is on screen comes first and in order (the label, then the badge), and the full label last:
-	// "Home, 3 unread, Overview". Anything between the visible pieces fails WCAG 2.5.3 (axe
-	// `label-content-name-mismatch`) where the badge is drawn inside the control (BottomNav).
-	const parts = [mod.label];
-	if (hasModuleBadge(mod))
-		parts.push(
-			mod.badgeLabel ?? (mod.badge === "dot" ? text.fresh : text.unread(mod.badge as number))
-		);
-	if (mod.fullLabel && mod.fullLabel !== mod.label) parts.push(mod.fullLabel);
-	return parts.join(", ");
+	if (!hasModuleBadge(mod)) return mod.label;
+	const extra =
+		mod.badgeLabel ?? (mod.badge === "dot" ? text.fresh : text.unread(mod.badge as number));
+	return `${mod.label}, ${extra}`;
 }
