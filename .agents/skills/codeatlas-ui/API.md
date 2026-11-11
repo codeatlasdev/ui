@@ -3679,6 +3679,7 @@ Snippets: `children`: Column label.
 | `value?` | `string` |  | `bind:` |
 | `onchange?` | `(v: string) => void` |  |  |
 | `variant?` | `"pill" \| "line"` | `'pill'` | `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). |
+| `fill?` | `boolean` | `false` | The list stretches across its container and its hairline spans it (default: it hugs its tabs). |
 | `class?` | `string` | `''` |  |
 | `sound?` | `SoundProp` |  | Plays `tab` when the user selects another tab (a cue name replaces it) when `@codeatlasdev/ui/sound` is on. |
 
@@ -3714,7 +3715,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'ro
 
 Parts: `ca-tabs-list`
 
-Data attributes: `data-fade` (`both` `end` `start`), `data-variant` (`line`)
+Data attributes: `data-fade` (`both` `end` `start`), `data-fill`, `data-variant` (`line`)
 
 ## TabsTrigger
 
@@ -3733,7 +3734,11 @@ Also accepts: `Omit<HTMLButtonAttributes, 'class' \| 'children' \| 'value' \| 't
 
 Parts: `ca-tabs-trigger` `ca-tabs-trigger__icon`
 
+Variables: `--ca-tabs-trigger-font-size` `--ca-tabs-trigger-height` `--ca-tabs-trigger-line-height` `--ca-tabs-trigger-padding-x` `--ca-tabs-trigger-radius`
+
 Data attributes: `data-brand`, `data-state` (`active`), `data-variant` (`line`)
+
+Tokens: `--ca-tabs-trigger-font-size` `--ca-tabs-trigger-height` `--ca-tabs-trigger-line-height` `--ca-tabs-trigger-padding-x` `--ca-tabs-trigger-radius`
 
 ## Text
 
