@@ -17,6 +17,8 @@
     label?: string;
     /** Label for assistive tech only (`.ca-sr-only`). */
     hideLabel?: boolean;
+    /** `--ca-field-width` of the field. */
+    width?: string;
     description?: string;
     error?: string;
     disabled: boolean;
@@ -51,6 +53,7 @@
     field,
     label,
     hideLabel = false,
+    width,
     description,
     error,
     disabled,
@@ -75,7 +78,7 @@
 </script>
 
 {#snippet body()}
-  <div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
+  <div class="ca-date {className}" style:--ca-field-width={width} class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
     {#if label}
       <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
       <svelte:element this={range ? 'span' : 'div'} class="ca-date__label" class:ca-sr-only={hideLabel} id="{id}-label" onclick={focusFirst}>

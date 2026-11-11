@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 390,
+	"count": 391,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5000",
-			"count": 89
+			"last": "5001",
+			"count": 90
 		},
 		{
 			"slug": "surfaces",
@@ -34746,6 +34746,102 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/copy-field#show-once",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5001",
+			"group": "inputs",
+			"page": "toolbar",
+			"variant": "Filters",
+			"slug": "filter-bar",
+			"title": "Filter bar",
+			"description": "A search field, a Select, a compact NumberField (`steppers={false}`), a spacer and a button, with no wrapper divs.",
+			"summary": "A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.",
+			"use": "A filter bar above a list or table where the fields have their own widths instead of stretching to the row.",
+			"spec": [
+				"`<Toolbar aria-label=\"Filter deals\">` holding every control, no wrapper div per field",
+				"`TextField` with `hideLabel` and `width=\"14rem\"`, then a `Select` with `hideLabel` and `width=\"10rem\"` whose third option is long enough to be truncated",
+				"`NumberField` with `hideLabel`, `steppers={false}`, `width=\"6rem\"`, min 0 and max 90",
+				"`<span class=\"ca-toolbar-spacer\">` pushes an outlined neutral `Export` button to the end"
+			],
+			"tags": [
+				"toolbar",
+				"filter-bar",
+				"text-field",
+				"select",
+				"number-field",
+				"width",
+				"wrap",
+				"role-toolbar"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Toolbar",
+					"TextField",
+					"Select",
+					"NumberField",
+					"Button"
+				],
+				"aliases": [
+					"filter bar",
+					"action bar",
+					"search bar"
+				],
+				"related": [
+					"980",
+					"982",
+					"992"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-10",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Button",
+				"NumberField",
+				"Select",
+				"TextField",
+				"Toolbar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"NumberField",
+						"Select",
+						"TextField",
+						"Toolbar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-bar",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

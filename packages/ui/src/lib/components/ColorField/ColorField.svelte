@@ -1,6 +1,7 @@
 <script lang="ts">
   import TextField from '../TextField/TextField.svelte';
   import { uid } from '../../utils/index.js';
+  import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import { contrast, formatOklch, parseColorInput, wcagLevel } from '../../utils/color.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { colorField } from '../../i18n/groups/colorField.js';
@@ -30,6 +31,8 @@
     /** Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. @default 4.5 */
     minRatio?: number;
     description?: string;
+    /** `full`, `auto`, `fit` or a CSS length (`--ca-field-width`). Default: the width its content needs. */
+    width?: FieldWidth;
     disabled?: boolean;
     class?: string;
     onchange?: (value: string) => void;
@@ -43,6 +46,7 @@
     role = 'text',
     minRatio = 4.5,
     description,
+    width,
     disabled = false,
     class: className = '',
     onchange,
@@ -90,7 +94,7 @@
   }
 </script>
 
-<div class="ca-color-field {className}" data-disabled={disabled ? '' : undefined}>
+<div class="ca-color-field {className}" data-disabled={disabled ? '' : undefined} style:--ca-field-width={fieldWidth(width)}>
   <TextField
     size="sm"
     {label}
@@ -145,6 +149,7 @@
       display: flex;
       flex-direction: column;
       gap: var(--ca-space-1);
+      width: var(--ca-field-width, auto);
       min-width: 0;
     }
 

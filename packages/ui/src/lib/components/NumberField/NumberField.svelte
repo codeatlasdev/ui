@@ -3,6 +3,7 @@
   import { numberField } from '../../i18n/groups/numberField.js';
   import { Minus, Plus } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
+  import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   const t = useMessages(numberField);
 
   interface Props {
@@ -13,6 +14,10 @@
     label?:       string;
     /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
     hideLabel?:   boolean;
+    /** `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. */
+    width?:       FieldWidth;
+    /** `false` drops the +/- buttons: a compact numeric input that sizes to its content. Arrow keys still step the value. Default `true`. */
+    steppers?:    boolean;
     disabled?:    boolean;
     class?:       string;
     error?:       string;
@@ -30,6 +35,8 @@
     step     = 1,
     label,
     hideLabel = false,
+    width,
+    steppers = true,
     disabled = false,
     class: className = '',
     error,
@@ -72,6 +79,7 @@
   class:ca-nf--sm={size === 'sm'}
   class:ca-nf--error={!!error}
   class:ca-nf--disabled={disabled}
+  style:--ca-field-width={fieldWidth(width)}
 >
   {#if label}
     <label for={inputId} class="ca-nf__label" class:ca-sr-only={hideLabel}>
@@ -80,15 +88,17 @@
   {/if}
 
   <div class="ca-nf__wrap" class:ca-nf__wrap--focused={focused} class:ca-nf__wrap--error={!!error}>
-    <button
-      type="button"
-      class="ca-nf__btn"
-      aria-label={t().numberField.decrease}
-      disabled={disabled || atMin}
-      onclick={decrement}
-    >
-      <Minus size={14} />
-    </button>
+    {#if steppers}
+      <button
+        type="button"
+        class="ca-nf__btn"
+        aria-label={t().numberField.decrease}
+        disabled={disabled || atMin}
+        onclick={decrement}
+      >
+        <Minus size={14} />
+      </button>
+    {/if}
     <input
       id={inputId}
       {name}
@@ -106,15 +116,17 @@
       onblur={() => (focused = false)}
       oninput={handleInput}
     />
-    <button
-      type="button"
-      class="ca-nf__btn"
-      aria-label={t().numberField.increase}
-      disabled={disabled || atMax}
-      onclick={increment}
-    >
-      <Plus size={14} />
-    </button>
+    {#if steppers}
+      <button
+        type="button"
+        class="ca-nf__btn"
+        aria-label={t().numberField.increase}
+        disabled={disabled || atMax}
+        onclick={increment}
+      >
+        <Plus size={14} />
+      </button>
+    {/if}
   </div>
 
   {#if error}
@@ -132,6 +144,8 @@
       display: flex;
       flex-direction: column;
       gap: var(--ca-nf-gap, var(--ca-field-gap, var(--ca-space-1)));
+      width: var(--ca-field-width, auto);
+      min-width: var(--ca-field-min-width, 0);
     }
 
     /* ── Label ─────────────────────────────────────────────────── */

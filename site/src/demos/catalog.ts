@@ -396,6 +396,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "998", path: "inputs/copy-field/Default" },
 	{ id: "999", path: "inputs/copy-field/Masked" },
 	{ id: "5000", path: "inputs/copy-field/ShowOnce" },
+	{ id: "5001", path: "inputs/toolbar/Filters" },
 ];
 
 /**

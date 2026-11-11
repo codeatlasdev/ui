@@ -273,6 +273,7 @@ export { default as Toaster } from "./components/Toast/Toaster.svelte";
 export { default as SegmentedControl } from "./components/ToggleGroup/SegmentedControl.svelte";
 export type { ToggleGroupItem } from "./components/ToggleGroup/ToggleGroup.svelte";
 export { default as ToggleGroup } from "./components/ToggleGroup/ToggleGroup.svelte";
+export { default as Toolbar } from "./components/Toolbar/Toolbar.svelte";
 export { default as Tooltip } from "./components/Tooltip/Tooltip.svelte";
 // Form sections and items
 export { default as FormSection } from "./components/templates/FormSection.svelte";
