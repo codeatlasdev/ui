@@ -1,9 +1,9 @@
 {
-	"summary": "Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.",
+	"summary": "Five outgoing bubbles, one per delivery state: pending, sent, delivered, read and failed (with a Retry button).",
 	"use": "Showing message delivery ticks in a chat, with a visually hidden status text for screen readers.",
 	"spec": [
 		"`const states = ['pending', 'sent', 'delivered', 'read'] as const;`",
-		"`{#each states as status}` renders `<MessageBubble direction=\"out\" time=\"09:41\" {status}>`"
+		"`{#each states as status}` renders `<MessageBubble direction=\"out\" time=\"09:41\" {status}>`, then a `status=\"failed\"` bubble with `onretry`"
 	],
 	"tags": ["message-bubble", "chat", "status", "delivery", "ticks"],
 	"shape": "wide",
@@ -24,7 +24,7 @@
 		"related": ["248", "250"],
 		"a11y": {
 			"reducedMotion": true,
-			"keyboard": false
+			"keyboard": true
 		},
 		"added": "2026-10-16",
 		"review": {

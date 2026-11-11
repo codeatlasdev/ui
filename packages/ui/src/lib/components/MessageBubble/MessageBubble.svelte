@@ -1,14 +1,14 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Check, CheckCheck, Clock } from '@lucide/svelte';
+  import { Check, CheckCheck, Clock, TriangleAlert } from '@lucide/svelte';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { chat } from '../../i18n/groups/chat.js';
   const t = useMessages(chat);
 
   type Direction = 'in' | 'out';
   type Grouped = 'single' | 'first' | 'middle' | 'last';
-  type Status = 'pending' | 'sent' | 'delivered' | 'read';
+  type Status = 'pending' | 'sent' | 'delivered' | 'read' | 'failed';
   type Reaction = { emoji: string; count?: number; mine?: boolean };
 
   /**
@@ -18,7 +18,9 @@
    *
    * The bubble is an `<article>` named by sender or direction. It has no live region: the list
    * that appends messages announces them. Delivery state is plain visually hidden text after the
-   * time, so assistive tech reads "14:32, Delivered" once.
+   * time, so assistive tech reads "14:32, Delivered" once. `failed` shows a warning chip in the
+   * error colour with "Not sent" and, when `onretry` is set, a "Retry" button after it.
+   * With `onquoteclick` the quote becomes a real button (jump to the quoted message).
    *
    * Usage:
    *   <MessageBubble direction="out" time="14:32" status="read">Hello</MessageBubble>
@@ -35,12 +37,20 @@
     avatar?: Snippet;
     /** Reply preview rendered at the top of the bubble in a tinted block. */
     quote?: Snippet;
+    /** Makes the quote a button that jumps to the quoted message. Needs `quote`. */
+    onquoteclick?: () => void;
+    /** Accessible name of the quote button. Without it the name is a localized "Go to the quoted message. " followed by the quote text. */
+    quoteLabel?: string;
     /** Reaction chips overlapping the bottom edge of the bubble. */
     reactions?: Reaction[];
     /** Footer time text, for example `14:32`. */
     time?: string;
-    /** Delivery state, shown as ticks. Outgoing bubbles only. */
+    /** Delivery state, shown as ticks (`failed`: a warning chip). Outgoing bubbles only. */
     status?: Status;
+    /** Retry button after a `failed` status. Without it (and without `retry`) no button is shown. */
+    onretry?: () => void;
+    /** Content of the retry button. Defaults to a localized "Retry". */
+    retry?: Snippet;
     /** Message body. Whitespace is preserved and long words wrap. */
     children: Snippet;
     /** Extra footer content rendered before the time. */
@@ -54,9 +64,13 @@
     sender,
     avatar,
     quote,
+    onquoteclick,
+    quoteLabel,
     reactions,
     time,
     status,
+    onretry,
+    retry,
     children,
     footer,
     class: className = '',
@@ -88,7 +102,16 @@
   {/if}
   <article class="ca-bubble ca-bubble--{direction}" aria-label={label}>
     {#if quote}
-      <div class="ca-bubble__quote">{@render quote()}</div>
+      {#if onquoteclick}
+        <button
+          type="button"
+          class="ca-bubble__quote ca-bubble__quote--button"
+          aria-label={quoteLabel}
+          onclick={onquoteclick}
+        >{#if !quoteLabel}<span class="ca-sr-only">{t().chat.goToQuote}.&nbsp;</span>{/if}{@render quote()}</button>
+      {:else}
+        <div class="ca-bubble__quote">{@render quote()}</div>
+      {/if}
     {/if}
     {#if showSender}<span class="ca-bubble__sender">{sender}</span>{/if}
     <div class="ca-bubble__body">{@render children()}</div>
@@ -100,6 +123,8 @@
           <span class="ca-bubble__status ca-bubble__status--{shownStatus}">
             {#if shownStatus === 'pending'}
               <Clock size={14} aria-hidden="true" />
+            {:else if shownStatus === 'failed'}
+              <TriangleAlert size={12} aria-hidden="true" />
             {:else if shownStatus === 'sent'}
               <Check size={14} aria-hidden="true" />
             {:else}
@@ -107,6 +132,11 @@
             {/if}
           </span>
           <span class="ca-sr-only">{t().chat.status[shownStatus]}</span>
+          {#if shownStatus === 'failed' && onretry}
+            <button type="button" class="ca-bubble__retry" onclick={onretry}>
+              {#if retry}{@render retry()}{:else}{t().chat.retry}{/if}
+            </button>
+          {/if}
         {/if}
       </div>
     {/if}
@@ -168,6 +198,12 @@
       background: var(--ca-brand-fill);
       color: var(--ca-brand-contrast);
     }
+    .ca-bubble--out .ca-bubble__quote {
+      background: color-mix(in oklab, black 18%, transparent);
+    }
+    .ca-bubble--out .ca-bubble__quote--button:hover {
+      background: color-mix(in oklab, black 26%, transparent);
+    }
 
     /* Tail: the corner next to the sender gets a small radius on single and last. */
     .ca-bubble-row--in[data-grouped='single'] .ca-bubble,
@@ -198,6 +234,25 @@
       overflow: hidden;
     }
     .ca-bubble__quote:empty { display: none; }
+    .ca-bubble__quote--button {
+      appearance: none;
+      border-block: 0;
+      border-inline-end: 0;
+      margin: 0;
+      font: inherit;
+      font-size: var(--ca-font-size-caption);
+      color: inherit;
+      text-align: start;
+      cursor: pointer;
+      display: block;
+    }
+    .ca-bubble__quote--button:hover {
+      background: color-mix(in oklab, currentColor 18%, transparent);
+    }
+    .ca-bubble__quote--button:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
 
     .ca-bubble__meta {
       display: flex;
@@ -211,6 +266,31 @@
     .ca-bubble--in .ca-bubble__meta { color: var(--ca-text-secondary); }
     .ca-bubble__status { display: inline-flex; align-items: center; }
     .ca-bubble__status--read { color: var(--ca-semantic-info); }
+    .ca-bubble__status--failed {
+      justify-content: center;
+      inline-size: 1.25rem;
+      block-size: 1.25rem;
+      border-radius: var(--ca-radius-pill);
+      background: var(--ca-semantic-error-fill);
+      color: var(--ca-semantic-error-contrast);
+    }
+    .ca-bubble__retry {
+      appearance: none;
+      border: 0;
+      margin: 0;
+      padding: 0 var(--ca-space-1);
+      background: none;
+      color: inherit;
+      font: inherit;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+      border-radius: var(--ca-radius-xs);
+    }
+    .ca-bubble__retry:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
 
     .ca-bubble__reactions {
       position: absolute;
@@ -236,10 +316,16 @@
       background: var(--ca-action-selected);
     }
 
+    @media (pointer: coarse) {
+      .ca-bubble__quote--button,
+      .ca-bubble__retry { min-block-size: var(--ca-touch-target); }
+    }
+
     @media (forced-colors: active) {
       .ca-bubble { border: 1px solid CanvasText; }
       .ca-bubble__reaction { border: 1px solid CanvasText; }
       .ca-bubble__status--read { color: CanvasText; }
+      .ca-bubble__status--failed { background: Canvas; color: CanvasText; border: 1px solid CanvasText; }
     }
 }
 </style>

@@ -307,7 +307,7 @@ Token: `--ca-md-list` (master column width, set from `listWidth`). The detail is
 
 ## MessageBubble
 
-`.ca-bubble` `.ca-bubble--in` `.ca-bubble--out` `.ca-bubble-row` `.ca-bubble-row--in` `.ca-bubble-row--out` `.ca-bubble-row--reacted` `.ca-bubble-row__avatar` `.ca-bubble__body` `.ca-bubble__meta` `.ca-bubble__quote` `.ca-bubble__reaction` `.ca-bubble__reaction--mine` `.ca-bubble__reactions` `.ca-bubble__sender` `.ca-bubble__status` `.ca-bubble__status--read`
+`.ca-bubble` `.ca-bubble--in` `.ca-bubble--out` `.ca-bubble-row` `.ca-bubble-row--in` `.ca-bubble-row--out` `.ca-bubble-row--reacted` `.ca-bubble-row__avatar` `.ca-bubble__body` `.ca-bubble__meta` `.ca-bubble__quote` `.ca-bubble__quote--button` `.ca-bubble__retry` `.ca-bubble__reaction` `.ca-bubble__reaction--mine` `.ca-bubble__reactions` `.ca-bubble__sender` `.ca-bubble__status` `.ca-bubble__status--failed` `.ca-bubble__status--read`
 
 ## MobilePane
 

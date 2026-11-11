@@ -1,6 +1,6 @@
 ---
 title: Message Bubble
-description: A chat bubble with direction, grouping tails, sender and avatar, reply quote, reactions and delivery ticks.
+description: A chat bubble with direction, grouping tails, sender and avatar, reply quote (optionally clickable), reactions, delivery ticks and a failed state with retry.
 group: Display
 order: 18
 ---
@@ -23,6 +23,8 @@ import QuoteReactionsSrc from "~/demos/display/message-bubble/QuoteReactions.sve
 
 `direction` picks the side and colors (`out` uses the brand fill). Consecutive messages from one person use `grouped`: `first`, `middle` and `last` flatten the joined corners, and only `single` and `last` keep the tail and show the `avatar` slot (the other positions reserve its width so the column stays aligned). The delivery ticks are decorative; the state is also written as visually hidden text after the time, so a screen reader hears "14:32, Delivered" once. The bubble has no live region: the list that appends messages decides what is announced.
 
+`status="failed"` shows a warning chip in the error colour and the visually hidden text "Not sent" (localized in en and pt-BR). Pass `onretry` to add a "Retry" button after it (a real `<button>`, keyboard reachable); the `retry` snippet replaces its label. Pass `onquoteclick` to turn the quote into a real button for jumping to the quoted message: its accessible name is "Go to the quoted message." followed by the quote text, or `quoteLabel` when you set it. Without `onquoteclick` the quote stays a plain block.
+
 <Demo title="A grouped conversation" description="The first bubble shows the sender, the last one the avatar and the tail." src={ConversationSrc}><Conversation client:visible /></Demo>
 <Demo title="Delivery status" description="pending, sent, delivered and read; read ticks use the info color." src={StatusSrc}><Status /></Demo>
 <Demo title="Quote and reactions" description="The quote slot renders a reply preview; reactions overlap the bottom edge." src={QuoteReactionsSrc}><QuoteReactions /></Demo>
@@ -33,9 +35,13 @@ import QuoteReactionsSrc from "~/demos/display/message-bubble/QuoteReactions.sve
   { name: "sender", type: "string", description: "Name above the text, for incoming single or first bubbles." },
   { name: "avatar", type: "Snippet", description: "Avatar slot beside incoming bubbles (single and last)." },
   { name: "quote", type: "Snippet", description: "Reply preview shown at the top of the bubble." },
+  { name: "onquoteclick", type: "() => void", description: "Renders the quote as a button (jump to the quoted message). Without it the quote is a plain block." },
+  { name: "quoteLabel", type: "string", description: "Accessible name of the quote button. Default: localized \"Go to the quoted message.\" followed by the quote text." },
   { name: "reactions", type: "{ emoji: string; count?: number; mine?: boolean }[]", description: "Reaction chips under the bubble." },
   { name: "time", type: "string", description: "Footer time text." },
-  { name: "status", type: "'pending' | 'sent' | 'delivered' | 'read'", description: "Delivery ticks for outgoing bubbles." },
+  { name: "status", type: "'pending' | 'sent' | 'delivered' | 'read' | 'failed'", description: "Delivery ticks for outgoing bubbles; `failed` shows a warning chip." },
+  { name: "onretry", type: "() => void", description: "Shows a Retry button after a `failed` status." },
+  { name: "retry", type: "Snippet", description: "Label of the retry button. Default: localized \"Retry\"." },
   { name: "footer", type: "Snippet", description: "Extra footer content before the time." },
   { name: "children", type: "Snippet", description: "Message body." },
 ]} />

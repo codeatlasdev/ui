@@ -247,7 +247,7 @@ id	group	page	title	names	tags	summary
 246	layout	record-list	Without a menu		record-list,record-row,table,no-actions,webhooks,responsive	A three column record list of webhooks with no actions slot, so there is no trailing menu track.
 247	layout	record-list	Phone width		record-list,record-row,table,phone,responsive,container-width	The same record list inside a narrow slot, to show it stacking because the list reads its own width.
 248	display	message-bubble	A grouped conversation		message-bubble,chat,avatar,grouped,delivery-status	A grouped chat thread: two incoming bubbles from one sender with a name and avatar, then an outgoing read bubble.
-249	display	message-bubble	Delivery status		message-bubble,chat,status,delivery,ticks	Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.
+249	display	message-bubble	Delivery status		message-bubble,chat,status,delivery,ticks	Five outgoing bubbles, one per delivery state: pending, sent, delivered, read and failed (with a Retry button).
 250	display	message-bubble	Quote and reactions		message-bubble,chat,quote,reactions,reply	An incoming bubble with a reply quote at the top and two reaction chips under it.
 251	display	conversation-item	Inbox		conversation-item,inbox,chat,unread,avatar	An inbox of four conversation rows: unread count, pinned, muted, typing, with the selected row highlighted.
 252	display	audio-player	Voice messages		audio-player,voice,waveform,chat,scrub	Two voice message players: one with a waveform from peaks, one with flat placeholder bars.

@@ -8,6 +8,7 @@
   {#each states as status}
     <MessageBubble direction="out" time="09:41" {status}>{status}</MessageBubble>
   {/each}
+  <MessageBubble direction="out" time="09:41" status="failed" onretry={() => {}}>failed</MessageBubble>
 </div>
 
 <style>

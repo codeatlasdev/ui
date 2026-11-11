@@ -1,8 +1,8 @@
 Use @codeatlasdev/ui demo #249 "Delivery status" (display/message-bubble).
-What it shows: Four outgoing bubbles, one per delivery state: pending, sent, delivered and read. When to use: Showing message delivery ticks in a chat, with a visually hidden status text for screen readers.
+What it shows: Five outgoing bubbles, one per delivery state: pending, sent, delivered, read and failed (with a Retry button). When to use: Showing message delivery ticks in a chat, with a visually hidden status text for screen readers.
 Spec:
 - `const states = ['pending', 'sent', 'delivered', 'read'] as const;`
-- `{#each states as status}` renders `<MessageBubble direction="out" time="09:41" {status}>`
+- `{#each states as status}` renders `<MessageBubble direction="out" time="09:41" {status}>`, then a `status="failed"` bubble with `onretry`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
