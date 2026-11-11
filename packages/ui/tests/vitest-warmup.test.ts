@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import config from "../vite.config.ts";
+import config, { NODE_ONLY_PEERS } from "../vite.config.ts";
 
 const ROOT = join(import.meta.dir, "..");
 
@@ -31,5 +31,31 @@ describe("the browser Vite server warms up what every page imports (#640)", () =
 
 	it("warms the global stylesheet the setup imports", () => {
 		expect(warmup.has(resolve(ROOT, "src/lib/styles/global.css"))).toBe(true);
+	});
+});
+
+/**
+ * #959: a dependency Vite discovers in the middle of a run is optimised and the page reloads, which breaks every
+ * import in flight: 213 to 1513 component tests failed in three land gates (`@floating-ui/dom`, `@lucide/svelte`,
+ * `@deck.gl/mapbox`, `maplibre-gl` were not pre-bundled). Every package a browser test can reach is pre-bundled.
+ */
+describe("the browser Vite server pre-bundles every runtime dependency (#959)", () => {
+	const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as {
+		dependencies?: Record<string, string>;
+		peerDependencies?: Record<string, string>;
+	};
+	const include = new Set(config.optimizeDeps?.include ?? []);
+
+	it("includes every dependency and browser-side peer of the package", () => {
+		const reachable = [
+			...Object.keys(pkg.dependencies ?? {}),
+			...Object.keys(pkg.peerDependencies ?? {}),
+		].filter(
+			(d) =>
+				!NODE_ONLY_PEERS.includes(d) && existsSync(join(ROOT, "node_modules", d, "package.json"))
+		);
+		expect(reachable).toContain("@floating-ui/dom");
+		for (const d of reachable)
+			expect(include.has(d), `${d} is not in optimizeDeps.include`).toBe(true);
 	});
 });
