@@ -190,11 +190,13 @@
       font-size: var(--ca-font-size-body2);
     }
     .ca-bubble--in {
+      --ca-audio-surface: var(--ca-surface-raised);
       background: var(--ca-surface-raised);
       color: var(--ca-text-primary);
       box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
     }
     .ca-bubble--out {
+      --ca-audio-surface: var(--ca-brand-fill);
       background: var(--ca-brand-fill);
       color: var(--ca-brand-contrast);
     }

@@ -24,8 +24,12 @@
    *   pointer click or drag seeks, RTL aware.
    * - One at a time: starting a player pauses the one that was playing.
    *
+   * - Sizing tokens (set them on the player or any ancestor): `--ca-audio-bar-w`, `--ca-audio-bar-gap`,
+   *   `--ca-audio-wave-h`, `--ca-audio-max-w`, `--ca-audio-min-w`. The bar count follows the computed values.
+   *
    * Usage:
    *   <AudioPlayer src={url} duration={31} peaks={peaks} onended={markListened} />
+   *   <AudioPlayer src={url} tone="inherit" variant="voice" />   // on a brand-filled bubble
    */
   interface Props {
     /** Audio URL. Not requested until the first play when `preload` is `none`. */
@@ -48,6 +52,14 @@
     onended?: (e: Event) => void;
     /** Called when the audio cannot be loaded or played. */
     onerror?: (e: Event) => void;
+    /**
+     * Colours. `brand` (default): played bars and the play button use the brand fill. `inherit`: everything is
+     * drawn from the surrounding text colour (`currentColor`), so the player reads on any surface, such as the
+     * brand-filled outgoing `MessageBubble`.
+     */
+    tone?: 'brand' | 'inherit';
+    /** `voice` draws a round, filled play button (the text colour as fill, `--ca-audio-surface` for the glyph). */
+    variant?: 'default' | 'voice';
     /** Extra class on the root. */
     class?: string;
   }
@@ -63,18 +75,21 @@
     onpause,
     onended,
     onerror,
+    tone = 'brand',
+    variant = 'default',
     class: className = '',
   }: Props = $props();
 
   const id = `ca-audio-${++uid}`;
-  const BAR = 3; // px, mirrors --ca-audio-bar-w
-  const GAP = 2; // px, mirrors --ca-audio-bar-gap
   const PLACEHOLDER = [0.18, 0.12, 0.22, 0.15, 0.2, 0.1];
 
   let audio = $state<HTMLAudioElement>();
   let scrubber = $state<HTMLElement>();
   let wave = $state<HTMLElement>();
   let width = $state(0);
+  /** Bar width and gap in px, read from the computed style (the `--ca-audio-bar-*` tokens), never mirrored here. */
+  let bar = $state(0);
+  let gap = $state(0);
 
   // Seeded once: `preload` is an initial choice, later plays attach the source anyway.
   let attached = $state(untrack(() => preload === 'metadata'));
@@ -92,7 +107,7 @@
   const rateText = $derived(`${rate}x`);
   const fraction = $derived(total > 0 ? Math.min(1, time / total) : 0);
 
-  const barCount = $derived(Math.max(1, Math.floor((width + GAP) / (BAR + GAP))));
+  const barCount = $derived(bar > 0 ? Math.max(1, Math.floor((width + gap) / (bar + gap))) : 1);
   /** Max-per-bucket resample, so a short spike survives a heavy downsample. */
   const heights = $derived.by(() => {
     const n = barCount;
@@ -253,15 +268,28 @@
     if (scrubber?.hasPointerCapture?.(e.pointerId)) scrubber.releasePointerCapture(e.pointerId);
   }
 
-  // The waveform width drives the bar count.
+  // The bar count follows the waveform width and the computed bar width and gap (the public tokens). Measured
+  // from the first bar and the scrubber, so a token set on the player or an ancestor, a density change or a
+  // rem/em length is honoured; re-measured on resize and when the root's style or class changes.
   $effect(() => {
-    if (!wave) return;
-    const ro = new ResizeObserver(() => {
+    if (!wave || !scrubber) return;
+    const measure = () => {
+      const first = scrubber?.firstElementChild;
       width = wave?.clientWidth ?? 0;
-    });
+      if (scrubber) gap = parseFloat(getComputedStyle(scrubber).columnGap) || 0;
+      if (first) bar = first.getBoundingClientRect().width;
+    };
+    const ro = new ResizeObserver(measure);
     ro.observe(wave);
-    width = wave.clientWidth;
-    return () => ro.disconnect();
+    if (scrubber.firstElementChild) ro.observe(scrubber.firstElementChild);
+    const root = wave.closest('.ca-audio');
+    const mo = new MutationObserver(measure);
+    if (root) mo.observe(root, { attributes: true, attributeFilter: ['style', 'class'] });
+    measure();
+    return () => {
+      ro.disconnect();
+      mo.disconnect();
+    };
   });
 
   onDestroy(() => {
@@ -279,6 +307,8 @@
   class="ca-audio {className}"
   class:ca-audio--error={failed}
   class:ca-audio--playing={playing}
+  class:ca-audio--inherit={tone === 'inherit'}
+  class:ca-audio--voice={variant === 'voice'}
 >
   <audio
     bind:this={audio}
@@ -368,17 +398,16 @@
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
+    /* Sizing tokens (set on the player or any ancestor): --ca-audio-bar-w, --ca-audio-bar-gap,
+       --ca-audio-wave-h, --ca-audio-max-w, --ca-audio-min-w. Not redeclared here, so an ancestor's value reaches the bars. */
     .ca-audio {
-      --ca-audio-bar-w: 3px;
-      --ca-audio-bar-gap: 2px;
-      --ca-audio-wave-h: var(--ca-space-8);
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: var(--ca-space-3);
-      min-inline-size: 0;
+      min-inline-size: var(--ca-audio-min-w, 0px);
       inline-size: 100%;
-      max-inline-size: calc(var(--ca-space-24) * 3);
+      max-inline-size: var(--ca-audio-max-w, calc(var(--ca-space-24) * 3));
     }
     .ca-audio audio {
       display: none;
@@ -391,8 +420,8 @@
     .ca-audio__scrub {
       display: flex;
       align-items: center;
-      gap: var(--ca-audio-bar-gap);
-      block-size: var(--ca-audio-wave-h);
+      gap: var(--ca-audio-bar-gap, 2px);
+      block-size: var(--ca-audio-wave-h, var(--ca-space-8));
       min-block-size: var(--ca-touch-target);
       cursor: pointer;
       touch-action: none;
@@ -408,9 +437,9 @@
     }
 
     .ca-audio__bar {
-      flex: 0 0 var(--ca-audio-bar-w);
+      flex: 0 0 var(--ca-audio-bar-w, 3px);
       block-size: calc(var(--h) * 100%);
-      max-block-size: var(--ca-audio-wave-h);
+      max-block-size: var(--ca-audio-wave-h, var(--ca-space-8));
       border-radius: var(--ca-radius-pill);
       background: var(--ca-outline-default);
       transition: background var(--ca-duration-fast) var(--ca-ease-standard);
@@ -457,6 +486,56 @@
       margin: 0;
       color: var(--ca-semantic-error);
       font-size: var(--ca-font-size-caption);
+    }
+
+    /* tone="inherit": every colour comes from the surrounding text colour, so the player reads on any
+       surface (the brand-filled outgoing bubble included). */
+    .ca-audio--inherit .ca-audio__bar {
+      background: color-mix(in oklab, currentColor 75%, transparent);
+    }
+    .ca-audio--inherit .ca-audio__bar--played {
+      background: currentColor;
+    }
+    .ca-audio--inherit .ca-audio__meta {
+      color: inherit;
+    }
+    .ca-audio--inherit :global(.ca-audio__play),
+    .ca-audio--inherit :global(.ca-audio__play):hover:not(:disabled) {
+      background: color-mix(in oklab, black 18%, transparent);
+      color: inherit;
+    }
+    .ca-audio--inherit .ca-audio__rate {
+      border-color: transparent;
+      background: color-mix(in oklab, black 18%, transparent);
+      color: inherit;
+    }
+    .ca-audio--inherit .ca-audio__rate:hover:not(:disabled) {
+      background: color-mix(in oklab, black 26%, transparent);
+    }
+    .ca-audio--inherit .ca-audio__scrub:focus-visible,
+    .ca-audio--inherit .ca-audio__rate:focus-visible,
+    .ca-audio--inherit :global(.ca-audio__play):focus-visible {
+      outline-color: currentColor;
+    }
+
+    /* variant="voice": a round filled play button. Fill is the text colour, the glyph the surface colour
+       (--ca-audio-surface; MessageBubble sets it, a standalone player falls back to the page surface). */
+    .ca-audio--voice :global(.ca-audio__play),
+    .ca-audio--voice :global(.ca-audio__play):hover:not(:disabled) {
+      border-radius: var(--ca-radius-pill);
+      background: currentColor;
+      color: inherit;
+    }
+    .ca-audio--voice :global(.ca-audio__play svg) {
+      color: var(--ca-audio-surface, var(--ca-surface-base));
+    }
+    .ca-audio--voice:not(.ca-audio--inherit) :global(.ca-audio__play),
+    .ca-audio--voice:not(.ca-audio--inherit) :global(.ca-audio__play):hover:not(:disabled) {
+      background: var(--ca-brand-fill);
+      color: var(--ca-brand-contrast);
+    }
+    .ca-audio--voice:not(.ca-audio--inherit) :global(.ca-audio__play svg) {
+      color: var(--ca-brand-contrast);
     }
 
     @media (prefers-reduced-motion: reduce) {

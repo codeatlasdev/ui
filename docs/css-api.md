@@ -40,7 +40,7 @@ Total: 836 unique classes across 84 components.
 
 ## AudioPlayer
 
-`.ca-audio` `.ca-audio__bar` `.ca-audio__bar--played` `.ca-audio__error` `.ca-audio__meta` `.ca-audio__rate` `.ca-audio__scrub` `.ca-audio__wave`
+`.ca-audio` `.ca-audio--inherit` `.ca-audio--voice` `.ca-audio__bar` `.ca-audio__bar--played` `.ca-audio__error` `.ca-audio__meta` `.ca-audio__rate` `.ca-audio__scrub` `.ca-audio__wave`
 
 ## AuthLayout
 
