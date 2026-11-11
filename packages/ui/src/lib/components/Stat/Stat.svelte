@@ -36,6 +36,12 @@
     size?: 'sm' | 'md' | 'lg';
     /** Text alignment inside the stat. */
     align?: 'start' | 'center';
+    /** Where the label sits: `'above'` the number (default) or `'below'` it. Visual only: the `<dt>` stays first in the DOM. */
+    labelPlacement?: 'above' | 'below';
+    /** `'upper'` (default): uppercase overline label. `'sentence'`: the text as written, no tracking. */
+    labelCase?: 'upper' | 'sentence';
+    /** Font of the number: the theme's `'display'` font (default) or the UI `'sans'` font. */
+    valueFont?: 'display' | 'sans';
     /** Loading placeholder: same size as the loaded stat, announced as busy. */
     skeleton?: boolean;
     class?: string;
@@ -45,6 +51,9 @@
     label, value, unit, hint, trend, trendTone,
     size = 'md',
     align = 'start',
+    labelPlacement = 'above',
+    labelCase = 'upper',
+    valueFont = 'display',
     skeleton = false,
     class: className = '',
   }: Props = $props();
@@ -75,6 +84,9 @@
   class="ca-stat {className}"
   data-size={size}
   data-align={align}
+  data-label-placement={labelPlacement}
+  data-label-case={labelCase}
+  data-value-font={valueFont}
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
 >
@@ -104,7 +116,7 @@
     .ca-stat {
       display: flex;
       flex-direction: column;
-      gap: var(--ca-space-1-5);
+      gap: var(--ca-stat-gap, var(--ca-space-1-5));
       margin: 0;
       padding: 0;
       min-width: 0;
@@ -123,13 +135,18 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: var(--ca-font-size-micro);
-      font-weight: var(--ca-font-weight-semibold);
+      font-size: var(--ca-stat-label-size, var(--ca-font-size-micro));
+      font-weight: var(--ca-stat-label-weight, var(--ca-font-weight-semibold));
       color: var(--ca-text-secondary);
       text-transform: uppercase;
       letter-spacing: var(--ca-overline-tracking);
       line-height: var(--ca-line-height-snug);
     }
+    .ca-stat[data-label-case='sentence'] .ca-stat__label { text-transform: none; letter-spacing: normal; }
+    /* Below: the label moves after the number visually; the <dt> stays first in the DOM (it names the <dd>). */
+    .ca-stat[data-label-placement='below'] .ca-stat__label { order: 1; }
+    .ca-stat[data-label-placement='below'] .ca-stat__trend,
+    .ca-stat[data-label-placement='below'] .ca-stat__hint { order: 2; }
 
     .ca-stat__value {
       display: flex;
@@ -138,13 +155,14 @@
       margin: var(--ca-space-0-5) 0 0;
       white-space: nowrap;
       font-size: var(--ca-stat-value-size);
-      font-family: var(--ca-font-display);
-      font-weight: var(--ca-font-weight-heading);
+      font-family: var(--ca-stat-value-font, var(--ca-font-display));
+      font-weight: var(--ca-stat-value-weight, var(--ca-font-weight-heading));
       font-variant-numeric: tabular-nums;
       color: var(--ca-text-primary);
-      line-height: 1;
+      line-height: var(--ca-stat-value-line-height, 1);
       letter-spacing: var(--ca-heading-tracking);
     }
+    .ca-stat[data-value-font='sans'] .ca-stat__value { font-family: var(--ca-stat-value-font, var(--ca-font-sans)); }
     .ca-stat[data-align='center'] .ca-stat__value { justify-content: center; }
 
     .ca-stat__unit {

@@ -66,7 +66,9 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 ## Badge
 
-`.ca-badge` `.ca-badge--brand` `.ca-badge--danger` `.ca-badge--dot` `.ca-badge--error` `.ca-badge--info` `.ca-badge--inline` `.ca-badge--md` `.ca-badge--neutral` `.ca-badge--sm` `.ca-badge--subtle` `.ca-badge--success` `.ca-badge--warning` `.ca-badge__dot` `.ca-badge-wrapper`
+`.ca-badge` `.ca-badge--brand` `.ca-badge--custom` `.ca-badge--danger` `.ca-badge--dot` `.ca-badge--error` `.ca-badge--info` `.ca-badge--inline` `.ca-badge--md` `.ca-badge--neutral` `.ca-badge--sm` `.ca-badge--subtle` `.ca-badge--success` `.ca-badge--warning` `.ca-badge__dot` `.ca-badge-wrapper`
+
+`tone="custom"` sets `--ca-badge-custom` (the `color` prop) on `.ca-badge--custom`; fill, label and subtle tint derive from it. Inline pill tokens (set on the pill or an ancestor): `--ca-badge-h` (height; default 20px `sm`, 24px `md`), `--ca-badge-font-size`, `--ca-badge-weight` (default medium), `--ca-badge-border` (a `border` shorthand; default none).
 
 ## Box
 
@@ -479,6 +481,8 @@ State attribute on a row: `data-dragging`. Each row carries `data-dnd-item="<id>
 ## Stat
 
 `.ca-stat` `.ca-stat__hint` `.ca-stat__label` `.ca-stat__trend` `.ca-stat__trend--down` `.ca-stat__trend--up` `.ca-stat__unit` `.ca-stat__value`
+
+`data-label-placement="above|below"` (default `above`) and `data-label-case="upper|sentence"` and `data-value-font="display|sans"` on `.ca-stat`. Tokens (set on `.ca-stat` or an ancestor): `--ca-stat-label-size`, `--ca-stat-label-weight`, `--ca-stat-value-font`, `--ca-stat-value-weight`, `--ca-stat-value-line-height`, `--ca-stat-gap`.
 
 `data-tone="good|bad|neutral"` on `.ca-stat__trend`: see KpiCard. The arrow and `--up`/`--down` follow the sign; the colour follows `trendTone`.
 

@@ -155,6 +155,107 @@ describe("Stat", () => {
 		});
 	});
 
+	describe("label and value typography (#684)", () => {
+		const rect = (el: Element) => el.getBoundingClientRect();
+
+		it("defaults stay: uppercase 11px label above a display-font value", async () => {
+			const screen = await render(Stat, { label, value: "1" });
+			const l = q(screen.container, ".ca-stat__label");
+			const v = q(screen.container, ".ca-stat__value");
+			expect(getComputedStyle(l).textTransform).toBe("uppercase");
+			expect(rect(l).bottom).toBeLessThanOrEqual(rect(v).top);
+			expect(q(screen.container, ".ca-stat").getAttribute("data-label-placement")).toBe("above");
+		});
+
+		it('labelPlacement="below" puts the label under the number, DOM order unchanged', async () => {
+			const below = await render(Stat, { label, value: "1", labelPlacement: "below" });
+			const l = q(below.container, ".ca-stat__label");
+			const v = q(below.container, ".ca-stat__value");
+			expect(rect(v).bottom).toBeLessThanOrEqual(rect(l).top);
+			expect(l.compareDocumentPosition(v) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+			const above = await render(Stat, { label, value: "1", labelPlacement: "above" });
+			expect(rect(q(above.container, ".ca-stat__label")).bottom).toBeLessThanOrEqual(
+				rect(q(above.container, ".ca-stat__value")).top
+			);
+			expect(await checkA11y(below.container)).toHaveNoViolations();
+		});
+
+		it('labelCase="sentence" drops uppercase and tracking', async () => {
+			const screen = await render(Stat, { label, value: "1", labelCase: "sentence" });
+			const cs = getComputedStyle(q(screen.container, ".ca-stat__label"));
+			expect(cs.textTransform).toBe("none");
+			expect(cs.letterSpacing).toBe("normal");
+		});
+
+		it('valueFont="sans" uses the UI font, "display" the display font', async () => {
+			document.documentElement.style.setProperty("--ca-font-display", "Georgia, serif");
+			try {
+				const family = (screen: { container: Element }) =>
+					getComputedStyle(q(screen.container, ".ca-stat__value")).fontFamily;
+				const display = await render(Stat, { label, value: "1", valueFont: "display" });
+				expect(family(display)).toContain("Georgia");
+				const sans = await render(Stat, { label, value: "1", valueFont: "sans" });
+				expect(family(sans)).not.toContain("Georgia");
+				expect(family(sans)).toContain("Inter");
+				expect(family(await render(Stat, { label, value: "1" }))).toContain("Georgia");
+			} finally {
+				document.documentElement.style.removeProperty("--ca-font-display");
+			}
+		});
+
+		it("--ca-stat-label-size, -label-weight and -value-weight reach the parts, defaults unchanged", async () => {
+			const base = await render(Stat, { label, value: "1" });
+			const bl = getComputedStyle(q(base.container, ".ca-stat__label"));
+			const bv = getComputedStyle(q(base.container, ".ca-stat__value"));
+			const screen = await render(Stat, {
+				label,
+				value: "1",
+				class: "tuned",
+			});
+			const root = q(screen.container, ".ca-stat") as HTMLElement;
+			expect(getComputedStyle(q(screen.container, ".ca-stat__label")).fontSize).toBe(bl.fontSize);
+			root.style.setProperty("--ca-stat-label-size", "12px");
+			root.style.setProperty("--ca-stat-label-weight", "400");
+			root.style.setProperty("--ca-stat-value-weight", "600");
+			root.style.setProperty("--ca-stat-value-line-height", "1.25");
+			const l = getComputedStyle(q(screen.container, ".ca-stat__label"));
+			const v = getComputedStyle(q(screen.container, ".ca-stat__value"));
+			expect(l.fontSize).toBe("12px");
+			expect(l.fontWeight).toBe("400");
+			expect(v.fontWeight).toBe("600");
+			expect(bv.fontWeight).not.toBe("");
+			expect(Number.parseFloat(v.lineHeight)).toBeCloseTo(Number.parseFloat(v.fontSize) * 1.25, 0);
+		});
+
+		it("--ca-stat-value-font and --ca-stat-gap tokens override the value font and the gap", async () => {
+			const screen = await render(Stat, { label, value: "1", labelPlacement: "above" });
+			const root = q(screen.container, ".ca-stat") as HTMLElement;
+			root.style.setProperty("--ca-stat-value-font", "monospace");
+			root.style.setProperty("--ca-stat-gap", "10px");
+			expect(getComputedStyle(q(screen.container, ".ca-stat__value")).fontFamily).toBe("monospace");
+			expect(getComputedStyle(root).rowGap).toBe("10px");
+		});
+
+		it("a trend and a hint stay after the value in both placements", async () => {
+			for (const labelPlacement of ["above", "below"] as const) {
+				const screen = await render(Stat, {
+					label,
+					value: "1",
+					trend: 2,
+					hint: "h",
+					labelPlacement,
+				});
+				const v = q(screen.container, ".ca-stat__value");
+				expect(rect(q(screen.container, ".ca-stat__trend")).top).toBeGreaterThanOrEqual(
+					rect(v).bottom - 1
+				);
+				expect(rect(q(screen.container, ".ca-stat__hint")).top).toBeGreaterThanOrEqual(
+					rect(v).bottom - 1
+				);
+			}
+		});
+	});
+
 	it("omits unit, hint and trend when not given", async () => {
 		const screen = await render(Stat, { label, value: 1 });
 		for (const sel of [".ca-stat__unit", ".ca-stat__hint", ".ca-stat__trend"])

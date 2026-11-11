@@ -355,17 +355,19 @@ Tokens: `--ca-avatar-group-overlap` `--ca-avatar-group-ring`
 |---|---|---|---|
 | `count?` | `number` |  |  |
 | `dot?` | `boolean` | `false` | Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. |
-| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. |
-| `tone?` | `'brand' \| 'success' \| 'danger' \| 'warning' \| 'info' \| 'neutral'` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. |
+| `color?` | `'brand' \| 'success' \| 'error' \| 'warning' \| (string & {})` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set, except with `tone="custom"`, where it is any CSS colour (`'#7c3aed'`, `'var(--ca-token-status-won)'`) the pill derives its fill, label and subtle tint from. |
+| `tone?` | `'brand' \| 'success' \| 'danger' \| 'warning' \| 'info' \| 'neutral' \| 'custom'` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. `'custom'` colours the pill from `color`. |
 | `subtle?` | `boolean` | `false` | Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. |
 | `size?` | `'sm' \| 'md'` | `'sm'` | Pill only: `sm` is 20px high, `md` 24px. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Parts: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
+Parts: `ca-badge` `ca-badge--brand` `ca-badge--custom` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
 
-Variables: `--ca-badge-fg` `--ca-badge-fill` `--ca-badge-muted` `--ca-badge-on` `--ca-badge-tone` `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-fill` `--ca-semantic-info-muted` `--ca-semantic-neutral-fg` `--ca-semantic-neutral-muted` `--ca-semantic-success-fg` `--ca-semantic-success-fill` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-fill` `--ca-semantic-warning-muted`
+Variables: `--ca-badge-border` `--ca-badge-custom` `--ca-badge-fg` `--ca-badge-fill` `--ca-badge-font-size` `--ca-badge-h` `--ca-badge-muted` `--ca-badge-on` `--ca-badge-tone` `--ca-badge-weight` `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-fill` `--ca-semantic-info-muted` `--ca-semantic-neutral-fg` `--ca-semantic-neutral-muted` `--ca-semantic-success-fg` `--ca-semantic-success-fill` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-fill` `--ca-semantic-warning-muted`
+
+Tokens: `--ca-badge-border` `--ca-badge-font-size` `--ca-badge-h` `--ca-badge-weight`
 
 ## BarChart
 
@@ -3529,14 +3531,19 @@ Stat — a card-less statistic: label, big number, optional unit, trend and hint
 | `trendTone?` | `'positive-up' \| 'positive-down' \| 'neutral'` |  | Which direction of `trend` is good news. `'positive-up'` (the colouring without a tone): a rise is green, a fall red. `'positive-down'` (churn, cost, latency): a fall is green, a rise red. `'neutral'`: no judgement, both muted. Setting a tone also makes the accessible label say "better" or "worse"; a zero change is always neutral. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` | Value size: `'sm'` (17px), `'md'` (24px, the default), `'lg'` (36px). |
 | `align?` | `'start' \| 'center'` | `'start'` | Text alignment inside the stat. |
+| `labelPlacement?` | `'above' \| 'below'` | `'above'` | Where the label sits: `'above'` the number (default) or `'below'` it. Visual only: the `<dt>` stays first in the DOM. |
+| `labelCase?` | `'upper' \| 'sentence'` | `'upper'` | `'upper'` (default): uppercase overline label. `'sentence'`: the text as written, no tracking. |
+| `valueFont?` | `'display' \| 'sans'` | `'display'` | Font of the number: the theme's `'display'` font (default) or the UI `'sans'` font. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__unit` `ca-stat__value`
 
-Variables: `--ca-stat-value-size`
+Variables: `--ca-stat-gap` `--ca-stat-label-size` `--ca-stat-label-weight` `--ca-stat-value-font` `--ca-stat-value-line-height` `--ca-stat-value-size` `--ca-stat-value-weight`
 
-Data attributes: `data-align` (`center`), `data-size` (`lg` `md` `sm`), `data-tone` (`bad` `good` `neutral`)
+Data attributes: `data-align` (`center`), `data-label-case` (`sentence`), `data-label-placement` (`below`), `data-size` (`lg` `md` `sm`), `data-tone` (`bad` `good` `neutral`), `data-value-font` (`sans`)
+
+Tokens: `--ca-stat-gap` `--ca-stat-label-size` `--ca-stat-label-weight` `--ca-stat-value-font` `--ca-stat-value-line-height` `--ca-stat-value-weight`
 
 ## StatusChip
 
