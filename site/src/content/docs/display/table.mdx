@@ -66,6 +66,7 @@ For a CRM-style list (thousands of rows, ~10 columns) set `density="compact"` (r
   { name: "scroll", type: "'x' | 'none'", default: "'x'", description: "`x`: the root is a focusable horizontal scroller. `none`: the root is `overflow: visible` and the caller owns scrolling, so the sticky header sticks to the page or panel." },
   { name: "stickyColumns", type: "number", default: "0", description: "Pins the first N columns (up to 6) to the left, with an opaque background in every row state." },
   { name: "headerCase", type: "'upper' | 'sentence'", default: "'upper'", description: "`sentence` renders header labels in regular size and their own case." },
+  { name: "hover", type: "boolean", default: "true", description: "`false`: no hover tint or pointer on plain rows; `TableRow onactivate` keeps its pointer." },
   { name: "class", type: "string", default: "''", description: "Extra class on the wrapper." },
   { name: "children", type: "Snippet", default: "undefined", description: "`thead` and `tbody` markup." },
 ]} />
@@ -74,8 +75,22 @@ For a CRM-style list (thousands of rows, ~10 columns) set `density="compact"` (r
 
 `TableSortHeader idleIcon={false}` draws no arrow while a column is unsorted, so the header is only its label and only the sorted column shows a direction arrow.
 
+## Density tokens
+
+Set these on the table (or any ancestor) to change metrics at every density; unset, the table draws what it always drew.
+
+- `--ca-table-cell-px`: horizontal padding of `th` and `td` (default `--ca-space-5`; `--ca-space-3` compact and in a narrow slot).
+- `--ca-table-cell-py`: vertical padding of `td` (default `--ca-space-3` plus the border; `--ca-space-2` compact).
+- `--ca-table-row-h` / `--ca-table-head-h`: body and header row height (default `auto`).
+- `--ca-table-head-py`: vertical padding of `th` (default `--ca-space-2-5`; `--ca-space-1-5` compact).
+- `--ca-table-head-bg`: header surface, `thead` and `th` (default `--ca-surface-base`).
+- `--ca-table-head-font-size` / `--ca-table-head-weight`: header label size and weight (defaults `--ca-font-size-micro`, `--ca-font-size-label` with `headerCase="sentence"`, and semibold).
+- `--ca-table-cell-color`: body text colour (default `--ca-text-secondary`).
+
+A row cannot be shorter than its padding, one text line and the border: a `--ca-table-row-h` or `--ca-table-head-h` below that is ignored, so lower `--ca-table-cell-py` or `--ca-table-head-py` with it. For a quiet table in a panel use `hover={false}` and set `--ca-table-row-h: 64px`, `--ca-table-cell-px: var(--ca-space-3)`, `--ca-table-head-weight: 400` and `--ca-table-cell-color: var(--ca-text-primary)` on it.
+
 ## Compact rows, group rails and numeric headers
 
-- `--ca-table-row-h` (and `--ca-table-cell-py`) on a `density="compact"` table set an exact row height, such as 36px.
+- `--ca-table-row-h` (and `--ca-table-cell-py`) set an exact row height, such as 36px.
 - `TableGroupRow accent="var(--ca-semantic-success)"` draws a status rail at the start of the group row.
 - `TableSortHeader align="end"` puts the label and its arrow at the end of the cell, aligned with right-aligned numbers.

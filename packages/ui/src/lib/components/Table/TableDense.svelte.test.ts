@@ -216,3 +216,102 @@ describe("compact table knobs (#683)", () => {
 		).toBeLessThan(16);
 	});
 });
+
+describe("table tokens and hover (#692)", () => {
+	const bodyRow = () => document.querySelector("tbody tr[data-row]") as HTMLElement;
+	const tbl = () => document.querySelector("table") as HTMLElement;
+	const th = () => document.querySelector("thead th:nth-child(3)") as HTMLElement;
+	const td = () => document.querySelector('[data-testid="stage-r1"]') as HTMLElement;
+	const hoverCell = () => userEvent.hover(page.getByTestId("stage-r1"));
+
+	it("defaults keep padding and colours", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { density: "default", frame: true, scroll: "x", stickyColumns: 0 });
+		expect(css(th(), "padding-left")).toBe("20px");
+		expect(css(th(), "padding-top")).toBe("10px");
+		expect(css(td(), "padding-left")).toBe("20px");
+		// th text is secondary; a td in a `.primary` cell is primary: default td is the secondary one.
+		expect(css(td(), "color")).toBe(css(th(), "color"));
+	});
+
+	it("tokens: 56px header, 64px rows, 12px padding", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { density: "default", frame: false, scroll: "none", stickyColumns: 0 });
+		const t = tbl();
+		t.style.setProperty("--ca-table-cell-px", "12px");
+		t.style.setProperty("--ca-table-row-h", "64px");
+		t.style.setProperty("--ca-table-head-h", "56px");
+		t.style.setProperty("--ca-table-head-font-size", "12px");
+		t.style.setProperty("--ca-table-head-weight", "400");
+		t.style.setProperty("--ca-table-head-bg", "rgb(1, 2, 3)");
+		t.style.setProperty("--ca-table-cell-color", "rgb(4, 5, 6)");
+		const head = th().parentElement as HTMLElement;
+		expect(Math.round(head.getBoundingClientRect().height)).toBe(56);
+		expect(Math.round(bodyRow().getBoundingClientRect().height)).toBe(64);
+		expect(css(th(), "padding-left")).toBe("12px");
+		expect(css(td(), "padding-left")).toBe("12px");
+		expect(css(th(), "font-size")).toBe("12px");
+		expect(css(th(), "font-weight")).toBe("400");
+		expect(css(th(), "background-color")).toBe("rgb(1, 2, 3)");
+		expect(css(th().closest("thead") as HTMLElement, "background-color")).toBe("rgb(1, 2, 3)");
+		expect(css(td(), "color")).toBe("rgb(4, 5, 6)");
+	});
+
+	it("cell-py lowers padding at default density", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { density: "default", frame: false, scroll: "none", stickyColumns: 0 });
+		tbl().style.setProperty("--ca-table-cell-py", "4px");
+		tbl().style.setProperty("--ca-table-row-h", "40px");
+		expect(Math.round(bodyRow().getBoundingClientRect().height)).toBe(40);
+	});
+
+	it("row-h below the content minimum is ignored", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { density: "default", frame: false, scroll: "none", stickyColumns: 0 });
+		const natural = bodyRow().getBoundingClientRect().height;
+		tbl().style.setProperty("--ca-table-row-h", "10px");
+		expect(bodyRow().getBoundingClientRect().height).toBe(natural);
+	});
+
+	const tinted = (el: HTMLElement) => css(el, "background-color") !== "rgba(0, 0, 0, 0)";
+
+	it("rows tint and point on hover by default", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { interactive: false, density: "default", stickyColumns: 0 });
+		const cell = td();
+		expect(tinted(cell)).toBe(false);
+		await hoverCell();
+		await expect.poll(() => cell.closest("tr")?.matches(":hover")).toBe(true);
+		await expect.poll(() => tinted(cell)).toBe(true);
+		expect(css(cell, "cursor")).toBe("pointer");
+	});
+
+	it("hover=false: no tint, no pointer", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, {
+			hover: false,
+			interactive: false,
+			density: "default",
+			stickyColumns: 0,
+		});
+		const cell = td();
+		await hoverCell();
+		await expect.poll(() => cell.closest("tr")?.matches(":hover")).toBe(true);
+		expect(tinted(cell)).toBe(false);
+		expect(css(cell, "cursor")).not.toBe("pointer");
+	});
+
+	it("hover=false keeps the pointer on interactive rows", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { hover: false, density: "default", stickyColumns: 0 });
+		await hoverCell();
+		await expect.poll(() => bodyRow().matches(":hover")).toBe(true);
+		expect(css(bodyRow(), "cursor")).toBe("pointer");
+		expect(tinted(td())).toBe(false);
+	});
+
+	it("hover=false has no a11y violations", async () => {
+		const screen = await render(Harness, { hover: false, density: "default" });
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
