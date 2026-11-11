@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import Slider from "./Slider.svelte";
 import SliderHarness from "./SliderHarness.test.svelte";
 
 describe("Slider", () => {
@@ -44,5 +45,35 @@ describe("Slider", () => {
 		const thumb = screen.getByRole("slider");
 		await expect.element(thumb).toHaveAttribute("aria-disabled", "true");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("Slider size and tokens (#704)", () => {
+	it('size="sm": 6px control and track, 16px thumb', async () => {
+		const screen = await render(Slider, { value: 40, label: "Radius", size: "sm" });
+		const root = screen.container.querySelector(".ca-slider") as HTMLElement;
+		expect(root.getBoundingClientRect().height).toBe(6);
+		expect(
+			(root.querySelector(".ca-slider__track") as HTMLElement).getBoundingClientRect().height
+		).toBe(6);
+		const thumb = root.querySelector(".ca-slider__thumb") as HTMLElement;
+		expect(thumb.getBoundingClientRect().width).toBe(16);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("keeps the default size", async () => {
+		const screen = await render(Slider, { value: 40, label: "Radius" });
+		expect(
+			(screen.container.querySelector(".ca-slider") as HTMLElement).getBoundingClientRect().height
+		).toBe(20);
+	});
+
+	it("--ca-slider-thumb-size tunes one slider", async () => {
+		const screen = await render(Slider, { value: 40, label: "Radius" });
+		const root = screen.container.querySelector(".ca-slider") as HTMLElement;
+		root.style.setProperty("--ca-slider-thumb-size", "12px");
+		expect(
+			(root.querySelector(".ca-slider__thumb") as HTMLElement).getBoundingClientRect().width
+		).toBe(12);
 	});
 });

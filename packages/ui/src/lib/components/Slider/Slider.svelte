@@ -18,6 +18,8 @@
    */
 
   interface Props {
+    /** `sm`: a 6px control and track and a 16px thumb, for a dense form. The touch target stays 44px under a coarse pointer. @default 'md' */
+    size?:     'sm' | 'md';
     /** Single-value mode — binds a plain number. */
     value?:    number;
     /** Range mode — binds a [min, max] tuple. */
@@ -39,6 +41,7 @@
     value    = $bindable<number | undefined>(undefined),
     values   = $bindable<[number, number] | undefined>(undefined),
     min      = 0,
+    size     = 'md',
     max      = 100,
     step     = 1,
     disabled = false,
@@ -184,6 +187,7 @@
   bind:this={root}
   role="group"
   class="ca-slider {className}"
+  class:ca-slider--sm={size === 'sm'}
   data-orientation="horizontal"
   data-disabled={disabled ? '' : undefined}
   {onpointerdown}
@@ -229,7 +233,7 @@
       display: flex;
       align-items: center;
       width: 100%;
-      height: var(--ca-space-5);
+      height: var(--ca-slider-height, var(--ca-space-5));
       cursor: pointer;
       touch-action: none;
       user-select: none;
@@ -251,7 +255,7 @@
     .ca-slider__track {
       position: relative;
       flex: 1;
-      height: var(--ca-space-1);
+      height: var(--ca-slider-track-height, var(--ca-space-1));
       background: var(--ca-outline-default);
       border-radius: var(--ca-radius-pill);
       overflow: visible;
@@ -266,8 +270,9 @@
 
     :global(.ca-slider__thumb) {
       display: block;
-      width: var(--ca-space-5);
-      height: var(--ca-space-5);
+      position: relative;
+      width: var(--ca-slider-thumb-size, var(--ca-space-5));
+      height: var(--ca-slider-thumb-size, var(--ca-space-5));
       border-radius: 50%;
       background: var(--ca-surface-overlay);
       border: var(--ca-border-width-strong) solid var(--ca-state-indicator);
@@ -276,6 +281,24 @@
       transition:
         box-shadow var(--ca-duration-fast) var(--ca-ease-standard),
         transform  var(--ca-duration-fast) var(--ca-ease-standard);
+    }
+
+    /* Compact (#704): a 6px control and track, a 16px thumb. */
+    :global(.ca-slider--sm) {
+      --ca-slider-height: calc(var(--ca-space-1) + var(--ca-space-0-5));
+      --ca-slider-track-height: calc(var(--ca-space-1) + var(--ca-space-0-5));
+      --ca-slider-thumb-size: var(--ca-space-4);
+    }
+    /* A touch target never shrinks with the visual: the thumb's hit area is at least --ca-touch-target. */
+    @media (pointer: coarse) {
+      :global(.ca-slider__thumb::after) {
+        content: "";
+        position: absolute;
+        inset: 50% auto auto 50%;
+        width: max(100%, var(--ca-touch-target));
+        height: max(100%, var(--ca-touch-target));
+        translate: -50% -50%;
+      }
     }
 
     :global(.ca-slider__thumb:hover) {

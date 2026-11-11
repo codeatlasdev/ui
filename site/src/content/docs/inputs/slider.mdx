@@ -72,3 +72,7 @@ The slider scrubs, the number field types. Both write the same `value`. A typed 
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(value: number) => void", description: "Called once per committed change of either control." },
 ]} />
+
+## Compact size and tokens
+
+`size="sm"` draws a 6px control and track and a 16px thumb, for a slider inside a dense form. Three tokens tune one slider without touching its parts: `--ca-slider-height`, `--ca-slider-track-height` and `--ca-slider-thumb-size`. Under a coarse pointer the thumb's hit area stays at least 44px whatever its size.
