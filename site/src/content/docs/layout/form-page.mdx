@@ -43,6 +43,7 @@ AppForm fills its parent, so give the parent a height. It replaces the removed F
   { name: "leading", type: "Snippet", description: "Left side of the header, such as a back button or breadcrumb. Overrides backHref." },
   { name: "trailing", type: "Snippet", description: "Right side of the header, such as a status chip or secondary actions." },
   { name: "footer", type: "Snippet", description: "Sticky bottom bar for cancel, save and delete buttons." },
+  { name: "embedded", type: "boolean", default: "false", description: "Use inside a page that already has a gutter and header (a `PageShell`): no header of its own and no page padding, so the form aligns with the shell." },
   { name: "children", type: "Snippet", description: "Form body. Usually FormSection components." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

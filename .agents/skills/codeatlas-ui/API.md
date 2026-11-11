@@ -109,11 +109,12 @@ AppForm: page-level form layout.
 | `backHref?` | `string` |  | Convenience prop: renders a back-arrow button linking to this href. Ignored when a `leading` snippet is provided. |
 | `backLabel?` | `string` |  | Accessible label for the auto-rendered back button. Default: 'Back' |
 | `onback?` | `(e: MouseEvent) => void` |  | Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over (a history-aware `back(fallback)` from `@codeatlasdev/ui/kit`). |
+| `embedded?` | `boolean` | `false` | Inside a page that already has its own gutter and header (a `PageShell`): no header of its own and no horizontal or top page padding, so the form aligns with the shell's content. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `leading`: Left side of header: back button, breadcrumb. When present, overrides backHref.; `trailing`: Right side of header: status chip, secondary actions; `footer`: Sticky bottom bar: cancel / save / delete; `children`
 
-Parts: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
+Parts: `ca-app-form` `ca-app-form--embedded` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
 
 ## AppList
 
@@ -132,11 +133,12 @@ AppList: fullscreen CRUD/list layout.
 | `searchPlaceholder?` | `string` |  | Placeholder for the auto-rendered search input. Default: 'Search…' |
 | `ofLabel?` | `string` |  | Word between the numbers in the auto count and page info ("8 of 24"). Default: 'of'; use 'de' in pt-BR. |
 | `maxWidth?` | `string` |  |  |
+| `embedded?` | `boolean` | `false` | Inside a page that already has its own gutter and header (a `PageShell`): no header of its own and no horizontal or top page padding, so the list aligns with the shell's content. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `filters` (`Snippet<[ListCtx<T>]>`): Extra filter controls rendered after the search input. Receives list context.; `children` (`Snippet<[ListCtx<T>]> \| Snippet`): Table/grid content. Receives list context when `data` is provided.; `actions`: Top-right: primary CTA, export, etc.; `toolbar`: Manual toolbar, only used when `data` is NOT provided.; `empty` (`Snippet<[ListCtx<T>]> \| Snippet`): Empty state shown when filtered rows = 0. Receives list context.; `footer`: Manual footer, only used when `data` is NOT provided.
 
-Parts: `ca-app-list` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__clear` `ca-app-list__desc` `ca-app-list__empty` `ca-app-list__empty-msg` `ca-app-list__footer` `ca-app-list__header` `ca-app-list__meta` `ca-app-list__sel-label` `ca-app-list__spacer` `ca-app-list__title` `ca-app-list__toolbar` `ca-app-list__toolbar-sep`
+Parts: `ca-app-list` `ca-app-list--embedded` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__clear` `ca-app-list__desc` `ca-app-list__empty` `ca-app-list__empty-msg` `ca-app-list__footer` `ca-app-list__header` `ca-app-list__meta` `ca-app-list__sel-label` `ca-app-list__spacer` `ca-app-list__title` `ca-app-list__toolbar` `ca-app-list__toolbar-sep`
 
 ## AppSettings
 
@@ -155,11 +157,12 @@ AppSettings: settings/preferences page layout.
 | `backHref?` | `string` |  | Renders the standard back link before the title. |
 | `backLabel?` | `string` |  | Accessible name of the back link. Default: 'Back' (localized). |
 | `onback?` | `(e: MouseEvent) => void` |  | Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over. |
+| `embedded?` | `boolean` | `false` | Inside a page that already has its own gutter and header (a `PageShell`): no header of its own and no horizontal or top page padding, so the content aligns with the shell's. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`: Top-right slot: save / cancel buttons; `children` (`Snippet<[string]>`): Receives the active tab value as its first argument
 
-Parts: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__leading` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
+Parts: `ca-app-settings` `ca-app-settings--embedded` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__leading` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
 
 ## AppShellLayout
 
@@ -912,7 +915,7 @@ Container — centered, width-capped column with the fluid page gutter.
 |---|---|---|---|
 | `px?` | `Responsive<Space>` |  | Horizontal padding. |
 | `py?` | `Responsive<Space>` |  | Vertical padding. |
-| `size?` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'lg'` | Max width: sm 40rem, md 56rem, lg 76rem (the content width), xl 90rem. |
+| `size?` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'default' \| 'wide' \| 'full'` | `'lg'` | Max width. `default` (= `lg`) is `--ca-content-max` (76rem, what PageShell and the App* pages use); `wide` (= `xl`) is `--ca-content-max-wide` (90rem); `full` fills the viewport up to `--ca-content-max-full` (120rem), so a very wide screen still gets a centred column. `sm` 40rem and `md` 56rem are the narrow reading sizes. |
 | `as?` | `string` | `'div'` | Element to render. |
 | `class?` | `string` | `''` |  |
 
@@ -922,9 +925,9 @@ Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>`
 
 Parts: `ca-container`
 
-Variables: `--ca-container-max`
+Variables: `--ca-container-max` `--ca-content-max-full` `--ca-content-max-wide`
 
-Data attributes: `data-lg-px`, `data-md-px`, `data-px`, `data-size` (`lg` `md` `sm` `xl`), `data-sm-px`, `data-xl-px`
+Data attributes: `data-lg-px`, `data-md-px`, `data-px`, `data-size` (`default` `full` `lg` `md` `sm` `wide` `xl`), `data-sm-px`, `data-xl-px`
 
 Tokens: `--ca-container-max`
 

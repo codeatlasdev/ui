@@ -78,6 +78,11 @@
     backLabel?:    string;
     /** Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over. */
     onback?:       (e: MouseEvent) => void;
+    /**
+     * Inside a page that already has its own gutter and header (a `PageShell`): no header of its
+     * own and no horizontal or top page padding, so the content aligns with the shell's.
+     */
+    embedded?:     boolean;
     class?:        string;
     /** Receives the active tab value as its first argument */
     children?:     Snippet<[string]>;
@@ -94,6 +99,7 @@
     backHref,
     backLabel,
     onback,
+    embedded = false,
     class: className = '',
     children,
   }: Props = $props();
@@ -104,10 +110,10 @@
   }
 </script>
 
-<div class="ca-app-settings {className}">
+<div class="ca-app-settings {className}" class:ca-app-settings--embedded={embedded}>
 
   <!-- ── Header ─────────────────────────────────────────────────── -->
-  {#if title || description || actions || backHref}
+  {#if !embedded && (title || description || actions || backHref)}
     <div class="ca-app-settings__header">
       {#if backHref}<div class="ca-app-settings__leading"><PageBack href={backHref} label={backLabel} {onback} /></div>{/if}
       <div class="ca-app-settings__meta">
@@ -174,6 +180,8 @@
       overflow: hidden;
       width: 100%;
     }
+    /* Embedded: the host page owns the gutter; every padding below reads these tokens. */
+    .ca-app-settings--embedded { --ca-page-px: 0px; --ca-page-px-sm: 0px; --ca-page-pt: 0px; }
 
     /* ── Header ────────────────────────────────────────────────────
        Consistent with AppList and AppForm: uses --ca-page-px and --ca-page-pt.

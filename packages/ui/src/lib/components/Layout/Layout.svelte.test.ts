@@ -132,6 +132,22 @@ describe("Container and Section", () => {
 		expect(Number.parseFloat(cs.maxWidth)).toBeLessThan(1000);
 	});
 
+	it("default, wide and full are three distinct caps; full stops growing past 1536px (#917)", async () => {
+		const max = async (size: "default" | "wide" | "full") => {
+			const screen = await render(Container, { size, children: kids });
+			const v = Number.parseFloat(getComputedStyle(root(screen.container)).maxWidth);
+			screen.unmount();
+			return v;
+		};
+		const rem = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+		const [d, w, f] = [await max("default"), await max("wide"), await max("full")];
+		expect(d).toBeCloseTo(76 * rem, 0);
+		expect(w).toBeCloseTo(90 * rem, 0);
+		expect(f).toBeCloseTo(120 * rem, 0);
+		expect(d).toBeLessThan(w);
+		expect(w).toBeLessThan(f);
+	});
+
 	it("Section is a <section> with block padding", async () => {
 		const screen = await render(Section, { children: kids });
 		const el = root(screen.container);
