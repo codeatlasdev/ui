@@ -33,10 +33,11 @@ describe("llms-full.txt", () => {
 		expect(out).not.toContain("<Button>ok</Button>");
 	});
 
-	it("points each page at its complete file", () => {
+	it("points each page at its docs path and its complete file on one line (#944)", () => {
 		expect(out).toContain(
-			"Complete page with demo sources: https://ui.codeatlas.com.br/llms/getting-started/installation.txt"
+			"Group: Components. Docs: /docs/u/ · Full page with demos: https://ui.codeatlas.com.br/llms/getting-started/installation.txt"
 		);
+		expect(out).toContain("Docs paths are relative to https://ui.codeatlas.com.br");
 	});
 });
 
