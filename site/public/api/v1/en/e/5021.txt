@@ -1,0 +1,24 @@
+<!-- @codeatlasdev/ui demo #5021 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-strip-overflow-scroll -->
+Element: #5021 Filter strip, overflow scroll (inputs/toolbar)
+What it shows: A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.
+When to use: A quick-filter strip above a list where every option must stay reachable and none should be hidden in a menu.
+Spec:
+- `<Toolbar aria-label="Deal filters" overflow="scroll">`
+- Eight small outlined neutral `Button`s generated from a list
+- `overflow="scroll"` keeps the row on one line and scrolls it sideways with no scrollbar drawn; the buttons keep their size
+Tags: toolbar, overflow, scroll, filter-strip, quick-filters
+Needs: @codeatlasdev/ui@4.6.0
+Components: Button, Toolbar
+Live demo: https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-strip-overflow-scroll
+
+<script lang="ts">
+  import { Button, Toolbar } from '@codeatlasdev/ui';
+
+  const filters = ['All', 'Open', 'Won', 'Lost', 'Stalled', 'Archived', 'Mine', 'Unassigned'];
+</script>
+
+<Toolbar aria-label="Deal filters" overflow="scroll">
+  {#each filters as label}
+    <Button variant="outlined" tone="neutral" size="sm">{label}</Button>
+  {/each}
+</Toolbar>

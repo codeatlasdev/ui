@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 401,
+	"count": 403,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5019",
-			"count": 93
+			"last": "5021",
+			"count": 95
 		},
 		{
 			"slug": "surfaces",
@@ -35706,6 +35706,173 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/chip-group#multiple-small",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5020",
+			"group": "inputs",
+			"page": "toolbar",
+			"variant": "Composer",
+			"slug": "composer-bar-overflow-menu",
+			"title": "Composer bar, overflow menu",
+			"description": "Resize the window: the icon buttons move into More, Send stays.",
+			"summary": "A message action bar that stays on one line: icon buttons move into a More menu when the row is narrow, and Send never leaves.",
+			"use": "A composer, reply box or list header whose controls must not wrap and push the primary action out of view on a phone.",
+			"spec": [
+				"`<Toolbar aria-label=\"Message actions\" overflow=\"menu\">`",
+				"Five text `IconButton`s (Attach, Templates, Emoji, Bold, Italic), each with an `aria-label`",
+				"`<span class=\"ca-toolbar-spacer\">` then a filled `Send` button carrying `data-priority=\"primary\"`, which never moves into the menu"
+			],
+			"tags": [
+				"toolbar",
+				"overflow",
+				"more-menu",
+				"action-bar",
+				"composer",
+				"icon-button",
+				"priority"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Toolbar",
+					"IconButton",
+					"Button"
+				],
+				"aliases": [
+					"action bar",
+					"composer bar",
+					"overflow menu"
+				],
+				"related": [
+					"5001"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Button",
+				"IconButton",
+				"Toolbar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"IconButton",
+						"Toolbar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/toolbar#composer-bar-overflow-menu",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5021",
+			"group": "inputs",
+			"page": "toolbar",
+			"variant": "Scrolling",
+			"slug": "filter-strip-overflow-scroll",
+			"title": "Filter strip, overflow scroll",
+			"description": "Eight filters on one line; the row scrolls sideways.",
+			"summary": "A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.",
+			"use": "A quick-filter strip above a list where every option must stay reachable and none should be hidden in a menu.",
+			"spec": [
+				"`<Toolbar aria-label=\"Deal filters\" overflow=\"scroll\">`",
+				"Eight small outlined neutral `Button`s generated from a list",
+				"`overflow=\"scroll\"` keeps the row on one line and scrolls it sideways with no scrollbar drawn; the buttons keep their size"
+			],
+			"tags": [
+				"toolbar",
+				"overflow",
+				"scroll",
+				"filter-strip",
+				"quick-filters"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Toolbar",
+					"Button"
+				],
+				"aliases": [
+					"filter strip",
+					"scrolling toolbar",
+					"chip row"
+				],
+				"related": [
+					"5001"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Button",
+				"Toolbar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Toolbar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-strip-overflow-scroll",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

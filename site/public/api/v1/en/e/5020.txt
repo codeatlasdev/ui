@@ -1,0 +1,29 @@
+<!-- @codeatlasdev/ui demo #5020 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/toolbar#composer-bar-overflow-menu -->
+Element: #5020 Composer bar, overflow menu (inputs/toolbar)
+What it shows: A message action bar that stays on one line: icon buttons move into a More menu when the row is narrow, and Send never leaves.
+When to use: A composer, reply box or list header whose controls must not wrap and push the primary action out of view on a phone.
+Spec:
+- `<Toolbar aria-label="Message actions" overflow="menu">`
+- Five text `IconButton`s (Attach, Templates, Emoji, Bold, Italic), each with an `aria-label`
+- `<span class="ca-toolbar-spacer">` then a filled `Send` button carrying `data-priority="primary"`, which never moves into the menu
+Tags: toolbar, overflow, more-menu, action-bar, composer, icon-button, priority
+Needs: @codeatlasdev/ui@4.6.0
+Components: Button, IconButton, Toolbar
+Live demo: https://ui.codeatlas.com.br/docs/inputs/toolbar#composer-bar-overflow-menu
+
+<script lang="ts">
+  import { Bold, Italic, Paperclip, Smile, Sparkles } from '@lucide/svelte';
+  import { Button, IconButton, Toolbar } from '@codeatlasdev/ui';
+
+  let sent = $state(0);
+</script>
+
+<Toolbar aria-label="Message actions" overflow="menu">
+  <IconButton variant="text" size="sm" aria-label="Attach"><Paperclip size={16} /></IconButton>
+  <IconButton variant="text" size="sm" aria-label="Templates"><Sparkles size={16} /></IconButton>
+  <IconButton variant="text" size="sm" aria-label="Emoji"><Smile size={16} /></IconButton>
+  <IconButton variant="text" size="sm" aria-label="Bold"><Bold size={16} /></IconButton>
+  <IconButton variant="text" size="sm" aria-label="Italic"><Italic size={16} /></IconButton>
+  <span class="ca-toolbar-spacer"></span>
+  <Button data-priority="primary" onclick={() => sent++}>Send{sent ? ` (${sent})` : ''}</Button>
+</Toolbar>
