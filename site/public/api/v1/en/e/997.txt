@@ -45,18 +45,24 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/sortable-list#pipeline-stages
   const save = (_: Stage[]) => Promise.resolve();
 </script>
 
-<SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label="Pipeline stages">
-  {#snippet item(stage)}
-    <EditableRow label={stage.name}>
-      {#snippet summary()}<strong>{stage.name}</strong>{/snippet}
-      <TextField label="Name" bind:value={stage.name} />
-      <Select label="Kind" options={kinds} bind:value={stage.kind} />
-      <NumberField label="Stale after (days)" bind:value={stage.staleDays} min={0} />
-      {#snippet actions()}
-        <IconButton variant="text" aria-label="Delete {stage.name}" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
-          <Trash2 size={16} />
-        </IconButton>
-      {/snippet}
-    </EditableRow>
-  {/snippet}
-</SortableList>
+<div class="stages">
+  <SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label="Pipeline stages">
+    {#snippet item(stage)}
+      <EditableRow label={stage.name}>
+        {#snippet summary()}<strong>{stage.name}</strong>{/snippet}
+        <TextField label="Name" bind:value={stage.name} />
+        <Select label="Kind" options={kinds} bind:value={stage.kind} />
+        <NumberField label="Stale after (days)" bind:value={stage.staleDays} min={0} />
+        {#snippet actions()}
+          <IconButton variant="text" aria-label="Delete {stage.name}" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
+            <Trash2 size={16} />
+          </IconButton>
+        {/snippet}
+      </EditableRow>
+    {/snippet}
+  </SortableList>
+</div>
+
+<style>
+  .stages { width: 100%; }
+</style>
