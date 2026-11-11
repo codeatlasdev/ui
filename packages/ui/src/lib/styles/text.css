@@ -1,0 +1,25 @@
+/* @codeatlasdev/ui — text utilities (#724). Opt-in (not in global.css, whose size budget is spent):
+ *   import "@codeatlasdev/ui/styles/text.css";
+ *   <span class="ca-truncate">…</span>  <p class="ca-clamp" style="--ca-clamp: 3">…</p> */
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.utilities {
+  /* One line with an ellipsis. min-width: 0 lets it shrink as a flex or grid child (the usual cause of
+     sideways scroll on a phone); max-inline-size keeps it inside its parent. */
+  .ca-truncate {
+    min-width: 0;
+    max-inline-size: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* N lines (--ca-clamp, default 2) then an ellipsis; text that fits shows whole. */
+  .ca-clamp {
+    min-width: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--ca-clamp, 2);
+    line-clamp: var(--ca-clamp, 2);
+    overflow: hidden;
+  }
+}

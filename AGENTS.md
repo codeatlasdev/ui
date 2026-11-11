@@ -256,6 +256,8 @@ Imported automatically via `global.css`. No extra configuration needed.
 | `ca-bar-fill` | Dynamic progress bar: uses the `--bar-w` CSS var |
 | `ca-bar-fill--warn` | Warning variant of the bar |
 | `ca-pricing-cta` | CTA button at the bottom of a pricing card (`width:100%; margin-top:auto`) |
+| `ca-truncate` | (opt-in: `import "@codeatlasdev/ui/styles/text.css"`) One line with an ellipsis; `min-width: 0` built in, so it shrinks as a flex or grid child instead of pushing the page sideways |
+| `ca-clamp` | (opt-in, `styles/text.css`) `--ca-clamp` lines (default 2) then an ellipsis; text that fits shows whole |
 | `ca-sr-only` | Visually hidden, still in the a11y tree (table `<caption>`, unlabeled control, extra AT-only text). Never `display:none`/`aria-hidden` for this |
 | `ca-sr-only ca-sr-only--focusable` | Same, but shown again while it or a descendant has focus (skip links) |
 
