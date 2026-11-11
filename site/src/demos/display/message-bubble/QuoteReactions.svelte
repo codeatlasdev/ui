@@ -8,6 +8,7 @@
     sender="Carlos"
     time="18:02"
     reactions={[{ emoji: '👍', count: 2, mine: true }, { emoji: '🎉' }]}
+    onquoteclick={() => {}}
   >
     {#snippet quote()}
       <strong>You</strong>

@@ -1,10 +1,10 @@
 <!-- @codeatlasdev/ui demo #249 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/message-bubble#delivery-status -->
 Element: #249 Delivery status (display/message-bubble)
-What it shows: Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.
+What it shows: Five outgoing bubbles, one per delivery state: pending, sent, delivered, read and failed (with a Retry button).
 When to use: Showing message delivery ticks in a chat, with a visually hidden status text for screen readers.
 Spec:
 - `const states = ['pending', 'sent', 'delivered', 'read'] as const;`
-- `{#each states as status}` renders `<MessageBubble direction="out" time="09:41" {status}>`
+- `{#each states as status}` renders `<MessageBubble direction="out" time="09:41" {status}>`, then a `status="failed"` bubble with `onretry`
 Tags: message-bubble, chat, status, delivery, ticks
 Needs: @codeatlasdev/ui@4.6.0
 Components: MessageBubble
@@ -20,6 +20,7 @@ Live demo: https://ui.codeatlas.com.br/docs/display/message-bubble#delivery-stat
   {#each states as status}
     <MessageBubble direction="out" time="09:41" {status}>{status}</MessageBubble>
   {/each}
+  <MessageBubble direction="out" time="09:41" status="failed" onretry={() => {}}>failed</MessageBubble>
 </div>
 
 <style>

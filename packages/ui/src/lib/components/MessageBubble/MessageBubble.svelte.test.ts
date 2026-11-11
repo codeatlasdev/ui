@@ -1,5 +1,6 @@
 import { createRawSnippet } from "svelte";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import MessageBubble from "./MessageBubble.svelte";
@@ -246,6 +247,141 @@ describe("MessageBubble", () => {
 			expect(r.left).toBeGreaterThanOrEqual(b.left - 0.5);
 			expect(r.right).toBeLessThanOrEqual(b.right + 0.5);
 		}
+	});
+	describe("failed status (#893)", () => {
+		it("shows a warning icon and the localized label, in the error color", async () => {
+			const screen = await render(Harness, {
+				props: { direction: "out", time: "14:32", status: "failed" },
+			});
+			const b = bubble(screen.container);
+			const matches = b.textContent?.match(/Not sent/g) ?? [];
+			expect(matches.length).toBe(1);
+			const tick = screen.container.querySelector(".ca-bubble__status--failed") as HTMLElement;
+			expect(tick.querySelector("svg")?.getAttribute("aria-hidden")).toBe("true");
+			const sent = await render(Harness, { props: { direction: "out", status: "sent" } });
+			expect(getComputedStyle(tick).backgroundColor).not.toBe(
+				getComputedStyle(sent.container.querySelector(".ca-bubble__status") as HTMLElement)
+					.backgroundColor
+			);
+			expect(getComputedStyle(tick).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+			expect(b.querySelector("[aria-live], [role=status]")).toBeNull();
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+
+		it("is axe clean in dark mode and on an incoming-styled surface", async () => {
+			document.documentElement.classList.add("dark");
+			try {
+				const screen = await render(Harness, {
+					props: {
+						direction: "out",
+						time: "14:32",
+						status: "failed",
+						withRetry: true,
+						onretry: () => {},
+					},
+				});
+				expect(await checkA11y(screen.container)).toHaveNoViolations();
+			} finally {
+				document.documentElement.classList.remove("dark");
+			}
+		});
+
+		it("renders no retry button without onretry", async () => {
+			const screen = await render(Harness, { props: { direction: "out", status: "failed" } });
+			expect(screen.container.querySelector(".ca-bubble__retry")).toBeNull();
+		});
+
+		it("retry is a keyboard reachable button that fires onretry on Enter, Space and click", async () => {
+			const onretry = vi.fn();
+			const screen = await render(Harness, {
+				props: { direction: "out", time: "14:32", status: "failed", onretry },
+			});
+			const btn = screen.container.querySelector(".ca-bubble__retry") as HTMLButtonElement;
+			expect(btn.tagName).toBe("BUTTON");
+			expect(btn.type).toBe("button");
+			expect(btn.textContent?.trim()).toBe("Retry");
+			await userEvent.tab();
+			expect(document.activeElement).toBe(btn);
+			await userEvent.keyboard("{Enter}");
+			expect(onretry).toHaveBeenCalledTimes(1);
+			await userEvent.keyboard(" ");
+			expect(onretry).toHaveBeenCalledTimes(2);
+			await userEvent.click(btn);
+			expect(onretry).toHaveBeenCalledTimes(3);
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+
+		it("lets the retry snippet replace the default label", async () => {
+			const screen = await render(Harness, {
+				props: { direction: "out", status: "failed", onretry: () => {}, withRetry: true },
+			});
+			const btn = screen.container.querySelector(".ca-bubble__retry") as HTMLElement;
+			expect(btn.textContent?.trim()).toBe("Retry sending");
+		});
+
+		it("ignores failed and retry on incoming bubbles", async () => {
+			const screen = await render(Harness, {
+				props: { direction: "in", status: "failed", onretry: () => {} },
+			});
+			expect(screen.container.querySelector(".ca-bubble__status")).toBeNull();
+			expect(screen.container.querySelector(".ca-bubble__retry")).toBeNull();
+		});
+	});
+
+	describe("clickable quote (#893)", () => {
+		it("renders a plain div without onquoteclick", async () => {
+			const screen = await render(Harness, { props: { withQuote: true } });
+			const q = screen.container.querySelector(".ca-bubble__quote") as HTMLElement;
+			expect(q.tagName).toBe("DIV");
+			expect(screen.container.querySelector("button")).toBeNull();
+		});
+
+		it("renders a named button that activates with click, Enter and Space", async () => {
+			const onquoteclick = vi.fn();
+			const screen = await render(Harness, {
+				props: { withQuote: true, sender: "Ana", onquoteclick },
+			});
+			const q = screen.container.querySelector(".ca-bubble__quote") as HTMLButtonElement;
+			expect(q.tagName).toBe("BUTTON");
+			expect(q.type).toBe("button");
+			expect(q.hasAttribute("aria-label")).toBe(false);
+			expect(q.textContent).toMatch(/^Go to the quoted message\.\s+Earlier text/);
+			expect(bubble(screen.container).contains(q)).toBe(true);
+			await userEvent.tab();
+			expect(document.activeElement).toBe(q);
+			await userEvent.keyboard("{Enter}");
+			expect(onquoteclick).toHaveBeenCalledTimes(1);
+			await userEvent.keyboard(" ");
+			expect(onquoteclick).toHaveBeenCalledTimes(2);
+			await userEvent.click(q);
+			expect(onquoteclick).toHaveBeenCalledTimes(3);
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+
+		it("takes a custom accessible name and keeps the quote text visible", async () => {
+			const screen = await render(Harness, {
+				props: { withQuote: true, onquoteclick: () => {}, quoteLabel: "Jump to Ana's message" },
+			});
+			const q = screen.container.querySelector(".ca-bubble__quote") as HTMLElement;
+			expect(q.getAttribute("aria-label")).toBe("Jump to Ana's message");
+			expect(q.textContent).toContain("Earlier text");
+		});
+
+		it("shows a focus ring and is axe clean on an outgoing bubble in dark mode", async () => {
+			document.documentElement.classList.add("dark");
+			try {
+				const screen = await render(Harness, {
+					props: { direction: "out", withQuote: true, onquoteclick: () => {} },
+				});
+				const q = screen.container.querySelector(".ca-bubble__quote") as HTMLElement;
+				await userEvent.tab();
+				expect(document.activeElement).toBe(q);
+				expect(getComputedStyle(q).outlineStyle).not.toBe("none");
+				expect(await checkA11y(screen.container)).toHaveNoViolations();
+			} finally {
+				document.documentElement.classList.remove("dark");
+			}
+		});
 	});
 });
 

@@ -11,7 +11,11 @@
 		withFooter?: boolean;
 		reactions?: Reaction[];
 		time?: string;
-		status?: "pending" | "sent" | "delivered" | "read";
+		status?: "pending" | "sent" | "delivered" | "read" | "failed";
+		withRetry?: boolean;
+		onretry?: () => void;
+		onquoteclick?: () => void;
+		quoteLabel?: string;
 		text?: string;
 		/** Host the bubble in a shrinking flex item (column list, start-aligned), as a chat list does. */
 		shrink?: boolean;
@@ -29,6 +33,10 @@
 		reactions,
 		time,
 		status,
+		withRetry = false,
+		onretry,
+		onquoteclick,
+		quoteLabel,
 		text = "Hello there",
 		shrink = false,
 		wideFooter = false,
@@ -36,8 +44,9 @@
 	}: Props = $props();
 </script>
 
+{#snippet retryLabel()}Retry sending{/snippet}
 {#snippet bubble()}
-	<MessageBubble {direction} {grouped} {sender} {reactions} {time} {status}>
+	<MessageBubble retry={withRetry ? retryLabel : undefined} {direction} {grouped} {sender} {reactions} {time} {status} {onretry} {onquoteclick} {quoteLabel}>
 		{#snippet avatar()}{#if withAvatar}<span data-testid="avatar">AB</span>{/if}{/snippet}
 		{#snippet quote()}{#if withQuote}<span data-testid="quote">Earlier text</span>{/if}{/snippet}
 		{#snippet footer()}
