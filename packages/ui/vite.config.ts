@@ -54,7 +54,22 @@ function browserDeps(): string[] {
 		))
 			if (deps.some((d) => m[1].startsWith(`${d}/`))) subpaths.add(m[1]);
 	}
-	return [...deps, ...subpaths];
+	// Packages only the browser tests import (devDependencies: @deck.gl/layers) are discovered
+	// mid-run otherwise, and the reload breaks every open page (#1030). Test runner and Svelte excluded.
+	const dev = Object.keys(pkg.devDependencies ?? {});
+	const runner =
+		/^(vitest|@vitest\/|vitest-browser-|svelte$|svelte\/|@sveltejs\/|playwright|@playwright\/)/;
+	const tested = new Set<string>();
+	for (const file of globSync("src/lib/**/*.{svelte.test.ts,test.svelte}", { cwd: here }))
+		for (const m of readFileSync(`${here}${file}`, "utf8").matchAll(
+			/from\s+["']([^"'.][^"']*)["']/g
+		)) {
+			const name = m[1].startsWith("@")
+				? m[1].split("/").slice(0, 2).join("/")
+				: m[1].split("/")[0];
+			if (dev.includes(name) && !runner.test(m[1]) && !m[1].includes("?")) tested.add(m[1]);
+		}
+	return [...new Set([...deps, ...subpaths, ...tested])];
 }
 
 const browserPattern = "src/**/*.svelte.test.ts";
