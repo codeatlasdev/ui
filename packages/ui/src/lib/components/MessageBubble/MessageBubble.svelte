@@ -182,7 +182,7 @@
     }
     .ca-bubble__body {
       white-space: pre-wrap;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
     }
 
     .ca-bubble__quote {
@@ -197,6 +197,8 @@
 
     .ca-bubble__meta {
       display: flex;
+      flex-wrap: wrap;
+      min-inline-size: 0;
       align-items: center;
       justify-content: flex-end;
       gap: var(--ca-space-1);

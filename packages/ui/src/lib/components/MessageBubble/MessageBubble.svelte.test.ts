@@ -205,6 +205,41 @@ describe("MessageBubble", () => {
 		const screen = await render(Harness, {});
 		const body = screen.container.querySelector(".ca-bubble__body") as HTMLElement;
 		expect(getComputedStyle(body).whiteSpace).toBe("pre-wrap");
-		expect(getComputedStyle(body).overflowWrap).toBe("anywhere");
+		expect(getComputedStyle(body).overflowWrap).toBe("break-word");
+	});
+
+	it("keeps a short message on one line inside a shrinking flex item (#837)", async () => {
+		const screen = await render(Harness, { props: { text: "oie", shrink: true } });
+		const body = screen.container.querySelector(".ca-bubble__body") as HTMLElement;
+		const lineHeight = Number.parseFloat(getComputedStyle(body).lineHeight);
+		expect(body.getBoundingClientRect().height).toBeLessThan(lineHeight * 1.5);
+	});
+
+	it("still wraps a long unbroken word inside the bubble (#837)", async () => {
+		const long = "x".repeat(200);
+		const screen = await render(Harness, { props: { text: long, shrink: true } });
+		const b = bubble(screen.container);
+		const body = screen.container.querySelector(".ca-bubble__body") as HTMLElement;
+		expect(body.scrollWidth).toBeLessThanOrEqual(Math.ceil(b.getBoundingClientRect().width));
+	});
+
+	it("keeps the meta footer inside the bubble box (#837)", async () => {
+		const screen = await render(Harness, {
+			props: {
+				direction: "out",
+				text: "ok",
+				shrink: true,
+				wideFooter: true,
+				time: "14:32",
+				status: "read",
+			},
+		});
+		const b = bubble(screen.container).getBoundingClientRect();
+		const meta = screen.container.querySelector(".ca-bubble__meta") as HTMLElement;
+		for (const child of Array.from(meta.children)) {
+			const r = child.getBoundingClientRect();
+			expect(r.left).toBeGreaterThanOrEqual(b.left - 0.5);
+			expect(r.right).toBeLessThanOrEqual(b.right + 0.5);
+		}
 	});
 });
