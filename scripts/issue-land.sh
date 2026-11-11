@@ -52,8 +52,10 @@ git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and mani
 # `bun scripts/test-changed.ts --land` is still the offline gate when CI is unavailable.
 bun run validate
 # A shared file (tokens, styles, theme, primitives, a test setup file) widens this to every component test: with
-# no CI before the merge (#859), that local run is the gate for a shared change.
-sh scripts/test-changed.sh
+# no CI before the merge (#859), that local run is the gate for a shared change. Each component test gets one retry
+# (#861): on ~2,300 browser tests a loaded laptop fails a different timing test on most passes, and a real regression
+# fails twice.
+sh scripts/test-changed.sh --retry=1
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
