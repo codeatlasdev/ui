@@ -13,6 +13,8 @@
   interface Option {
     value:     string;
     label:     string;
+    /** Text of the closed trigger when this option is selected ("Queue of Ana" for "Ana"). Defaults to `label`. */
+    triggerLabel?: string;
     disabled?: boolean;
   }
 
@@ -153,8 +155,8 @@
     onclick={() => (open ? close() : openList())}
     onkeydown={onTriggerKeydown}
   >
-    <span id="{id}-value" class="ca-sel__value" class:ca-sel__value--placeholder={!selected} title={selected?.label}>
-      {selected ? selected.label : (placeholder ?? t().select.placeholder)}
+    <span id="{id}-value" class="ca-sel__value" class:ca-sel__value--placeholder={!selected} title={selected ? (selected.triggerLabel ?? selected.label) : undefined}>
+      {selected ? (selected.triggerLabel ?? selected.label) : (placeholder ?? t().select.placeholder)}
     </span>
     <span class="ca-sel__icon" aria-hidden="true">
       <ChevronDown size={14} strokeWidth={2} />

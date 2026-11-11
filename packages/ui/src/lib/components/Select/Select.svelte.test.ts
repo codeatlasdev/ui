@@ -3,6 +3,7 @@ import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import SelectOnly from "./Select.svelte";
 import SelectForm from "./SelectForm.test.svelte";
 import SelectHarness from "./SelectHarness.test.svelte";
 
@@ -185,5 +186,24 @@ describe("Select", () => {
 			await expect.element(screen.getByRole("button", { name: "Team Beta" })).toBeVisible();
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		});
+	});
+});
+
+describe("Select option triggerLabel (#714)", () => {
+	const options = [
+		{ value: "me", label: "My queue" },
+		{ value: "ana", label: "Ana", triggerLabel: "Queue of Ana" },
+	];
+
+	it("the closed trigger reads the selected option's triggerLabel; the list keeps label", async () => {
+		const screen = await render(SelectOnly, { label: "View as", options, value: "ana" });
+		const value = screen.container.querySelector(".ca-sel__value") as HTMLElement;
+		expect(value.textContent?.trim()).toBe("Queue of Ana");
+		expect(value.getAttribute("title")).toBe("Queue of Ana");
+	});
+
+	it("falls back to label without triggerLabel", async () => {
+		const screen = await render(SelectOnly, { label: "View as", options, value: "me" });
+		expect(screen.container.querySelector(".ca-sel__value")?.textContent?.trim()).toBe("My queue");
 	});
 });
