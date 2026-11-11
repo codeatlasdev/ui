@@ -5728,7 +5728,7 @@ Types:
 |---|---|---|
 | `id` | `string` |  |
 | `label` | `string` |  |
-| `fullLabel?` | `string` | Full name when the visible `label` is an abbreviation ("CRM" for "Customer relationships"). It is the rail tooltip, the panel and mobile header title, and part of the accessible name. The accessible name keeps what is on screen first (WCAG 2.5.3, label in name): "CRM, 3 unread, Customer relationships". Defaults to `label`. |
+| `fullLabel?` | `string` | Full name when the visible `label` is an abbreviation ("CRM" for "Customer relationships"). It is the rail tooltip, the panel and mobile header title, and part of the accessible name. The accessible name stays the visible `label` (WCAG 2.5.3, label in name); the full label is the control's description (its `title`), read after the name. Defaults to `label`. |
 | `icon` | `IconComponent` |  |
 | `basePath` | `string` |  |
 | `pathPrefixes?` | `string[]` | Extra URL prefixes that also activate this module in the Rail |
