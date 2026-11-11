@@ -47,6 +47,22 @@ The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLay
 
 <Demo title="Dashboard page" description="KPI cards and a content card inside a PageShell." src={DashboardSrc}><Dashboard /></Demo>
 
+## Action priority
+
+The title column never gets narrower than 12rem: the `actions` block shrinks and gives way instead of taking its content width. Below 900px the title and description take the whole row and the actions sit on a row of their own, as before.
+
+Put `data-priority="primary"` on the action that must always be reachable and the header keeps the actions on one line: the ones that do not fit move, in order, into a `DropdownMenu` behind a More `IconButton` at the end of the row (localized "More"/"Mais"). The row is measured with a `ResizeObserver`, so they come back when there is room. The actions stay in the DOM: picking a menu entry clicks the real button, so its handler runs. A menu entry is named by `data-overflow="Label"`, then the action's `aria-label`, then its text. Without a `data-priority="primary"` action nothing collapses: the actions wrap onto more lines, right-aligned, and never take the title's 12rem.
+
+```svelte
+<PageShell title="Atendimento ao cliente">
+  {#snippet actions()}
+    <Button>Exportar</Button>
+    <Button>Importar</Button>
+    <Button variant="filled" data-priority="primary">Novo</Button>
+  {/snippet}
+</PageShell>
+```
+
 ## Icon tile, count and title extras
 
 `icon` renders a decorative tile (22px icon in a brand-tinted rounded square) before the title; `count` renders a subtle `Badge` after it; `titleExtra` is a snippet for anything else inline with the title (a status badge, a filter chip). Size and tint of the tile come from `--ca-page-icon-size` (default `--ca-space-10`) and `--ca-page-icon-bg` (default the brand at 14%).
@@ -73,7 +89,7 @@ Pass an `aside` snippet for a companion column (in-page index, summary, help, pr
   { name: "maxWidth", type: "string", default: "undefined", description: "Maximum width of the content column, any CSS length. Omit for `--ca-page-max` (default 80rem, 1280px at the default 4px spacing unit): set the token once in the theme." },
   { name: "scroll", type: "boolean", default: "true", description: "`false` when the window or your own shell scrolls: no nested scroller and no tab stop, and the bottom clears `--ca-shell-inset-bottom` (a fixed bottom bar). Inside AppShellLayout keep the default." },
   { name: "width", type: "'reading' | 'wide'", default: "'wide'", description: "`reading` caps the content column at 46rem (forms, settings). `wide` fills the shell up to `maxWidth`." },
-  { name: "actions", type: "Snippet", description: "Right side of the page header." },
+  { name: "actions", type: "Snippet", description: "Right side of the page header. Mark the ones that must stay visible with `data-priority=\"primary\"`: the rest collapse into a More menu when the row is too narrow (see Action priority)." },
   { name: "backHref", type: "string", description: "Renders the standard back link before the title." },
   { name: "backLabel", type: "string", default: "'Back'", description: "Accessible label of the back link." },
   { name: "onback", type: "(e: MouseEvent) => void", description: "Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over, for example with the history-aware `back(fallback)` from `@codeatlasdev/ui/kit`." },

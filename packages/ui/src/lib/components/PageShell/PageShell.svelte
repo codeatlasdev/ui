@@ -1,6 +1,6 @@
 <script lang="ts">
   import PageBack from './PageBack.svelte';
-  import type { Snippet } from 'svelte';
+  import { untrack, type Snippet } from 'svelte';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { pageShell } from '../../i18n/groups/pageShell.js';
@@ -8,6 +8,11 @@
   import { warnNoMain } from '../../utils/warn-no-main.js';
   import type { IconComponent } from '../../types.js';
   import Badge from '../Badge/Badge.svelte';
+  import { Ellipsis } from '@lucide/svelte';
+  import { layoutOverflow, observeOverflow, overflowItems, type MovedItem } from '../../utils/overflow.js';
+  import IconButton from '../Button/IconButton.svelte';
+  import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
+  import DropdownMenuItem from '../DropdownMenu/DropdownMenuItem.svelte';
   const t = useMessages(pageShell);
 
   interface Props {
@@ -67,6 +72,53 @@
   const rootStyle = $derived(
     [maxWidth ? `--ps-max:${maxWidth}` : '', gap !== undefined ? `--ps-gap:${gap}px` : ''].filter(Boolean).join(';') || undefined,
   );
+
+  // Actions: a `data-priority="primary"` child never leaves the row; the others move into a More menu
+  // when the row is too narrow (same mechanics as `Toolbar overflow="menu"`). With no primary
+  // action nothing is prioritised: nothing collapses and the actions wrap onto more lines.
+  let actionsEl = $state<HTMLElement | null>(null);
+  let collapses = $state(false);
+  let moved = $state.raw<MovedItem[]>([]);
+
+  const isPrimary = (el: HTMLElement) => el.dataset.priority === 'primary' || el.querySelector('[data-priority="primary"]') !== null;
+
+  // Whether the actions hold a primary one is read from the DOM, since the snippet is opaque.
+  $effect(() => {
+    const row = actionsEl;
+    if (!row) return;
+    const sync = () => {
+      collapses = overflowItems(row).some(isPrimary);
+    };
+    sync();
+    const mo = new MutationObserver(sync);
+    mo.observe(row, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-priority'] });
+    return () => mo.disconnect();
+  });
+
+  $effect(() => {
+    const row = actionsEl;
+    if (!collapses || !row) {
+      moved = [];
+      return;
+    }
+    const layout = () => {
+      const next = layoutOverflow(row, {
+        trigger: row.querySelector<HTMLElement>(':scope > .ca-page-shell__more'),
+        previous: untrack(() => moved),
+      });
+      if (next) moved = next;
+    };
+    layout();
+    // The row is content-sized, so it does not resize when the header gains room: watch the header too.
+    const stopRow = observeOverflow(row, () => overflowItems(row), layout);
+    const header = row.parentElement;
+    const ro = new ResizeObserver(layout);
+    if (header) ro.observe(header);
+    return () => {
+      stopRow();
+      ro.disconnect();
+    };
+  });
 </script>
 
 <!-- The shell is the page's scroll container, named by its title. Focusable in the server
@@ -106,8 +158,22 @@
         {/if}
       </div>
       {#if actions}
-        <div class="ca-page-shell__actions">
+        <div bind:this={actionsEl} class="ca-page-shell__actions" data-collapse={collapses ? '' : undefined}>
           {@render actions()}
+          {#if collapses}
+            <span class="ca-page-shell__more">
+              <DropdownMenu align="end">
+                {#snippet triggerChild(props)}
+                  <IconButton {...props} variant="text" size="sm" aria-label={t().pageShell.more}>
+                    <Ellipsis size={16} />
+                  </IconButton>
+                {/snippet}
+                {#each moved as item (item.el)}
+                  <DropdownMenuItem disabled={item.disabled} onclick={item.activate}>{item.label}</DropdownMenuItem>
+                {/each}
+              </DropdownMenu>
+            </span>
+          {/if}
         </div>
       {/if}
     </div>
@@ -159,7 +225,8 @@
 
     .ca-page-shell__leading { flex-shrink: 0; }
 
-    .ca-page-shell__meta { flex: 1; min-width: 0; }
+    /* Row layout (900px and up): the title column never gets narrower than 12rem; the actions give way. */
+    .ca-page-shell__meta { flex: 1; min-width: min(12rem, 100%); }
 
     /* Decorative tile before the title; centred on the first line of text, not on the description. */
     .ca-page-shell__icon {
@@ -212,11 +279,34 @@
       line-height: var(--ca-line-height-relaxed);
     }
 
+    /* The actions never take a width that squeezes the title: they shrink and wrap onto more lines,
+       right-aligned, and the title column keeps at least 12rem. */
     .ca-page-shell__actions {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       align-items: center;
       gap: var(--ca-space-2);
-      flex-shrink: 0;
+      flex: 0 1 auto;
+      min-width: 0;
+    }
+    /* `data-priority="primary"` in the actions: one line; what does not fit is hidden here and listed in More. */
+    .ca-page-shell__actions[data-collapse] {
+      flex-wrap: nowrap;
+    }
+    .ca-page-shell__actions[data-collapse] > :global(*) {
+      flex: none;
+    }
+    .ca-page-shell__actions[data-collapse] > :global([data-overflowed]) {
+      display: none;
+    }
+    .ca-page-shell__more {
+      display: none;
+      flex: none;
+    }
+    .ca-page-shell__more:global([data-shown]),
+    .ca-page-shell__more:global([data-measuring]) {
+      display: inline-flex;
     }
 
     .ca-page-shell__body {

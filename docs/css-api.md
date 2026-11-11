@@ -363,7 +363,9 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## PageShell
 
-`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__count` `.ca-page-shell__extra` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__heading` `.ca-page-shell__icon` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-page-shell__title--display` `.ca-shell__content`
+`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__count` `.ca-page-shell__extra` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__heading` `.ca-page-shell__icon` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__more` `.ca-page-shell__title` `.ca-page-shell__title--display` `.ca-shell__content`
+
+`.ca-page-shell__actions` is a right-aligned wrapping flex row (`flex: 0 1 auto`, `min-width: 0`), so many actions wrap instead of being clipped; the title column keeps `min-width: min(12rem, 100%)`. With a `data-priority="primary"` action in it the row gets `data-collapse` (one line, children `flex: none`): `.ca-page-shell__more` wraps the "More" `IconButton` (`ca-icon-btn`) and is shown (`data-shown`) only while an action is hidden; a hidden action carries `data-overflowed` and `display: none` (it stays in the DOM, and its menu entry clicks it). `data-overflow="Label"` names an action's menu entry. The same mechanics as `.ca-toolbar__more`.
 
 Header: `.ca-page-shell__icon` is the decorative tile (`icon`), `.ca-page-shell__heading` holds the `<h1>`, `.ca-page-shell__count` (`count`) and `.ca-page-shell__extra` (`titleExtra`). Tokens: `--ca-page-icon-size` (default `var(--ca-space-10)`), `--ca-page-icon-bg` (default `color-mix(in oklab, var(--ca-brand-main) 14%, transparent)`).
 
