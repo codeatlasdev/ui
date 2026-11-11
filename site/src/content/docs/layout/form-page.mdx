@@ -10,6 +10,8 @@ import Basic from "~/demos/layout/form-page/Basic.svelte";
 import BasicSrc from "~/demos/layout/form-page/Basic.svelte?raw";
 import NoHeader from "~/demos/layout/form-page/NoHeader.svelte";
 import NoHeaderSrc from "~/demos/layout/form-page/NoHeader.svelte?raw";
+import WithAside from "~/demos/layout/form-page/WithAside.svelte";
+import WithAsideSrc from "~/demos/layout/form-page/WithAside.svelte?raw";
 
 ```svelte
 <script>
@@ -34,6 +36,14 @@ AppForm fills its parent, so give the parent a height. It replaces the removed F
 <Demo title="Basic form" description="Header with a back button, a grid of fields, a list of switches and a sticky footer." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Without header" description="Omit title, description, leading, trailing and backHref to drop the header." src={NoHeaderSrc}><NoHeader client:visible /></Demo>
 
+## Using the width: the aside slot
+
+A form capped at a reading measure leaves the right half of a desktop empty. Never stretch the fields to fill it: pass an `aside` snippet with context (a preview of what is being edited, help, status, a checklist). From a 1280px page the aside sits beside the form, 20rem wide (`asideWidth`) and sticky at the top; below that it follows the form, so a 390px phone has one column and no sideways scroll. It renders as `<aside>` named "Page sidebar" (`asideLabel` renames it). The same `aside`, `asideLabel` and `asideWidth` props exist on `AppSettings` (inside the tab content) and on `PageFrame mode="page"`.
+
+There are no ready-made aside cards: compose them from `Card`, `Stat` and `Stepper`, as in the demo. The docs column is narrower than 1280px, so the demo shows the aside below the form; open it at full width to see two columns.
+
+<Demo title="Form with a preview and help aside" description="Preview, a Stat and a Stepper checklist in the aside. Beside the form from 1280px, after it on a phone." src={WithAsideSrc}><WithAside client:visible /></Demo>
+
 <Props for="AppForm" rows={[
   { name: "title", type: "string", description: "Page title in the header." },
   { name: "description", type: "string", description: "Subtitle under the title." },
@@ -44,6 +54,9 @@ AppForm fills its parent, so give the parent a height. It replaces the removed F
   { name: "trailing", type: "Snippet", description: "Right side of the header, such as a status chip or secondary actions." },
   { name: "footer", type: "Snippet", description: "Sticky bottom bar for cancel, save and delete buttons." },
   { name: "embedded", type: "boolean", default: "false", description: "Use inside a page that already has a gutter and header (a `PageShell`): no header of its own and no page padding, so the form aligns with the shell." },
+  { name: "aside", type: "Snippet", description: "Companion column rendered as `<aside>`: beside the content (sticky at the top, `asideWidth` wide) on a 1280px page, after the content below that." },
+  { name: "asideLabel", type: "string", default: "'Page sidebar'", description: "Accessible name of the `<aside>` landmark (localized default)." },
+  { name: "asideWidth", type: "string", default: "'20rem'", description: "Width of the aside column, any CSS length." },
   { name: "children", type: "Snippet", description: "Form body. Usually FormSection components." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

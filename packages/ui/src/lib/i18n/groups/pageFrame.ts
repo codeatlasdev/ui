@@ -7,6 +7,7 @@ export const pageFrame = defineGroup("pageFrame", {
 		peek: "Collapsed",
 		half: "Half",
 		full: "Full height",
+		aside: "Page sidebar",
 	},
 	"pt-BR": {
 		panel: "Painel",
@@ -14,5 +15,6 @@ export const pageFrame = defineGroup("pageFrame", {
 		peek: "Recolhido",
 		half: "Metade",
 		full: "Altura total",
+		aside: "Barra lateral da página",
 	},
 });

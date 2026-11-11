@@ -83,6 +83,12 @@
      * own and no horizontal or top page padding, so the content aligns with the shell's.
      */
     embedded?:     boolean;
+    /** Companion column (preview, help, status). Beside the content from a 1280px-wide page (sticky at the top), after it below that. Rendered as `<aside>`. */
+    aside?:        Snippet;
+    /** Accessible name of the `<aside>` landmark. Default: 'Page sidebar' (localized). */
+    asideLabel?:   string;
+    /** Width of the aside column (any CSS length). Default `20rem`. */
+    asideWidth?:   string;
     class?:        string;
     /** Receives the active tab value as its first argument */
     children?:     Snippet<[string]>;
@@ -100,6 +106,9 @@
     backLabel,
     onback,
     embedded = false,
+    aside,
+    asideLabel,
+    asideWidth,
     class: className = '',
     children,
   }: Props = $props();
@@ -160,7 +169,14 @@
 
     <!-- Right-hand content: the only block that scrolls -->
     <div class="ca-app-settings__content" role="tabpanel" aria-label={t().appSettings.content}>
-      {@render children?.(activeTab)}
+      {#if aside}
+        <div class="ca-x-aside-split" style:--ca-aside-width={asideWidth}>
+          <div class="ca-x-aside-main">{@render children?.(activeTab)}</div>
+          <aside class="ca-app-settings__aside" aria-label={asideLabel ?? t().appSettings.aside}>{@render aside()}</aside>
+        </div>
+      {:else}
+        {@render children?.(activeTab)}
+      {/if}
     </div>
 
   </div>
@@ -354,6 +370,32 @@
     .ca-app-settings__content::-webkit-scrollbar-thumb {
       background: var(--ca-outline-default);
       border-radius: var(--ca-radius-pill);
+    }
+
+    /* The content pane is the container: the aside sits beside the content once the pane holds 64rem
+       (a 1280px page: the nav column is already subtracted). */
+    .ca-app-settings__content:has(> .ca-x-aside-split) { container-type: inline-size; }
+    .ca-x-aside-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--ca-page-gap);
+      align-items: start;
+    }
+    .ca-x-aside-main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-page-gap);
+    }
+    .ca-app-settings__aside {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-4);
+    }
+    @container (min-width: 64rem) {
+      .ca-x-aside-split { grid-template-columns: minmax(0, 1fr) var(--ca-aside-width, 20rem); }
+      .ca-app-settings__aside { position: sticky; top: 0; }
     }
 
     /* ── Mobile (<= 768px) ───────────────────────────────────────── */

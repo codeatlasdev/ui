@@ -45,6 +45,8 @@ These layouts fill the content area of the [app shell](/docs/layout/app-shell/) 
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
 
+`AppSettings` takes an `aside` snippet too: a preview or help column inside the tab content, beside it from a 1280px page and after it below that. See [AppForm](/docs/layout/form-page/#using-the-width-the-aside-slot).
+
 <Props title="AppSettings props" rows={[
   { name: "title", type: "string", description: "Page title." },
   { name: "description", type: "string", description: "Subtitle." },
@@ -54,6 +56,9 @@ These layouts fill the content area of the [app shell](/docs/layout/app-shell/) 
   { name: "onTabChange", type: "(value: string) => void", description: "Called when the tab changes." },
   { name: "actions", type: "Snippet", description: "Top-right slot for save and cancel buttons." },
   { name: "embedded", type: "boolean", default: "false", description: "Use inside a page that already has a gutter and header (a `PageShell`): no header of its own and no page padding, so the content aligns with the shell." },
+  { name: "aside", type: "Snippet", description: "Companion column rendered as `<aside>`: beside the content (sticky at the top, `asideWidth` wide) on a 1280px page, after the content below that." },
+  { name: "asideLabel", type: "string", default: "'Page sidebar'", description: "Accessible name of the `<aside>` landmark (localized default)." },
+  { name: "asideWidth", type: "string", default: "'20rem'", description: "Width of the aside column, any CSS length." },
   { name: "children", type: "Snippet<[string]>", description: "Content. Receives the active tab value." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

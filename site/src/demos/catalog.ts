@@ -404,6 +404,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5006", path: "inputs/toggle/Default" },
 	{ id: "5007", path: "display/avatar/Group" },
 	{ id: "5008", path: "display/avatar/GroupSizes" },
+	{ id: "5017", path: "layout/form-page/WithAside" },
 ];
 
 /**

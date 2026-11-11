@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 398,
+	"count": 397,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "5008",
-			"count": 67
+			"last": "996",
+			"count": 65
 		},
 		{
 			"slug": "navigation",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "5005",
-			"count": 52
+			"last": "5017",
+			"count": 53
 		},
 		{
 			"slug": "charts",
@@ -35279,66 +35279,77 @@
 			"needs": "@codeatlasdev/ui@4.6.0"
 		},
 		{
-			"id": "5007",
-			"group": "display",
-			"page": "avatar",
-			"variant": "Group",
-			"slug": "avatar-group",
-			"title": "Avatar group",
-			"description": "",
-			"summary": "A labelled group of six overlapping avatars: three photos and three initials, capped at four with an overflow chip counting the other two.",
-			"use": "Showing who is on a review, task or document when only the first few fit: the chip says how many more, in the page language.",
+			"id": "5017",
+			"group": "layout",
+			"page": "form-page",
+			"variant": "WithAside",
+			"slug": "form-with-a-preview-and-help-aside",
+			"title": "Form with a preview and help aside",
+			"description": "Preview, a Stat and a Stepper checklist in the aside. Beside the form from 1280px, after it on a phone.",
+			"summary": "A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.",
+			"use": "Settings and edit pages on wide screens that should fill the width with context (preview, help, status) instead of stretching the fields.",
 			"spec": [
-				"`const reviewers` has 6 entries: Alice, Bob and Clara with `src`, Davi, Eva and Fabio without",
-				"`<AvatarGroup items={reviewers} max={4} label=\"Reviewers\" />` renders four avatars and a chip for the rest"
+				"`<AppForm title=\"Workspace\" description=\"Name, address and plan.\" asideLabel=\"Preview and help\">` with `<FormSection title=\"General\" description=\"How the workspace appears to your team.\">` holding `<TextField label=\"Name\" bind:value={name} />`, `<TextField label=\"Address\" bind:value={slug} />` and `<Select label=\"Plan\" bind:value={plan} options={planOptions} />`",
+				"`planOptions` has 3 entries: Free, Team, Business, with `let plan = $state('team')`; `seats` is 3, 25 or 250 by plan",
+				"`{#snippet aside()}` holds three Cards with `headingLevel={2}`: Preview (name in `<strong>` and `app.example.com/{slug || '…'}`), Plan (`<Stat label=\"Seats included\" value={seats} size=\"sm\" />`) and Checklist (`<Stepper {steps} current={Math.min(done, steps.length - 1)} />` with 3 steps)",
+				"`{#snippet footer()}` has Cancel with `variant=\"ghost\"` and Save with `variant=\"filled\"`",
+				"Frame size is `height: 560px`"
 			],
 			"tags": [
-				"avatar",
-				"avatar-group",
-				"overlap",
-				"overflow",
-				"max",
-				"collaborators"
+				"app-form",
+				"aside",
+				"side-column",
+				"preview",
+				"stat",
+				"stepper",
+				"card",
+				"settings"
 			],
 			"shape": "wide",
 			"index": {
 				"kind": "component",
-				"subtype": "display",
+				"subtype": "layout",
 				"industry": [
-					"general"
+					"saas"
 				],
 				"style": [
 					"default"
 				],
-				"motion": "none",
+				"motion": "subtle",
 				"interaction": [
-					"none"
+					"keyboard",
+					"press"
 				],
-				"layout": "single-column",
+				"layout": "split",
 				"colorMode": "both",
-				"density": "compact",
+				"density": "regular",
 				"tech": [
 					"css"
 				],
 				"cost": "css",
 				"components": [
-					"AvatarGroup"
+					"AppForm",
+					"Button",
+					"Card",
+					"FormSection",
+					"Select",
+					"Stat",
+					"Stepper",
+					"TextField"
 				],
 				"aliases": [
-					"avatar group",
-					"overlapping avatars",
-					"facepile",
-					"team members",
-					"plus n overflow"
+					"form with preview",
+					"side panel form",
+					"settings with help column"
 				],
 				"related": [
-					"111",
-					"107",
-					"110"
+					"173",
+					"174",
+					"5006"
 				],
 				"a11y": {
 					"reducedMotion": true,
-					"keyboard": false
+					"keyboard": true
 				},
 				"added": "2026-11-11",
 				"review": {
@@ -35346,96 +35357,32 @@
 				}
 			},
 			"components": [
-				"AvatarGroup"
+				"AppForm",
+				"Button",
+				"Card",
+				"FormSection",
+				"Select",
+				"Stat",
+				"Stepper",
+				"TextField"
 			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"AvatarGroup"
+						"AppForm",
+						"Button",
+						"Card",
+						"FormSection",
+						"Select",
+						"Stat",
+						"Stepper",
+						"TextField"
 					]
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#avatar-group",
-			"needs": "@codeatlasdev/ui@4.6.0"
-		},
-		{
-			"id": "5008",
-			"group": "display",
-			"page": "avatar",
-			"variant": "GroupSizes",
-			"slug": "group-sizes",
-			"title": "Group sizes",
-			"description": "",
-			"summary": "Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.",
-			"use": "Choosing the group size that matches the Avatar size used elsewhere on the page; the overlap scales with it.",
-			"spec": [
-				"`const team` has 5 entries without photos",
-				"`{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}` renders `<AvatarGroup items={team} max={3} {size} label=\"Team, size {size}\" />`",
-				"A last group uses `shape=\"rounded\"`"
-			],
-			"tags": [
-				"avatar",
-				"avatar-group",
-				"sizes",
-				"rounded",
-				"overflow"
-			],
-			"shape": "wide",
-			"index": {
-				"kind": "component",
-				"subtype": "display",
-				"industry": [
-					"general"
-				],
-				"style": [
-					"default"
-				],
-				"motion": "none",
-				"interaction": [
-					"none"
-				],
-				"layout": "single-column",
-				"colorMode": "both",
-				"density": "compact",
-				"tech": [
-					"css"
-				],
-				"cost": "css",
-				"components": [
-					"AvatarGroup"
-				],
-				"aliases": [
-					"avatar group sizes",
-					"facepile sizes"
-				],
-				"related": [
-					"5007",
-					"110"
-				],
-				"a11y": {
-					"reducedMotion": true,
-					"keyboard": false
-				},
-				"added": "2026-11-11",
-				"review": {
-					"industry": "pending"
-				}
-			},
-			"components": [
-				"AvatarGroup"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"AvatarGroup"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#group-sizes",
+			"demo": "https://ui.codeatlas.com.br/docs/layout/form-page#form-with-a-preview-and-help-aside",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

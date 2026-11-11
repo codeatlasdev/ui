@@ -1,0 +1,80 @@
+<!-- @codeatlasdev/ui demo #5017 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/form-page#form-with-a-preview-and-help-aside -->
+Element: #5017 Form with a preview and help aside (layout/form-page)
+What it shows: A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.
+When to use: Settings and edit pages on wide screens that should fill the width with context (preview, help, status) instead of stretching the fields.
+Spec:
+- `<AppForm title="Workspace" description="Name, address and plan." asideLabel="Preview and help">` with `<FormSection title="General" description="How the workspace appears to your team.">` holding `<TextField label="Name" bind:value={name} />`, `<TextField label="Address" bind:value={slug} />` and `<Select label="Plan" bind:value={plan} options={planOptions} />`
+- `planOptions` has 3 entries: Free, Team, Business, with `let plan = $state('team')`; `seats` is 3, 25 or 250 by plan
+- `{#snippet aside()}` holds three Cards with `headingLevel={2}`: Preview (name in `<strong>` and `app.example.com/{slug || '…'}`), Plan (`<Stat label="Seats included" value={seats} size="sm" />`) and Checklist (`<Stepper {steps} current={Math.min(done, steps.length - 1)} />` with 3 steps)
+- `{#snippet footer()}` has Cancel with `variant="ghost"` and Save with `variant="filled"`
+- Frame size is `height: 560px`
+Tags: app-form, aside, side-column, preview, stat, stepper, card, settings
+Needs: @codeatlasdev/ui@4.6.0
+Components: AppForm, Button, Card, FormSection, Select, Stat, Stepper, TextField
+Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#form-with-a-preview-and-help-aside
+
+<script lang="ts">
+  import { AppForm, Button, Card, FormSection, Select, Stat, Stepper, TextField } from '@codeatlasdev/ui';
+
+  let name = $state('Acme Inc.');
+  let slug = $state('acme');
+  let plan = $state('team');
+
+  const planOptions = [
+    { value: 'free', label: 'Free' },
+    { value: 'team', label: 'Team' },
+    { value: 'business', label: 'Business' },
+  ];
+  const seats = $derived(plan === 'free' ? 3 : plan === 'team' ? 25 : 250);
+  const done = $derived((name ? 1 : 0) + (slug ? 1 : 0) + (plan ? 1 : 0));
+  const steps = $derived([
+    { label: 'Name the workspace', description: name ? 'Done' : 'Required' },
+    { label: 'Pick a URL', description: slug ? `app.example.com/${slug}` : 'Required' },
+    { label: 'Choose a plan', description: planOptions.find((o) => o.value === plan)?.label },
+  ]);
+</script>
+
+<div class="frame">
+  <AppForm title="Workspace" description="Name, address and plan." asideLabel="Preview and help">
+    <FormSection title="General" description="How the workspace appears to your team.">
+      <TextField label="Name" bind:value={name} />
+      <TextField label="Address" bind:value={slug} />
+      <Select label="Plan" bind:value={plan} options={planOptions} />
+    </FormSection>
+
+    {#snippet aside()}
+      <Card title="Preview" headingLevel={2}>
+        <strong>{name || 'Untitled'}</strong>
+        <p class="muted">app.example.com/{slug || '…'}</p>
+      </Card>
+      <Card title="Plan" headingLevel={2}>
+        <Stat label="Seats included" value={seats} size="sm" />
+      </Card>
+      <Card title="Checklist" headingLevel={2}>
+        <Stepper {steps} current={Math.min(done, steps.length - 1)} />
+      </Card>
+    {/snippet}
+
+    {#snippet footer()}
+      <Button variant="ghost">Cancel</Button>
+      <Button variant="filled">Save</Button>
+    {/snippet}
+  </AppForm>
+</div>
+
+<style>
+  .frame {
+    width: 100%;
+    height: 560px;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .muted {
+    margin: var(--ca-space-1) 0 0;
+    color: var(--ca-text-secondary);
+    font-size: var(--ca-font-size-body2);
+  }
+</style>
