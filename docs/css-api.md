@@ -668,3 +668,7 @@ A component token is a custom property a component reads before its default: `--
 ## TreeView
 
 `.ca-tree` `.ca-tree__group` `.ca-tree__item` `.ca-tree__row` `.ca-tree__toggle` `.ca-tree__label`; tokens `--ca-tree-row-h` `--ca-tree-indent`; state from `aria-expanded`, `aria-selected`, `aria-disabled`, `aria-busy` on `.ca-tree__item`.
+
+## Tour
+
+`.ca-tour` `.ca-tour__head` `.ca-tour__title` `.ca-tour__body` `.ca-tour__foot` `.ca-tour__progress` `.ca-tour__actions` `.ca-tour__primary`; token `--ca-tour-width`; `data-ca-tour-target` on the current step's target (the ring).

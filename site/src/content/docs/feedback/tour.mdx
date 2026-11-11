@@ -1,0 +1,24 @@
+---
+title: Tour
+description: A short guided tour: steps anchored to the controls they explain, each a named dialog with Back, Next and a progress count.
+group: Feedback
+---
+import Props from "~/components/docs/Props.astro";
+
+Each step points at one element (a CSS selector or a function returning it), scrolls it into view and rings it, and shows a small dialog named by the step's title, with Back, Next or Done, a skip button and "2 of 5". Focus moves to the next action on every step and Escape skips the tour. While a modal is open over the page the tour hides, and it comes back when the modal closes.
+
+```svelte
+<Tour bind:open steps={[
+  { target: "#new-deal", title: "Create a deal", body: "Start here." },
+  { target: "[data-tour=filters]", title: "Filter", body: "Narrow the board.", side: "right" },
+]} onclose={(reason) => saveSeen(reason)} />
+```
+
+Keep tours short (three to five steps) and let people leave at any step.
+
+<Props for="Tour" rows={[
+  { name: "steps", type: "TourStep[]", description: "{ target, title, body, side? }; target is a selector or () => HTMLElement." },
+  { name: "open", type: "boolean", default: "false", description: "Bindable: the tour is showing." },
+  { name: "step", type: "number", default: "0", description: "Bindable index of the current step." },
+  { name: "onclose", type: "(reason: 'done' | 'skip') => void", description: "Called on Done, skip or Escape." },
+]} />

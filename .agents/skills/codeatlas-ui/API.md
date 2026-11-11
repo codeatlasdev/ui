@@ -4216,6 +4216,25 @@ Internal (may change in any release): `ca-tooltip-in` `ca-tooltip-out`
 
 Data attributes: `data-state` (`closed`)
 
+## Tour
+
+`import { Tour } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `steps` | `TourStep[]` |  |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable: the tour is showing. |
+| `step?` | `number` | `0` | `bind:` Bindable: index of the current step. |
+| `onclose?` | `(reason: 'done' \| 'skip') => void` |  | Called when the last step is done or the tour is skipped / dismissed. |
+
+Parts: `ca-tour` `ca-tour__actions` `ca-tour__body` `ca-tour__foot` `ca-tour__head` `ca-tour__progress` `ca-tour__title`
+
+Variables: `--ca-tour-width`
+
+Data attributes: `data-ca-tour-target`
+
+Tokens: `--ca-tour-width`
+
 ## TreeView
 
 `import { TreeView } from "@codeatlasdev/ui"`
@@ -4412,8 +4431,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@294: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@296: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@295: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@297: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
