@@ -69,6 +69,8 @@
   		line-height: 1.1;
   		color: var(--ca-text-primary);
   		font-family: var(--ca-font-sans);
+  		/* A count that changes keeps its width, like every other number (.ca-text-num) (#997). */
+  		font-variant-numeric: tabular-nums;
   	}
   	.ca-pie-center__label {
   		font-size: var(--ca-font-size-caption);
