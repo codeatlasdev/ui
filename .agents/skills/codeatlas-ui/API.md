@@ -421,7 +421,7 @@ Tokens: `--ca-breadcrumb-line-height` `--ca-breadcrumb-link-radius` `--ca-breadc
 | `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
 | `class?` | `string` | `''` |  |
 | `trailingHint?` | `boolean` | `false` | Marks `trailing` as a keyboard hint (`<Kbd>`): it is hidden below `md` and on touch screens (`pointer: coarse`) and takes no space there, so the button is as wide as its label alone. |
-| `align?` | `'center' \| 'between'` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
+| `align?` | `'center' \| 'between' \| 'start'` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width); `'start'` pins everything to the start (a vertical list of full-width actions). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
 | `sound?` | `SoundProp` |  | Plays `press` on pointer down and `release` on pointer up (a cue name replaces `press`) when the optional `@codeatlasdev/ui/sound` entry is imported and the user turned sound on. Never the only signal. |
@@ -432,7 +432,7 @@ Snippets: `children`; `leading`; `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
-Parts: `ca-btn` `ca-btn--between` `ca-btn--danger` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
+Parts: `ca-btn` `ca-btn--between` `ca-btn--danger` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn--start` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
 
 Variables: `--ca-btn-disabled-bg` `--ca-btn-disabled-border-color` `--ca-btn-disabled-border-width` `--ca-btn-disabled-color` `--ca-btn-disabled-opacity` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-gap` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-gap` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-gap` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
 
@@ -841,7 +841,7 @@ Data attributes: `data-disabled`, `data-pass`
 | `creatable?` | `boolean` | `false` | Show a "Create …" option when the query doesn't match any existing option exactly. |
 | `showCount?` | `boolean` | `false` | Multiple mode: show "N selected" in the trigger instead of the placeholder. Default `false` (the chips already list the selection). |
 
-Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
+Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__group-label` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
 Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-surface-floating`
 
@@ -2575,7 +2575,9 @@ Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `onchange?` | `(value: number) => void` |  |  |
 
-Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap`
+Snippets: `suffix`: A companion control after the number, usually its unit (a `Select` of units). Rendered in the same row; the field becomes a `role="group"` named by `label`, so the pair reads as one control. Give the companion its own accessible name (`hideLabel` + `label`).
+
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__row` `ca-nf__suffix` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap`
 
 Variables: `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
 
@@ -3189,7 +3191,7 @@ Tokens: `--ca-seg-gap` `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__group-label` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
 Variables: `--ca-anchor-width` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height` `--ca-surface-floating`
 
@@ -3953,7 +3955,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `items` | `TimelineItem[]` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timeline__date` `ca-timeline__desc` `ca-timeline__dot` `ca-timeline__dot--default` `ca-timeline__dot--error` `ca-timeline__dot--info` `ca-timeline__dot--success` `ca-timeline__dot--warning` `ca-timeline__header` `ca-timeline__item` `ca-timeline__label` `ca-timeline__track`
+Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timeline__date` `ca-timeline__desc` `ca-timeline__detail` `ca-timeline__dot` `ca-timeline__dot--default` `ca-timeline__dot--error` `ca-timeline__dot--info` `ca-timeline__dot--success` `ca-timeline__dot--warning` `ca-timeline__header` `ca-timeline__icon` `ca-timeline__icon--error` `ca-timeline__icon--info` `ca-timeline__icon--success` `ca-timeline__icon--warning` `ca-timeline__item` `ca-timeline__label` `ca-timeline__meta` `ca-timeline__toggle` `ca-timeline__track`
 
 ## Toaster
 
