@@ -4,6 +4,12 @@
   margin: 0;
   padding: 0;
 }
+/* Native top-layer elements centre themselves with the UA `margin: auto` (inset 0 + auto margins): the reset above
+   would pin every [popover] and <dialog> to the top-left corner (#832). Components that place their own layer set
+   their margin in ca.components, which comes later. */
+:where([popover], dialog) {
+  margin: auto;
+}
 
 /* ── Touch: no grey tap flash, no double-tap zoom delay on controls ─────── */
 a, button, input, select, textarea, label, summary, [role="button"], [role="tab"], [role="option"], [role="menuitem"] {
