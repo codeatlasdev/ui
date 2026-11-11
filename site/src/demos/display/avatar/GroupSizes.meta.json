@@ -1,0 +1,35 @@
+{
+	"summary": "Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.",
+	"use": "Choosing the group size that matches the Avatar size used elsewhere on the page; the overlap scales with it.",
+	"spec": [
+		"`const team` has 5 entries without photos",
+		"`{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}` renders `<AvatarGroup items={team} max={3} {size} label=\"Team, size {size}\" />`",
+		"A last group uses `shape=\"rounded\"`"
+	],
+	"tags": ["avatar", "avatar-group", "sizes", "rounded", "overflow"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AvatarGroup"],
+		"aliases": ["avatar group sizes", "facepile sizes"],
+		"related": ["5007", "110"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

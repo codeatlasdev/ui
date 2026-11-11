@@ -12,6 +12,7 @@ import { appSettings } from "./groups/appSettings.js";
 import { appShell } from "./groups/appShell.js";
 import { audioPlayer } from "./groups/audioPlayer.js";
 import { avatar } from "./groups/avatar.js";
+import { avatarGroup } from "./groups/avatarGroup.js";
 import { badge } from "./groups/badge.js";
 import { breadcrumb } from "./groups/breadcrumb.js";
 import { button } from "./groups/button.js";
@@ -84,6 +85,7 @@ export const groups = {
 	appSettings,
 	appShell,
 	avatar,
+	avatarGroup,
 	button,
 	skipLink,
 	badge,

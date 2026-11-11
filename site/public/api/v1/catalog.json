@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 396,
+	"count": 397,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5006",
-			"count": 91
+			"last": "5001",
+			"count": 90
 		},
 		{
 			"slug": "surfaces",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "996",
-			"count": 65
+			"last": "5008",
+			"count": 67
 		},
 		{
 			"slug": "navigation",
@@ -35199,64 +35199,66 @@
 			"needs": "@codeatlasdev/ui@4.6.0"
 		},
 		{
-			"id": "5006",
-			"group": "inputs",
-			"page": "toggle",
-			"variant": "Default",
-			"slug": "icon-only-ghost-small-and-disabled",
-			"title": "Icon-only, ghost, small and disabled",
-			"description": "`bind:pressed` holds the state; `onchange` receives the new value.",
-			"summary": "Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.",
-			"use": "A single on/off control such as bold, pin or mute that is not part of a group.",
+			"id": "5007",
+			"group": "display",
+			"page": "avatar",
+			"variant": "Group",
+			"slug": "avatar-group",
+			"title": "Avatar group",
+			"description": "",
+			"summary": "A labelled group of six overlapping avatars: three photos and three initials, capped at four with an overflow chip counting the other two.",
+			"use": "Showing who is on a review, task or document when only the first few fit: the chip says how many more, in the page language.",
 			"spec": [
-				"Two outlined icon-only toggles with `aria-label=\"Bold\"` and `aria-label=\"Italic\"`, Bold starts pressed",
-				"A ghost toggle with an icon and the label `Pin`",
-				"A `size=\"sm\"` toggle and a `disabled` toggle"
+				"`const reviewers` has 6 entries: Alice, Bob and Clara with `src`, Davi, Eva and Fabio without",
+				"`<AvatarGroup items={reviewers} max={4} label=\"Reviewers\" />` renders four avatars and a chip for the rest"
 			],
 			"tags": [
-				"toggle",
-				"pressed",
-				"aria-pressed",
-				"button",
-				"icon-only",
-				"ghost"
+				"avatar",
+				"avatar-group",
+				"overlap",
+				"overflow",
+				"max",
+				"collaborators"
 			],
 			"shape": "wide",
 			"index": {
 				"kind": "component",
-				"subtype": "input",
+				"subtype": "display",
 				"industry": [
 					"general"
 				],
 				"style": [
 					"default"
 				],
-				"motion": "subtle",
+				"motion": "none",
 				"interaction": [
-					"press",
-					"keyboard"
+					"none"
 				],
-				"layout": "stack",
+				"layout": "single-column",
 				"colorMode": "both",
-				"density": "regular",
+				"density": "compact",
 				"tech": [
 					"css"
 				],
 				"cost": "css",
 				"components": [
-					"Toggle"
+					"AvatarGroup"
 				],
 				"aliases": [
-					"toggle button",
-					"pressed button",
-					"on off button"
+					"avatar group",
+					"overlapping avatars",
+					"facepile",
+					"team members",
+					"plus n overflow"
 				],
 				"related": [
-					"060"
+					"111",
+					"107",
+					"110"
 				],
 				"a11y": {
 					"reducedMotion": true,
-					"keyboard": true
+					"keyboard": false
 				},
 				"added": "2026-11-11",
 				"review": {
@@ -35264,18 +35266,96 @@
 				}
 			},
 			"components": [
-				"Toggle"
+				"AvatarGroup"
 			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"Toggle"
+						"AvatarGroup"
 					]
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/toggle#icon-only-ghost-small-and-disabled",
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#avatar-group",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5008",
+			"group": "display",
+			"page": "avatar",
+			"variant": "GroupSizes",
+			"slug": "group-sizes",
+			"title": "Group sizes",
+			"description": "",
+			"summary": "Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.",
+			"use": "Choosing the group size that matches the Avatar size used elsewhere on the page; the overlap scales with it.",
+			"spec": [
+				"`const team` has 5 entries without photos",
+				"`{#each ['xs', 'sm', 'md', 'lg', 'xl'] as const as size (size)}` renders `<AvatarGroup items={team} max={3} {size} label=\"Team, size {size}\" />`",
+				"A last group uses `shape=\"rounded\"`"
+			],
+			"tags": [
+				"avatar",
+				"avatar-group",
+				"sizes",
+				"rounded",
+				"overflow"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "display",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"none"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "compact",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"AvatarGroup"
+				],
+				"aliases": [
+					"avatar group sizes",
+					"facepile sizes"
+				],
+				"related": [
+					"5007",
+					"110"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": false
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"AvatarGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AvatarGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#group-sizes",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

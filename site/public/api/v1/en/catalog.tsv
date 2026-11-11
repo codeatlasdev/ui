@@ -394,4 +394,5 @@ id	group	page	title	names	tags	summary
 5003	layout	centered-page	Invite and consent		centered-page,invite,oauth-consent,notice,landmark,safe-area	A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.
 5004	layout	page-shell	Icon tile, count and title extra		page-shell,icon,count,badge,title,header,layout	A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.
 5005	layout	kpi-card	Icon tile		kpi-card,icon,tile,tone,metrics,dashboard	Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.
-5006	inputs	toggle	Icon-only, ghost, small and disabled		toggle,pressed,aria-pressed,button,icon-only,ghost	Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.
+5007	display	avatar	Avatar group		avatar,avatar-group,overlap,overflow,max,collaborators	A labelled group of six overlapping avatars: three photos and three initials, capped at four with an overflow chip counting the other two.
+5008	display	avatar	Group sizes		avatar,avatar-group,sizes,rounded,overflow	Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.

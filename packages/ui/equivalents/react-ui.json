@@ -37,11 +37,11 @@
 		},
 		{
 			"shadcn": "Avatar",
-			"to": ["Avatar"],
+			"to": ["Avatar", "AvatarGroup"],
 			"radix": "@radix-ui/react-avatar",
 			"baseUi": "@base-ui-components/react/avatar",
 			"mui": "Avatar",
-			"notes": "`src`, `alt`, `fallback`, `size`, `shape`, `status`."
+			"notes": "`src`, `alt`, `fallback`, `size`, `shape`, `status`. MUI's `AvatarGroup` is `AvatarGroup` (`items`, `max`, `size`)."
 		},
 		{
 			"shadcn": "Badge",

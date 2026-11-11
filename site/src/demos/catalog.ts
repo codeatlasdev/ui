@@ -402,6 +402,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5004", path: "layout/page-shell/IconCount" },
 	{ id: "5005", path: "layout/kpi-card/IconTile" },
 	{ id: "5006", path: "inputs/toggle/Default" },
+	{ id: "5007", path: "display/avatar/Group" },
+	{ id: "5008", path: "display/avatar/GroupSizes" },
 ];
 
 /**

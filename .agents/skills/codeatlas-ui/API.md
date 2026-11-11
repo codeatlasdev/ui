@@ -320,6 +320,30 @@ Data attributes: `data-size` (`lg` `md` `sm` `xl` `xs`), `data-tone` (`neutral`)
 
 Tokens: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fallback-size` `--ca-avatar-fallback-weight` `--ca-avatar-lg-fallback-size` `--ca-avatar-lg-fallback-weight` `--ca-avatar-md-fallback-size` `--ca-avatar-md-fallback-weight` `--ca-avatar-sm-fallback-size` `--ca-avatar-sm-fallback-weight` `--ca-avatar-xl-fallback-size` `--ca-avatar-xl-fallback-weight` `--ca-avatar-xs-fallback-size` `--ca-avatar-xs-fallback-weight`
 
+## AvatarGroup
+
+`import { AvatarGroup } from "@codeatlasdev/ui"`
+
+AvatarGroup: overlapping avatars with a "+N" chip for the ones `max` hides.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `items?` | `Item[]` | `[]` | The avatars to show. Alternative to `children`. |
+| `max?` | `number` |  | At most this many avatars are drawn, the rest become one "+N" chip. Applies to `items` only. |
+| `size?` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'` | Same sizes as `Avatar`; the chip and every avatar in `items` use it. Give children the same `size`. |
+| `shape?` | `'circle' \| 'rounded'` | `'circle'` |  |
+| `label?` | `string` |  | Name of the group. Default: the catalog's "Avatars". |
+| `moreLabel?` | `(hidden: number) => string` |  | Accessible name of the "+N" chip, from the number hidden. Default: the catalog's "N more". |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`: Avatars drawn by the caller instead of `items`; they overlap like `items` do, and `max` does not apply.
+
+Parts: `ca-avatar-group` `ca-avatar-group__item`
+
+Variables: `--ca-avatar-group-overlap` `--ca-avatar-group-radius` `--ca-avatar-group-ring` `--ca-avatar-group-shift` `--ca-avatar-group-size` `--ca-bg-body`
+
+Tokens: `--ca-avatar-group-overlap` `--ca-avatar-group-ring`
+
 ## Badge
 
 `import { Badge } from "@codeatlasdev/ui"`
