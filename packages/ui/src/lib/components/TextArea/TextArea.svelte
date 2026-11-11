@@ -132,7 +132,9 @@
       box-sizing: border-box;
       /* --ca-ta-min-height is the visible box: the wrapper, border included. The input stretches to fill it. */
       min-height: var(--ca-ta-min-height, 0);
-      border-radius: var(--ca-radius-control);
+      /* A box of several lines never takes the pill (#834): the control radius capped at --ca-radius-lg, derived here so
+         a --ca-radius-control set on any wrapper applies; --ca-radius-control-multiline replaces the derived value. */
+      border-radius: var(--ca-radius-control-multiline, min(var(--ca-radius-control), var(--ca-radius-lg)));
       background: var(--ca-field-bg);
       border: var(--ca-border-width) solid var(--ca-field-border-color);
       box-shadow: var(--ca-field-shadow);
