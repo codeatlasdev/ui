@@ -278,3 +278,42 @@ describe("Select option groups (#811)", () => {
 		expect(document.querySelector('[role="group"]')).toBeNull();
 	});
 });
+
+describe("Select panel radius (#921)", () => {
+	const px = (v: string) => {
+		const probe = document.createElement("div");
+		probe.style.cssText = `position:absolute;visibility:hidden;width:${v}`;
+		document.body.append(probe);
+		const w = probe.getBoundingClientRect().width;
+		probe.remove();
+		return w;
+	};
+	it("a pill control radius never turns the open panel into a stadium", async () => {
+		document.documentElement.style.setProperty("--ca-radius-control", "999px");
+		try {
+			const screen = await render(SelectHarness, { label: "Letter" });
+			await screen.getByRole("button", { name: "Letter" }).click();
+			const panel = document.querySelector(".ca-sel__content") as HTMLElement;
+			await expect.poll(() => panel?.isConnected).toBe(true);
+			const radius = Number.parseFloat(getComputedStyle(panel).borderTopLeftRadius);
+			expect(radius).toBeLessThanOrEqual(px("var(--ca-radius-lg)") + 0.05); // subpixel rounding
+			// The trigger keeps the pill: only the multi-row panel is capped.
+			const trigger = screen.getByRole("button", { name: "Letter" }).element() as HTMLElement;
+			expect(Number.parseFloat(getComputedStyle(trigger).borderTopLeftRadius)).toBeGreaterThan(
+				radius
+			);
+		} finally {
+			document.documentElement.style.removeProperty("--ca-radius-control");
+		}
+	});
+
+	it("the default panel radius is unchanged", async () => {
+		const screen = await render(SelectHarness, { label: "Letter" });
+		await screen.getByRole("button", { name: "Letter" }).click();
+		const panel = document.querySelector(".ca-sel__content") as HTMLElement;
+		await expect.poll(() => panel?.isConnected).toBe(true);
+		expect(Number.parseFloat(getComputedStyle(panel).borderTopLeftRadius)).toBe(
+			px("var(--ca-radius-md)")
+		);
+	});
+});

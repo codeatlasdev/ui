@@ -364,7 +364,9 @@
       overflow-y: auto;
       background: var(--ca-surface-floating, var(--ca-surface-overlay));
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
-      border-radius: var(--ca-radius-control);
+      /* A multi-row panel follows the control radius but never past --ca-radius-lg: a pill theme would turn it
+         into a stadium that clips the first and last options (#921). The default (md) is unchanged. */
+      border-radius: min(var(--ca-radius-control), var(--ca-radius-lg));
       box-shadow: var(--ca-shadow-lg);
       padding: var(--ca-space-1);
       outline: none;
