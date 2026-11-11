@@ -13,9 +13,11 @@
 		time?: string;
 		status?: "pending" | "sent" | "delivered" | "read";
 		text?: string;
-		/** Host the bubble in a shrinking flex item, as a chat list does. */
+		/** Host the bubble in a shrinking flex item (column list, start-aligned), as a chat list does. */
 		shrink?: boolean;
 		wideFooter?: boolean;
+		/** Size the host by min-content: the width a bubble gets when a list squeezes its row. */
+		minContent?: boolean;
 	}
 	let {
 		direction = "in",
@@ -30,6 +32,7 @@
 		text = "Hello there",
 		shrink = false,
 		wideFooter = false,
+		minContent = false,
 	}: Props = $props();
 </script>
 
@@ -49,8 +52,8 @@
 {/snippet}
 
 {#if shrink}
-	<div style="display:flex;inline-size:{wideFooter ? '9rem' : '20rem'}">
-		<div style="flex:0 1 auto;min-inline-size:0;max-inline-size:min(100%,65ch)">
+	<div style="display:flex;flex-direction:column;align-items:flex-start;inline-size:{wideFooter ? '9rem' : '20rem'}">
+		<div style="flex:0 1 auto;min-inline-size:0;max-inline-size:min(100%,65ch);inline-size:{minContent ? 'min-content' : 'auto'}">
 			{@render bubble()}
 		</div>
 	</div>
