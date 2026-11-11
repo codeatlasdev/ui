@@ -247,3 +247,18 @@ describe("configurable disabled look (#708)", () => {
 		expect(css(btn, "opacity")).toBe("0.5");
 	});
 });
+
+describe("Button per-size gap (#697)", () => {
+	it("--ca-btn-<size>-gap wins over --ca-btn-gap for that size only", async () => {
+		const sm = await render(Button, { children: label("Sm"), size: "sm" });
+		const md = await render(Button, { children: label("Md"), size: "md" });
+		const smBtn = sm.container.querySelector("button") as HTMLElement;
+		const mdBtn = md.container.querySelector("button") as HTMLElement;
+		for (const b of [smBtn, mdBtn]) {
+			b.style.setProperty("--ca-btn-gap", "8px");
+			b.style.setProperty("--ca-btn-sm-gap", "6px");
+		}
+		expect(getComputedStyle(smBtn).columnGap).toBe("6px");
+		expect(getComputedStyle(mdBtn).columnGap).toBe("8px");
+	});
+});

@@ -25,6 +25,8 @@ export interface ButtonSizeTokens {
 	weight?: CssValue;
 	/** `--ca-btn-<size>-letter-spacing`. */
 	tracking?: CssValue;
+	/** `--ca-btn-<size>-gap`: space between the icon or trailing slot and the label, this size only (#697). */
+	gap?: CssValue;
 }
 
 export interface ButtonTokens extends ButtonSizeTokens {
@@ -224,6 +226,7 @@ function buttonSize(out: Record<string, string>, prefix: string, t: ButtonSizeTo
 	put(out, `${prefix}-font-size`, t.fontSize);
 	put(out, `${prefix}-font-weight`, t.weight);
 	put(out, `${prefix}-letter-spacing`, t.tracking);
+	put(out, `${prefix}-gap`, t.gap);
 }
 
 /** `ThemeOptions.components` → custom properties. Only what is set. */
