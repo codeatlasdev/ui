@@ -51,3 +51,14 @@ Spacing, label and hint typography and the typed text come from the shared field
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(value: string) => void", description: "Called when the selection changes." },
 ]} />
+
+## A different text in the closed trigger
+
+An option's `triggerLabel` is what the closed trigger shows once it is selected; the open list keeps `label`. A "view as" selector lists plain names and reads as a sentence once one is picked:
+
+```svelte
+<Select label="View as" bind:value options={[
+  { value: "me", label: "My queue" },
+  { value: "ana", label: "Ana", triggerLabel: "Queue of Ana" },
+]} />
+```
