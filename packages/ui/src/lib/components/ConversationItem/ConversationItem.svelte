@@ -124,7 +124,10 @@
       inline-size: 100%;
       min-block-size: 3.5rem;
       padding: var(--ca-space-2) var(--ca-space-3);
+      border: 0;
       border-radius: var(--ca-radius-md);
+      -webkit-appearance: none;
+      appearance: none;
       background: transparent;
       color: var(--ca-text-primary);
       font: inherit;

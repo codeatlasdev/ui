@@ -26,6 +26,14 @@ describe("ConversationItem", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("resets the native button border and appearance without an app reset (#831)", async () => {
+		const screen = await render(Harness, { props: { preview: "Hi" } });
+		const cs = getComputedStyle(item(screen.container));
+		expect(cs.borderTopWidth).toBe("0px");
+		expect(cs.borderLeftWidth).toBe("0px");
+		expect(cs.appearance).toBe("none");
+	});
+
 	it("renders an anchor when href is set", async () => {
 		const screen = await render(Harness, { props: { href: "/chat/1", preview: "Hi" } });
 		const el = item(screen.container);
