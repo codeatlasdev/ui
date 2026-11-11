@@ -22,7 +22,7 @@
 		"cost": "css",
 		"components": ["Collapsible"],
 		"aliases": ["flat collapsible", "borderless section", "panel section"],
-		"related": ["073", "074", "5019"],
+		"related": ["073", "074", "5023"],
 		"a11y": {
 			"reducedMotion": true,
 			"keyboard": true
