@@ -254,8 +254,12 @@ export interface FontDescriptor {
 /** A font stack string (existing behavior) or a self-hosted font descriptor. */
 export type FontSpec = string | FontDescriptor;
 
-/** Spacing density: a multiplier of the 4px unit, or a named step. */
-export type Density = "compact" | "comfortable" | "airy" | number;
+/**
+ * Spacing density: a multiplier of the 4px unit, or a named step. `"auto"` is comfortable under a
+ * coarse pointer (touch targets stay 44px) and compact under a fine one (mouse, trackpad), where
+ * spacing, control heights and body text shrink together (#999).
+ */
+export type Density = "compact" | "comfortable" | "airy" | "auto" | number;
 
 /** Shadow model: how elevation is drawn. */
 export type ElevationModel = "soft" | "none" | "hard" | "glow";
@@ -687,6 +691,16 @@ const DENSITY: Record<Exclude<Density, number>, number> = {
 	compact: 0.75,
 	comfortable: 1,
 	airy: 1.25,
+	auto: 1,
+};
+
+/** What `density: "auto"` changes under a fine pointer: one desktop step, every axis together. */
+const FINE_POINTER_DENSITY: Record<string, string> = {
+	"--ca-density": "0.75",
+	"--ca-control-height": "32px",
+	"--ca-control-height-sm": "26px",
+	"--ca-control-height-lg": "38px",
+	"--ca-font-size-body1": "calc(0.875rem * var(--ca-font-scale))",
 };
 
 const PAPER_INK = "var(--ca-outline-subtle)";
@@ -875,6 +889,8 @@ export function themeCSS(t: ResolvedTheme): string {
 	Object.assign(root, designTokens(t), componentTokens(t.components));
 	Object.assign(root, withSemanticContrast(t.overrides.light));
 	if (Object.keys(root).length) out.push(cssBlock(':root,\n[data-theme-scope="light"]', root));
+	if (t.density === "auto")
+		out.push(`@media (pointer: fine) {\n${cssBlock(":root", FINE_POINTER_DENSITY)}\n}`);
 	if (t.overrides.dark && Object.keys(t.overrides.dark).length)
 		out.push(
 			cssBlock(
