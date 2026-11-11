@@ -6,7 +6,7 @@
   import { useMessages } from '../i18n/state.svelte.js';
   import { map as mapMessages } from '../i18n/groups/map.js';
   import { setMapContext } from './context.js';
-  import { type DeckOverlay, loadDeckOverlay, loadEngine } from './loader.js';
+  import { type DeckOverlay, type EngineLoader, loadDeckOverlay, loadEngine } from './loader.js';
   import type { Snippet } from 'svelte';
   import type { MapBounds, MapInstance, MapPadding, MapStyles } from './types.js';
   const t = useMessages(mapMessages);
@@ -14,6 +14,8 @@
   interface Props {
     /** `"maplibre"` (default, no token) or `"mapbox"` (needs `accessToken`). The matching package is a peer you install. */
     engine?: "maplibre" | "mapbox";
+    /** Your own import of the engine package, required for `engine="mapbox"`: `engineModule={() => import("mapbox-gl")}`. Written in your app, so your bundler includes the package; the library cannot import an optional peer by name for you. Also pins a specific build of `maplibre-gl`. */
+    engineModule?: EngineLoader;
     /** Mapbox access token. Required for `engine="mapbox"`. */
     accessToken?: string;
     /** Basemap style per color scheme. The map switches style when `colorScheme.resolved` changes, without being recreated. */
@@ -39,6 +41,7 @@
 
   let {
     engine = 'maplibre',
+    engineModule,
     accessToken,
     styles,
     layers,
@@ -85,7 +88,7 @@
     let ro: ResizeObserver | undefined;
 
     (async () => {
-      const gl = await loadEngine(engine);
+      const gl = await loadEngine(engine, engineModule);
       if (disposed || !container) return;
       if (engine === 'mapbox') gl.accessToken = accessToken;
       const scheme = colorScheme.resolved;

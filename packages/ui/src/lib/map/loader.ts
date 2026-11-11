@@ -11,17 +11,33 @@ export interface EngineModule {
 	accessToken?: string;
 }
 
-export async function loadEngine(engine: "maplibre" | "mapbox"): Promise<EngineModule> {
+/**
+ * The app's own import of the engine, for example `() => import("mapbox-gl")`. The library cannot
+ * name an optional peer for the bundler (apps without it would fail to build), and hiding the
+ * import from Vite left a bare specifier in the client chunk that browsers cannot resolve (#712). A loader written
+ * in the app is bundled by the app's bundler.
+ */
+export type EngineLoader = () => Promise<unknown>;
+
+export async function loadEngine(
+	engine: "maplibre" | "mapbox",
+	load?: EngineLoader
+): Promise<EngineModule> {
 	const pkg = engine === "mapbox" ? "mapbox-gl" : "maplibre-gl";
 	try {
-		// mapbox-gl is not a dependency of this repo (an optional peer), so it has no types here.
-		const mod = (await (engine === "mapbox"
-			? import(/* @vite-ignore */ "mapbox-gl" as string)
-			: import("maplibre-gl"))) as { default?: EngineModule } & EngineModule;
+		if (!load && engine === "mapbox") {
+			throw new Error(
+				`pass engineModule={() => import("mapbox-gl")} so your bundler includes the package`
+			);
+		}
+		const mod = (await (load ? load() : import("maplibre-gl"))) as {
+			default?: EngineModule;
+		} & EngineModule;
 		return mod.default ?? mod;
 	} catch (cause) {
 		throw new Error(
-			`[ca-ui] <MapStage engine="${engine}"> needs the optional peer "${pkg}": install it.`,
+			`[ca-ui] <MapStage engine="${engine}"> needs the optional peer "${pkg}": install it` +
+				(engine === "mapbox" ? ` and pass engineModule={() => import("mapbox-gl")}.` : "."),
 			{ cause }
 		);
 	}
