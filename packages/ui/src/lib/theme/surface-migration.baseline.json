@@ -253,7 +253,7 @@
 			"color": "oklch(0.2 0.004 55)"
 		},
 		"site-header": {
-			"backdropFilter": "blur(22px) saturate(1.9)",
+			"backdropFilter": "none",
 			"webkitBackdropFilter": "",
 			"willChange": "auto",
 			"isolation": "auto",
@@ -535,7 +535,7 @@
 			"color": "oklch(0.94 0.003 55)"
 		},
 		"site-header": {
-			"backdropFilter": "blur(22px) saturate(1.8) brightness(1.02)",
+			"backdropFilter": "none",
 			"webkitBackdropFilter": "",
 			"willChange": "auto",
 			"isolation": "auto",
@@ -817,7 +817,7 @@
 			"color": "oklch(0.2 0.004 55)"
 		},
 		"site-header": {
-			"backdropFilter": "blur(12px) saturate(1.65)",
+			"backdropFilter": "none",
 			"webkitBackdropFilter": "",
 			"willChange": "auto",
 			"isolation": "auto",
@@ -1099,7 +1099,7 @@
 			"color": "oklch(0.94 0.003 55)"
 		},
 		"site-header": {
-			"backdropFilter": "blur(12px) saturate(1.65)",
+			"backdropFilter": "none",
 			"webkitBackdropFilter": "",
 			"willChange": "auto",
 			"isolation": "auto",
@@ -4201,7 +4201,7 @@
 			"color": "oklch(0.2 0.004 55)"
 		},
 		"site-header": {
-			"backdropFilter": "blur(22px) saturate(1.9)",
+			"backdropFilter": "none",
 			"webkitBackdropFilter": "",
 			"willChange": "auto",
 			"isolation": "auto",
@@ -4483,7 +4483,7 @@
 			"color": "oklch(0.94 0.003 55)"
 		},
 		"site-header": {
-			"backdropFilter": "blur(22px) saturate(1.8) brightness(1.02)",
+			"backdropFilter": "none",
 			"webkitBackdropFilter": "",
 			"willChange": "auto",
 			"isolation": "auto",
