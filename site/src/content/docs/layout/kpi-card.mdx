@@ -16,6 +16,8 @@ import TrendTone from "~/demos/layout/kpi-card/TrendTone.svelte";
 import TrendToneSrc from "~/demos/layout/kpi-card/TrendTone.svelte?raw";
 import SparklineDemo from "~/demos/layout/kpi-card/Sparkline.svelte";
 import SparklineSrc from "~/demos/layout/kpi-card/Sparkline.svelte?raw";
+import IconTile from "~/demos/layout/kpi-card/IconTile.svelte";
+import IconTileSrc from "~/demos/layout/kpi-card/IconTile.svelte?raw";
 
 ```svelte
 <script>
@@ -34,7 +36,10 @@ Put several cards in a [KpiGrid](/docs/layout/kpi-grid/) so a row never ends on 
 <Demo title="Without trend" description="Omit trend and the indicator disappears." src={NoTrendSrc}><NoTrend /></Demo>
 <Demo title="Negative trend" description={"A falling number that is good news: trendTone=\"positive-down\"."} src={NegativeTrendSrc}><NegativeTrend /></Demo>
 <Demo title="Sparkline" description="An icon and a recent-history chart in the same tile: the chart snippet takes a Sparkline." src={SparklineSrc}><SparklineDemo /></Demo>
+<Demo title="Icon tile" description={"iconStyle=\"tile\" with a tone: the icon in a tinted square above the label."} src={IconTileSrc}><IconTile /></Demo>
 <Demo title="Trend tone" description="Down is good for churn and latency; a neutral tone shows the change without judging it." src={TrendToneSrc}><TrendTone /></Demo>
+
+`iconStyle="tile"` moves the icon out of the corner into a tinted rounded square above the label and sets the number in the large size; the trend and the `chart` stay below. `tone` (`brand` default, `success`, `warning`, `error`) tints the tile; it has no effect on the default corner icon, and it colours the icon only, never the trend (that is `trendTone`). Size and tint come from `--ca-kpi-tile-size` (default `--ca-space-10`), `--ca-kpi-tile-bg` and `--ca-kpi-tile-fg`. The tile is decorative (`aria-hidden`).
 
 `trend` is a relative percent change (`12.4` renders `+12.4%`), computed by you: a metric that went from 80 to 90 passes `12.5`, not `10`. By default a rise is green and a fall red. `trendTone="positive-down"` flips the colour for metrics where down is good (churn, cost, latency); the arrow still follows the sign and the accessible label says "better" or "worse". `trendTone="neutral"` judges neither way. Do not omit `trend` to avoid a wrong colour.
 
@@ -48,6 +53,8 @@ Put several cards in a [KpiGrid](/docs/layout/kpi-grid/) so a row never ends on 
   { name: "trend", type: "number", description: "Percentage change. The arrow follows the sign; by default a rise is green, a fall red, zero neutral." },
   { name: "trendTone", type: "'positive-up' | 'positive-down' | 'neutral'", description: "Which direction of `trend` is good news. `'positive-down'` makes a fall green (churn, cost, latency); `'neutral'` judges neither. Adds \"better\" or \"worse\" to the accessible label." },
   { name: "icon", type: "IconComponent", description: "Lucide icon. Size and color are managed by the card." },
+  { name: "iconStyle", type: "'corner' | 'tile'", default: "'corner'", description: "`corner`: the bare 16px icon in the top corner. `tile`: a tinted rounded square above the label, with the large number size." },
+  { name: "tone", type: "'brand' | 'success' | 'warning' | 'error'", default: "'brand'", description: "Tint of the icon tile (`iconStyle=\"tile\"` only)." },
   { name: "chart", type: "Snippet", description: "A chart under the number, usually a `Sparkline` from `@codeatlasdev/ui/charts`. Give it an accessible name when it carries information." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded card. See Skeleton." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },

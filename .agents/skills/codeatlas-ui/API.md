@@ -2036,12 +2036,20 @@ Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
 | `trend?` | `number` |  |  |
 | `trendTone?` | `'positive-up' \| 'positive-down' \| 'neutral'` |  | Which direction of `trend` is good news: `'positive-up'` (default colouring), `'positive-down'` (churn, cost, latency) or `'neutral'`. See Stat. |
 | `icon?` | `IconComponent` |  | Lucide icon component; size and color are managed by KpiCard |
+| `iconStyle?` | `'corner' \| 'tile'` | `'corner'` | How the icon shows: `'corner'` (default) is the bare 16px icon in the top corner; `'tile'` puts it in a tinted rounded square above the label and sets the number in the large size. Size and tint: `--ca-kpi-tile-size`, `--ca-kpi-tile-bg`. |
+| `tone?` | `'brand' \| 'success' \| 'warning' \| 'error'` | `'brand'` | Tint of the icon tile (`iconStyle="tile"` only). Default `brand`. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `chart`: A chart under the number, usually `<Sparkline data={...} />` from `@codeatlasdev/ui/charts`. A snippet, not a data prop: the charts subpath (and the `echarts` peer) stays out of the core entry. Give the chart its own accessible name when it carries information.
 
 Parts: `ca-kpi` `ca-kpi__chart` `ca-kpi__icon` `ca-kpi__inner`
+
+Variables: `--ca-kpi-tile-bg` `--ca-kpi-tile-fg` `--ca-kpi-tile-size` `--ca-kpi-tile-tone`
+
+Data attributes: `data-icon-style` (`tile`), `data-tone` (`error` `success` `warning`)
+
+Tokens: `--ca-kpi-tile-bg` `--ca-kpi-tile-fg` `--ca-kpi-tile-size`
 
 ## KpiGrid
 
@@ -2612,6 +2620,8 @@ Data attributes: `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `title?` | `string` |  |  |
+| `icon?` | `IconComponent` |  | Icon in a decorative tile before the title. Size and tint: `--ca-page-icon-size` and `--ca-page-icon-bg`. |
+| `count?` | `number \| string` |  | A count after the title ("Deals, 128"). The number is part of the heading's accessible name (and so of the region's), through its `aria-label` (it starts with the visible title); the visible badge is not announced twice. |
 | `display?` | `boolean` | `false` | Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. |
 | `description?` | `string` |  |  |
 | `gap?` | `number` |  |  |
@@ -2623,11 +2633,11 @@ Data attributes: `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`
 | `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`; `aside`: Companion column (in-page index, summary, help, preview). Next to the content (sticky) when the shell is wide enough, after the content below that. Rendered as `<aside>`.; `children`
+Snippets: `titleExtra`: Anything else inline with the title, after the count (a status badge, a filter chip).; `actions`; `aside`: Companion column (in-page index, summary, help, preview). Next to the content (sticky) when the shell is wide enough, after the content below that. Rendered as `<aside>`.; `children`
 
-Parts: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__leading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
+Parts: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__count` `ca-page-shell__description` `ca-page-shell__extra` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__heading` `ca-page-shell__icon` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__leading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
 
-Variables: `--ca-aside-width` `--ca-reading-width`
+Variables: `--ca-aside-width` `--ca-page-icon-bg` `--ca-page-icon-size` `--ca-reading-width`
 
 ## Pagination
 

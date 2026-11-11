@@ -6,10 +6,24 @@
   import { pageShell } from '../../i18n/groups/pageShell.js';
   import { provideSectionHeadingLevel } from './heading-context.js';
   import { warnNoMain } from '../../utils/warn-no-main.js';
+  import type { IconComponent } from '../../types.js';
+  import Badge from '../Badge/Badge.svelte';
   const t = useMessages(pageShell);
 
   interface Props {
     title?: string;
+    /**
+     * Icon in a decorative tile before the title. Size and tint: `--ca-page-icon-size` and
+     * `--ca-page-icon-bg`.
+     */
+    icon?: IconComponent;
+    /**
+     * A count after the title ("Deals, 128"). The number is part of the heading's accessible name (and
+     * so of the region's), through its `aria-label` (it starts with the visible title); the visible badge is not announced twice.
+     */
+    count?: number | string;
+    /** Anything else inline with the title, after the count (a status badge, a filter chip). */
+    titleExtra?: Snippet;
     /** Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. */
     display?: boolean;
     description?: string;
@@ -39,7 +53,7 @@
     children?: Snippet;
   }
 
-  let { title, display = false, description, gap, maxWidth, width = 'wide', actions, backHref, backLabel, onback, aside, asideLabel, class: className = '', children }: Props = $props();
+  let { title, icon: Icon, count, titleExtra, display = false, description, gap, maxWidth, width = 'wide', actions, backHref, backLabel, onback, aside, asideLabel, class: className = '', children }: Props = $props();
   const titleId = $props.id();
   // The page <h1> is rendered above; titles inside the shell default to <h2>.
   provideSectionHeadingLevel();
@@ -66,12 +80,23 @@
   tabindex="0"
   use:scrollFocusable
 >
-  {#if title || description || actions || backHref}
+  {#if title || description || actions || backHref || Icon || count !== undefined}
     <div class="ca-page-shell__header">
       {#if backHref}<div class="ca-page-shell__leading"><PageBack href={backHref} label={backLabel} {onback} /></div>{/if}
+      {#if Icon}
+        <span class="ca-page-shell__icon" aria-hidden="true"><Icon size={22} stroke-width={1.75} /></span>
+      {/if}
       <div class="ca-page-shell__meta">
         {#if title}
-          <h1 class="ca-page-shell__title ca-sr-only--shell" class:ca-page-shell__title--display={display} id={titleId}>{title}</h1>
+          <div class="ca-page-shell__heading">
+            <h1 class="ca-page-shell__title ca-sr-only--shell" class:ca-page-shell__title--display={display} id={titleId} aria-label={count !== undefined ? `${title}, ${count}` : undefined}>{title}</h1>
+            {#if count !== undefined}
+              <span class="ca-page-shell__count" aria-hidden="true"><Badge tone="brand" subtle>{count}</Badge></span>
+            {/if}
+            {#if titleExtra}
+              <span class="ca-page-shell__extra">{@render titleExtra()}</span>
+            {/if}
+          </div>
         {/if}
         {#if description}
           <p class="ca-page-shell__description">{description}</p>
@@ -125,6 +150,33 @@
     .ca-page-shell__leading { flex-shrink: 0; }
 
     .ca-page-shell__meta { flex: 1; min-width: 0; }
+
+    /* Decorative tile before the title; centred on the first line of text, not on the description. */
+    .ca-page-shell__icon {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--ca-page-icon-size, var(--ca-space-10));
+      height: var(--ca-page-icon-size, var(--ca-space-10));
+      border-radius: var(--ca-radius-md);
+      color: var(--ca-brand-text);
+      background: var(--ca-page-icon-bg, color-mix(in oklab, var(--ca-brand-main) 14%, transparent));
+      line-height: 0;
+    }
+
+    /* Title, count and extras on one line; they wrap under each other on a very narrow column. */
+    .ca-page-shell__heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: var(--ca-space-2);
+      row-gap: var(--ca-space-1);
+      margin: 0 0 var(--ca-space-0-5);
+    }
+    .ca-page-shell__heading > .ca-page-shell__title { margin: 0; }
+    .ca-page-shell__count,
+    .ca-page-shell__extra { display: inline-flex; align-items: center; flex-shrink: 0; }
 
     .ca-page-shell__title {
       font-family: var(--ca-font-display);

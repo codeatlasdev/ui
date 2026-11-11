@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 393,
+	"count": 395,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "5003",
-			"count": 50
+			"last": "5005",
+			"count": 52
 		},
 		{
 			"slug": "charts",
@@ -35021,6 +35021,181 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/centered-page#invite-and-consent",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5004",
+			"group": "layout",
+			"page": "page-shell",
+			"variant": "IconCount",
+			"slug": "icon-tile-count-and-title-extra",
+			"title": "Icon tile, count and title extra",
+			"description": "icon, count and a titleExtra badge in the PageShell header.",
+			"summary": "A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.",
+			"use": "Product screens that name the list and how many records it holds (\"Deals, 128\", \"Tasks, 12\") without replacing the PageShell header.",
+			"spec": [
+				"Frame is a flush full `Card` holding the `PageShell`",
+				"`<PageShell title=\"Deals\" description=\"Sales funnel\" icon={Handshake} count={128}>`",
+				"`{#snippet titleExtra()}` renders `<Badge tone=\"warning\" subtle>3 overdue</Badge>`; `{#snippet actions()}` renders a small filled `New deal` button",
+				"Body is a `Card full` with a placeholder line"
+			],
+			"tags": [
+				"page-shell",
+				"icon",
+				"count",
+				"badge",
+				"title",
+				"header",
+				"layout"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"saas"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"none"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"PageShell",
+					"Card",
+					"Badge",
+					"Button"
+				],
+				"aliases": [
+					"page header",
+					"title with count",
+					"icon tile header"
+				],
+				"related": [
+					"185",
+					"187",
+					"600"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": false
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"PageShell",
+				"Card",
+				"Badge",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PageShell",
+						"Card",
+						"Badge",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/page-shell#icon-tile-count-and-title-extra",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5005",
+			"group": "layout",
+			"page": "kpi-card",
+			"variant": "IconTile",
+			"slug": "icon-tile",
+			"title": "Icon tile",
+			"description": "",
+			"summary": "Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.",
+			"use": "Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.",
+			"spec": [
+				"`<KpiGrid>` with 4 `KpiCard` items, each with `iconStyle=\"tile\"`",
+				"`<KpiCard title=\"Revenue\" value=\"$48,200\" trend={12.4} icon={DollarSign} iconStyle=\"tile\" />` (brand tone by default)",
+				"Active users uses `tone=\"success\"`; Open incidents `tone=\"warning\"` with `trendTone=\"positive-down\"`; Error rate `tone=\"error\"` with `trendTone=\"positive-down\"`"
+			],
+			"tags": [
+				"kpi-card",
+				"icon",
+				"tile",
+				"tone",
+				"metrics",
+				"dashboard"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"saas",
+					"fintech"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"none"
+				],
+				"layout": "grid",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"KpiCard",
+					"KpiGrid"
+				],
+				"aliases": [
+					"stat card with icon",
+					"icon tile metric"
+				],
+				"related": [
+					"175",
+					"985"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": false
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"KpiCard",
+				"KpiGrid"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#icon-tile",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

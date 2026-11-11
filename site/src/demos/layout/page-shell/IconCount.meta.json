@@ -1,0 +1,36 @@
+{
+	"summary": "A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.",
+	"use": "Product screens that name the list and how many records it holds (\"Deals, 128\", \"Tasks, 12\") without replacing the PageShell header.",
+	"spec": [
+		"Frame is a flush full `Card` holding the `PageShell`",
+		"`<PageShell title=\"Deals\" description=\"Sales funnel\" icon={Handshake} count={128}>`",
+		"`{#snippet titleExtra()}` renders `<Badge tone=\"warning\" subtle>3 overdue</Badge>`; `{#snippet actions()}` renders a small filled `New deal` button",
+		"Body is a `Card full` with a placeholder line"
+	],
+	"tags": ["page-shell", "icon", "count", "badge", "title", "header", "layout"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["PageShell", "Card", "Badge", "Button"],
+		"aliases": ["page header", "title with count", "icon tile header"],
+		"related": ["185", "187", "600"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

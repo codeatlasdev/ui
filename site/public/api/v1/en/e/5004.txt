@@ -1,0 +1,40 @@
+<!-- @codeatlasdev/ui demo #5004 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/page-shell#icon-tile-count-and-title-extra -->
+Element: #5004 Icon tile, count and title extra (layout/page-shell)
+What it shows: A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.
+When to use: Product screens that name the list and how many records it holds ("Deals, 128", "Tasks, 12") without replacing the PageShell header.
+Spec:
+- Frame is a flush full `Card` holding the `PageShell`
+- `<PageShell title="Deals" description="Sales funnel" icon={Handshake} count={128}>`
+- `{#snippet titleExtra()}` renders `<Badge tone="warning" subtle>3 overdue</Badge>`; `{#snippet actions()}` renders a small filled `New deal` button
+- Body is a `Card full` with a placeholder line
+Tags: page-shell, icon, count, badge, title, header, layout
+Needs: @codeatlasdev/ui@4.6.0
+Components: PageShell, Card, Badge, Button
+Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#icon-tile-count-and-title-extra
+
+<script lang="ts">
+  import { PageShell, Card, Badge, Button } from '@codeatlasdev/ui';
+  import { Handshake } from '@lucide/svelte';
+</script>
+
+<Card flush full>
+  <PageShell title="Deals" description="Sales funnel" icon={Handshake} count={128}>
+    {#snippet titleExtra()}<Badge tone="warning" subtle>3 overdue</Badge>{/snippet}
+    {#snippet actions()}<Button variant="filled" size="sm">New deal</Button>{/snippet}
+
+    <Card full>
+      <p class="placeholder">Pipeline goes here</p>
+    </Card>
+  </PageShell>
+</Card>
+
+<style>
+  .placeholder {
+    margin: 0;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ca-text-hint);
+  }
+</style>
