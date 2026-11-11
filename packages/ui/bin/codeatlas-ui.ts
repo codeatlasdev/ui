@@ -27,7 +27,7 @@ import { migrate } from "../src/cli/migrate.ts";
 import { migrateReact } from "../src/cli/migrate-react.ts";
 import { parseIds, runPick } from "../src/cli/pick.ts";
 import { runTokensImport } from "../src/cli/tokens-import.ts";
-import { runGuard } from "../src/cli/ui-guard.ts";
+import { GUARD_RULES, type GuardRule, runGuard } from "../src/cli/ui-guard.ts";
 import { type PartsData, runWorkarounds } from "../src/cli/workarounds.ts";
 
 const [cmd, ...rest] = process.argv.slice(2);
@@ -38,6 +38,7 @@ const flag = (name: string) => {
 	return i >= 0 ? rest[i + 1] : undefined;
 };
 const valueFlags = [
+	"rules",
 	"dir",
 	"map",
 	"with",
@@ -67,7 +68,7 @@ const HELP = `codeatlas-ui <command>
   migrate  Rewrite code for renamed APIs and report what is left, per major (--from 2 --to 4; see MIGRATION.md)
   compare  compare <urlA> <urlB>: diff boxes, computed styles and pixels of the same elements at 390 and 1280px, sorted by deviation
   migrate-react  List the shadcn/Radix/Base UI/MUI imports of a React app with their replacement; fix React props in ported .svelte files
-  lint     UI guard for the app: no hex colors or raw px, no inline styles, no :global(.ca-*) outside ui-guard.config.json, no literal text in templates
+  lint     UI guard for the app: no hex colors or raw px, no inline styles, no :global(.ca-*) outside ui-guard.config.json, no literal text in templates, and the layout rules (off-scale spacing and breakpoints, magic vh offsets, rows that cannot shrink, nested surfaces); --rules a,b picks, bare --rules lists
   doctor   Check peers, theme wiring, viewport meta, root font size and markers; one-line fixes (--fix applies the safe ones)
   tokens   tokens import <css|json>: turn your design tokens into theme.ts, alpha flattened and every low-contrast pair listed
   brand    Render the brand icons and src/generated/brand.ts without a Vite run (type-check jobs)
@@ -154,7 +155,18 @@ if (cmd === "init") {
 	const allow: string[] = existsSync(configFile)
 		? (JSON.parse(readFileSync(configFile, "utf8")).allow ?? [])
 		: [];
-	process.exit(runGuard(args.length ? args : ["src"], { allow }));
+	const pick = flag("rules");
+	if (rest.includes("--rules") && !pick) {
+		console.log(`rules: ${GUARD_RULES.join(", ")}\nchoose with --rules hex,px,breakpoint`);
+		process.exit(0);
+	}
+	const rules = pick?.split(",").map((r) => r.trim()) as GuardRule[] | undefined;
+	const unknown = rules?.filter((r) => !GUARD_RULES.includes(r));
+	if (unknown?.length) {
+		console.error(`unknown rule: ${unknown.join(", ")} (rules: ${GUARD_RULES.join(", ")})`);
+		process.exit(2);
+	}
+	process.exit(runGuard(args.length ? args : ["src"], { allow, rules }));
 } else if (cmd === "tokens") {
 	const [sub, input] = args;
 	if (sub !== "import" || !input) {

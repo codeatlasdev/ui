@@ -7,14 +7,32 @@
  *   inline-style   a `style=""` that sets anything but a custom property
  *   global-ca      `:global(.ca-*)` outside the allow-list: use a documented part, variable or data attribute
  *   i18n-literal   visible text in a `.svelte`/`.astro` template: read it from your messages
+ *   layout-css     padding, margin or gap in rem/em off the spacing scale: use --ca-space-* (#920)
+ *   breakpoint     a @media width off the 600 / 900 / 1200 / 1536 scale (a @container may use any)
+ *   vh-offset      calc(var(--ca-vh) - <length>): a magic offset; use the shell's inset tokens
+ *   fixed-width-row a growing (flex: 1) nowrap item without min-width: 0, so it cannot shrink
+ *   nested-surface a Card or Surface directly inside another: one frame per group
  *
+ * The layout rules follow /docs/getting-started/layout-principles/.
  * A `ca-ui-workaround(#n)` marker on the line or the one above excuses it. Exit 1 on any finding.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { parse } from "svelte/compiler";
 
-export type GuardRule = "hex" | "px" | "inline-style" | "global-ca" | "i18n-literal";
+export const GUARD_RULES = [
+	"hex",
+	"px",
+	"inline-style",
+	"global-ca",
+	"i18n-literal",
+	"layout-css",
+	"breakpoint",
+	"vh-offset",
+	"fixed-width-row",
+	"nested-surface",
+] as const;
+export type GuardRule = (typeof GUARD_RULES)[number];
 
 export interface GuardViolation {
 	file: string;
@@ -26,6 +44,8 @@ export interface GuardViolation {
 export interface GuardOptions {
 	/** Files (relative to cwd) where `:global(.ca-*)` is allowed: the app's one override sheet. */
 	allow?: string[];
+	/** Only these rules (default: all). */
+	rules?: readonly GuardRule[];
 }
 
 const MARKER = /ca-ui-workaround\(#\d+\)/;
@@ -103,13 +123,14 @@ function templateText(src: string): { index: number; text: string }[] {
 export function guardSource(
 	file: string,
 	src: string,
-	{ allow = [] }: GuardOptions = {}
+	{ allow = [], rules }: GuardOptions = {}
 ): GuardViolation[] {
 	const out: GuardViolation[] = [];
 	const lines = src.split("\n");
 	const excused = (line: number) =>
 		[lines[line - 1], lines[line - 2]].some((l) => l !== undefined && MARKER.test(l));
 	const add = (index: number, rule: GuardRule, message: string) => {
+		if (rules && !rules.includes(rule)) return;
 		const line = lineOf(src, index);
 		if (!excused(line)) out.push({ file, line, rule, message });
 	};
@@ -132,6 +153,46 @@ export function guardSource(
 					offset + (decl.index ?? 0),
 					"px",
 					`raw size ${px[0]}: use a --ca-space-* or radius token`
+				);
+		}
+		const scale = new Set([600, 900, 1200, 1536]);
+		for (const m of text.matchAll(/@media[^{]*?\((?:max|min)-width:\s*([0-9.]+)px\)/g)) {
+			const w = Math.round(Number(m[1]));
+			if (!scale.has(w))
+				add(
+					offset + (m.index ?? 0),
+					"breakpoint",
+					`@media at ${m[1]}px: use the 600 / 900 / 1200 / 1536 scale, or @container`
+				);
+		}
+		for (const decl of values.matchAll(
+			/(padding|margin|gap|row-gap|column-gap)(?:-[a-z-]+)?\s*:\s*([^;{}]+)[;}]?/g
+		)) {
+			const value = decl[2].replace(/var\([^)]*\)/g, "");
+			if (/(?<![\w.-])\d*\.?\d+(rem|em)\b/.test(value))
+				add(
+					offset + (decl.index ?? 0),
+					"layout-css",
+					`${decl[1]} off the spacing scale: use --ca-space-*`
+				);
+		}
+		for (const m of text.matchAll(/calc\(\s*var\(--ca-vh\)\s*-\s*[\d.]+(?:rem|px|em)/g))
+			add(
+				offset + (m.index ?? 0),
+				"vh-offset",
+				"magic offset from the viewport height: use the shell inset tokens (--ca-shell-inset-*)"
+			);
+		for (const block of text.matchAll(/\{([^{}]*)\}/g)) {
+			const body = block[1] ?? "";
+			if (
+				/white-space\s*:\s*nowrap/.test(body) &&
+				/flex\s*:\s*1\b|flex-grow\s*:\s*[1-9]/.test(body) &&
+				!/min-width\s*:\s*0/.test(body)
+			)
+				add(
+					offset + (block.index ?? 0),
+					"fixed-width-row",
+					"a growing nowrap item needs min-width: 0 (and an ellipsis) to shrink"
 				);
 		}
 		for (const m of text.matchAll(/:global\(\s*\.ca-[\w-]+/g))
@@ -161,6 +222,17 @@ export function guardSource(
 					"inline style: use a class with tokens (only --custom-properties may be inline)"
 				);
 		}
+	}
+	if (/\.(svelte|astro)$/.test(file)) {
+		const markup = bare.replace(/<style\b[\s\S]*?<\/style>|<script\b[\s\S]*?<\/script>/g, (c) =>
+			c.replace(/[^\n]/g, " ")
+		);
+		for (const m of markup.matchAll(/<(?:Card|Surface)\b[^>]*>\s*(<(?:Card|Surface)\b)/g))
+			add(
+				(m.index ?? 0) + m[0].lastIndexOf(m[1] ?? "<"),
+				"nested-surface",
+				"a surface directly inside another: separate with a divider or spacing, one frame per group"
+			);
 	}
 	if (file.endsWith(".svelte"))
 		try {
@@ -199,13 +271,13 @@ export interface RunGuardOptions extends GuardOptions {
 /** 0 on a clean tree, 1 when any rule fired. */
 export function runGuard(
 	targets: string[],
-	{ cwd = process.cwd(), log = console.log, allow = [] }: RunGuardOptions = {}
+	{ cwd = process.cwd(), log = console.log, allow = [], rules }: RunGuardOptions = {}
 ): number {
 	const files = [...new Set(targets.flatMap((t) => collect(resolve(cwd, t))))];
 	let count = 0;
 	for (const file of files) {
 		const rel = relative(cwd, file);
-		for (const v of guardSource(rel, readFileSync(file, "utf8"), { allow })) {
+		for (const v of guardSource(rel, readFileSync(file, "utf8"), { allow, rules })) {
 			log(`${v.file}:${v.line} ${v.rule} ${v.message}`);
 			count++;
 		}

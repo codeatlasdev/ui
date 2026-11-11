@@ -108,3 +108,59 @@ describe("runGuard", () => {
 		expect(runGuard(["src"], { cwd: dir, log: () => {} })).toBe(1);
 	});
 });
+
+describe("ui guard: layout rules (#920)", () => {
+	it("layout-css: spacing in rem/em off the scale, not a token or 0", () => {
+		expect(rules("app.css", ".a { padding: 1.3rem 0.5em; }")).toEqual(["layout-css:1"]);
+		expect(rules("app.css", ".a { gap: var(--ca-space-4); margin: 0; padding: auto; }")).toEqual(
+			[]
+		);
+		expect(rules("app.css", ".a { width: 2rem; }")).toEqual([]);
+	});
+
+	it("breakpoint: a media width off the 600/900/1200/1536 scale", () => {
+		expect(rules("app.css", "@media (max-width: 768px) { .a { color: red } }")).toEqual([
+			"breakpoint:1",
+		]);
+		expect(
+			rules(
+				"app.css",
+				"@media (max-width: 899.98px) { .a {} } @media (min-width: 1536px) { .b {} }"
+			)
+		).toEqual([]);
+		// A container query answers the component's own width: any threshold is fine.
+		expect(rules("app.css", "@container (min-width: 37rem) { .a {} }")).toEqual([]);
+	});
+
+	it("vh-offset: a magic offset subtracted from the viewport height", () => {
+		expect(rules("app.css", ".a { height: calc(var(--ca-vh) - 17rem); }")).toEqual(["vh-offset:1"]);
+		expect(
+			rules("app.css", ".a { height: calc(var(--ca-vh) - var(--ca-shell-inset-bottom)); }")
+		).toEqual([]);
+	});
+
+	it("fixed-width-row: a growing nowrap item that cannot shrink", () => {
+		expect(rules("app.css", ".t { flex: 1; white-space: nowrap; }")).toEqual(["fixed-width-row:1"]);
+		expect(
+			rules("app.css", ".t { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; }")
+		).toEqual([]);
+		expect(rules("app.css", ".t { white-space: nowrap; }")).toEqual([]);
+	});
+
+	it("nested-surface: a Card or Surface directly inside another", () => {
+		const nested =
+			'<script>import { Card } from "@codeatlasdev/ui";</script>\n<Card>\n  <Card>x</Card>\n</Card>';
+		expect(rules("A.svelte", nested).filter((r) => r.startsWith("nested-surface"))).toEqual([
+			"nested-surface:3",
+		]);
+		const ok = "<Card>\n  <section><p>{t.a}</p></section>\n</Card>";
+		expect(rules("A.svelte", ok).filter((r) => r.startsWith("nested-surface"))).toEqual([]);
+	});
+
+	it("rules can be chosen", () => {
+		const src = ".a { padding: 1.3rem; height: calc(var(--ca-vh) - 2rem); }";
+		expect(guardSource("app.css", src, { rules: ["vh-offset"] }).map((v) => v.rule)).toEqual([
+			"vh-offset",
+		]);
+	});
+});
