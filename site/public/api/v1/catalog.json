@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 405,
+	"count": 409,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "5008",
-			"count": 67
+			"last": "5024",
+			"count": 68
 		},
 		{
 			"slug": "navigation",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "5017",
-			"count": 53
+			"last": "5027",
+			"count": 56
 		},
 		{
 			"slug": "charts",
@@ -35930,7 +35930,7 @@
 				"related": [
 					"073",
 					"074",
-					"5019"
+					"5023"
 				],
 				"a11y": {
 					"reducedMotion": true,
@@ -36012,7 +36012,7 @@
 				"related": [
 					"065",
 					"066",
-					"5018"
+					"5022"
 				],
 				"a11y": {
 					"reducedMotion": true,
@@ -36038,6 +36038,441 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/surfaces/accordion#flush-in-a-panel",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5024",
+			"group": "display",
+			"page": "kanban",
+			"variant": "DealsPage",
+			"slug": "deals-page",
+			"title": "Deals page",
+			"description": "The recipe in a 30rem frame. Drag a deal to another stage, or narrow the window below 600px for the tab strip.",
+			"summary": "A complete deals page: a PageShell with a title, a deal count and a New deal action around a Kanban board that shows each stage's money total.",
+			"use": "The sales pipeline screen of a CRM: copy the route, change the data and the stage names; the board reflows to one stage per screen on a phone.",
+			"spec": [
+				"`<PageShell title={m.title} description={m.description} {count}>`",
+				"`.deals-board { display: flex; height: 22rem; }` is the board-height parent, a scoped class",
+				"`<Kanban {columns} getId={(d) => d.id} label={m.board} {onmove}>`",
+				"`{#snippet summary(column)}`",
+				"`drop=\"container\"` behaviour: `dst.items = [card, ...dst.items];`"
+			],
+			"tags": [
+				"kanban",
+				"deals",
+				"pipeline",
+				"page",
+				"crm",
+				"page-shell",
+				"board",
+				"recipe"
+			],
+			"names": [
+				"Deals board page",
+				"CRM pipeline page",
+				"Página de negócios",
+				"Página de negocios"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "display",
+				"industry": [
+					"saas"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"drag",
+					"keyboard",
+					"press"
+				],
+				"layout": "grid",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Button",
+					"Kanban",
+					"PageShell"
+				],
+				"aliases": [
+					"deals page",
+					"sales pipeline page",
+					"crm board screen"
+				],
+				"related": [
+					"760",
+					"433"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Button",
+				"Kanban",
+				"PageShell"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Kanban",
+						"PageShell",
+						"KanbanColumn",
+						"KanbanMove"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/kanban#deals-page",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5025",
+			"group": "layout",
+			"page": "master-detail",
+			"variant": "InboxPage",
+			"slug": "inbox-page",
+			"title": "Inbox page",
+			"description": "The recipe in a 26rem frame. Narrow the window below 900px and pick a conversation: the thread opens as a full-screen pane.",
+			"summary": "A complete inbox: ConversationItem rows in the master, a MessageBubble thread with a reply field in the detail, an empty state until a row is picked.",
+			"use": "The messages screen of a CRM or helpdesk: two columns when wide, and on a phone the thread opens as a full-screen pane with Back.",
+			"spec": [
+				"`<MasterDetail bind:selected detailTitle={current?.name ?? ''} listWidth=\"18rem\" masterLabel={m.list}>`",
+				"`<ConversationItem title={t.name} time={t.time} preview={last(t)} unread={t.unread} active={selected === t.id}`",
+				"`<MessageBubble direction={msg.mine ? 'out' : 'in'} time={msg.time}>`",
+				"`<EmptyState title={m.empty} />`"
+			],
+			"tags": [
+				"master-detail",
+				"inbox",
+				"conversation",
+				"message-bubble",
+				"crm",
+				"chat",
+				"recipe"
+			],
+			"names": [
+				"Inbox page",
+				"Messages screen",
+				"Caixa de entrada",
+				"Bandeja de entrada"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"saas"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "split",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Avatar",
+					"ConversationItem",
+					"EmptyState",
+					"MasterDetail",
+					"MessageBubble",
+					"TextField"
+				],
+				"aliases": [
+					"inbox screen",
+					"chat screen",
+					"messages page"
+				],
+				"related": [
+					"5002",
+					"186"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Avatar",
+				"ConversationItem",
+				"EmptyState",
+				"MasterDetail",
+				"MessageBubble",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar",
+						"ConversationItem",
+						"EmptyState",
+						"MasterDetail",
+						"MessageBubble",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/master-detail#inbox-page",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5026",
+			"group": "layout",
+			"page": "sortable-list",
+			"variant": "SettingsPage",
+			"slug": "settings-page",
+			"title": "Settings page",
+			"description": "The recipe in a 32rem frame, without the save call. Narrow the window below 900px for the tab strip and below 36rem of row width for the Edit button.",
+			"summary": "A complete settings page: AppSettings tabs with a reorderable list of pipeline stages (grip, menu, Edit on a phone) and a notifications tab of switches.",
+			"use": "The configuration screen of a CRM: editable lists such as stages, tags or loss reasons next to plain toggles, with one Save action.",
+			"spec": [
+				"`<AppSettings title={m.title} description={m.description} {tabs}>`",
+				"`<SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label={m.stages.list}>`",
+				"`<EditableRow label={stage.name}>`",
+				"`<FormSection title={m.email.title} layout=\"list\">`",
+				"`<SettingItem label={m.email.newDeal} description={m.email.newDealHint}>`"
+			],
+			"tags": [
+				"app-settings",
+				"sortable-list",
+				"editable-row",
+				"settings",
+				"crm",
+				"stages",
+				"recipe"
+			],
+			"names": [
+				"Settings editor page",
+				"Pipeline stages settings",
+				"Configurações do funil",
+				"Ajustes del embudo"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"saas"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"drag",
+					"keyboard",
+					"press"
+				],
+				"layout": "split",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"AppSettings",
+					"Button",
+					"Divider",
+					"EditableRow",
+					"FormSection",
+					"SettingItem",
+					"SortableList",
+					"Switch",
+					"TextField"
+				],
+				"aliases": [
+					"settings editor",
+					"editable list page",
+					"stage editor"
+				],
+				"related": [
+					"997"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"AppSettings",
+				"Button",
+				"Divider",
+				"EditableRow",
+				"FormSection",
+				"SettingItem",
+				"SortableList",
+				"Switch",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppSettings",
+						"Button",
+						"Divider",
+						"EditableRow",
+						"FormSection",
+						"SettingItem",
+						"SortableList",
+						"Switch",
+						"TextField",
+						"SortableListReorder"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/sortable-list#settings-page",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5027",
+			"group": "layout",
+			"page": "record-list",
+			"variant": "RecordPage",
+			"slug": "record-page",
+			"title": "Record page",
+			"description": "The recipe in a 30rem frame. Narrow the window and the aside moves below the card while the contacts stack to two-line rows.",
+			"summary": "A complete record page: a PageShell with a back link, an edit action and a summary aside, around a Card that holds a RecordList of the company's contacts.",
+			"use": "The detail screen of one CRM record (company, account, project): facts beside the page, related records as dense rows that stack on a phone.",
+			"spec": [
+				"`<PageShell title={m.title} description={m.description} backHref=\"#companies\" backLabel={m.back} asideLabel={m.aside}>`",
+				"`<Card full flush title={m.contacts.title} headingLevel={2}>`",
+				"`<RecordList columns=\"minmax(0,1.4fr) minmax(0,1fr) 6rem\" actions labels={m.contacts.labels} aria-label={m.contacts.list}>`",
+				"`<RecordCell label={m.contacts.role}>`"
+			],
+			"tags": [
+				"record-list",
+				"page-shell",
+				"card",
+				"record",
+				"detail",
+				"crm",
+				"recipe"
+			],
+			"names": [
+				"Record detail page",
+				"Company page",
+				"Página do registro",
+				"Página del registro"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"saas"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "split",
+				"colorMode": "both",
+				"density": "compact",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Avatar",
+					"Button",
+					"Card",
+					"DropdownMenu",
+					"DropdownMenuItem",
+					"IconButton",
+					"PageShell",
+					"RecordCell",
+					"RecordList",
+					"RecordRow"
+				],
+				"aliases": [
+					"detail page",
+					"account page",
+					"company record"
+				],
+				"related": [
+					"245",
+					"246"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Avatar",
+				"Button",
+				"Card",
+				"DropdownMenu",
+				"DropdownMenuItem",
+				"IconButton",
+				"PageShell",
+				"RecordCell",
+				"RecordList",
+				"RecordRow"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar",
+						"Button",
+						"Card",
+						"DropdownMenu",
+						"DropdownMenuItem",
+						"IconButton",
+						"PageShell",
+						"RecordCell",
+						"RecordList",
+						"RecordRow"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/record-list#record-page",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

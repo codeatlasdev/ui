@@ -1,0 +1,38 @@
+{
+	"summary": "A complete deals page: a PageShell with a title, a deal count and a New deal action around a Kanban board that shows each stage's money total.",
+	"use": "The sales pipeline screen of a CRM: copy the route, change the data and the stage names; the board reflows to one stage per screen on a phone.",
+	"spec": [
+		"`<PageShell title={m.title} description={m.description} {count}>`",
+		"`.deals-board { display: flex; height: 22rem; }` is the board-height parent, a scoped class",
+		"`<Kanban {columns} getId={(d) => d.id} label={m.board} {onmove}>`",
+		"`{#snippet summary(column)}`",
+		"`drop=\"container\"` behaviour: `dst.items = [card, ...dst.items];`"
+	],
+	"tags": ["kanban", "deals", "pipeline", "page", "crm", "page-shell", "board", "recipe"],
+	"names": ["Deals board page", "CRM pipeline page", "Página de negócios", "Página de negocios"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "press"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Kanban", "PageShell"],
+		"aliases": ["deals page", "sales pipeline page", "crm board screen"],
+		"related": ["760", "433"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

@@ -12,6 +12,8 @@ import Phone from "~/demos/layout/record-list/Phone.svelte";
 import PhoneSrc from "~/demos/layout/record-list/Phone.svelte?raw";
 import NoMenu from "~/demos/layout/record-list/NoMenu.svelte";
 import NoMenuSrc from "~/demos/layout/record-list/NoMenu.svelte?raw";
+import RecordPage from "~/demos/layout/record-list/RecordPage.svelte";
+import RecordPageSrc from "~/demos/layout/record-list/RecordPage.svelte?raw";
 
 ```svelte
 <script>
@@ -47,6 +49,97 @@ With no rows, render your own [empty state](/docs/layout/empty-state/) instead o
 ## Accessibility
 
 The list is a real `<ul>` with one `<li>` per record: give it an `aria-label`. Per-cell labels are `dt`/`dd` pairs inside a `dl`, so they are announced with their value in both layouts. Put an `aria-label` that names the record on every action button ("Actions for Billing"), because the visible column header is hidden from assistive technology.
+
+## Recipe: a record page
+
+The detail screen of one CRM record (a company, an account, a project): a `PageShell` with a back link, an edit action and a summary in the `aside`, and the related records as a `RecordList` inside a flush `Card`. The aside drops below the content on a narrow shell and the list stacks to two-line rows, so the page fits 390px without a breakpoint of your own. Copy it whole and change the data and the copy.
+
+```ts
+// src/lib/messages.ts (the keys the record page reads)
+export const m = {
+  company: {
+    back: "Back to companies",
+    description: (since: string) => `Customer since ${since}.`,
+    edit: "Edit",
+    aside: "Company summary",
+    summary: { title: "Summary", owner: "Owner", plan: "Plan" },
+    contacts: {
+      title: "Contacts",
+      list: "Contacts",
+      labels: ["Contact", "Role", "Last seen"],
+      role: "Role",
+      seen: "Last seen",
+      open: "Open",
+      remove: "Remove",
+      actions: (name: string) => `Actions for ${name}`,
+    },
+  },
+} as const;
+```
+
+```svelte
+<!-- src/routes/(app)/companies/[id]/+page.svelte -->
+<script lang="ts">
+  import {
+    Avatar, Button, Card, DropdownMenu, DropdownMenuItem, IconButton, PageShell, RecordCell, RecordList, RecordRow,
+  } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
+  import { MoreHorizontal, Pencil } from "@lucide/svelte";
+
+  type Contact = { id: number; name: string; role: string; seen: string };
+  let { data }: { data: { company: { id: string; name: string; owner: string; plan: string; since: string }; contacts: Contact[] } } = $props();
+</script>
+
+<PageShell title={data.company.name} description={m.company.description(data.company.since)} backHref="/companies" backLabel={m.company.back} asideLabel={m.company.aside}>
+  {#snippet actions()}
+    <Button variant="outlined" size="sm" href={`/companies/${data.company.id}/edit`}>
+      {#snippet leading()}<Pencil size={14} />{/snippet}
+      {m.company.edit}
+    </Button>
+  {/snippet}
+
+  {#snippet aside()}
+    <Card full title={m.company.summary.title} headingLevel={2}>
+      <dl class="facts">
+        <dt>{m.company.summary.owner}</dt><dd>{data.company.owner}</dd>
+        <dt>{m.company.summary.plan}</dt><dd>{data.company.plan}</dd>
+      </dl>
+    </Card>
+  {/snippet}
+
+  <Card full flush title={m.company.contacts.title} headingLevel={2}>
+    <RecordList columns="minmax(0,1.4fr) minmax(0,1fr) 6rem" actions labels={[...m.company.contacts.labels]} aria-label={m.company.contacts.list}>
+      {#each data.contacts as c (c.id)}
+        <RecordRow>
+          {#snippet identity()}
+            <span class="who"><Avatar alt={c.name} size="sm" decorative /> <strong>{c.name}</strong></span>
+          {/snippet}
+          <RecordCell label={m.company.contacts.role}>{c.role}</RecordCell>
+          <RecordCell label={m.company.contacts.seen}>{c.seen}</RecordCell>
+          {#snippet actions()}
+            <DropdownMenu align="end">
+              {#snippet triggerChild(props)}
+                <IconButton aria-label={m.company.contacts.actions(c.name)} {...props}><MoreHorizontal size={18} /></IconButton>
+              {/snippet}
+              <DropdownMenuItem>{m.company.contacts.open}</DropdownMenuItem>
+              <DropdownMenuItem>{m.company.contacts.remove}</DropdownMenuItem>
+            </DropdownMenu>
+          {/snippet}
+        </RecordRow>
+      {/each}
+    </RecordList>
+  </Card>
+</PageShell>
+
+<style>
+  .who { display: flex; align-items: center; gap: var(--ca-space-2); min-width: 0; }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: var(--ca-space-2) var(--ca-space-4); margin: 0; font-size: var(--ca-font-size-body2); }
+  .facts dt { color: var(--ca-text-secondary); }
+  .facts dd { margin: 0; color: var(--ca-text-primary); }
+</style>
+```
+
+<Demo title="Record page" description="The recipe in a 30rem frame. Narrow the window and the aside moves below the card while the contacts stack to two-line rows." src={RecordPageSrc}><RecordPage client:visible /></Demo>
 
 <Props title="RecordList props" rows={[
   { name: "columns", type: "string", description: "`grid-template-columns` shared by the header and every row: identity, then one track per cell (and the actions track unless `actions` is set)." },

@@ -1,0 +1,53 @@
+{
+	"summary": "A complete settings page: AppSettings tabs with a reorderable list of pipeline stages (grip, menu, Edit on a phone) and a notifications tab of switches.",
+	"use": "The configuration screen of a CRM: editable lists such as stages, tags or loss reasons next to plain toggles, with one Save action.",
+	"spec": [
+		"`<AppSettings title={m.title} description={m.description} {tabs}>`",
+		"`<SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label={m.stages.list}>`",
+		"`<EditableRow label={stage.name}>`",
+		"`<FormSection title={m.email.title} layout=\"list\">`",
+		"`<SettingItem label={m.email.newDeal} description={m.email.newDealHint}>`"
+	],
+	"tags": ["app-settings", "sortable-list", "editable-row", "settings", "crm", "stages", "recipe"],
+	"names": [
+		"Settings editor page",
+		"Pipeline stages settings",
+		"Configurações do funil",
+		"Ajustes del embudo"
+	],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "press"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"AppSettings",
+			"Button",
+			"Divider",
+			"EditableRow",
+			"FormSection",
+			"SettingItem",
+			"SortableList",
+			"Switch",
+			"TextField"
+		],
+		"aliases": ["settings editor", "editable list page", "stage editor"],
+		"related": ["997"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

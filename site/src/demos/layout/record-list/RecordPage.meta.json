@@ -1,0 +1,48 @@
+{
+	"summary": "A complete record page: a PageShell with a back link, an edit action and a summary aside, around a Card that holds a RecordList of the company's contacts.",
+	"use": "The detail screen of one CRM record (company, account, project): facts beside the page, related records as dense rows that stack on a phone.",
+	"spec": [
+		"`<PageShell title={m.title} description={m.description} backHref=\"#companies\" backLabel={m.back} asideLabel={m.aside}>`",
+		"`<Card full flush title={m.contacts.title} headingLevel={2}>`",
+		"`<RecordList columns=\"minmax(0,1.4fr) minmax(0,1fr) 6rem\" actions labels={m.contacts.labels} aria-label={m.contacts.list}>`",
+		"`<RecordCell label={m.contacts.role}>`"
+	],
+	"tags": ["record-list", "page-shell", "card", "record", "detail", "crm", "recipe"],
+	"names": ["Record detail page", "Company page", "Página do registro", "Página del registro"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"Avatar",
+			"Button",
+			"Card",
+			"DropdownMenu",
+			"DropdownMenuItem",
+			"IconButton",
+			"PageShell",
+			"RecordCell",
+			"RecordList",
+			"RecordRow"
+		],
+		"aliases": ["detail page", "account page", "company record"],
+		"related": ["245", "246"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

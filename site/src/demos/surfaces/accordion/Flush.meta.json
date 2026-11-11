@@ -22,7 +22,7 @@
 		"cost": "css",
 		"components": ["Accordion", "AccordionItem"],
 		"aliases": ["flat accordion", "borderless accordion", "panel sections"],
-		"related": ["065", "066", "5018"],
+		"related": ["065", "066", "5022"],
 		"a11y": {
 			"reducedMotion": true,
 			"keyboard": true

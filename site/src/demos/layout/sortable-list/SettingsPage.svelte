@@ -1,0 +1,96 @@
+<script lang="ts">
+  import { Bell, GitBranch, Plus, Trash2 } from '@lucide/svelte';
+  import {
+    AppSettings, Button, Divider, EditableRow, FormSection, SettingItem, SortableList, Switch, TextField,
+    type SortableListReorder,
+  } from '@codeatlasdev/ui';
+
+  const m = {
+    title: 'CRM settings',
+    description: 'Pipeline stages and notifications.',
+    save: 'Save changes',
+    tabs: { pipeline: 'Pipeline', notifications: 'Notifications' },
+    stages: { title: 'Stages', description: 'Order the stages the way deals move through them.', list: 'Pipeline stages', name: 'Name', add: 'Add stage', newName: 'New stage' },
+    email: { title: 'Email', newDeal: 'New deal assigned', newDealHint: 'One email per assignment.', digest: 'Weekly digest', digestHint: 'A summary every Monday.' },
+    remove: (name: string) => `Delete ${name}`,
+  };
+
+  const tabs = [
+    { value: 'pipeline', label: m.tabs.pipeline, icon: GitBranch },
+    { value: 'notifications', label: m.tabs.notifications, icon: Bell },
+  ];
+
+  type Stage = { id: string; name: string };
+  let stages = $state<Stage[]>([
+    { id: 'new', name: 'New' },
+    { id: 'talk', name: 'Talking' },
+    { id: 'won', name: 'Won' },
+  ]);
+  let emailNewDeal = $state(true);
+  let emailDigest = $state(false);
+  let seq = 0;
+
+  function reorder({ from, to }: SortableListReorder) {
+    const next = [...stages];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    stages = next;
+  }
+  const add = () => (stages = [...stages, { id: `s${++seq}`, name: m.stages.newName }]);
+</script>
+
+<div class="settings-stage">
+  <AppSettings title={m.title} description={m.description} {tabs}>
+    {#snippet actions()}
+      <Button variant="filled" size="sm">{m.save}</Button>
+    {/snippet}
+
+    {#snippet children(tab)}
+      {#if tab === 'pipeline'}
+        <FormSection title={m.stages.title} description={m.stages.description} layout="stack">
+          <SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label={m.stages.list}>
+            {#snippet item(stage)}
+              <EditableRow label={stage.name}>
+                {#snippet summary()}<strong>{stage.name}</strong>{/snippet}
+                <TextField label={m.stages.name} bind:value={stage.name} />
+                <Button variant="ghost" size="sm" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
+                  {#snippet leading()}<Trash2 size={14} />{/snippet}
+                  {m.remove(stage.name)}
+                </Button>
+              </EditableRow>
+            {/snippet}
+          </SortableList>
+          <Button variant="outlined" size="sm" onclick={add}>
+            {#snippet leading()}<Plus size={14} />{/snippet}
+            {m.stages.add}
+          </Button>
+        </FormSection>
+      {:else}
+        <FormSection title={m.email.title} layout="list">
+          <SettingItem label={m.email.newDeal} description={m.email.newDealHint}>
+            <Switch bind:checked={emailNewDeal} />
+          </SettingItem>
+          <Divider />
+          <SettingItem label={m.email.digest} description={m.email.digestHint}>
+            <Switch bind:checked={emailDigest} />
+          </SettingItem>
+        </FormSection>
+      {/if}
+    {/snippet}
+  </AppSettings>
+</div>
+
+<style>
+  /* Demo frame only: AppSettings fills the height its parent gives it. */
+  .settings-stage {
+    --ca-vh: 32rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 32rem;
+    contain: layout paint;
+    overflow: hidden;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+  }
+</style>
