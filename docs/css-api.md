@@ -550,6 +550,12 @@ The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-ro
 
 `.ca-toast` `.ca-toast--error` `.ca-toast--info` `.ca-toast--success` `.ca-toast--visible` `.ca-toast--warning` `.ca-toast__action` `.ca-toast__body` `.ca-toast__close` `.ca-toast__count` `.ca-toast__description` `.ca-toast__icon` `.ca-toast__message` `.ca-toaster` `.ca-toaster--inline`
 
+## Toggle
+
+`.ca-toggle`
+
+A `Toggle` is a one-item `ToggleGroup`: it wraps its button in `.ca-toggle-group` (`--outlined` or `--ghost`, `--sm` or `--md`) and the button is `.ca-toggle-group__item.ca-toggle`, so both components share every token and rule below.
+
 ## ToggleGroup
 
 `.ca-seg` `.ca-seg--md` `.ca-seg--sm` `.ca-seg__item` `.ca-seg__thumb` `.ca-toggle-group` `.ca-toggle-group--md` `.ca-toggle-group--outlined` `.ca-toggle-group--sm` `.ca-toggle-group__item`

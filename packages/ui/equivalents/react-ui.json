@@ -407,10 +407,10 @@
 		},
 		{
 			"shadcn": "Toggle",
-			"to": ["ToggleGroup"],
+			"to": ["Toggle"],
 			"radix": "@radix-ui/react-toggle",
 			"baseUi": "@base-ui-components/react/toggle",
-			"notes": "A single toggle is a `ToggleGroup` with one item."
+			"notes": "`bind:pressed`, `label` or `icon` + `aria-label`, `variant`, `size`."
 		},
 		{
 			"shadcn": "Toggle Group",

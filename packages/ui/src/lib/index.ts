@@ -272,6 +272,7 @@ export type { TimelineItem } from "./components/Timeline/Timeline.svelte";
 export { default as Timeline } from "./components/Timeline/Timeline.svelte";
 // ── FEEDBACK ──────────────────────────────────────────────────────────────────
 export { default as Toaster } from "./components/Toast/Toaster.svelte";
+export { default as Toggle } from "./components/Toggle/Toggle.svelte";
 export { default as SegmentedControl } from "./components/ToggleGroup/SegmentedControl.svelte";
 export type { ToggleGroupItem } from "./components/ToggleGroup/ToggleGroup.svelte";
 export { default as ToggleGroup } from "./components/ToggleGroup/ToggleGroup.svelte";

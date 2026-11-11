@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 395,
+	"count": 396,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 356,
+			"component": 357,
 			"motion": 39
 		},
 		"subtype": {
@@ -16,7 +16,7 @@
 			"component/display": 70,
 			"component/feedback": 38,
 			"component/foundation": 19,
-			"component/input": 90,
+			"component/input": 91,
 			"component/layout": 52,
 			"component/map": 1,
 			"component/navigation": 39,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 378,
+			"default": 379,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,15 +42,15 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 103,
-			"subtle": 232
+			"subtle": 233
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 33,
 			"hover": 79,
-			"keyboard": 273,
+			"keyboard": 274,
 			"none": 80,
-			"press": 232,
+			"press": 233,
 			"scroll": 22
 		},
 		"layout": {
@@ -60,26 +60,26 @@
 			"overlay": 50,
 			"single-column": 132,
 			"split": 14,
-			"stack": 145,
+			"stack": 146,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 393,
+			"both": 394,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 49,
-			"regular": 333
+			"regular": 334
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 395,
+			"css": 396,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 355,
+			"css": 356,
 			"js-light": 40
 		},
 		"component": {
@@ -258,6 +258,7 @@
 			"TimeField": 2,
 			"Timeline": 2,
 			"Toaster": 4,
+			"Toggle": 1,
 			"ToggleGroup": 2,
 			"Toolbar": 1,
 			"Tooltip": 4,
@@ -661,6 +662,7 @@
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["EmptyState","MasterDetail"],"aliases":["split view","list and detail","inbox layout"],"related":["186"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"5002","path":"layout/master-detail/Inbox","title":"Inbox","summary":"A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.","use":"Inboxes and any list where a row opens a detail: two columns when wide, a full-screen pane with Back on a phone.","tags":["master-detail","inbox","conversation","list","responsive","split"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"airy","tech":["css"],"cost":"css","components":["CenteredPage","AuthCard","Button","SegmentedControl","Stack"],"aliases":["standalone page","invite page","consent screen","interstitial","centred card page"],"related":["172","781"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5003","path":"layout/centered-page/InviteConsent","title":"Invite and consent","summary":"A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.","use":"Transactional pages outside the app shell: accepting an invite, granting consent, a magic-link landing or a notice.","tags":["centered-page","invite","oauth-consent","notice","landmark","safe-area"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["PageShell","Card","Badge","Button"],"aliases":["page header","title with count","icon tile header"],"related":["185","187","600"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5004","path":"layout/page-shell/IconCount","title":"Icon tile, count and title extra","summary":"A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.","use":"Product screens that name the list and how many records it holds (\"Deals, 128\", \"Tasks, 12\") without replacing the PageShell header.","tags":["page-shell","icon","count","badge","title","header","layout"],"names":[]},
-		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["KpiCard","KpiGrid"],"aliases":["stat card with icon","icon tile metric"],"related":["175","985"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5005","path":"layout/kpi-card/IconTile","title":"Icon tile","summary":"Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.","use":"Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.","tags":["kpi-card","icon","tile","tone","metrics","dashboard"],"names":[]}
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["KpiCard","KpiGrid"],"aliases":["stat card with icon","icon tile metric"],"related":["175","985"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5005","path":"layout/kpi-card/IconTile","title":"Icon tile","summary":"Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.","use":"Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.","tags":["kpi-card","icon","tile","tone","metrics","dashboard"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toggle"],"aliases":["toggle button","pressed button","on off button"],"related":["060"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5006","path":"inputs/toggle/Default","title":"Icon-only, ghost, small and disabled","summary":"Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.","use":"A single on/off control such as bold, pin or mute that is not part of a group.","tags":["toggle","pressed","aria-pressed","button","icon-only","ghost"],"names":[]}
 	]
 }

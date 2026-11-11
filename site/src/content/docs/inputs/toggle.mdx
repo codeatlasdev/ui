@@ -1,0 +1,37 @@
+---
+title: Toggle
+description: A single button that is pressed or not. The standalone form of a ToggleGroup item, with the same look.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Default from "~/demos/inputs/toggle/Default.svelte";
+import DefaultSrc from "~/demos/inputs/toggle/Default.svelte?raw";
+
+```svelte
+<script>
+  import { Bold } from "@lucide/svelte";
+  import { Toggle } from "@codeatlasdev/ui";
+  let bold = $state(false);
+</script>
+
+<Toggle icon={Bold} aria-label="Bold" bind:pressed={bold} />
+```
+
+A `Toggle` is a `<button type="button">` with `aria-pressed`, so a screen reader announces "Bold, toggle button, pressed". Space and Enter flip it. It uses the item styles of [ToggleGroup](/docs/inputs/toggle-group/) (`toggle-group.css`), so a `Toggle` and a group item look the same in both variants and both sizes. Use a `Toggle` for one independent on/off control (bold, pin, mute); use a `ToggleGroup` when several belong together, and [Switch](/docs/inputs/switch/) or [Checkbox](/docs/inputs/checkbox/) for a setting that is submitted with a form.
+
+An icon-only toggle has no text to name it: pass `aria-label`. Without a `label`, `children` or an accessible name, development builds print a warning. The hit area grows to the touch target under a coarse pointer in both axes. Extra attributes (`id`, `title`, `data-*`, `aria-describedby`) go to the button.
+
+<Demo title="Icon-only, ghost, small and disabled" description="`bind:pressed` holds the state; `onchange` receives the new value." src={DefaultSrc}><Default client:visible /></Demo>
+
+<Props rows={[
+  { name: "pressed", type: "boolean", default: "false", description: "Bindable. `true` while pressed (`aria-pressed`)." },
+  { name: "label", type: "string", description: "Visible text. Without it the toggle is icon-only and needs `aria-label`." },
+  { name: "icon", type: "IconComponent", description: "Icon before the label, 14px for `sm` and 16px for `md`." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Button height." },
+  { name: "variant", type: "'outlined' | 'ghost'", default: "'outlined'", description: "`outlined` draws the group frame around the button; `ghost` is the bare button." },
+  { name: "disabled", type: "boolean", default: "false", description: "Cannot be pressed and leaves the tab order." },
+  { name: "class", type: "string", description: "Extra classes on the button." },
+  { name: "children", type: "Snippet", description: "Content after the icon and label." },
+  { name: "onchange", type: "(pressed: boolean) => void", description: "Called after every press with the new state." },
+]} />

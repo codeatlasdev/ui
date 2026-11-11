@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #5006 "Icon-only, ghost, small and disabled" (inputs/toggle).
+What it shows: Standalone Toggle buttons: icon-only, ghost with a label, small and disabled. When to use: A single on/off control such as bold, pin or mute that is not part of a group.
+Spec:
+- Two outlined icon-only toggles with `aria-label="Bold"` and `aria-label="Italic"`, Bold starts pressed
+- A ghost toggle with an icon and the label `Pin`
+- A `size="sm"` toggle and a `disabled` toggle
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5006 Icon-only, ghost, small and disabled → file, what changed, https://ui.codeatlas.com.br/docs/inputs/toggle#icon-only-ghost-small-and-disabled; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5006.txt   Components API: ca-ui-mcp get_component(Toggle)

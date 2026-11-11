@@ -3982,6 +3982,29 @@ Variables: `--ca-toaster-bottom`
 
 Tokens: `--ca-toaster-bottom`
 
+## Toggle
+
+`import { Toggle } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `pressed?` | `boolean` | `false` | `bind:` Bindable. `true` while the toggle is pressed (`aria-pressed`). |
+| `label?` | `string` |  | Visible text. Without it the toggle is icon-only and needs `aria-label`. |
+| `icon?` | `IconComponent` |  |  |
+| `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `'outlined' \| 'ghost'` | `'outlined'` |  |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(pressed: boolean) => void` |  |  |
+
+Snippets: `children`: Content after the icon and label.
+
+Also accepts: `Omit<HTMLButtonAttributes, 'class' \| 'children' \| 'onchange' \| 'onclick'>`
+
+Parts: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca-toggle-group--sm` `ca-toggle-group__item`
+
+Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
+
 ## ToggleGroup
 
 `import { ToggleGroup } from "@codeatlasdev/ui"`
