@@ -1992,6 +1992,20 @@ Parts: `ca-image` `ca-image--contain` `ca-image--cover` `ca-image--ratio`
 
 Variables: `--ca-aspect`
 
+## InputGroup
+
+`import { InputGroup } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`: A `TextField`, `Select` or `NumberField` and `Button` / `IconButton`s, joined into one control.
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
+Parts: `ca-btn` `ca-icon-btn` `ca-input-group`
+
 ## InstallPrompt
 
 `import { InstallPrompt } from "@codeatlasdev/ui"`
