@@ -46,6 +46,22 @@ With `href` the card is a single `<a>` and is interactive. The link name comes f
 <Demo title="Stacked controls" description={"`gap` stacks several controls in a column, aligned with the title."} src={StackedSrc}><Stacked /></Demo>
 <Demo title="Link card" description={"`href` renders the whole card as a link."} src={LinkSrc}><Link /></Demo>
 
+## Cards in a grid
+
+A grid stretches every card in a row to the tallest one. With a photo on top and a body below, the card with the shortest text ends in a large empty block. Pick one of three fixes so the gap never shows:
+
+- **Anchor the action**: make the card a flex column and push its last action down, so the empty space sits above a button that lines up across the row.
+- **Fill the card**: put the title and text over the photo, on a gradient veil that keeps text contrast at 4.5:1, so there is no separate body to stretch.
+- **Do not stretch**: `align-items: start` on the grid when the cards are independent and uneven heights are fine.
+
+Avoid a lone card on the last row too: with five cards, use five columns, or three and two with the second row centred, rather than four and one.
+
+```css
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--ca-space-4); }
+.plans > .ca-card { display: flex; flex-direction: column; }
+.plans .plan-cta { margin-top: auto; }
+```
+
 ## Tokens
 
 Material, elevation, tone and variant still decide the paint; these replace one part of it: `--ca-card-bg` (a solid fill), `--ca-card-radius`, `--ca-card-border` (a shorthand, default none), `--ca-card-shadow` (`none` for flat), plus `--ca-card-padding` and `--ca-card-gap`.
