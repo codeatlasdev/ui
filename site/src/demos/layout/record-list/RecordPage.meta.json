@@ -32,8 +32,7 @@
 			"PageShell",
 			"RecordCell",
 			"RecordList",
-			"RecordRow",
-			"StatusChip"
+			"RecordRow"
 		],
 		"aliases": ["detail page", "account page", "company record"],
 		"related": ["245", "246"],
