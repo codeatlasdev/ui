@@ -49,13 +49,14 @@ Data attributes: `data-state` (`closed` `open`)
 |---|---|---|---|
 | `severity` | `'success' \| 'warning' \| 'error' \| 'info'` |  |  |
 | `title?` | `string` |  |  |
+| `variant?` | `'inline' \| 'banner'` | `'inline'` | `inline` (default) is a card in the flow; `banner` spans its container edge to edge, square, for a page-wide notice (maintenance, trial ending) at the top of a page or shell. |
 | `closable?` | `boolean` | `false` |  |
 | `onclose?` | `() => void` |  |  |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Parts: `ca-alert` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-alert--warning` `ca-alert__bar` `ca-alert__body` `ca-alert__close` `ca-alert__content` `ca-alert__icon` `ca-alert__title`
+Parts: `ca-alert` `ca-alert--banner` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-alert--warning` `ca-alert__bar` `ca-alert__body` `ca-alert__close` `ca-alert__content` `ca-alert__icon` `ca-alert__title`
 
 Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-muted` `--ca-semantic-success-fg` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-muted`
 
