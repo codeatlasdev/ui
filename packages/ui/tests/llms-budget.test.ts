@@ -79,7 +79,7 @@ describe("llms-full.txt has a fixed shape (#436)", () => {
 		expect(others.length).toBeGreaterThan(100);
 		for (const p of others) {
 			const s = section(p);
-			expect(s).toContain(`Complete page with demo sources: ${site}${llmsPagePath(p.slug)}`);
+			expect(s).toContain(`Full page with demos: ${site}${llmsPagePath(p.slug)}`);
 			expect(s).toContain(p.description);
 		}
 	});

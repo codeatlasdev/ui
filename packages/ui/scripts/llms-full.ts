@@ -83,6 +83,8 @@ export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): stri
 		"",
 		`> Open-source Svelte 5 component library (\`@codeatlasdev/ui\`). Index: ${opts.site}/llms.txt`,
 		"",
+		`Docs paths are relative to ${opts.site}.`,
+		"",
 	];
 	for (const d of opts.docs) {
 		const markdown = mdxToMarkdown(d.body);
@@ -93,9 +95,8 @@ export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): stri
 			"",
 			`# ${d.title}`,
 			"",
-			`Group: ${d.group}. URL: ${opts.site}${d.url}`,
-			"",
-			`Complete page with demo sources: ${opts.site}${llmsPagePath(d.slug)}`,
+			// One line: the docs path (base stated once above) and the absolute file an agent fetches (#944).
+			`Group: ${d.group}. Docs: ${d.url} · Full page with demos: ${opts.site}${llmsPagePath(d.slug)}`,
 			"",
 			d.description,
 			"",
