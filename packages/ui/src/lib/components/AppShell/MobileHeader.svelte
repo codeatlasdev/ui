@@ -81,6 +81,12 @@
       align-items: center;
     }
 
+    /* A custom title truncates like the plain one: its children may shrink. */
+    .ca-mobile-header__title--custom > :global(*) {
+      min-width: 0;
+      max-width: 100%;
+    }
+
     .ca-mobile-header__trailing {
       display: flex;
       align-items: center;

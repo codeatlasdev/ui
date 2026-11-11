@@ -6,12 +6,12 @@ import { VIEWPORTS } from "../../../../tests/viewports";
 import { setLocale } from "../../i18n/index.js";
 import Harness from "./MobilePane.test.svelte";
 
-const open = async (props = {}) => {
+const open = async (props: { title?: string; richTitle?: boolean; onback?: () => void } = {}) => {
 	await page.viewport(VIEWPORTS.mobile[0], VIEWPORTS.mobile[1]);
 	const screen = await render(Harness, props);
 	const trigger = screen.getByRole("button", { name: "Open pane" });
 	await trigger.click();
-	const pane = page.getByRole("dialog", { name: "Conversation" });
+	const pane = page.getByRole("dialog", { name: props.title ?? "Conversation" });
 	await expect.element(pane).toBeVisible();
 	return { screen, trigger, pane };
 };
@@ -62,5 +62,58 @@ describe("MobilePane", () => {
 	it("has no axe violations", async () => {
 		await open();
 		expect(await checkA11y(document.body)).toHaveNoViolations();
+	});
+
+	describe("header layout (no empty band above the header)", () => {
+		const geometry = () => {
+			const pane = document.querySelector(".ca-mobile-pane") as HTMLElement;
+			const header = pane.querySelector(".ca-mobile-header") as HTMLElement;
+			return { pane, header, p: pane.getBoundingClientRect(), h: header.getBoundingClientRect() };
+		};
+
+		it("sits at the top of the pane and is one 48px row without a safe area", async () => {
+			await open();
+			const { p, h } = geometry();
+			expect(p.top).toBe(0);
+			expect(h.top).toBe(0);
+			expect(h.height).toBe(48);
+		});
+
+		it("grows by exactly the safe-area inset", async () => {
+			document.documentElement.style.setProperty("--ca-safe-top", "59px");
+			try {
+				await open();
+				const { h } = geometry();
+				expect(h.top).toBe(0);
+				expect(h.height).toBe(107);
+			} finally {
+				document.documentElement.style.removeProperty("--ca-safe-top");
+			}
+		});
+
+		it("never scrolls the dialog itself, even when the focused field is revealed", async () => {
+			await open();
+			const { pane } = geometry();
+			expect(getComputedStyle(pane).overflowY).toBe("clip");
+			(pane.querySelector("input") as HTMLInputElement).focus();
+			pane.querySelector("input")?.scrollIntoView({ block: "end" });
+			expect(pane.scrollTop).toBe(0);
+			expect(geometry().h.top).toBe(0);
+		});
+
+		for (const richTitle of [false, true]) {
+			it(`truncates a very long ${richTitle ? "headerTitle" : "title"} in one row`, async () => {
+				await open({ title: "A".repeat(120), richTitle });
+				const { header, h } = geometry();
+				expect(h.height).toBe(48);
+				expect(header.scrollWidth).toBeLessThanOrEqual(header.clientWidth);
+				for (const b of header.querySelectorAll("button")) {
+					const r = b.getBoundingClientRect();
+					expect(r.width).toBeGreaterThanOrEqual(32);
+					expect(r.left).toBeGreaterThanOrEqual(0);
+					expect(r.right).toBeLessThanOrEqual(window.innerWidth);
+				}
+			});
+		}
 	});
 });

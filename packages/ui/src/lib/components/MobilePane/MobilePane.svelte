@@ -114,6 +114,12 @@
       color: inherit;
       background: var(--ca-surface-base);
       outline: none;
+      /* The UA gives <dialog> overflow:auto. The body has its own scroller; if the
+         dialog itself scrolls (focus reveal, keyboard resize) the header leaves
+         the top and an empty band appears above it. clip, unlike hidden, is not
+         a scroll container, so not even scrollIntoView can move it. */
+      overflow: clip;
+      scroll-padding: 0;
     }
 
     .ca-mobile-pane[open] {
