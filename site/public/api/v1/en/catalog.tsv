@@ -402,3 +402,5 @@ id	group	page	title	names	tags	summary
 5019	inputs	chip-group	Multiple, small		chip-group,chips,multiple,multi-select,toggle,tags,small,filter	Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.
 5020	inputs	toolbar	Composer bar, overflow menu		toolbar,overflow,more-menu,action-bar,composer,icon-button,priority	A message action bar that stays on one line: icon buttons move into a More menu when the row is narrow, and Send never leaves.
 5021	inputs	toolbar	Filter strip, overflow scroll		toolbar,overflow,scroll,filter-strip,quick-filters	A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.
+5022	surfaces	collapsible	Flush in a panel		collapsible,flush,panel,divided,sidebar	Two flush Collapsibles inside a padded side panel: no box, title and body aligned to the panel gutter, a hairline between sections.
+5023	surfaces	accordion	Flush in a panel		accordion,flush,panel,divided,sidebar	A flush, divided Accordion inside a padded side panel: no item boxes, one hairline between items, text on the panel gutter.

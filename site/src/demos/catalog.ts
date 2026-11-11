@@ -409,8 +409,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5019", path: "inputs/chip-group/MultipleSmall" },
 	{ id: "5020", path: "inputs/toolbar/Composer" },
 	{ id: "5021", path: "inputs/toolbar/Scrolling" },
-	{ id: "5018", path: "surfaces/collapsible/Flush" },
-	{ id: "5019", path: "surfaces/accordion/Flush" },
+	{ id: "5022", path: "surfaces/collapsible/Flush" },
+	{ id: "5023", path: "surfaces/accordion/Flush" },
 ];
 
 /**
