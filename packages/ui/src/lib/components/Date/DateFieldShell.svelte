@@ -34,6 +34,8 @@
     /** A picker: renders the calendar button with this icon after the segments. */
     triggerIcon?: Component<{ size?: number; strokeWidth?: number; 'aria-hidden'?: 'true' }>;
     triggerLabel?: string;
+    /** `aria-haspopup` of the trigger: `dialog` (a calendar, default) or `listbox` (a list of times). */
+    triggerPopup?: 'dialog' | 'listbox';
     /** Bound to the calendar button (the popover anchors to it and focus returns to it). */
     triggerEl?: HTMLElement | null;
     onToggle?: () => void;
@@ -68,6 +70,7 @@
     open,
     triggerIcon: TriggerIcon,
     triggerLabel,
+    triggerPopup = 'dialog',
     triggerEl = $bindable(),
     onToggle,
     range = false,
@@ -120,7 +123,7 @@
           class="ca-date__trigger"
           bind:this={triggerEl}
           aria-label={triggerLabel}
-          aria-haspopup="dialog"
+          aria-haspopup={triggerPopup}
           aria-expanded={open}
           aria-controls={open ? `${id}-content` : undefined}
           data-segment="trigger"

@@ -415,6 +415,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5025", path: "layout/master-detail/InboxPage" },
 	{ id: "5026", path: "layout/sortable-list/SettingsPage" },
 	{ id: "5027", path: "layout/record-list/RecordPage" },
+	{ id: "5028", path: "inputs/time-picker/Default" },
+	{ id: "5029", path: "inputs/month-picker/Default" },
 ];
 
 /**

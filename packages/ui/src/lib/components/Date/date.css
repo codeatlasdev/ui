@@ -1,5 +1,5 @@
-/* Shared styles for Calendar, RangeCalendar, DatePicker, DateRangePicker, DateField, TimeField.
-   Imported by each component; public BEM classes are `ca-date*`, `ca-cal*`. */
+/* Shared styles for Calendar, RangeCalendar, DatePicker, DateRangePicker, DateField, TimeField, TimePicker, MonthPicker.
+   Imported by each component; public BEM classes are `ca-date*`, `ca-cal*`, `ca-tp*`, `ca-mp*`. */
 
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
@@ -284,5 +284,90 @@
     .ca-date__content,
     .ca-date__content[data-state='closed'] { animation: none; }
     .ca-cal__day, .ca-date__wrap { transition: none; }
+  }
+
+  /* ── TimePicker list ──────────────────────────────────────────── */
+  /* The popover itself is the listbox: it scrolls, and the times are its children. */
+  .ca-date__content[role='listbox'] {
+    min-width: var(--ca-anchor-width, 0);
+    max-height: var(--ca-tp-max-height, 280px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--ca-space-1);
+  }
+
+  .ca-tp__item {
+    display: flex;
+    align-items: center;
+    min-height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-2-5);
+    border-radius: var(--ca-radius-sm);
+    font-family: var(--ca-font-sans);
+    font-size: var(--ca-font-size-body2);
+    font-variant-numeric: tabular-nums;
+    color: var(--ca-text-primary);
+    user-select: none;
+    outline: none;
+  }
+
+  .ca-tp__item:hover:not([data-disabled]),
+  .ca-tp__item:focus-visible { background: var(--ca-action-hover); }
+  .ca-tp__item:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: calc(-1 * var(--ca-border-width-focus)); }
+  .ca-tp__item[data-disabled] { color: var(--ca-text-disabled); cursor: not-allowed; }
+  .ca-tp__item[data-selected] {
+    background: var(--ca-brand-fill);
+    color: var(--ca-brand-contrast);
+    font-weight: var(--ca-font-weight-semibold);
+  }
+
+  @media (pointer: coarse) {
+    .ca-tp__item { min-height: var(--ca-touch-target); }
+  }
+
+  /* ── MonthPicker ──────────────────────────────────────────────── */
+  /* The whole field is one button that shows month and year; the popover holds the 12-month grid. */
+  .ca-mp__value {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    min-height: var(--ca-space-6);
+    padding: var(--ca-space-1-5) 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ca-mp__value[data-placeholder] { color: var(--ca-text-hint); }
+
+  .ca-mp__grid { border-collapse: collapse; }
+  .ca-mp__cell { padding: var(--ca-border-width); text-align: center; }
+
+  .ca-mp__month {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: calc(var(--ca-control-height) * 1.5);
+    height: var(--ca-control-height);
+    padding: 0 var(--ca-space-2);
+    border: var(--ca-border-width) solid transparent;
+    border-radius: var(--ca-radius-md);
+    font-size: var(--ca-font-size-body2);
+    outline: none;
+    transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+  }
+
+  .ca-mp__month:hover:not([data-selected]):not([data-disabled]) { background: var(--ca-action-hover); }
+  .ca-mp__month:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
+  .ca-mp__month[data-current]:not([data-selected]) { border-color: var(--ca-brand-main); color: var(--ca-brand-text); font-weight: var(--ca-font-weight-semibold); }
+  .ca-mp__month[data-disabled] { color: var(--ca-text-disabled); cursor: not-allowed; }
+  .ca-mp__month[data-selected] {
+    background: var(--ca-brand-fill);
+    color: var(--ca-brand-contrast);
+    font-weight: var(--ca-font-weight-semibold);
+  }
+
+  @media (pointer: coarse) {
+    .ca-mp__month { min-width: var(--ca-touch-target); height: var(--ca-touch-target); }
   }
 }

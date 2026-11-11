@@ -98,6 +98,7 @@ export {
 	DatePicker,
 	DateRangePicker,
 	getLocalTimeZone,
+	MonthPicker,
 	now,
 	parseDate,
 	parseDateTime,
@@ -105,6 +106,7 @@ export {
 	RangeCalendar,
 	Time,
 	TimeField,
+	TimePicker,
 	today,
 	ZonedDateTime,
 } from "./components/Date/index.js";

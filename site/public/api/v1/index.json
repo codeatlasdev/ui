@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 409,
+	"count": 411,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 370,
+			"component": 372,
 			"motion": 39
 		},
 		"subtype": {
@@ -16,7 +16,7 @@
 			"component/display": 73,
 			"component/feedback": 38,
 			"component/foundation": 19,
-			"component/input": 95,
+			"component/input": 97,
 			"component/layout": 56,
 			"component/map": 1,
 			"component/navigation": 39,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 392,
+			"default": 394,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,15 +42,15 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 106,
-			"subtle": 243
+			"subtle": 245
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 35,
 			"hover": 79,
-			"keyboard": 285,
+			"keyboard": 287,
 			"none": 82,
-			"press": 242,
+			"press": 244,
 			"scroll": 22
 		},
 		"layout": {
@@ -60,26 +60,26 @@
 			"overlay": 50,
 			"single-column": 138,
 			"split": 18,
-			"stack": 148,
+			"stack": 150,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 407,
+			"both": 409,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 53,
-			"regular": 343
+			"regular": 345
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 409,
+			"css": 411,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 369,
+			"css": 371,
 			"js-light": 40
 		},
 		"component": {
@@ -188,6 +188,7 @@
 			"MethodBadge": 1,
 			"MobilePane": 1,
 			"MoneyInput": 3,
+			"MonthPicker": 1,
 			"MotionStage": 39,
 			"NavigationMenu": 2,
 			"NavigationMenuItem": 2,
@@ -259,6 +260,7 @@
 			"ThemeToggle": 1,
 			"TimeField": 2,
 			"Timeline": 2,
+			"TimePicker": 1,
 			"Toaster": 4,
 			"Toggle": 1,
 			"ToggleGroup": 2,
@@ -678,6 +680,8 @@
 		{"kind":"component","subtype":"display","style":["default"],"motion":"subtle","interaction":["drag","keyboard","press"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","Kanban","PageShell"],"aliases":["deals page","sales pipeline page","crm board screen"],"related":["760","433"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5024","path":"display/kanban/DealsPage","title":"Deals page","summary":"A complete deals page: a PageShell with a title, a deal count and a New deal action around a Kanban board that shows each stage's money total.","use":"The sales pipeline screen of a CRM: copy the route, change the data and the stage names; the board reflows to one stage per screen on a phone.","tags":["kanban","deals","pipeline","page","crm","page-shell","board","recipe"],"names":["Deals board page","CRM pipeline page","Página de negócios","Página de negocios"]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Avatar","ConversationItem","EmptyState","MasterDetail","MessageBubble","TextField"],"aliases":["inbox screen","chat screen","messages page"],"related":["5002","186"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5025","path":"layout/master-detail/InboxPage","title":"Inbox page","summary":"A complete inbox: ConversationItem rows in the master, a MessageBubble thread with a reply field in the detail, an empty state until a row is picked.","use":"The messages screen of a CRM or helpdesk: two columns when wide, and on a phone the thread opens as a full-screen pane with Back.","tags":["master-detail","inbox","conversation","message-bubble","crm","chat","recipe"],"names":["Inbox page","Messages screen","Caixa de entrada","Bandeja de entrada"]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["drag","keyboard","press"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AppSettings","Button","Divider","EditableRow","FormSection","SettingItem","SortableList","Switch","TextField"],"aliases":["settings editor","editable list page","stage editor"],"related":["997"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5026","path":"layout/sortable-list/SettingsPage","title":"Settings page","summary":"A complete settings page: AppSettings tabs with a reorderable list of pipeline stages (grip, menu, Edit on a phone) and a notifications tab of switches.","use":"The configuration screen of a CRM: editable lists such as stages, tags or loss reasons next to plain toggles, with one Save action.","tags":["app-settings","sortable-list","editable-row","settings","crm","stages","recipe"],"names":["Settings editor page","Pipeline stages settings","Configurações do funil","Ajustes del embudo"]},
-		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["Avatar","Button","Card","DropdownMenu","DropdownMenuItem","IconButton","PageShell","RecordCell","RecordList","RecordRow"],"aliases":["detail page","account page","company record"],"related":["245","246"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5027","path":"layout/record-list/RecordPage","title":"Record page","summary":"A complete record page: a PageShell with a back link, an edit action and a summary aside, around a Card that holds a RecordList of the company's contacts.","use":"The detail screen of one CRM record (company, account, project): facts beside the page, related records as dense rows that stack on a phone.","tags":["record-list","page-shell","card","record","detail","crm","recipe"],"names":["Record detail page","Company page","Página do registro","Página del registro"]}
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["Avatar","Button","Card","DropdownMenu","DropdownMenuItem","IconButton","PageShell","RecordCell","RecordList","RecordRow"],"aliases":["detail page","account page","company record"],"related":["245","246"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5027","path":"layout/record-list/RecordPage","title":"Record page","summary":"A complete record page: a PageShell with a back link, an edit action and a summary aside, around a Card that holds a RecordList of the company's contacts.","use":"The detail screen of one CRM record (company, account, project): facts beside the page, related records as dense rows that stack on a phone.","tags":["record-list","page-shell","card","record","detail","crm","recipe"],"names":["Record detail page","Company page","Página do registro","Página del registro"]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["TimePicker"],"aliases":["time list","time dropdown","appointment time"],"related":["017","018","5029"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5028","path":"inputs/time-picker/Default","title":"TimePicker","summary":"Two TimePickers: segments plus a popover list of times, one in 12h with the default 15-minute step and one in 24h with a 30-minute step bounded to the afternoon.","use":"Choosing an opening hour or an appointment time where the user can type it or pick it from a list.","tags":["time-picker","time","listbox","popover","step","hour-cycle"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["MonthPicker"],"aliases":["month year picker","billing month","period month"],"related":["018","015","5028"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5029","path":"inputs/month-picker/Default","title":"MonthPicker","summary":"Two MonthPickers: a field showing month and year with a twelve-month popover grid, one free and one limited to a single year.","use":"Choosing a billing or reporting month where the day does not matter.","tags":["month-picker","month","year","popover","grid","billing"],"names":[]}
 	]
 }

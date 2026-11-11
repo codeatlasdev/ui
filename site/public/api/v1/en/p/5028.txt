@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #5028 "TimePicker" (inputs/time-picker).
+What it shows: Two TimePickers: segments plus a popover list of times, one in 12h with the default 15-minute step and one in 24h with a 30-minute step bounded to the afternoon. When to use: Choosing an opening hour or an appointment time where the user can type it or pick it from a list.
+Spec:
+- `<TimePicker label="Opens at" locale="en-US" hourCycle={12} bind:value={start} />` initialised with `new Time(9, 0)`
+- A second `<TimePicker` with `label="Closes at"`, `hourCycle={24}`, `step={30}`, `minValue={new Time(12, 0)}`, `maxValue={new Time(20, 0)}` and `description="Between 12:00 and 20:00, every 30 minutes."`
+- Two `value:` output lines print `start.toString()` and `end.toString()`
+- Wrapper `.col` has `max-width: 400px`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5028 TimePicker → file, what changed, https://ui.codeatlas.com.br/docs/inputs/time-picker#timepicker; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5028.txt   Components API: ca-ui-mcp get_component(TimePicker)

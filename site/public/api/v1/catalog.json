@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 409,
+	"count": 411,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5021",
-			"count": 95
+			"last": "5029",
+			"count": 97
 		},
 		{
 			"slug": "surfaces",
@@ -36473,6 +36473,174 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/record-list#record-page",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5028",
+			"group": "inputs",
+			"page": "time-picker",
+			"variant": "Default",
+			"slug": "timepicker",
+			"title": "TimePicker",
+			"description": "12h with the default step, and 24h with a 30-minute step between 12:00 and 20:00.",
+			"summary": "Two TimePickers: segments plus a popover list of times, one in 12h with the default 15-minute step and one in 24h with a 30-minute step bounded to the afternoon.",
+			"use": "Choosing an opening hour or an appointment time where the user can type it or pick it from a list.",
+			"spec": [
+				"`<TimePicker label=\"Opens at\" locale=\"en-US\" hourCycle={12} bind:value={start} />` initialised with `new Time(9, 0)`",
+				"A second `<TimePicker` with `label=\"Closes at\"`, `hourCycle={24}`, `step={30}`, `minValue={new Time(12, 0)}`, `maxValue={new Time(20, 0)}` and `description=\"Between 12:00 and 20:00, every 30 minutes.\"`",
+				"Two `value:` output lines print `start.toString()` and `end.toString()`",
+				"Wrapper `.col` has `max-width: 400px`"
+			],
+			"tags": [
+				"time-picker",
+				"time",
+				"listbox",
+				"popover",
+				"step",
+				"hour-cycle"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"TimePicker"
+				],
+				"aliases": [
+					"time list",
+					"time dropdown",
+					"appointment time"
+				],
+				"related": [
+					"017",
+					"018",
+					"5029"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"TimePicker"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Time",
+						"TimePicker"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/time-picker#timepicker",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5029",
+			"group": "inputs",
+			"page": "month-picker",
+			"variant": "Default",
+			"slug": "monthpicker",
+			"title": "MonthPicker",
+			"description": "A free month picker, and one limited to 2026.",
+			"summary": "Two MonthPickers: a field showing month and year with a twelve-month popover grid, one free and one limited to a single year.",
+			"use": "Choosing a billing or reporting month where the day does not matter.",
+			"spec": [
+				"`<MonthPicker label=\"Billing month\" locale=\"en-US\" bind:value={billing} />` initialised with `new CalendarDate(2026, 3, 1)`",
+				"A second `<MonthPicker` with `label=\"Report month\"`, `minValue={new CalendarDate(2026, 1, 1)}`, `maxValue={new CalendarDate(2026, 12, 31)}` and `description=\"Only 2026 is available.\"`",
+				"Two `value:` output lines print the ISO date of the 1st of each chosen month",
+				"Wrapper `.col` has `max-width: 400px`"
+			],
+			"tags": [
+				"month-picker",
+				"month",
+				"year",
+				"popover",
+				"grid",
+				"billing"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"MonthPicker"
+				],
+				"aliases": [
+					"month year picker",
+					"billing month",
+					"period month"
+				],
+				"related": [
+					"018",
+					"015",
+					"5028"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"MonthPicker"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CalendarDate",
+						"MonthPicker"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/month-picker#monthpicker",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

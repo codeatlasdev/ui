@@ -1,0 +1,54 @@
+---
+title: TimePicker
+description: A time field with typed segments and a popover list of times, with a step, min and max, and a form value.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Default from "~/demos/inputs/time-picker/Default.svelte";
+import DefaultSrc from "~/demos/inputs/time-picker/Default.svelte?raw";
+
+```svelte
+<script>
+  import { TimePicker, Time } from "@codeatlasdev/ui";
+  let start = $state(new Time(9, 0));
+</script>
+
+<TimePicker label="Opens at" bind:value={start} step={30} />
+```
+
+`TimePicker` is a [`TimeField`](/docs/inputs/date-picker/) (type digits or step the segments with the arrows) plus a button that opens a list of times on the same popover shell as `DatePicker`. The value is a `Time` from `@internationalized/date`, re-exported by the package.
+
+The list runs from 00:00 to 23:59 in `step` minutes (default 15). Times before `minValue` or after `maxValue` are disabled. The current value is selected (`aria-selected`) and scrolled into view when the list opens; a typed value that falls between two steps (09:07 with a 15-minute step) is kept in the field and selects nothing in the list.
+
+**Keyboard.** Enter, Space or the arrows on the button open the list with the focus on the chosen time. Up and Down move, Home and End jump to the first and last enabled time, typing a few characters jumps to a match, Enter or Space picks and closes, Escape closes and returns the focus to the button. Disabled times are skipped.
+
+The list is a `role="listbox"` named after the `label`; the button is named by `triggerLabel` (localized). Under a coarse pointer every row is at least `--ca-touch-target` tall. `--ca-tp-max-height` sets the height of the list (default 280px).
+
+<Demo title="TimePicker" description="12h with the default step, and 24h with a 30-minute step between 12:00 and 20:00." src={DefaultSrc}><Default client:visible /></Demo>
+
+<Props for="TimePicker" rows={[
+  { name: "label", type: "string", description: "Field label and the accessible name of the list." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`." },
+  { name: "value", type: "Time", description: "Bindable selected time." },
+  { name: "placeholder", type: "TimeValue", description: "Bindable. Starting point of an empty field." },
+  { name: "open", type: "boolean", default: "false", description: "Bindable popover state." },
+  { name: "step", type: "number", default: "15", description: "Minutes between two entries of the list (at least 1, or 60 with `granularity=\"hour\"`)." },
+  { name: "minValue", type: "TimeValue", description: "Earlier times are disabled and typed values become invalid." },
+  { name: "maxValue", type: "TimeValue", description: "Later times are disabled and typed values become invalid." },
+  { name: "hourCycle", type: "12 | 24", description: "Segments and list labels. Defaults to the locale (pt-BR is 24h)." },
+  { name: "granularity", type: "'hour' | 'minute' | 'second'", default: "'minute'", description: "Which segments the field shows. The list always picks hours and minutes." },
+  { name: "locale", type: "string", default: "'pt-BR'", description: "Intl locale for segments and list labels." },
+  { name: "description", type: "string", description: "Hint below the field." },
+  { name: "error", type: "string", description: "Error message (`role=\"alert\"`), sets the error style." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables the field and the list." },
+  { name: "readonly", type: "boolean", default: "false", description: "Shows the value without allowing edits." },
+  { name: "required", type: "boolean", default: "false", description: "Marks the field as required." },
+  { name: "name", type: "string", description: "Name of the hidden input (ISO time, `14:30:00`) for native forms." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
+  { name: "width", type: "'full' | 'auto' | 'fit' | string", default: "'full'", description: "Field width (`--ca-field-width`)." },
+  { name: "variant", type: "'outlined' | 'filled' | 'underline'", default: "theme", description: "How the field is drawn." },
+  { name: "triggerLabel", type: "string", default: "'Open time list' (localized)", description: "aria-label of the list button." },
+  { name: "onchange", type: "(value: Time | undefined) => void", description: "Called when the value changes." },
+  { name: "class", type: "string", description: "Extra classes on the root." },
+]} />

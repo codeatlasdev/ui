@@ -1,0 +1,36 @@
+{
+	"summary": "Two MonthPickers: a field showing month and year with a twelve-month popover grid, one free and one limited to a single year.",
+	"use": "Choosing a billing or reporting month where the day does not matter.",
+	"spec": [
+		"`<MonthPicker label=\"Billing month\" locale=\"en-US\" bind:value={billing} />` initialised with `new CalendarDate(2026, 3, 1)`",
+		"A second `<MonthPicker` with `label=\"Report month\"`, `minValue={new CalendarDate(2026, 1, 1)}`, `maxValue={new CalendarDate(2026, 12, 31)}` and `description=\"Only 2026 is available.\"`",
+		"Two `value:` output lines print the ISO date of the 1st of each chosen month",
+		"Wrapper `.col` has `max-width: 400px`"
+	],
+	"tags": ["month-picker", "month", "year", "popover", "grid", "billing"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MonthPicker"],
+		"aliases": ["month year picker", "billing month", "period month"],
+		"related": ["018", "015", "5028"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

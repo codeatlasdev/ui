@@ -530,15 +530,15 @@ Data attributes: `data-orientation` (`vertical`)
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
-Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
 
 ## Callout
 
@@ -1221,15 +1221,15 @@ Internal (may change in any release): `ca-spin`
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
-Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
 
 ## DatePicker
 
@@ -1264,15 +1264,15 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
-Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
 
 ## DateRangePicker
 
@@ -1305,15 +1305,15 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
-Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
 
 ## Dialog
 
@@ -2586,6 +2586,43 @@ Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 
 Snippets: `leading`; `trailing`
 
+## MonthPicker
+
+`import { MonthPicker } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default), `auto`, `fit` or a CSS length (`--ca-field-width`). |
+| `description?` | `string` |  |  |
+| `error?` | `string` |  |  |
+| `disabled?` | `boolean` | `false` |  |
+| `required?` | `boolean` | `false` |  |
+| `readonly?` | `boolean` | `false` |  |
+| `value?` | `CalendarDate` |  | `bind:` Selected month, always the 1st of it (`new CalendarDate(2026, 3, 1)`). Any other day passed in is read as its month, and a pick writes the 1st. Bindable. |
+| `placeholder?` | `DateValue` |  | `bind:` Year the grid shows while the field is empty. Defaults to the current year. Bindable. |
+| `open?` | `boolean` | `false` | `bind:` Popover open state. Bindable. |
+| `minValue?` | `DateValue` |  | A month that ends before this day is disabled. |
+| `maxValue?` | `DateValue` |  | A month that starts after this day is disabled. |
+| `locale?` | `string` | `'pt-BR'` |  |
+| `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
+| `name?` | `string` |  | Name for the hidden input (ISO date of the 1st of the month) in native forms. |
+| `triggerLabel?` | `string` |  | aria-label of the button that opens the grid. |
+| `onchange?` | `(value: CalendarDate \| undefined) => void` |  |  |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
+
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
+
 ## MotionStage
 
 `import { MotionStage } from "@codeatlasdev/ui"`
@@ -3106,15 +3143,15 @@ Tokens: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
-Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
 
 ## Rating
 
@@ -4164,15 +4201,15 @@ Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__i
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
 
-Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
-Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
 
 ## Timeline
 
@@ -4184,6 +4221,46 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timeline__date` `ca-timeline__desc` `ca-timeline__detail` `ca-timeline__dot` `ca-timeline__dot--default` `ca-timeline__dot--error` `ca-timeline__dot--info` `ca-timeline__dot--success` `ca-timeline__dot--warning` `ca-timeline__header` `ca-timeline__icon` `ca-timeline__icon--error` `ca-timeline__icon--info` `ca-timeline__icon--success` `ca-timeline__icon--warning` `ca-timeline__item` `ca-timeline__label` `ca-timeline__meta` `ca-timeline__toggle` `ca-timeline__track`
+
+## TimePicker
+
+`import { TimePicker } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default), `auto`, `fit` or a CSS length (`--ca-field-width`). |
+| `description?` | `string` |  |  |
+| `error?` | `string` |  |  |
+| `disabled?` | `boolean` | `false` |  |
+| `required?` | `boolean` | `false` |  |
+| `readonly?` | `boolean` | `false` |  |
+| `value?` | `Time` |  | `bind:` Selected time. Bindable. Use `new Time(h, m)` from `@internationalized/date`. |
+| `placeholder?` | `TimeValue` |  | `bind:` Starting point of an empty field. Bindable. |
+| `open?` | `boolean` | `false` | `bind:` Popover open state. Bindable. |
+| `minValue?` | `TimeValue` |  | Earlier times are disabled in the list and typed values become invalid. |
+| `maxValue?` | `TimeValue` |  | Later times are disabled in the list and typed values become invalid. |
+| `step?` | `number` | `15` | Minutes between two entries of the list. Default 15 (an hour granularity lists whole hours at least). |
+| `locale?` | `string` | `'pt-BR'` |  |
+| `granularity?` | `'hour' \| 'minute' \| 'second'` | `'minute'` | Segments of the field (the list always steps in minutes). Default 'minute'. |
+| `hourCycle?` | `12 \| 24` |  | Default follows the locale (pt-BR → 24h). |
+| `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
+| `name?` | `string` |  | Name for the hidden input (ISO string) in native forms. |
+| `triggerLabel?` | `string` |  | aria-label of the list button. |
+| `onchange?` | `(value: Time \| undefined) => void` |  |  |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Variables: `--ca-anchor-width` `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-tp-max-height`
+
+Data attributes: `data-current`, `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
+
+Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-tp-max-height`
 
 ## Toaster
 
