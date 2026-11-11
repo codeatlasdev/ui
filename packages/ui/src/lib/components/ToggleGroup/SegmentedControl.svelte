@@ -53,8 +53,11 @@
   function measure() {
     const el = root?.querySelectorAll<HTMLElement>('.ca-seg__item')[index];
     if (!el) return;
-    thumbLeft = el.offsetLeft;
-    thumbWidth = el.offsetWidth;
+    // Fractional, not offsetLeft/offsetWidth: those round, and a 47.5px segment got a 48px thumb (#1013).
+    const box = el.getBoundingClientRect();
+    const track = root!.getBoundingClientRect();
+    thumbLeft = box.left - track.left - root!.clientLeft + root!.scrollLeft;
+    thumbWidth = box.width;
   }
 
   // Re-measure on selection, label/item changes, any size change of the track or a segment

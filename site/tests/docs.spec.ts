@@ -126,7 +126,7 @@ test.describe("docs", () => {
 			[
 				/^# CodeAtlas UI: full documentation$/m,
 				/Index: https:\/\/ui\.codeatlas\.com\.br\/llms\.txt/,
-				/^Complete page with demo sources: https:\/\/ui\.codeatlas\.com\.br\/llms\/layout\/form-page\.txt$/m,
+				/ · Full page with demos: https:\/\/ui\.codeatlas\.com\.br\/llms\/layout\/form-page\.txt$/m,
 				/^# Using @codeatlasdev\/ui in this app$/m,
 			],
 		],
@@ -153,7 +153,8 @@ test.describe("docs", () => {
 		request,
 	}) => {
 		const full = await (await request.get("/llms-full.txt")).text();
-		const links = [...full.matchAll(/^Complete page with demo sources: (\S+)$/gm)].map((m) => m[1]);
+		// One line per page since #944: "Group: … Docs: … · Full page with demos: <url>".
+		const links = [...full.matchAll(/ · Full page with demos: (\S+)$/gm)].map((m) => m[1]);
 		expect(links.length).toBeGreaterThan(100);
 		for (const url of [links[0], links[links.length >> 1], links.at(-1) as string]) {
 			const res = await request.get(new URL(url).pathname);

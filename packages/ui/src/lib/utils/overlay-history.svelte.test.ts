@@ -42,7 +42,8 @@ describe("bridgeOverlaysToHistory", () => {
 		const opener = screen.getByRole("button", { name: "Open sheet" });
 		await opener.click();
 		await expect.element(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
-		expect(history.length).toBe(length + 1);
+		// The entry is pushed after the dialog shows; read at once it was 3 vs 4 on the CI runner (#1013).
+		await expect.poll(() => history.length).toBe(length + 1);
 		await back();
 		expect(state().sheet).toBe(false);
 		expect(location.href).toBe(url);

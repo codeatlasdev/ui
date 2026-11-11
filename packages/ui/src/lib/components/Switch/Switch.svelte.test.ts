@@ -101,9 +101,10 @@ describe("Switch geometry tokens (#691)", () => {
 				expect(on.track.width).toBe(40);
 				expect(on.track.right - on.thumb.right).toBeCloseTo(on.inset, 1);
 			});
-			expect(getComputedStyle(q(screen.container, ".ca-switch")).backgroundColor).toBe(
-				"rgb(1, 2, 3)"
-			);
+			// The track transitions its background: read once, the runner caught it mid-way (#1013).
+			await expect
+				.poll(() => getComputedStyle(q(screen.container, ".ca-switch")).backgroundColor)
+				.toBe("rgb(1, 2, 3)");
 		});
 	});
 
