@@ -92,7 +92,7 @@
     inset: 0;
     margin: auto;
     width: calc(100vw - 2 * var(--ca-space-4));
-    max-width: var(--dialog-max-w, 480px);
+    max-width: var(--ca-dialog-width, var(--dialog-max-w, 480px));
     max-height: calc(var(--ca-vh) * 0.85);
     height: fit-content;
 
@@ -100,7 +100,7 @@
        The blur is the `sheet` role in surface.css (data-ca-blur). */
     background: var(--ca-sheet-bg);
     border: var(--ca-border-width) solid var(--ca-sheet-border);
-    border-radius: var(--ca-radius-xl);
+    border-radius: var(--ca-dialog-radius, var(--ca-radius-xl));
     box-shadow: var(--ca-sheet-shadow);
 
     display: flex;
@@ -203,10 +203,19 @@
     }
   }
 
+  /* ── placement="top": a palette / quick switcher anchored under the top edge (#716). A fixed top margin
+     and an auto bottom one keep the panel in place while its results grow; it never runs off the bottom.
+     Before fullscreenBelow, which wins under its breakpoint. */
+  dialog.ca-dialog[data-placement='top'] {
+    margin-block: var(--ca-dialog-top-offset, var(--ca-space-24, 6rem)) auto;
+    max-height: calc(var(--ca-vh) - var(--ca-dialog-top-offset, var(--ca-space-24, 6rem)) - var(--ca-space-4));
+  }
+
   /* ── fullscreenBelow: any size, edge to edge under the breakpoint ─ */
   @media (max-width: 599.98px) {
     dialog.ca-dialog[data-fullscreen-below='sm'] {
       inset: 0;
+      margin-block: 0;
       width: 100vw;
       max-width: none;
       height: var(--ca-vh);
@@ -220,6 +229,7 @@
   @media (max-width: 899.98px) {
     dialog.ca-dialog[data-fullscreen-below='md'] {
       inset: 0;
+      margin-block: 0;
       width: 100vw;
       max-width: none;
       height: var(--ca-vh);

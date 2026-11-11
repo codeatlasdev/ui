@@ -174,6 +174,8 @@ Token: `--ca-cf-gap` (falls back to `--ca-field-gap`). The value box is `user-se
 
 `.ca-dialog` `.ca-dialog--chromeless` `.ca-dialog--split` `.ca-dialog-in` `.ca-dialog-out` `.ca-dialog__actions` `.ca-dialog__body` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__sr-only` `.ca-dialog__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay-in` `.ca-overlay-out`
 
+Dialog panel: `--ca-dialog-width` (overrides the size's max width), `--ca-dialog-radius`, `--ca-dialog-top-offset` (with `placement="top"`, which adds `data-placement="top"` to `dialog.ca-dialog`).
+
 `.ca-overlay` is the modal `<dialog>` itself (`dialog.ca-overlay`), shared by Dialog, AlertDialog, Drawer, Sheet, CommandPalette and DocsSearch. The scrim is `dialog.ca-overlay::backdrop`, driven by `--ca-scrim-color` and `--ca-scrim-blur`. A `background` or `backdrop-filter` on `.ca-overlay` paints the panel, not the scrim.
 
 `.ca-overlay--inline` (with `data-inline` on the `<dialog>`) is the `inline` prop of Dialog, Sheet and Drawer: the panel is `position: absolute` inside the nearest positioned ancestor instead of in the top layer, with no scrim, scroll lock or focus trap, and resolves the tokens of its container (a `data-preset` / `data-theme-scope` island).
