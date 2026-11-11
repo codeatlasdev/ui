@@ -793,7 +793,7 @@ See also: [SortableList and EditableRow](/docs/layout/sortable-list/).
 
 ## Auth pages
 
-Use it for sign in, sign up and password reset: a brand panel on one side and a card with the form on the other.
+Use it for sign in, sign up and password reset: a brand panel on one side and a card with the form on the other. For a single narrow card with no panel (a sign in that is just the card, an invite, an OAuth consent screen, a notice) use [`CenteredPage`](/docs/layout/centered-page/); see [Invite or consent page](#invite-or-consent-page).
 
 ```ts
 // src/lib/messages.ts (the keys the auth pages read)
@@ -1722,7 +1722,7 @@ See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/sur
 
 ## Standalone page
 
-Use it when the whole app is one screen (a single dashboard, a board, a map tool) and there is no rail or bottom navigation to host. Do not mount `AppShellLayout` for it: with one module it still draws a one-icon rail, a mobile header and a bottom bar. The page owns its landmark instead.
+Use it when the whole app is one screen (a single dashboard, a board, a map tool) and there is no rail or bottom navigation to host. For a narrow centred card (invite, OAuth consent, magic-link landing, a notice) use [`CenteredPage`](/docs/layout/centered-page/) instead. Do not mount `AppShellLayout` for it: with one module it still draws a one-icon rail, a mobile header and a bottom bar. The page owns its landmark instead.
 
 ```ts
 // src/lib/messages.ts (the keys the standalone page reads)
@@ -1764,6 +1764,46 @@ Rules:
 - A map-first one-page screen is the same idea with a stage behind it: see [Map page without a shell](#map-page-without-a-shell).
 
 See also: [PageShell](/docs/layout/page-shell/), [SkipLink](/docs/layout/skip-link/), [Accessibility](/docs/getting-started/accessibility/#skip-link-and-landmarks).
+
+## Invite or consent page
+
+Use it for a transactional page outside the app shell: an organisation invite, an OAuth consent screen, a magic-link landing, a notice. One narrow card centred in the viewport; `CenteredPage` owns the skip link, `<main id="main" tabindex="-1">`, the `--ca-vh` height and the safe-area padding.
+
+```ts
+// src/lib/messages.ts
+export const m = {
+  invite: { title: "Join Acme", subtitle: "Ana invited you to the Design workspace.", accept: "Accept invite", decline: "Decline", home: "Acme home" },
+} as const;
+```
+
+```svelte
+<!-- src/routes/invite/[id]/+page.svelte -->
+<script lang="ts">
+  import { AuthCard, Button, CenteredPage, Stack } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
+
+  const p = m.invite;
+</script>
+
+<CenteredPage maxWidth="sm" brandLabel={p.home}>
+  {#snippet brand()}<img src="/logo.svg" alt="" width="32" height="32" />{/snippet}
+  <AuthCard title={p.title} subtitle={p.subtitle}>
+    <Stack gap="3">
+      <Button fullWidth>{p.accept}</Button>
+      <Button variant="outlined" fullWidth href="/">{p.decline}</Button>
+    </Stack>
+  </AuthCard>
+</CenteredPage>
+```
+
+Rules:
+
+- `CenteredPage` is the page `<main>`: never nest another `<main>` or `SkipLink`; inside a layout that has one, pass `mainId={null}`.
+- No logo is drawn unless you pass `brand`; give its link a `brandLabel`.
+- `maxWidth` is `sm` 24rem, `md` 28rem (default), `lg` 36rem or a CSS length; do not size the card. Taller content scrolls the page: no `100vh`, no inner scroll.
+- A sign in with a brand panel is [AuthLayout](/docs/layout/auth-layout/); a 404 or 500 is [ErrorPage](/docs/layout/error-page/).
+
+See also: [CenteredPage](/docs/layout/centered-page/).
 
 ## Theming
 

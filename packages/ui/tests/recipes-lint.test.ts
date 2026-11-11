@@ -22,6 +22,7 @@ const CLEAN = [
 	"Map page",
 	"Landing page",
 	"Standalone page",
+	"Invite or consent page",
 ];
 const PENDING: string[] = [];
 const RECIPES = join(import.meta.dir, "../../../site/src/content/docs/getting-started/recipes.mdx");

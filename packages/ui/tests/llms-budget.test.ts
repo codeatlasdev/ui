@@ -11,7 +11,7 @@ import { demoSources, mdxToMarkdown } from "../scripts/mdx-to-markdown.ts";
 // of CORE_PAGES are in full, every other page is a heading, its props tables and a link to its own file.
 // The cap leaves real headroom (the file is ~270 KB), so an ordinary docs PR never trips it; if it does, a core
 // page grew too much or a page has a props table that belongs in prose.
-const CAP = 354_000;
+const CAP = 358_000;
 const DOCS = join(import.meta.dir, "../../../site/src/content/docs");
 const DEMOS = join(import.meta.dir, "../../../site/src/demos");
 

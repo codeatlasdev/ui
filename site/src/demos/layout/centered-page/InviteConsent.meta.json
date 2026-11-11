@@ -1,0 +1,42 @@
+{
+	"summary": "A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.",
+	"use": "Transactional pages outside the app shell: accepting an invite, granting consent, a magic-link landing or a notice.",
+	"spec": [
+		"`<CenteredPage maxWidth=\"sm\" mainId={null}>` with a `brand` snippet holding `<strong>Acme</strong>`",
+		"`AuthCard` titled `Join Acme` (subtitle `Ana invited you to the Design workspace.`) or `Allow Notes to sign in?` with an Accept/Allow filled full-width Button and an outlined Close/Deny Button, chosen by `kind`",
+		"A `SegmentedControl` (Invite, Consent) bound to `kind` under the card",
+		"Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`"
+	],
+	"tags": ["centered-page", "invite", "oauth-consent", "notice", "landmark", "safe-area"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CenteredPage", "AuthCard", "Button", "SegmentedControl", "Stack"],
+		"aliases": [
+			"standalone page",
+			"invite page",
+			"consent screen",
+			"interstitial",
+			"centred card page"
+		],
+		"related": ["172", "781"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

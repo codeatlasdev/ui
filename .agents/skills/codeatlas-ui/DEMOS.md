@@ -397,3 +397,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5000 | Show once | inputs/copy-field | AlertDialog, Button, CopyField |
 | 5001 | Filter bar | inputs/toolbar | Button, NumberField, Select, TextField, Toolbar |
 | 5002 | Inbox | layout/master-detail | EmptyState, MasterDetail |
+| 5003 | Invite and consent | layout/centered-page | AuthCard, Button, CenteredPage, SegmentedControl, Stack |
