@@ -400,3 +400,5 @@ id	group	page	title	names	tags	summary
 5017	layout	form-page	Form with a preview and help aside		app-form,aside,side-column,preview,stat,stepper,card,settings	A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.
 5018	inputs	rating	Rating		rating,stars,review,score,radiogroup,half steps	Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.
 5019	inputs	chip-group	Multiple, small		chip-group,chips,multiple,multi-select,toggle,tags,small,filter	Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.
+5020	inputs	toolbar	Composer bar, overflow menu		toolbar,overflow,more-menu,action-bar,composer,icon-button,priority	A message action bar that stays on one line: icon buttons move into a More menu when the row is narrow, and Send never leaves.
+5021	inputs	toolbar	Filter strip, overflow scroll		toolbar,overflow,scroll,filter-strip,quick-filters	A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.

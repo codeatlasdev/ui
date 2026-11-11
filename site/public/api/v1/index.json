@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 401,
+	"count": 403,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 362,
+			"component": 364,
 			"motion": 39
 		},
 		"subtype": {
@@ -16,7 +16,7 @@
 			"component/display": 72,
 			"component/feedback": 38,
 			"component/foundation": 19,
-			"component/input": 93,
+			"component/input": 95,
 			"component/layout": 53,
 			"component/map": 1,
 			"component/navigation": 39,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 384,
+			"default": 386,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,13 +42,13 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 105,
-			"subtle": 236
+			"subtle": 238
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 33,
 			"hover": 79,
-			"keyboard": 277,
+			"keyboard": 279,
 			"none": 82,
 			"press": 236,
 			"scroll": 22
@@ -58,28 +58,28 @@
 			"full-bleed": 6,
 			"grid": 37,
 			"overlay": 50,
-			"single-column": 134,
+			"single-column": 136,
 			"split": 15,
 			"stack": 148,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 399,
+			"both": 401,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 52,
-			"regular": 336
+			"regular": 338
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 401,
+			"css": 403,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 361,
+			"css": 363,
 			"js-light": 40
 		},
 		"component": {
@@ -101,7 +101,7 @@
 			"BarChart": 5,
 			"Box": 2,
 			"Breadcrumb": 2,
-			"Button": 111,
+			"Button": 113,
 			"ButtonGroup": 2,
 			"Calendar": 2,
 			"Callout": 1,
@@ -163,7 +163,7 @@
 			"HeatmapChart": 4,
 			"Highlight": 2,
 			"HoverCard": 2,
-			"IconButton": 15,
+			"IconButton": 16,
 			"Image": 3,
 			"InstallPrompt": 2,
 			"Kanban": 2,
@@ -262,7 +262,7 @@
 			"Toaster": 4,
 			"Toggle": 1,
 			"ToggleGroup": 2,
-			"Toolbar": 1,
+			"Toolbar": 3,
 			"Tooltip": 4,
 			"Turnstile": 1,
 			"UserCell": 1,
@@ -670,6 +670,8 @@
 		{"kind":"component","subtype":"display","style":["default"],"motion":"none","interaction":["none"],"layout":"single-column","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["AvatarGroup"],"aliases":["avatar group sizes","facepile sizes"],"related":["5007","110"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5008","path":"display/avatar/GroupSizes","title":"Group sizes","summary":"Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.","use":"Choosing the group size that matches the Avatar size used elsewhere on the page; the overlap scales with it.","tags":["avatar","avatar-group","sizes","rounded","overflow"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["keyboard","press"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AppForm","Button","Card","FormSection","Select","Stat","Stepper","TextField"],"aliases":["form with preview","side panel form","settings with help column"],"related":["173","174","5006"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5017","path":"layout/form-page/WithAside","title":"Form with a preview and help aside","summary":"A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.","use":"Settings and edit pages on wide screens that should fill the width with context (preview, help, status) instead of stretching the fields.","tags":["app-form","aside","side-column","preview","stat","stepper","card","settings"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Rating"],"aliases":["star rating","review stars","score input"],"related":["5006"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5018","path":"inputs/rating/Default","title":"Rating","summary":"Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.","use":"Collecting or showing a score out of five, such as service or product reviews.","tags":["rating","stars","review","score","radiogroup","half steps"],"names":[]},
-		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["ChipGroup"],"aliases":["toggle chips","tag picker","filter chips"],"related":["720","721"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5019","path":"inputs/chip-group/MultipleSmall","title":"Multiple, small","summary":"Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.","use":"Combinable one-tap shortcuts in a search form (niches, tags, categories) where the user picks several and unpicks any of them.","tags":["chip-group","chips","multiple","multi-select","toggle","tags","small","filter"],"names":[]}
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["ChipGroup"],"aliases":["toggle chips","tag picker","filter chips"],"related":["720","721"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5019","path":"inputs/chip-group/MultipleSmall","title":"Multiple, small","summary":"Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.","use":"Combinable one-tap shortcuts in a search form (niches, tags, categories) where the user picks several and unpicks any of them.","tags":["chip-group","chips","multiple","multi-select","toggle","tags","small","filter"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","IconButton","Button"],"aliases":["action bar","composer bar","overflow menu"],"related":["5001"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5020","path":"inputs/toolbar/Composer","title":"Composer bar, overflow menu","summary":"A message action bar that stays on one line: icon buttons move into a More menu when the row is narrow, and Send never leaves.","use":"A composer, reply box or list header whose controls must not wrap and push the primary action out of view on a phone.","tags":["toolbar","overflow","more-menu","action-bar","composer","icon-button","priority"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","Button"],"aliases":["filter strip","scrolling toolbar","chip row"],"related":["5001"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5021","path":"inputs/toolbar/Scrolling","title":"Filter strip, overflow scroll","summary":"A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.","use":"A quick-filter strip above a list where every option must stay reachable and none should be hidden in a menu.","tags":["toolbar","overflow","scroll","filter-strip","quick-filters"],"names":[]}
 	]
 }

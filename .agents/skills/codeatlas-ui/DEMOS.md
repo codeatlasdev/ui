@@ -406,3 +406,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5017 | Form with a preview and help aside | layout/form-page | AppForm, Button, Card, FormSection, Select, Stat, Stepper, TextField |
 | 5018 | Rating | inputs/rating | Rating |
 | 5019 | Multiple, small | inputs/chip-group | ChipGroup |
+| 5020 | Composer bar, overflow menu | inputs/toolbar | Button, IconButton, Toolbar |
+| 5021 | Filter strip, overflow scroll | inputs/toolbar | Button, Toolbar |
