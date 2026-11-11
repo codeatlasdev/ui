@@ -512,3 +512,29 @@ describe("preset errorFill / errorContrast (#706)", () => {
 		).toBeGreaterThanOrEqual(4.5);
 	});
 });
+
+// #695: a hand-set control edge reaches the dark scheme and holds the 3:1 non-text floor on every surface.
+describe("preset borderControl (#695)", () => {
+	const edge = "oklch(0.55 0.015 255)";
+	const css = themeCSS(
+		defineTheme({
+			presets: [{ id: "ported", color: "#0f766e", colors: { dark: { borderControl: edge } } }],
+		})
+	);
+	it("emits --ca-outline-control from the role", () => {
+		expect(css).toMatch(new RegExp(`--ca-outline-control:\\s*${edge.replace(/[().]/g, "\\$&")}`));
+	});
+	it("the sample edge holds 3:1 on every dark surface", () => {
+		const t = resolved(
+			{ id: "ported", color: "#0f766e", colors: { dark: { borderControl: edge } } } as never,
+			"dark"
+		);
+		for (const s of [
+			"--ca-surface-sunken",
+			"--ca-surface-base",
+			"--ca-surface-raised",
+			"--ca-surface-overlay",
+		])
+			expect(ratio(rgb(oklchToHex(edge)), surfaceRgb(t, s)), s).toBeGreaterThanOrEqual(3);
+	});
+});

@@ -228,3 +228,30 @@ describe("errorFill / errorContrast are preset roles (#706)", () => {
 		expect(lone("#ffffff").length + lone("#000000").length).toBe(1);
 	});
 });
+
+// #695: `borderControl` owns --ca-outline-control (the edge of neutral outlined Button, TextField,
+// Select, Checkbox); unset keeps the generated value. The edge must hold 3:1 (WCAG 1.4.11).
+describe("borderControl is a preset role (#695)", () => {
+	const set = "oklch(0.55 0.015 255)";
+
+	it("emits --ca-outline-control for the scheme that sets it only", () => {
+		const t = presetTokens({ id: "x", color: "#f27636", colors: { dark: { borderControl: set } } });
+		expect(t.dark["--ca-outline-control"]).toBe(set);
+		expect(t.light["--ca-outline-control"]).toBe(
+			presetTokens({ id: "x", color: "#f27636" }).light["--ca-outline-control"]
+		);
+	});
+
+	it("reaches themeCSS in the dark selectors", () => {
+		const css = themeCSS(preset({ colors: { dark: { borderControl: set } } }));
+		expect(selectorOf(css, `--ca-outline-control: ${set}`)).toContain(".dark");
+	});
+
+	it("flags an edge under 3:1 on a surface, after compositing alpha", () => {
+		const issues = (c: string) =>
+			presetContrastIssues(preset({ colors: { dark: { borderControl: c } } }));
+		expect(issues("oklch(0.3 0.01 255)")).toHaveLength(1);
+		expect(issues("oklch(1 0 0 / 0.05)")[0]?.message).toContain("borderControl");
+		expect(issues(set)).toEqual([]);
+	});
+});

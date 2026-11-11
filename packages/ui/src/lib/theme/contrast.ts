@@ -26,9 +26,14 @@ const FILL_PAIRS = [
 	{ fill: "errorFill", label: "errorContrast", use: "button", fallback: "oklch(0.52 0.200 22)" },
 ] as const;
 
-/** Text roles the build measures on their surfaces, after compositing alpha. */
-const TEXT_ROLES = ["text", "textSecondary", "textHint"] as const;
-type TextRole = (typeof TEXT_ROLES)[number];
+/** Roles the build measures on every surface after compositing alpha, with the WCAG floor of each: text 4.5:1, a control edge 3:1 (1.4.11). */
+const MEASURED_ROLES = [
+	{ role: "text", min: AA, use: "text" },
+	{ role: "textSecondary", min: AA, use: "text" },
+	{ role: "textHint", min: AA, use: "text" },
+	{ role: "borderControl", min: 3, use: "a control edge" },
+] as const;
+type TextRole = Exclude<(typeof MEASURED_ROLES)[number]["role"], "borderControl">;
 const SURFACE_TOKENS = [
 	"--ca-surface-sunken",
 	"--ca-surface-base",
@@ -78,18 +83,18 @@ export function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetC
 			const surfaces = SURFACE_TOKENS.map((s) => evalColor(vars[s] ?? ""))
 				.filter((c): c is ParsedColor => c !== null)
 				.map((c) => compositeOver(c, [1, 1, 1]));
-			for (const role of TEXT_ROLES) {
+			for (const { role, min, use } of MEASURED_ROLES) {
 				if (set[role] === undefined) continue;
-				const text = evalColor(vars[ROLE_TOKENS[role]] ?? "");
-				if (!text || surfaces.length === 0) continue;
-				const worst = Math.min(...surfaces.map((s) => rgbRatio(compositeOver(text, s), s)));
-				if (worst >= AA) continue;
+				const color = evalColor(vars[ROLE_TOKENS[role]] ?? "");
+				if (!color || surfaces.length === 0) continue;
+				const worst = Math.min(...surfaces.map((s) => rgbRatio(compositeOver(color, s), s)));
+				if (worst >= min) continue;
 				issues.push({
 					preset: p.id,
 					scheme,
-					role,
+					...(role === "borderControl" ? {} : { role }),
 					ratio: worst,
-					message: `preset "${p.id}" (${scheme}): ${role} ${vars[ROLE_TOKENS[role]]} is ${worst.toFixed(2)}:1 on its surface after compositing alpha, under the 4.5:1 WCAG AA minimum for text. Raise its opacity or lighten/darken it.`,
+					message: `preset "${p.id}" (${scheme}): ${role} ${vars[ROLE_TOKENS[role]]} is ${worst.toFixed(2)}:1 on its surface after compositing alpha, under the ${min}:1 WCAG minimum for ${use}. Raise its opacity or lighten/darken it.`,
 				});
 			}
 		}
