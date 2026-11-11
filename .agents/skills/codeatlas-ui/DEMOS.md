@@ -403,3 +403,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5006 | Icon-only, ghost, small and disabled | inputs/toggle | Toggle |
 | 5007 | Avatar group | display/avatar | AvatarGroup |
 | 5008 | Group sizes | display/avatar | AvatarGroup |
+| 5017 | Form with a preview and help aside | layout/form-page | AppForm, Button, Card, FormSection, Select, Stat, Stepper, TextField |

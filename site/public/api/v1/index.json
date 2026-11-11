@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 397,
+	"count": 399,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,12 +8,12 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 358,
+			"component": 360,
 			"motion": 39
 		},
 		"subtype": {
 			"component/chart": 30,
-			"component/display": 70,
+			"component/display": 72,
 			"component/feedback": 38,
 			"component/foundation": 19,
 			"component/input": 91,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 380,
+			"default": 382,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -41,7 +41,7 @@
 		"motion": {
 			"expressive": 51,
 			"immersive": 9,
-			"none": 103,
+			"none": 105,
 			"subtle": 234
 		},
 		"interaction": {
@@ -49,7 +49,7 @@
 			"drag": 33,
 			"hover": 79,
 			"keyboard": 275,
-			"none": 80,
+			"none": 82,
 			"press": 234,
 			"scroll": 22
 		},
@@ -58,28 +58,28 @@
 			"full-bleed": 6,
 			"grid": 37,
 			"overlay": 50,
-			"single-column": 132,
+			"single-column": 134,
 			"split": 15,
 			"stack": 146,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 395,
+			"both": 397,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
-			"compact": 49,
+			"compact": 51,
 			"regular": 335
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 397,
+			"css": 399,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 357,
+			"css": 359,
 			"js-light": 40
 		},
 		"component": {
@@ -96,6 +96,7 @@
 			"AuthCard": 2,
 			"AuthLayout": 1,
 			"Avatar": 17,
+			"AvatarGroup": 2,
 			"Badge": 5,
 			"BarChart": 5,
 			"Box": 2,
@@ -664,6 +665,8 @@
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["PageShell","Card","Badge","Button"],"aliases":["page header","title with count","icon tile header"],"related":["185","187","600"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5004","path":"layout/page-shell/IconCount","title":"Icon tile, count and title extra","summary":"A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.","use":"Product screens that name the list and how many records it holds (\"Deals, 128\", \"Tasks, 12\") without replacing the PageShell header.","tags":["page-shell","icon","count","badge","title","header","layout"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["none"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["KpiCard","KpiGrid"],"aliases":["stat card with icon","icon tile metric"],"related":["175","985"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5005","path":"layout/kpi-card/IconTile","title":"Icon tile","summary":"Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.","use":"Dashboard headline numbers where each metric gets a coloured icon tile instead of a bare corner icon.","tags":["kpi-card","icon","tile","tone","metrics","dashboard"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toggle"],"aliases":["toggle button","pressed button","on off button"],"related":["060"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5006","path":"inputs/toggle/Default","title":"Icon-only, ghost, small and disabled","summary":"Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.","use":"A single on/off control such as bold, pin or mute that is not part of a group.","tags":["toggle","pressed","aria-pressed","button","icon-only","ghost"],"names":[]},
+		{"kind":"component","subtype":"display","style":["default"],"motion":"none","interaction":["none"],"layout":"single-column","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["AvatarGroup"],"aliases":["avatar group","overlapping avatars","facepile","team members","plus n overflow"],"related":["111","107","110"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5007","path":"display/avatar/Group","title":"Avatar group","summary":"A labelled group of six overlapping avatars: three photos and three initials, capped at four with an overflow chip counting the other two.","use":"Showing who is on a review, task or document when only the first few fit: the chip says how many more, in the page language.","tags":["avatar","avatar-group","overlap","overflow","max","collaborators"],"names":[]},
+		{"kind":"component","subtype":"display","style":["default"],"motion":"none","interaction":["none"],"layout":"single-column","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["AvatarGroup"],"aliases":["avatar group sizes","facepile sizes"],"related":["5007","110"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5008","path":"display/avatar/GroupSizes","title":"Group sizes","summary":"Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.","use":"Choosing the group size that matches the Avatar size used elsewhere on the page; the overlap scales with it.","tags":["avatar","avatar-group","sizes","rounded","overflow"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["keyboard","press"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AppForm","Button","Card","FormSection","Select","Stat","Stepper","TextField"],"aliases":["form with preview","side panel form","settings with help column"],"related":["173","174","5006"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5017","path":"layout/form-page/WithAside","title":"Form with a preview and help aside","summary":"A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.","use":"Settings and edit pages on wide screens that should fill the width with context (preview, help, status) instead of stretching the fields.","tags":["app-form","aside","side-column","preview","stat","stepper","card","settings"],"names":[]}
 	]
 }
