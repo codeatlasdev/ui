@@ -151,6 +151,54 @@ bridgeOverlaysToHistory();
 
 In SvelteKit the entries go through shallow routing (`page.state.caOverlays`); with another router pass an adapter to `bridgeOverlaysToHistory({ push, isStaleEntry })`.
 
+## Where components switch
+
+The shared scale is `sm` 600, `md` 900, `lg` 1200, `xl` 1536 (min-width). Each component below changes layout at these widths: "viewport" is a media query, "its own width" is the component measuring itself (a board in a narrow column goes compact on a wide screen). Align your own responsive CSS with them.
+
+Do not branch layout on `responsive.width` or `responsive.down("md")`: it is `undefined` on the server and on the first client render, where those helpers answer as desktop, so a phone paints the desktop layout first. Switch layout in CSS (`@media`, `@container`, the layout primitives' responsive props) and keep the store for behaviour that runs after mount.
+
+{/* breakpoints:start (generated: bun packages/ui/scripts/breakpoints.ts --write) */}
+
+| Component | Viewport width | Its own width |
+|---|---|---|
+| `Alert` | 600px |  |
+| `AppForm` | 600px |  |
+| `AppList` | 600px |  |
+| `AppSettings` | 900px |  |
+| `AppShellLayout` | 900px |  |
+| `AuthLayout` | 900px, 1200px |  |
+| `BottomNav` | 900px |  |
+| `Button` | 900px |  |
+| `ChipGroup` | 600px |  |
+| `CodeTabs` |  | 600px |
+| `CopyField` |  | 24rem |
+| `DataTablePagination` | 900px |  |
+| `DataTableToolbar` |  | 600px |
+| `Dialog (shared CSS)` | 900px, 600px |  |
+| `DocsHeader` | 1200px |  |
+| `DocsSearch` | 900px |  |
+| `DocsShell` | 1200px, 900px |  |
+| `Drawer` | 600px, 900px, 1200px |  |
+| `EditableRow` |  | 36rem |
+| `EmptyState` |  | 600px |
+| `FormSection` | 600px | 600px |
+| `Kanban` |  | 600px |
+| `KpiGrid` |  | 21.5rem, 33rem, 44.5rem, 56rem, 67.5rem, 79rem, 90.5rem |
+| `LocaleSwitcher` | 600px |  |
+| `MasterDetail` |  | 600px, 900px, 1200px |
+| `PageFrame` | 900px |  |
+| `PageShell` | 600px, 900px | 60rem |
+| `RecordCell` |  | 35.99rem |
+| `RecordList` |  | 35.99rem |
+| `RecordRow` |  | 35.99rem |
+| `Sheet` | 900px |  |
+| `SiteHeader` | 600px |  |
+| `StickyActions` | 900px |  |
+| `Table` |  | 600px |
+| `Toaster` | 900px |  |
+
+{/* breakpoints:end */}
+
 ## Layout components
 
 ### BottomNav and AppShellLayout
