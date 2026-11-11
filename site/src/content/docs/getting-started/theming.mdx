@@ -103,7 +103,7 @@ presets: [{
 }],
 ```
 
-Roles: `brand`, `brandFill`, `brandFillHover`, `brandContrast`, `background`, `sunken`, `surface`, `overlay`, `text`, `textSecondary`, `textHint`, `textDisabled`, `borderSubtle`, `border`, `borderStrong`, `borderControl`, `brandText`, `focusRing`, `hover`, `selected`, `floating`, `success`, `warning`, `info`, `error`, `errorFill`, `errorContrast`. `floating` is a fourth surface step above `overlay` (`--ca-surface-floating`), read by Popover, DropdownMenu, Select, Combobox, Dialog and Toast, so a popover that sits on a card can be one step lighter; unset, they keep `overlay`. `hover` and `selected` may be translucent (`oklch(1 0 0 / 0.045)`); `brandText` and `focusRing` replace the values solved from the brand. `error` is the feedback colour (text, borders, light on dark); `errorFill` is the solid destructive fill of `Button variant="destructive"` and error badges, and `errorContrast` its label (unset: white or ink, whichever reads better on the fill). Except `brand` (`#rrggbb`), a role is any CSS color: `#rrggbb`, `rgb()`, `oklch(1 0 0 / 0.62)`, `color-mix(in oklab, white 10%, transparent)`, or `{ color: "#fff", alpha: 0.1 }`. A translucent role follows the surface behind it instead of being flattened onto one background, so keep alpha in the theme, not in a hex computed by hand. A value that is not a single CSS color (`red; --x: 1`) throws at build time.
+Roles: `brand`, `brandFill`, `brandFillHover`, `brandContrast`, `background`, `sunken`, `surface`, `overlay`, `text`, `textSecondary`, `textHint`, `textDisabled`, `borderSubtle`, `border`, `borderStrong`, `borderControl`, `brandText`, `focusRing`, `hover`, `selected`, `floating`, `success`, `warning`, `info`, `error`, `errorFill`, `errorContrast`, and `<tone>Muted`/`<tone>Fg` (below). `floating` is a fourth surface step above `overlay` (`--ca-surface-floating`), read by Popover, DropdownMenu, Select, Combobox, Dialog and Toast, so a popover that sits on a card can be one step lighter; unset, they keep `overlay`. `hover` and `selected` may be translucent (`oklch(1 0 0 / 0.045)`); `brandText` and `focusRing` replace the values solved from the brand. `error` is the feedback colour (text, borders, light on dark); `errorFill` is the solid destructive fill of `Button variant="destructive"` and error badges, and `errorContrast` its label (unset: white or ink, whichever reads better on the fill). Except `brand` (`#rrggbb`), a role is any CSS color: `#rrggbb`, `rgb()`, `oklch(1 0 0 / 0.62)`, `color-mix(in oklab, white 10%, transparent)`, or `{ color: "#fff", alpha: 0.1 }`. A translucent role follows the surface behind it instead of being flattened onto one background, so keep alpha in the theme, not in a hex computed by hand. A value that is not a single CSS color (`red; --x: 1`) throws at build time.
 
 `caThemePlugin` and `caUI` print a warning at startup when a `text`, `textSecondary` or `textHint` you set is under 4.5:1 on any of the four surfaces **after compositing its alpha** over that surface; `borderControl` (the edge of fields and neutral outlined buttons, `--ca-outline-control`) is measured the same way against the 3:1 floor for control edges, `focusRing` against 3:1 and `brandText` against 4.5:1, and the text roles are measured over the composited `hover` and `selected` fills. Colors the build cannot evaluate (`var()`, other keywords) are skipped. The generated palette guarantees AA; hand-picked roles are measured, not corrected.
 
@@ -138,6 +138,19 @@ presets: [{
 ```
 
 `caThemePlugin` (SvelteKit, Vite) and `caUI` (Astro) print a warning at startup when `brandContrast` on `brandFill`, or `errorContrast` on `errorFill`, is under 4.5:1 (a role left unset is measured from the generated one). `sizes.inputFontSize` takes a plain length (`px`, `rem`, `em`); touch devices and screens under 900px still get `max(16px, …)`, so iOS Safari does not zoom into focused fields, and the 44px touch targets do not change.
+
+### Status colours: muted background and on-muted text
+
+Subtle `Badge`, `Alert` (and `Callout`), `Chip` and `StatusChip` derive their tint and text from the one solid hue of a status. A product with a verified pair per status sets it per scheme, with no selector override:
+
+```ts
+colors: {
+  light: { warningMuted: "oklch(0.95 0.06 88)", warningFg: "oklch(0.38 0.08 88)" },
+  dark:  { warningMuted: "oklch(0.32 0.07 88)", warningFg: "oklch(0.92 0.13 88)" },
+},
+```
+
+Roles `<tone>Muted` / `<tone>Fg` for `success`, `warning`, `info`, `error` and `neutral` emit `--ca-semantic-<tone>-muted` and `-fg` (or set them on `:root` and `.dark`); `Badge tone="danger"` reads `error`. The build warns under 4.5:1.
 
 ### Domain tokens: status, tier, channel
 

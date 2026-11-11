@@ -57,6 +57,8 @@ Snippets: `children`
 
 Parts: `ca-alert` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-alert--warning` `ca-alert__bar` `ca-alert__body` `ca-alert__close` `ca-alert__content` `ca-alert__icon` `ca-alert__title`
 
+Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-muted` `--ca-semantic-success-fg` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-muted`
+
 ## AlertDialog
 
 `import { AlertDialog } from "@codeatlasdev/ui"`
@@ -331,7 +333,7 @@ Snippets: `children`
 
 Parts: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
 
-Variables: `--ca-badge-fill` `--ca-badge-on` `--ca-badge-tone` `--ca-semantic-info-fill` `--ca-semantic-success-fill` `--ca-semantic-warning-fill`
+Variables: `--ca-badge-fg` `--ca-badge-fill` `--ca-badge-muted` `--ca-badge-on` `--ca-badge-tone` `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-fill` `--ca-semantic-info-muted` `--ca-semantic-neutral-fg` `--ca-semantic-neutral-muted` `--ca-semantic-success-fg` `--ca-semantic-success-fill` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-fill` `--ca-semantic-warning-muted`
 
 ## BarChart
 
@@ -652,6 +654,8 @@ Data attributes: `data-disabled`, `data-state` (`checked` `indeterminate`)
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--interactive` `ca-chip--selected` `ca-chip--sm` `ca-chip--success` `ca-chip--warning` `ca-chip__delete` `ca-chip__icon` `ca-chip__label`
+
+Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-muted` `--ca-semantic-success-fg` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-muted`
 
 Data attributes: `data-theme-scope` (`dark` `light`)
 
@@ -3435,6 +3439,8 @@ Data attributes: `data-align` (`center`), `data-size` (`lg` `md` `sm`), `data-to
 
 Parts: `ca-status-chip` `ca-status-chip--error` `ca-status-chip--info` `ca-status-chip--neutral` `ca-status-chip--success` `ca-status-chip--warning`
 
+Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-muted` `--ca-semantic-success-fg` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-muted`
+
 ## Stepper
 
 `import { Stepper } from "@codeatlasdev/ui"`
@@ -5266,7 +5272,7 @@ Types:
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; successMuted?: ColorValue; successFg?: ColorValue; warningMuted?: ColorValue; warningFg?: ColorValue; infoMuted?: ColorValue; infoFg?: ColorValue; errorMuted?: ColorValue; errorFg?: ColorValue; neutralMuted?: ColorValue; neutralFg?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
@@ -5855,6 +5861,16 @@ Types:
 | `error?` | `ColorValue` |  |
 | `errorFill?` | `ColorValue` | Solid destructive fill (--ca-semantic-error-fill: `Button variant="destructive"`, error badges). `error` stays the feedback colour for text and borders; a light red there cannot also be the fill. Defaults to `error` when that is an opaque `oklch()`, else the stylesheet fill. |
 | `errorContrast?` | `ColorValue` | Label on `errorFill` (--ca-semantic-error-contrast). Unset: white or ink, whichever reads better on the fill. The build warns when the pair is under 4.5:1. |
+| `successMuted?` | `ColorValue` | Muted background of a subtle status surface (--ca-semantic-success-muted: `Badge subtle`, `Alert`, `Callout`, `Chip`, `StatusChip`), with its text in `successFg`. Unset keeps the tint derived from `success`. |
+| `successFg?` | `ColorValue` | Text on `successMuted` (--ca-semantic-success-fg). The build measures the pair at 4.5:1. |
+| `warningMuted?` | `ColorValue` | Muted background of the warning status surfaces (--ca-semantic-warning-muted); see `successMuted`. |
+| `warningFg?` | `ColorValue` | Text on `warningMuted` (--ca-semantic-warning-fg). |
+| `infoMuted?` | `ColorValue` | Muted background of the info status surfaces (--ca-semantic-info-muted); see `successMuted`. |
+| `infoFg?` | `ColorValue` | Text on `infoMuted` (--ca-semantic-info-fg). |
+| `errorMuted?` | `ColorValue` | Muted background of the error status surfaces (--ca-semantic-error-muted); see `successMuted`. |
+| `errorFg?` | `ColorValue` | Text on `errorMuted` (--ca-semantic-error-fg). |
+| `neutralMuted?` | `ColorValue` | Muted background of the neutral Badge (--ca-semantic-neutral-muted); see `successMuted`. |
+| `neutralFg?` | `ColorValue` | Text on `neutralMuted` (--ca-semantic-neutral-fg). |
 
 #### SegmentedTokens
 
@@ -6200,7 +6216,7 @@ Types:
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; successMuted?: ColorValue; successFg?: ColorValue; warningMuted?: ColorValue; warningFg?: ColorValue; infoMuted?: ColorValue; infoFg?: ColorValue; errorMuted?: ColorValue; errorFg?: ColorValue; neutralMuted?: ColorValue; neutralFg?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
 #### CaUIAstroOptions
@@ -6257,6 +6273,16 @@ Types:
 | `error?` | `ColorValue` |  |
 | `errorFill?` | `ColorValue` | Solid destructive fill (--ca-semantic-error-fill: `Button variant="destructive"`, error badges). `error` stays the feedback colour for text and borders; a light red there cannot also be the fill. Defaults to `error` when that is an opaque `oklch()`, else the stylesheet fill. |
 | `errorContrast?` | `ColorValue` | Label on `errorFill` (--ca-semantic-error-contrast). Unset: white or ink, whichever reads better on the fill. The build warns when the pair is under 4.5:1. |
+| `successMuted?` | `ColorValue` | Muted background of a subtle status surface (--ca-semantic-success-muted: `Badge subtle`, `Alert`, `Callout`, `Chip`, `StatusChip`), with its text in `successFg`. Unset keeps the tint derived from `success`. |
+| `successFg?` | `ColorValue` | Text on `successMuted` (--ca-semantic-success-fg). The build measures the pair at 4.5:1. |
+| `warningMuted?` | `ColorValue` | Muted background of the warning status surfaces (--ca-semantic-warning-muted); see `successMuted`. |
+| `warningFg?` | `ColorValue` | Text on `warningMuted` (--ca-semantic-warning-fg). |
+| `infoMuted?` | `ColorValue` | Muted background of the info status surfaces (--ca-semantic-info-muted); see `successMuted`. |
+| `infoFg?` | `ColorValue` | Text on `infoMuted` (--ca-semantic-info-fg). |
+| `errorMuted?` | `ColorValue` | Muted background of the error status surfaces (--ca-semantic-error-muted); see `successMuted`. |
+| `errorFg?` | `ColorValue` | Text on `errorMuted` (--ca-semantic-error-fg). |
+| `neutralMuted?` | `ColorValue` | Muted background of the neutral Badge (--ca-semantic-neutral-muted); see `successMuted`. |
+| `neutralFg?` | `ColorValue` | Text on `neutralMuted` (--ca-semantic-neutral-fg). |
 
 ## @codeatlasdev/ui/charts
 

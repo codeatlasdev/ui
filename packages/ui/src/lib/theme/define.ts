@@ -127,6 +127,26 @@ export interface SchemeColors {
 	errorFill?: ColorValue;
 	/** Label on `errorFill` (--ca-semantic-error-contrast). Unset: white or ink, whichever reads better on the fill. The build warns when the pair is under 4.5:1. */
 	errorContrast?: ColorValue;
+	/** Muted background of a subtle status surface (--ca-semantic-success-muted: `Badge subtle`, `Alert`, `Callout`, `Chip`, `StatusChip`), with its text in `successFg`. Unset keeps the tint derived from `success`. */
+	successMuted?: ColorValue;
+	/** Text on `successMuted` (--ca-semantic-success-fg). The build measures the pair at 4.5:1. */
+	successFg?: ColorValue;
+	/** Muted background of the warning status surfaces (--ca-semantic-warning-muted); see `successMuted`. */
+	warningMuted?: ColorValue;
+	/** Text on `warningMuted` (--ca-semantic-warning-fg). */
+	warningFg?: ColorValue;
+	/** Muted background of the info status surfaces (--ca-semantic-info-muted); see `successMuted`. */
+	infoMuted?: ColorValue;
+	/** Text on `infoMuted` (--ca-semantic-info-fg). */
+	infoFg?: ColorValue;
+	/** Muted background of the error status surfaces (--ca-semantic-error-muted); see `successMuted`. */
+	errorMuted?: ColorValue;
+	/** Text on `errorMuted` (--ca-semantic-error-fg). */
+	errorFg?: ColorValue;
+	/** Muted background of the neutral Badge (--ca-semantic-neutral-muted); see `successMuted`. */
+	neutralMuted?: ColorValue;
+	/** Text on `neutralMuted` (--ca-semantic-neutral-fg). */
+	neutralFg?: ColorValue;
 }
 
 export const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> = {
@@ -156,6 +176,16 @@ export const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> =
 	error: "--ca-semantic-error",
 	errorFill: "--ca-semantic-error-fill",
 	errorContrast: "--ca-semantic-error-contrast",
+	successMuted: "--ca-semantic-success-muted",
+	successFg: "--ca-semantic-success-fg",
+	warningMuted: "--ca-semantic-warning-muted",
+	warningFg: "--ca-semantic-warning-fg",
+	infoMuted: "--ca-semantic-info-muted",
+	infoFg: "--ca-semantic-info-fg",
+	errorMuted: "--ca-semantic-error-muted",
+	errorFg: "--ca-semantic-error-fg",
+	neutralMuted: "--ca-semantic-neutral-muted",
+	neutralFg: "--ca-semantic-neutral-fg",
 };
 
 /** A preset generated from one sRGB hex color (e.g. the logo color). */

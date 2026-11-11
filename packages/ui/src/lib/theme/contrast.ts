@@ -26,6 +26,35 @@ const FILL_PAIRS = [
 	{ fill: "errorFill", label: "errorContrast", use: "button", fallback: "oklch(0.52 0.200 22)" },
 ] as const;
 
+/**
+ * Muted background and on-muted text of a status (`--ca-semantic-<tone>-muted` / `-fg`), measured as a
+ * pair at 4.5:1 over every surface after compositing alpha. The side a preset leaves unset is the
+ * derivation the components use: tint = tone at 14%, text = tone 65% toward the primary text colour.
+ */
+const STATUS_PAIRS = [
+	{ muted: "successMuted", fg: "successFg", tone: "--ca-semantic-success" },
+	{ muted: "warningMuted", fg: "warningFg", tone: "--ca-semantic-warning" },
+	{ muted: "infoMuted", fg: "infoFg", tone: "--ca-semantic-info" },
+	{ muted: "errorMuted", fg: "errorFg", tone: "--ca-semantic-error" },
+	{ muted: "neutralMuted", fg: "neutralFg", tone: "--ca-text-secondary" },
+] as const;
+
+/** Status tones of tokens.css per scheme: a preset that sets a muted/fg half is measured against the tone it derives the other half from. */
+const STATUS_TONES = {
+	light: {
+		"--ca-semantic-success": "oklch(0.44 0.155 150)",
+		"--ca-semantic-warning": "oklch(0.51 0.155 88)",
+		"--ca-semantic-info": "oklch(0.47 0.140 235)",
+		"--ca-semantic-error": "oklch(0.52 0.200 22)",
+	},
+	dark: {
+		"--ca-semantic-success": "oklch(0.73 0.165 150)",
+		"--ca-semantic-warning": "oklch(0.86 0.155 88)",
+		"--ca-semantic-info": "oklch(0.74 0.145 235)",
+		"--ca-semantic-error": "oklch(0.78 0.190 22)",
+	},
+} as const;
+
 /** Roles the build measures on every surface after compositing alpha, with the WCAG floor of each: text 4.5:1, a control edge 3:1 (1.4.11). */
 const MEASURED_ROLES = [
 	{ role: "text", min: AA, use: "text" },
@@ -88,6 +117,35 @@ export function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetC
 			const surfaces = SURFACE_TOKENS.map((s) => evalColor(vars[s] ?? ""))
 				.filter((c): c is ParsedColor => c !== null)
 				.map((c) => compositeOver(c, [1, 1, 1]));
+			for (const pair of STATUS_PAIRS) {
+				if (set[pair.muted] === undefined && set[pair.fg] === undefined) continue;
+				const tone =
+					vars[pair.tone] ??
+					STATUS_TONES[scheme][pair.tone as keyof (typeof STATUS_TONES)["light"]] ??
+					"";
+				const primary = vars["--ca-text-primary"] ?? "";
+				const muted = evalColor(
+					vars[ROLE_TOKENS[pair.muted]] ?? `color-mix(in oklab, ${tone} 14%, transparent)`
+				);
+				const text = evalColor(
+					vars[ROLE_TOKENS[pair.fg]] ?? `color-mix(in oklab, ${tone} 65%, ${primary})`
+				);
+				if (!muted || !text || surfaces.length === 0) continue;
+				const worst = Math.min(
+					...surfaces.map((s) => {
+						const bg = compositeOver(muted, s);
+						return rgbRatio(compositeOver(text, bg), bg);
+					})
+				);
+				if (worst >= AA) continue;
+				const role = set[pair.fg] === undefined ? pair.muted : pair.fg;
+				issues.push({
+					preset: p.id,
+					scheme,
+					ratio: worst,
+					message: `preset "${p.id}" (${scheme}): ${role} text ${vars[ROLE_TOKENS[pair.fg]] ?? "(derived)"} on ${pair.muted} ${vars[ROLE_TOKENS[pair.muted]] ?? "(derived)"} is ${worst.toFixed(2)}:1 after compositing alpha, under the 4.5:1 WCAG AA minimum for status text. Pick a darker/lighter pair.`,
+				});
+			}
 			for (const { role, min, use } of MEASURED_ROLES) {
 				if (set[role] === undefined) continue;
 				const color = evalColor(vars[ROLE_TOKENS[role]] ?? "");
