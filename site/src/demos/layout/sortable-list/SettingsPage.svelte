@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Bell, GitBranch, Plus, Trash2 } from '@lucide/svelte';
   import {
-    AppSettings, Button, Divider, EditableRow, FormSection, IconButton, SettingItem, SortableList, Switch, TextField,
+    AppSettings, Button, Divider, EditableRow, FormSection, SettingItem, SortableList, Switch, TextField,
     type SortableListReorder,
   } from '@codeatlasdev/ui';
 
@@ -47,17 +47,16 @@
 
     {#snippet children(tab)}
       {#if tab === 'pipeline'}
-        <FormSection title={m.stages.title} description={m.stages.description}>
+        <FormSection title={m.stages.title} description={m.stages.description} layout="stack">
           <SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label={m.stages.list}>
             {#snippet item(stage)}
               <EditableRow label={stage.name}>
                 {#snippet summary()}<strong>{stage.name}</strong>{/snippet}
                 <TextField label={m.stages.name} bind:value={stage.name} />
-                {#snippet actions()}
-                  <IconButton variant="text" aria-label={m.remove(stage.name)} onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
-                    <Trash2 size={16} />
-                  </IconButton>
-                {/snippet}
+                <Button variant="text" size="sm" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
+                  {#snippet leading()}<Trash2 size={14} />{/snippet}
+                  {m.remove(stage.name)}
+                </Button>
               </EditableRow>
             {/snippet}
           </SortableList>

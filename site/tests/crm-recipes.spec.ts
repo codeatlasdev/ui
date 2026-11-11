@@ -1,5 +1,5 @@
-import { audit } from "./layout-audit";
 import { expect, gotoReady, test } from "./fixtures";
+import { audit } from "./layout-audit";
 
 // #943: each CRM recipe passes the layout audit at 390px, in the states a user reaches on a
 // phone (thread open, the second settings tab, a stage being edited). The route sweep only sees
@@ -22,8 +22,8 @@ test.describe("CRM recipes at 390px (#943)", () => {
 	test("inbox with a thread open", async ({ page }) => {
 		await gotoReady(page, "/docs/layout/master-detail/");
 		const demo = page.getByRole("region", { name: "Inbox page" });
-		await demo.locator(".ca-conversation-item").first().click();
-		await expect(demo.locator(".ca-message-bubble").first()).toBeVisible();
+		await demo.locator(".ca-conversation").first().click();
+		await expect(page.locator(".ca-bubble").first()).toBeVisible();
 		expect(await audit(page, true), "thread open @ 390").toEqual([]);
 	});
 
