@@ -144,6 +144,7 @@ bridgeOverlaysToHistory();
 
 - Back closes the topmost layer and stays on the route; two stacked layers need two presses.
 - Closing by button, Escape or scrim consumes the entry, so the history length is the same after open and close.
+- A Back pressed in the same task as a close (a scrim tap and the hardware Back together) is that close's traversal: the page stays, it does not step one entry further.
 - Reloading with an overlay entry in the history does not reopen the layer; the stale entry is stepped out of once.
 - A link inside a layer navigates once: the entries are unwound first, so the new page is not stacked on top of them.
 - A layer opts out with `history={false}`.
