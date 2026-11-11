@@ -1,6 +1,6 @@
 /// <reference types="@vitest/browser-playwright" />
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cdp, userEvent } from "vitest/browser";
+import { cdp } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import Harness from "./MotionStage.test.svelte";
@@ -124,8 +124,10 @@ describe("MotionStage", () => {
 		await emulate("no-preference");
 		const { container } = await render(Harness);
 		await expect.poll(() => stageOf(container).dataset.playing).toBe("true");
+		// A keydown, as the title says: clicking the looping input waited for it to be stable and it
+		// was re-rendered on every cycle, so a loaded run timed out (#1016).
 		const input = container.querySelector("input") as HTMLInputElement;
-		await userEvent.click(input);
+		input.dispatchEvent(new KeyboardEvent("keydown", { key: "a", bubbles: true }));
 		await expect.poll(() => stageOf(container).dataset.taken).toBe("true");
 	});
 
