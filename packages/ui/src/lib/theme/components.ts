@@ -178,6 +178,26 @@ export interface EmptyStateTokens {
 	titleSize?: CssValue;
 	/** `--ca-empty-title-weight`. @default semibold (heading weight for `hero`) */
 	titleWeight?: CssValue;
+	/** `--ca-empty-icon-bg`: fill of the icon tile. @default `--ca-action-hover` */
+	iconBg?: CssValue;
+	/** `--ca-empty-icon-border`: a border shorthand for the icon tile. @default none */
+	iconBorder?: CssValue;
+	/** `--ca-empty-icon-radius`. @default `--ca-radius-lg` */
+	iconRadius?: CssValue;
+	/** `--ca-empty-title-gap`: space between the title and the description only. @default `--ca-space-3` */
+	titleGap?: CssValue;
+	/** `--ca-empty-title-leading`. @default inherited */
+	titleLeading?: CssValue;
+	/** `--ca-empty-title-tracking`. @default `--ca-heading-tracking` */
+	titleTracking?: CssValue;
+	/** `--ca-empty-description-size`. @default `--ca-font-size-body2` */
+	descriptionSize?: CssValue;
+	/** `--ca-empty-description-leading`. @default `--ca-line-height-body` */
+	descriptionLeading?: CssValue;
+	/** `--ca-empty-description-max-width`; `none` lets it fill the width. @default 340px */
+	descriptionMaxWidth?: CssValue;
+	/** `--ca-empty-actions-margin`: extra space above the actions, on top of the row gap. @default `--ca-space-1` */
+	actionsMargin?: CssValue;
 }
 
 /** `ThemeOptions.components`: component tokens, emitted on `:root`. */
@@ -311,6 +331,16 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		put(out, "--ca-empty-padding", e.padding);
 		put(out, "--ca-empty-title-size", e.titleSize);
 		put(out, "--ca-empty-title-weight", e.titleWeight);
+		put(out, "--ca-empty-icon-bg", e.iconBg);
+		put(out, "--ca-empty-icon-border", e.iconBorder);
+		put(out, "--ca-empty-icon-radius", e.iconRadius);
+		put(out, "--ca-empty-title-gap", e.titleGap);
+		put(out, "--ca-empty-title-leading", e.titleLeading);
+		put(out, "--ca-empty-title-tracking", e.titleTracking);
+		put(out, "--ca-empty-description-size", e.descriptionSize);
+		put(out, "--ca-empty-description-leading", e.descriptionLeading);
+		put(out, "--ca-empty-description-max-width", e.descriptionMaxWidth);
+		put(out, "--ca-empty-actions-margin", e.actionsMargin);
 	}
 	return out;
 }
