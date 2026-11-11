@@ -32,7 +32,7 @@
 </script>
 
 <script lang="ts" generics="T">
-  import { EllipsisVertical } from '@lucide/svelte';
+  import { EllipsisVertical, GripVertical } from '@lucide/svelte';
   import { onMount } from 'svelte';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { kanban } from '../../i18n/groups/kanban.js';
@@ -75,6 +75,19 @@
      * card) instead of `div[role=button]`, so a card that is a link has no nested interactive control.
      */
     cardHref?: (card: T) => string | undefined;
+    /**
+     * Mobile only. `true` (default): the stages are one horizontal swipe track (scroll-snap, one column per
+     * screen) and the tab strip follows it. `false`: one column at a time, the tab strip is the only way
+     * to change stage.
+     */
+    swipeStages?: boolean;
+    /**
+     * A grip on each card that starts a drag at once (no press and hold). `auto` (default): shown under a
+     * coarse pointer. `always`: always. `none`: never (touch keeps the press and hold).
+     */
+    dragHandle?: 'auto' | 'always' | 'none';
+    /** `columns`: the desktop board snaps to columns when scrolled. Default `none`. */
+    snap?: 'columns' | 'none';
     /** Accessible name of the board. */
     label?: string;
     /**
@@ -112,6 +125,9 @@
     variant = 'card',
     cardChrome = 'box',
     cardHref,
+    swipeStages = true,
+    dragHandle = 'auto',
+    snap = 'none',
     label,
     headingLevel,
     nearEnd = 240,
@@ -133,6 +149,10 @@
   let board = $state<HTMLElement>();
   let width = $state(1024);
   const mobile = $derived(compact ?? width < 600);
+  const swipe = $derived(mobile && swipeStages);
+  // `auto` shows the grip under a coarse pointer, which only the browser can tell: follow the media query.
+  let coarse = $state(false);
+  const showGrip = $derived(canMove && (dragHandle === 'always' || (dragHandle === 'auto' && coarse)));
   let selected = $state<string>();
   const current = $derived(columns.find((c) => c.id === selected) ?? columns[0]);
   let fade = $state<'start' | 'end' | 'both' | undefined>();
@@ -180,7 +200,11 @@
   }
 
   onMount(() => {
-    if (!root || !board) return;
+    const mq = matchMedia('(pointer: coarse)');
+    coarse = mq.matches;
+    const onCoarse = (e: MediaQueryListEvent) => (coarse = e.matches);
+    mq.addEventListener('change', onCoarse);
+    if (!root || !board) return () => mq.removeEventListener('change', onCoarse);
     width = root.clientWidth;
     const ro = new ResizeObserver(() => {
       width = root?.clientWidth ?? width;
@@ -189,7 +213,10 @@
     ro.observe(root);
     ro.observe(board);
     measureFade();
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      mq.removeEventListener('change', onCoarse);
+    };
   });
   $effect(() => {
     mobile;
@@ -306,6 +333,30 @@
   }
   function selectTab(id: string) {
     selected = id;
+    if (swipe && !syncing) {
+      // The tab drives the track; the observer below drives the tab while the user swipes.
+      const col = board?.querySelector<HTMLElement>(`[data-kanban-column="${CSS.escape(id)}"]`);
+      col?.scrollIntoView({ inline: 'start', block: 'nearest', behavior: reducedMotion() ? 'instant' : 'smooth' });
+    }
+  }
+  const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Swipe track: the column that fills the board is the selected stage.
+  let syncing = false;
+  function trackSync(node: HTMLElement) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        const id = (hit?.target as HTMLElement | undefined)?.dataset.kanbanColumn;
+        if (!id || id === selected) return;
+        syncing = true;
+        selected = id;
+        syncing = false;
+      },
+      { root: node, threshold: 0.6 },
+    );
+    for (const col of node.querySelectorAll('[data-kanban-column]')) io.observe(col);
+    return () => io.disconnect();
   }
 </script>
 
@@ -313,6 +364,8 @@
   bind:this={root}
   class="ca-kanban {className}"
   class:ca-kanban--mobile={mobile}
+  class:ca-kanban--swipe={swipe}
+  class:ca-kanban--snap={snap === 'columns' && !mobile}
   class:ca-kanban--flat={variant === 'flat'}
   class:ca-kanban--bare={cardChrome === 'none'}
   role="region"
@@ -345,7 +398,7 @@
 
   <!-- Delegated arrow keys for the focusable card bodies inside; the board itself is not a control. -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <div bind:this={board} class="ca-kanban__board" {@attach pan} {@attach dnd.scroller(() => ({ axis: 'x', disabled: mobile }))} onscroll={measureFade} onkeydown={onBoardKeydown}>
+  <div bind:this={board} class="ca-kanban__board" data-dragging={dnd.active !== null ? '' : undefined} {@attach pan} {@attach dnd.scroller(() => ({ axis: 'x', disabled: mobile && !swipeStages }))} {@attach (node) => (swipe ? trackSync(node) : undefined)} onscroll={measureFade} onkeydown={onBoardKeydown}>
     {#each columns as c (c.id)}
       <section
         class="ca-kanban__col"
@@ -354,7 +407,7 @@
         role={mobile ? 'tabpanel' : undefined}
         aria-labelledby={mobile ? `${uid}-tab-${c.id}` : `${uid}-h-${c.id}`}
         aria-busy={c.loading || c.loadingMore ? 'true' : undefined}
-        hidden={mobile && c.id !== current?.id}
+        hidden={mobile && !swipeStages && c.id !== current?.id}
         style:--ca-kanban-color={c.color}
       >
         {#if !mobile}
@@ -385,7 +438,8 @@
             drop,
             // A link card keeps Enter for the link (Space lifts); the body is then the handle, because an
             // anchor is neither the item nor a button.
-            handle: cardHref ? '.ca-kanban__body' : undefined,
+            handle: cardHref ? '.ca-kanban__body, .ca-kanban__grip' : undefined,
+            instantTouch: showGrip ? '.ca-kanban__grip' : undefined,
             liftKeys: cardHref ? [' '] : undefined,
             disabled: !canMove,
             getItems: () => c.items.map(getId),
@@ -402,6 +456,16 @@
               {@const id = getId(item)}
               {@const href = cardHref?.(item)}
               <li class="ca-kanban__card" data-dnd-item={id} data-card-id={id}>
+                {#if showGrip}
+                  <button
+                    type="button"
+                    class="ca-kanban__grip"
+                    aria-label={t().kanban.grip(cardName(id))}
+                    aria-describedby={dnd.instructionsId}
+                  >
+                    <GripVertical size={16} aria-hidden="true" />
+                  </button>
+                {/if}
                 {#if canMove && href}
                   <a class="ca-kanban__body" {href} aria-describedby={dnd.instructionsId} draggable="false">
                     {@render card(item, { dragging: dnd.active === id, active: dnd.active !== null })}
@@ -621,6 +685,24 @@
   }
   a.ca-kanban__body { display: block; color: inherit; text-decoration: none; }
   .ca-kanban__body:focus-visible { outline: 2px solid var(--ca-focus-ring); outline-offset: 2px; }
+  /* Grip: starts a drag at once on touch; it can never scroll or swipe, hence touch-action: none. */
+  .ca-kanban__grip {
+    all: unset;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    width: var(--ca-touch-target);
+    min-height: var(--ca-touch-target);
+    border-radius: var(--ca-radius-md);
+    color: var(--ca-text-hint);
+    cursor: grab;
+    touch-action: none;
+  }
+  .ca-kanban__grip:hover { background: var(--ca-action-hover); color: var(--ca-text-primary); }
+  .ca-kanban__grip:focus-visible { outline: 2px solid var(--ca-focus-ring); outline-offset: -2px; }
   .ca-kanban__move {
     all: unset;
     box-sizing: border-box;
@@ -700,6 +782,10 @@
     border-radius: var(--ca-radius-pill);
     background: var(--ca-kanban-color, var(--ca-outline-strong));
   }
+  /* Desktop snap: a swipe on a touch laptop or tablet lands on a column edge. */
+  .ca-kanban--snap .ca-kanban__board { scroll-snap-type: x proximity; }
+  .ca-kanban--snap .ca-kanban__col { scroll-snap-align: start; }
+
   .ca-kanban--mobile .ca-kanban__board {
     overflow-x: hidden;
     cursor: auto;
@@ -707,6 +793,22 @@
     mask-image: none;
   }
   .ca-kanban--mobile .ca-kanban__col { flex: 1; width: auto; min-width: 0; }
+
+  /* Swipe track (after the rules above, same specificity): one column per screen, scroll-snapped, and
+     the tab strip follows the swipe. */
+  .ca-kanban--swipe .ca-kanban__board {
+    overflow-x: auto;
+    gap: 0;
+    padding: 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .ca-kanban--swipe .ca-kanban__board::-webkit-scrollbar { display: none; }
+  .ca-kanban--swipe .ca-kanban__col { flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+  /* A drag at the edge scrolls the track by a few px a frame: snapping would pull it back every time. */
+  .ca-kanban--swipe .ca-kanban__board[data-dragging],
+  .ca-kanban--snap .ca-kanban__board[data-dragging] { scroll-snap-type: none; }
 
   @media (prefers-reduced-motion: reduce) {
     .ca-kanban__skeleton { animation: none; }

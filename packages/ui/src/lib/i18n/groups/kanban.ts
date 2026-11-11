@@ -9,6 +9,8 @@ export const kanban = defineGroup("kanban", {
 			`${label}, ${count} ${count === 1 ? "card" : "cards"}`,
 		/** Button that opens a card's "Move to…" menu; `card` is the card's name. */
 		moveTo: (card: string) => `Move ${card} to…`,
+		/** Drag handle of a card; `card` is the card's name. */
+		grip: (card: string) => `Move ${card}`,
 		/** Heading of the "Move to…" menu. */
 		moveToLabel: "Move to…",
 		/** Message after a menu move, spoken through the live region. */
@@ -25,6 +27,7 @@ export const kanban = defineGroup("kanban", {
 		board: "Quadro",
 		column: (label, count) => `${label}, ${count} ${count === 1 ? "cartão" : "cartões"}`,
 		moveTo: (card) => `Mover ${card} para…`,
+		grip: (card) => `Mover ${card}`,
 		moveToLabel: "Mover para…",
 		moved: (card, column) => `${card} movido para ${column}.`,
 		loadMore: (remaining) => `Carregar mais (${remaining})`,

@@ -75,6 +75,18 @@ export interface SortableOptions {
 	 * for itself: pass `[" "]`.
 	 */
 	liftKeys?: readonly string[];
+	/**
+	 * Touch needs a press and hold (`holdMs`) before the drag starts, so a swipe still scrolls. Default
+	 * `true`. `false` starts a touch drag after `threshold` px, like a mouse: for a `handle` that is a
+	 * grip with `touch-action: none`, which cannot scroll anyway.
+	 */
+	touchHold?: boolean;
+	/**
+	 * CSS selector of elements inside an item whose touch drags start at once (no hold), while the rest of
+	 * the item keeps the press and hold. Use it for a grip with `touch-action: none` on an item that must
+	 * still scroll or swipe by its body.
+	 */
+	instantTouch?: string;
 	disabled?: boolean;
 	/** Commit the move (same container: reorder; another container: move). */
 	onDrop: (e: DndDropEvent) => void;
@@ -697,9 +709,16 @@ export function createDnd(options: DndOptions = {}): DndController {
 		});
 	}
 
-	function armPointer(e: PointerEvent, itemEl: HTMLElement, make: () => Session | null) {
+	function armPointer(
+		e: PointerEvent,
+		itemEl: HTMLElement,
+		make: () => Session | null,
+		hold = true
+	) {
 		if (session || e.button > 0 || !e.isPrimary) return;
-		const touch = e.pointerType === "touch";
+		// A touch that starts on a dedicated handle (`touchHold: false`) drags like a mouse: the handle
+		// has `touch-action: none`, so it never scrolls and needs no press-and-hold to tell the two apart.
+		const touch = e.pointerType === "touch" && hold;
 		const startX = e.clientX;
 		const startY = e.clientY;
 		const pointerId = e.pointerId;
@@ -889,8 +908,12 @@ export function createDnd(options: DndOptions = {}): DndController {
 				!opts.handle
 			)
 				return;
-			armPointer(e, el, () =>
-				begin(el.getAttribute(ATTR_ITEM) as string, undefined, c, el, "pointer", e.pointerId)
+			armPointer(
+				e,
+				el,
+				() => begin(el.getAttribute(ATTR_ITEM) as string, undefined, c, el, "pointer", e.pointerId),
+				opts.touchHold !== false &&
+					!(opts.instantTouch && e.target instanceof Element && e.target.closest(opts.instantTouch))
 			);
 		};
 		const keydown = (e: KeyboardEvent) => {

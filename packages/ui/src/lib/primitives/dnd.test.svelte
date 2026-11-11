@@ -8,6 +8,7 @@
     drops = [],
     zone = false,
     handle = false,
+    touchHold = true,
     container = false,
     scroller = false,
   }: {
@@ -15,6 +16,8 @@
     drops?: DndDropEvent[];
     zone?: boolean;
     handle?: boolean;
+    /** `touchHold: false` on every list (touch starts from the handle with no hold). */
+    touchHold?: boolean;
     /** `drop: "container"` on every list. */
     container?: boolean;
     /** Wrap the lists in a horizontally scrolling `dnd.scroller` board. */
@@ -37,7 +40,7 @@
     <ul
       aria-label="List {id}"
       class="col"
-      {@attach dnd.sortable(() => ({ id, group: 'board', label: `List ${id}`, handle: handle ? '.grip' : undefined, drop: container ? 'container' : 'position', getItems: () => lists[id], onDrop }))}
+      {@attach dnd.sortable(() => ({ id, group: 'board', label: `List ${id}`, handle: handle ? '.grip' : undefined, touchHold, drop: container ? 'container' : 'position', getItems: () => lists[id], onDrop }))}
     >
       {#each lists[id] as item (item)}
         <li data-dnd-item={item} class="row">
