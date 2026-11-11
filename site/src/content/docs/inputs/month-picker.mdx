@@ -1,0 +1,51 @@
+---
+title: MonthPicker
+description: A month and year field with a popover grid of twelve months, year navigation, min and max, and a form value.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Default from "~/demos/inputs/month-picker/Default.svelte";
+import DefaultSrc from "~/demos/inputs/month-picker/Default.svelte?raw";
+
+```svelte
+<script>
+  import { MonthPicker, CalendarDate } from "@codeatlasdev/ui";
+  let month = $state(new CalendarDate(2026, 3, 1));
+</script>
+
+<MonthPicker label="Billing month" bind:value={month} />
+```
+
+The field shows the month and year ("Março de 2026") and a button opens a grid of the twelve months of one year, on the same popover shell as `DatePicker`. The year arrows move the grid without changing the value.
+
+**The value is a `CalendarDate` on the 1st of the month** (`2026-03-01`). A pick always writes the 1st, so two picks of the same month are equal, and the hidden input of `name` carries that ISO date. A value with another day (`new CalendarDate(2026, 3, 15)`) is read as its month and left as it is until the user picks.
+
+A month is disabled when it lies wholly outside `minValue` and `maxValue`: with `minValue` on April 20th, April is still pickable and March is not. Month names come from `Intl` for `locale`.
+
+**Keyboard.** Enter or Space on the button opens the grid with the focus on the chosen month (else the current one). Left and Right move by month, Up and Down by three months (a row), Home and End jump to January and December, PageUp and PageDown change the year, Enter or Space picks and closes, Escape closes and returns the focus to the button. Under a coarse pointer every month is at least `--ca-touch-target` square.
+
+<Demo title="MonthPicker" description="A free month picker, and one limited to 2026." src={DefaultSrc}><Default client:visible /></Demo>
+
+<Props for="MonthPicker" rows={[
+  { name: "label", type: "string", description: "Field label and the accessible name of the popover." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`." },
+  { name: "value", type: "CalendarDate", description: "Bindable selected month, always the 1st of it." },
+  { name: "placeholder", type: "DateValue", description: "Bindable. Year the grid shows while the field is empty (default: the current year)." },
+  { name: "open", type: "boolean", default: "false", description: "Bindable popover state." },
+  { name: "minValue", type: "DateValue", description: "A month that ends before this day is disabled." },
+  { name: "maxValue", type: "DateValue", description: "A month that starts after this day is disabled." },
+  { name: "locale", type: "string", default: "'pt-BR'", description: "Intl locale for the month names." },
+  { name: "description", type: "string", description: "Hint below the field." },
+  { name: "error", type: "string", description: "Error message (`role=\"alert\"`), sets the error style." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables the field and the grid." },
+  { name: "readonly", type: "boolean", default: "false", description: "Shows the value without allowing edits." },
+  { name: "required", type: "boolean", default: "false", description: "Marks the field as required." },
+  { name: "name", type: "string", description: "Name of the hidden input (ISO date of the 1st, `2026-03-01`) for native forms." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
+  { name: "width", type: "'full' | 'auto' | 'fit' | string", default: "'full'", description: "Field width (`--ca-field-width`)." },
+  { name: "variant", type: "'outlined' | 'filled' | 'underline'", default: "theme", description: "How the field is drawn." },
+  { name: "triggerLabel", type: "string", default: "'Choose month' (localized)", description: "aria-label of the button that opens the grid." },
+  { name: "onchange", type: "(value: CalendarDate | undefined) => void", description: "Called when a month is picked." },
+  { name: "class", type: "string", description: "Extra classes on the root." },
+]} />

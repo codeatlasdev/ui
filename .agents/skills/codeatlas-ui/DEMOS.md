@@ -414,3 +414,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5025 | Inbox page | layout/master-detail | Avatar, ConversationItem, EmptyState, MasterDetail, MessageBubble, TextField |
 | 5026 | Settings page | layout/sortable-list | AppSettings, Button, Divider, EditableRow, FormSection, SettingItem, SortableList, Switch, TextField |
 | 5027 | Record page | layout/record-list | Avatar, Button, Card, DropdownMenu, DropdownMenuItem, IconButton, PageShell, RecordCell, RecordList, RecordRow |
+| 5028 | TimePicker | inputs/time-picker | TimePicker |
+| 5029 | MonthPicker | inputs/month-picker | MonthPicker |

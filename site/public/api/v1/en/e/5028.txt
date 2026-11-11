@@ -1,0 +1,53 @@
+<!-- @codeatlasdev/ui demo #5028 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/time-picker#timepicker -->
+Element: #5028 TimePicker (inputs/time-picker)
+What it shows: Two TimePickers: segments plus a popover list of times, one in 12h with the default 15-minute step and one in 24h with a 30-minute step bounded to the afternoon.
+When to use: Choosing an opening hour or an appointment time where the user can type it or pick it from a list.
+Spec:
+- `<TimePicker label="Opens at" locale="en-US" hourCycle={12} bind:value={start} />` initialised with `new Time(9, 0)`
+- A second `<TimePicker` with `label="Closes at"`, `hourCycle={24}`, `step={30}`, `minValue={new Time(12, 0)}`, `maxValue={new Time(20, 0)}` and `description="Between 12:00 and 20:00, every 30 minutes."`
+- Two `value:` output lines print `start.toString()` and `end.toString()`
+- Wrapper `.col` has `max-width: 400px`
+Tags: time-picker, time, listbox, popover, step, hour-cycle
+Needs: @codeatlasdev/ui@4.6.0
+Components: TimePicker
+Live demo: https://ui.codeatlas.com.br/docs/inputs/time-picker#timepicker
+
+<script lang="ts">
+  import { Time, TimePicker } from '@codeatlasdev/ui';
+
+  let start = $state<Time | undefined>(new Time(9, 0));
+  let end = $state<Time | undefined>();
+</script>
+
+<div class="col">
+  <TimePicker label="Opens at" locale="en-US" hourCycle={12} bind:value={start} />
+  <p class="out">value: <code>{start ? start.toString() : '–'}</code></p>
+
+  <TimePicker
+    label="Closes at"
+    description="Between 12:00 and 20:00, every 30 minutes."
+    locale="en-US"
+    hourCycle={24}
+    step={30}
+    minValue={new Time(12, 0)}
+    maxValue={new Time(20, 0)}
+    bind:value={end}
+  />
+  <p class="out">value: <code>{end ? end.toString() : '–'}</code></p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .out {
+    margin: 0;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

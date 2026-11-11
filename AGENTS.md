@@ -542,7 +542,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 - **Touch target**: `--ca-touch-target: 44px` (`tokens.css`). Under `@media (pointer: coarse)` it becomes `min-height`/`min-width` of `IconButton`, the `Select` trigger, `TabsTrigger`, `ToggleGroup`, `SegmentedControl`, `PinInput` and calendar cells. It is a media query, not a prop: do not write 44px overrides in the app.
 
 ### Inputs (own primitives, themed by tokens)
-`Button` · `IconButton` · `TextField` · `TextArea` · `Select` · `Combobox` · `Checkbox` · `Switch` · `Slider` · `ColorPicker` · `NumberField` · `FileUpload` · `Toggle` · `ToggleGroup` · `SegmentedControl` · `SwatchGroup` · `PinInput` · `CopyButton` · `DatePicker` · `DateRangePicker` · `DateField` · `TimeField` · `Calendar` · `RangeCalendar`
+`Button` · `IconButton` · `TextField` · `TextArea` · `Select` · `Combobox` · `Checkbox` · `Switch` · `Slider` · `ColorPicker` · `NumberField` · `FileUpload` · `Toggle` · `ToggleGroup` · `SegmentedControl` · `SwatchGroup` · `PinInput` · `CopyButton` · `DatePicker` · `DateRangePicker` · `DateField` · `TimeField` · `TimePicker` · `MonthPicker` · `Calendar` · `RangeCalendar`
 
 - **`Button` / `IconButton` `loading`**: swaps `leading` (Button) or the icon (IconButton) for a `Spinner`, applies `aria-busy="true"`, disables the click (`onclick` does not fire) and keeps the label. Class: `ca-btn--loading`.
 - **`ColorPicker`**: OKLCH area (lightness by chroma at the hue, cut at the sRGB gamut; one `role="slider"` with words in `aria-valuetext`), hue slider, optional opacity slider and `SwatchGroup`. `bind:value` is a CSS color (`oklch()` by default, `#rrggbb[aa]` with `format="hex"`), `label`, `alpha`, `swatches`, `disabled`, `onchange`. `ColorField picker` opens it in a `Popover` and keeps the contrast readout.
@@ -557,6 +557,8 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
   - `DateRangePicker`: `value: DateRange` (`{ start, end }`), `closeOnRangeSelect`
   - `DateField`: only the typeable segments, no popover
   - `TimeField`: `value: Time`, `granularity="hour" | "minute" | "second"`, `hourCycle`
+  - `TimePicker`: a `TimeField` plus a listbox popover of times (`step` minutes, default 15, `minValue`/`maxValue`, `bind:open`, `name`)
+  - `MonthPicker`: month and year field plus a 12-month grid popover; `value` is a `CalendarDate` on the 1st of the month, `minValue`/`maxValue` disable whole months
   - `Calendar` / `RangeCalendar`: inline grid (`fixedWeeks`, `isDateDisabled`, `isDateUnavailable`)
 
 ```svelte

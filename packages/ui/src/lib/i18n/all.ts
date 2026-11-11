@@ -50,6 +50,7 @@ import { map } from "./groups/map.js";
 import { masterDetail } from "./groups/masterDetail.js";
 import { mediaGrid } from "./groups/mediaGrid.js";
 import { mobilePane } from "./groups/mobilePane.js";
+import { monthPicker } from "./groups/monthPicker.js";
 import { motionStage } from "./groups/motionStage.js";
 import { notificationBell } from "./groups/notificationBell.js";
 import { numberField } from "./groups/numberField.js";
@@ -73,6 +74,7 @@ import { stepper } from "./groups/stepper.js";
 import { table } from "./groups/table.js";
 import { textField } from "./groups/textField.js";
 import { themeToggle } from "./groups/themeToggle.js";
+import { timePicker } from "./groups/timePicker.js";
 import { toast } from "./groups/toast.js";
 import { toolbar } from "./groups/toolbar.js";
 import { tour } from "./groups/tour.js";
@@ -95,6 +97,8 @@ export const groups = {
 	badge,
 	breadcrumb,
 	calendar,
+	timePicker,
+	monthPicker,
 	chip,
 	tour,
 	rating,
