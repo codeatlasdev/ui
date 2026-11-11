@@ -1,0 +1,37 @@
+<!-- @codeatlasdev/ui demo #5001 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-bar -->
+Element: #5001 Filter bar (inputs/toolbar)
+What it shows: A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.
+When to use: A filter bar above a list or table where the fields have their own widths instead of stretching to the row.
+Spec:
+- `<Toolbar aria-label="Filter deals">` holding every control, no wrapper div per field
+- `TextField` with `hideLabel` and `width="14rem"`, then a `Select` with `hideLabel` and `width="10rem"` whose third option is long enough to be truncated
+- `NumberField` with `hideLabel`, `steppers={false}`, `width="6rem"`, min 0 and max 90
+- `<span class="ca-toolbar-spacer">` pushes an outlined neutral `Export` button to the end
+Tags: toolbar, filter-bar, text-field, select, number-field, width, wrap, role-toolbar
+Needs: @codeatlasdev/ui@4.6.0
+Components: Button, NumberField, Select, TextField, Toolbar
+Live demo: https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-bar
+
+<script lang="ts">
+  import { Button, NumberField, Select, TextField, Toolbar } from '@codeatlasdev/ui';
+
+  let status = $state('open');
+</script>
+
+<Toolbar aria-label="Filter deals">
+  <TextField label="Search" hideLabel placeholder="Search deals" width="14rem" />
+  <Select
+    label="Status"
+    hideLabel
+    width="10rem"
+    bind:value={status}
+    options={[
+      { value: 'open', label: 'Open' },
+      { value: 'won', label: 'Won' },
+      { value: 'lost', label: 'Lost, waiting for the customer to answer' },
+    ]}
+  />
+  <NumberField label="Day" hideLabel steppers={false} width="6rem" min={0} max={90} value={7} />
+  <span class="ca-toolbar-spacer"></span>
+  <Button variant="outlined" tone="neutral">Export</Button>
+</Toolbar>

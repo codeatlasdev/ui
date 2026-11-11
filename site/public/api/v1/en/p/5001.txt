@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #5001 "Filter bar" (inputs/toolbar).
+What it shows: A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row. When to use: A filter bar above a list or table where the fields have their own widths instead of stretching to the row.
+Spec:
+- `<Toolbar aria-label="Filter deals">` holding every control, no wrapper div per field
+- `TextField` with `hideLabel` and `width="14rem"`, then a `Select` with `hideLabel` and `width="10rem"` whose third option is long enough to be truncated
+- `NumberField` with `hideLabel`, `steppers={false}`, `width="6rem"`, min 0 and max 90
+- `<span class="ca-toolbar-spacer">` pushes an outlined neutral `Export` button to the end
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5001 Filter bar → file, what changed, https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-bar; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5001.txt   Components API: ca-ui-mcp get_component(Button)

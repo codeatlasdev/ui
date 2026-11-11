@@ -389,3 +389,4 @@ id	group	page	title	names	tags	summary
 998	inputs	copy-field	Single line, icon only and multiline		copy-field,clipboard,copy,secret,api-key,read-only	A CopyField in three forms: single line, icon-only copy and a multiline command.
 999	inputs	copy-field	Masked		copy-field,clipboard,copy,secret,api-key,read-only	A masked CopyField: dots with a reveal toggle; copy always copies the real value.
 5000	inputs	copy-field	Show once		copy-field,clipboard,copy,secret,api-key,read-only	Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.
+5001	inputs	toolbar	Filter bar		toolbar,filter-bar,text-field,select,number-field,width,wrap,role-toolbar	A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.

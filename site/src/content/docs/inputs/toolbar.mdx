@@ -1,0 +1,38 @@
+---
+title: Toolbar
+description: A wrapping row for fields and buttons. Fields inside size to their content, so a filter bar needs no wrapper div per control.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Filters from "~/demos/inputs/toolbar/Filters.svelte";
+import FiltersSrc from "~/demos/inputs/toolbar/Filters.svelte?raw";
+
+```svelte
+<script>
+  import { Button, Select, TextField, Toolbar } from "@codeatlasdev/ui";
+</script>
+
+<Toolbar aria-label="Filter deals">
+  <TextField label="Search" hideLabel width="14rem" />
+  <Select label="Status" hideLabel width="10rem" options={[{ value: "open", label: "Open" }]} />
+  <span class="ca-toolbar-spacer"></span>
+  <Button variant="outlined" tone="neutral">Export</Button>
+</Toolbar>
+```
+
+`Toolbar` is `role="toolbar"` with a flex row that wraps and a `--ca-toolbar-gap` (default `--ca-space-2`). It sets `--ca-field-width: auto` for everything inside, so a `TextField`, `Select`, `Combobox`, `NumberField`, `ColorField` or a date field takes the width its content needs; give one a size with its `width` prop (`"10rem"`, `"fit"`) and let `ca-toolbar-spacer` push what follows to the end. A field that must still fill the row says `width="full"`. Give it an `aria-label`: a dev warning fires without one. There is no separate `FilterBar`: this is it.
+
+Fields in a toolbar usually do not need their label drawn: pass `hideLabel` and the name stays for assistive tech. A `Select` whose value is cut by its width shows the full text in a `title`.
+
+<Demo title="Filter bar" description="A search field, a Select, a compact NumberField (`steppers={false}`), a spacer and a button, with no wrapper divs." src={FiltersSrc}><Filters client:visible /></Demo>
+
+<Props for="Toolbar" rows={[
+  { name: "aria-label", type: "string", default: "undefined", description: "Names the toolbar. Required unless `aria-labelledby` is set." },
+  { name: "children", type: "Snippet", description: "Fields, buttons, `ButtonGroup`s and `ca-toolbar-spacer`." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
+
+## Field width
+
+Every field takes `width?: "full" | "auto" | "fit" | string` (default `"full"`, the row): `auto` and `fit` size to the content, a CSS length sets the width. It is written to `--ca-field-width`; `--ca-field-min-width` sets a floor (default `0`). `NumberField` also takes `steppers?: boolean` (default `true`): `false` drops the +/- buttons for a compact numeric input.

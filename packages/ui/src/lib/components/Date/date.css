@@ -9,7 +9,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--ca-date-gap, var(--ca-field-gap, var(--ca-space-1)));
-    width: 100%;
+    width: var(--ca-field-width, 100%);
+    min-width: var(--ca-field-min-width, 0);
   }
 
   .ca-date__label {

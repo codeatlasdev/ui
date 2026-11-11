@@ -30,6 +30,7 @@ The color helpers behind it are public: `parseColorInput`, `contrast`, `wcagLeve
 
 <Props for="ColorField" rows={[
   { name: "label", type: "string", description: "Visible label and accessible name of the text field." },
+  { name: "width", type: "'full' | 'auto' | 'fit' | string", default: "'full'", description: "`auto` and `fit` size to the content, a CSS length sets the width (`--ca-field-width`). A `Toolbar` sets `auto` for every field inside." },
   { name: "value", type: "string", default: "'#000000'", description: "Bindable committed color, as typed." },
   { name: "format", type: "'hex' | 'oklch'", default: "'hex'", description: "What the native picker writes back." },
   { name: "against", type: "string", description: "Background to measure contrast against (any CSS color). Omit to hide the readout." },

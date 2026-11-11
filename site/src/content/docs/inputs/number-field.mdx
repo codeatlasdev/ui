@@ -33,6 +33,8 @@ Spacing, label and hint typography and the typed text come from the shared field
   { name: "step", type: "number", default: "1", description: "Increment applied by the plus and minus buttons." },
   { name: "label", type: "string", description: "Label text." },
   { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown. For a field in a toolbar, table or grid that already shows its name." },
+  { name: "width", type: "'full' | 'auto' | 'fit' | string", default: "'full'", description: "`auto` and `fit` size to the content, a CSS length sets the width (`--ca-field-width`). A `Toolbar` sets `auto` for every field inside." },
+  { name: "steppers", type: "boolean", default: "true", description: "`false` drops the +/- buttons: a compact numeric input. Arrow keys still step the value." },
   { name: "description", type: "string", description: "Hint shown below the field." },
   { name: "error", type: "string", description: "Error message. Puts the field in the error state." },
   { name: "required", type: "boolean", default: "false", description: "Marks the field as required." },

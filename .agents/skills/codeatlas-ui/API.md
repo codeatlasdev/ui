@@ -472,7 +472,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -769,13 +769,14 @@ Data attributes: `data-state` (`closed` `open`)
 | `role?` | `'text' \| 'fill'` | `'text'` | Role of `value` in the contrast pair: `text` (value on `against`) or `fill` (against on value). |
 | `minRatio?` | `number` | `4.5` | Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. |
 | `description?` | `string` |  |  |
+| `width?` | `FieldWidth` |  | `full`, `auto`, `fit` or a CSS length (`--ca-field-width`). Default: the width its content needs. |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
 Parts: `ca-color-field` `ca-color-field__contrast` `ca-color-field__level` `ca-color-field__native` `ca-color-field__pick` `ca-color-field__ratio` `ca-color-field__swatch`
 
-Variables: `--ca-color-field-fill`
+Variables: `--ca-color-field-fill` `--ca-field-width`
 
 Data attributes: `data-disabled`, `data-pass`
 
@@ -793,6 +794,7 @@ Data attributes: `data-disabled`, `data-pass`
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. |
 | `ariaLabel?` | `string` |  | Accessible name when there is no visible `label`. |
 | `class?` | `string` | `''` |  |
 | `error?` | `string` |  |  |
@@ -807,7 +809,7 @@ Data attributes: `data-disabled`, `data-pass`
 
 Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height`
+Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-state` (`open`)
 
@@ -1072,6 +1074,7 @@ Internal (may change in any release): `ca-spin`
 |---|---|---|---|
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default), `auto`, `fit` or a CSS length (`--ca-field-width`). |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -1093,7 +1096,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -1107,6 +1110,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 |---|---|---|---|
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default), `auto`, `fit` or a CSS length (`--ca-field-width`). |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -1134,7 +1138,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -1148,6 +1152,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 |---|---|---|---|
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default), `auto`, `fit` or a CSS length (`--ca-field-width`). |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -1173,7 +1178,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -2474,6 +2479,8 @@ Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca
 | `step?` | `number` | `1` |  |
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. |
+| `steppers?` | `boolean` | `true` | `false` drops the +/- buttons: a compact numeric input that sizes to its content. Arrow keys still step the value. Default `true`. |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `error?` | `string` |  |  |
@@ -2485,7 +2492,7 @@ Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca
 
 Parts: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
+Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
 
 Tokens: `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
 
@@ -2811,7 +2818,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -3069,6 +3076,7 @@ Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-pad
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
@@ -3081,7 +3089,7 @@ Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-pad
 
 Parts: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
+Variables: `--ca-anchor-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-selected`, `data-state` (`open`)
 
@@ -3724,6 +3732,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `suffix?` | `string \| Snippet` |  | Addon after the input, same rules as `prefix`. |
 | `revealable?` | `boolean` | `false` | `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `width?` | `FieldWidth` |  | `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
@@ -3739,7 +3748,7 @@ Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'si
 
 Parts: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
+Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
 Tokens: `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
@@ -3778,6 +3787,7 @@ Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__i
 |---|---|---|---|
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
+| `width?` | `FieldWidth` |  | `full` (default), `auto`, `fit` or a CSS length (`--ca-field-width`). |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -3799,7 +3809,7 @@ Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
-Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color` `--ca-input-letter-spacing`
+Variables: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing`
 
 Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
@@ -3847,6 +3857,26 @@ Parts: `ca-toaster` `ca-toaster--inline`
 Parts: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca-toggle-group--sm` `ca-toggle-group__item`
 
 Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
+
+## Toolbar
+
+`import { Toolbar } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `aria-label?` | `string` |  | Names the toolbar for assistive tech. Required: a toolbar without a name is a dev warning. |
+| `aria-labelledby?` | `string` |  |  |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`: Fields (`TextField`, `Select`, `Combobox`, `NumberField`), buttons, `ButtonGroup`s and `ca-toolbar-spacer`.
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
+Parts: `ca-toolbar`
+
+Variables: `--ca-field-width` `--ca-toolbar-gap`
+
+Tokens: `--ca-toolbar-gap`
 
 ## Tooltip
 

@@ -1,0 +1,45 @@
+{
+	"summary": "A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.",
+	"use": "A filter bar above a list or table where the fields have their own widths instead of stretching to the row.",
+	"spec": [
+		"`<Toolbar aria-label=\"Filter deals\">` holding every control, no wrapper div per field",
+		"`TextField` with `hideLabel` and `width=\"14rem\"`, then a `Select` with `hideLabel` and `width=\"10rem\"` whose third option is long enough to be truncated",
+		"`NumberField` with `hideLabel`, `steppers={false}`, `width=\"6rem\"`, min 0 and max 90",
+		"`<span class=\"ca-toolbar-spacer\">` pushes an outlined neutral `Export` button to the end"
+	],
+	"tags": [
+		"toolbar",
+		"filter-bar",
+		"text-field",
+		"select",
+		"number-field",
+		"width",
+		"wrap",
+		"role-toolbar"
+	],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Toolbar", "TextField", "Select", "NumberField", "Button"],
+		"aliases": ["filter bar", "action bar", "search bar"],
+		"related": ["980", "982", "992"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-10",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}
