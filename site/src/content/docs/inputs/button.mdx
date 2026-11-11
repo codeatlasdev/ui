@@ -100,3 +100,34 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
 ```svelte
 <IconButton href="tel:+5511999990000" aria-label="Call Ana"><Phone size={16} /></IconButton>
 ```
+
+## Actions with a label and a value
+
+A row of "Call Campo Grande (67) 3321-0000" buttons breaks badly on a phone: a full-width pill wraps in the middle of the city name, or stacks the number and leaves half the pill empty, and buttons of different sizes sit side by side. Lay it out by width instead:
+
+- **Phone**: the primary action is full width on top; the equivalent secondary actions become compact tiles in a two-column grid (icon, label, value on its own line).
+- **Wider**: one pill per action, label and value on the same baseline.
+- Label and value are each `nowrap`, so a short label never breaks across two lines; the number uses `tabular-nums`.
+
+```svelte
+<div class="calls">
+  {#each offices as o (o.city)}
+    <Button variant="outlined" href={`tel:${o.tel}`}>
+      {#snippet leading()}<Phone size={16} />{/snippet}
+      <span class="calls__label">{o.city}</span>
+      <span class="calls__value">{o.display}</span>
+    </Button>
+  {/each}
+</div>
+
+<style>
+  .calls { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ca-space-2); }
+  .calls :global(.ca-btn) { flex-direction: column; height: auto; padding-block: var(--ca-space-3); }
+  .calls__label, .calls__value { white-space: nowrap; }
+  .calls__value { font-variant-numeric: tabular-nums; color: var(--ca-text-secondary); }
+  @media (min-width: 640px) {
+    .calls { display: flex; flex-wrap: wrap; }
+    .calls :global(.ca-btn) { flex-direction: row; align-items: baseline; }
+  }
+</style>
+```
