@@ -55,7 +55,17 @@ bun run validate
 # no CI before the merge (#859), that local run is the gate for a shared change. Each component test gets one retry
 # (#861): on ~2,300 browser tests a loaded laptop fails a different timing test on most passes, and a real regression
 # fails twice.
-sh scripts/test-changed.sh --retry=1
+# A test that passed only on its retry is listed after the run (#863): each one needs an issue and a fix.
+RUNLOG=$(mktemp)
+# `tee` would hide the run's exit code from `set -e`: keep it beside the log.
+{ set +e; sh scripts/test-changed.sh --retry=1 2>&1; echo $? > "$RUNLOG.code"; } | tee "$RUNLOG"
+CODE=$(cat "$RUNLOG.code")
+FLAKY=$(grep -E '\(retry x[0-9]+\)' "$RUNLOG" | grep -v ' × ' | sed 's/^ *//' | sort -u)
+if [ -n "$FLAKY" ]; then
+	printf 'passed only on retry (open an issue for each):\n%s\n' "$FLAKY" >&2
+fi
+rm -f "$RUNLOG" "$RUNLOG.code"
+[ "$CODE" = 0 ] || exit "$CODE"
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
