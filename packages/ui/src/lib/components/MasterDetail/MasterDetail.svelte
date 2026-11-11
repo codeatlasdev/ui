@@ -103,6 +103,8 @@
       if (el.open) el.close();
       layer = openLayer(el, {
         kind: 'modal',
+        // The node is the grid's own: it must stay where it is declared (one mount, no move to <body>).
+        inPlace: true,
         outside: false,
         initialFocus: 'container',
         history,
@@ -151,7 +153,7 @@
 
   {#if resizable}
     <!-- A window splitter: focusable separator, arrow keys and pointer drag (wide only). -->
-    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
     <div
       class="ca-md__split"
       role="separator"
@@ -164,13 +166,14 @@
     ></div>
   {/if}
 
-  <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
+  <!-- `dialog` is the only role an open <dialog> may take besides `alertdialog`; inline it is a non-modal one. -->
   <!-- svelte-ignore a11y_no_redundant_roles -->
   <dialog
     bind:this={pane}
     id={splitId}
     class="ca-md__detail"
-    role={modal ? 'dialog' : 'region'}
+    role="dialog"
+    aria-modal={modal ? 'true' : 'false'}
     aria-label={detailTitle || undefined}
     data-state={modal ? 'modal' : 'inline'}
     use:keyboardAware
@@ -331,7 +334,7 @@
     .ca-md__split:focus-visible::after {
       width: 3px;
       inset-inline-start: -1px;
-      background: var(--ca-brand-main);
+      background: var(--ca-focus-ring);
     }
 
     .ca-md__split:focus-visible { outline: none; }

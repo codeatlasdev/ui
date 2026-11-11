@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 391,
+	"count": 392,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "997",
-			"count": 48
+			"last": "5002",
+			"count": 49
 		},
 		{
 			"slug": "charts",
@@ -34842,6 +34842,89 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/toolbar#filter-bar",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5002",
+			"group": "layout",
+			"page": "master-detail",
+			"variant": "Inbox",
+			"slug": "inbox",
+			"title": "Inbox",
+			"description": "Narrow the window below 900px to see the detail become a full-screen pane.",
+			"summary": "A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.",
+			"use": "Inboxes and any list where a row opens a detail: two columns when wide, a full-screen pane with Back on a phone.",
+			"spec": [
+				"`<MasterDetail bind:selected detailTitle={current?.name ?? ''} listWidth=\"16rem\">`",
+				"`{#snippet empty()}` holds `<EmptyState title=\"Select a conversation\" />`",
+				"`const threads` has 3 conversations"
+			],
+			"tags": [
+				"master-detail",
+				"inbox",
+				"conversation",
+				"list",
+				"responsive",
+				"split"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "split",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"EmptyState",
+					"MasterDetail"
+				],
+				"aliases": [
+					"split view",
+					"list and detail",
+					"inbox layout"
+				],
+				"related": [
+					"186"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-16",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"EmptyState",
+				"MasterDetail"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"EmptyState",
+						"MasterDetail"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/master-detail#inbox",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

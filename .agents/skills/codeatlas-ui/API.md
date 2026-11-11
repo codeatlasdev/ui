@@ -2193,6 +2193,30 @@ Snippets: `leading`; `trailing`
 
 Parts: `ca-masked`
 
+## MasterDetail
+
+`import { MasterDetail } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `selected?` | `string \| null` | `null` | `bind:` Id of the selected row, or `null`. Bindable: the back button and Escape set it to `null`. |
+| `breakpoint?` | `'sm' \| 'md' \| 'lg'` | `'md'` | Container width from which the two columns show: `sm` 600px, `md` 900px, `lg` 1200px. |
+| `listWidth?` | `string` | `'22rem'` | Width of the master column when wide. |
+| `detailTitle?` | `string` | `''` | Header title and accessible name of the narrow pane. |
+| `onback?` | `() => void` |  | Called after the back button or Escape closes the narrow pane. |
+| `resizable?` | `boolean` | `false` | Wide only: a splitter between the columns (drag, or Left/Right arrow keys). |
+| `history?` | `boolean` | `true` | Give the narrow pane a browser-history entry under the overlay-history bridge. |
+| `masterLabel?` | `string` |  | Accessible name of the master region. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `master`; `detail`; `empty`: Wide only: shown in the detail column while nothing is selected.
+
+Parts: `ca-md` `ca-md--lg` `ca-md--md` `ca-md--resizable` `ca-md--sm` `ca-md__body` `ca-md__detail` `ca-md__grid` `ca-md__header` `ca-md__master` `ca-md__split` `ca-md__title`
+
+Variables: `--ca-md-list`
+
+Data attributes: `data-state` (`modal`)
+
 ## MediaGrid
 
 `import { MediaGrid } from "@codeatlasdev/ui"`

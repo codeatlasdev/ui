@@ -1,8 +1,9 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { setLocale } from "../../i18n/index.js";
+import { bridgeOverlaysToHistory, type OverlayBridge } from "../../utils/overlay-history.js";
 import Harness from "./MasterDetail.test.svelte";
 
 beforeAll(() => setLocale("pt-BR"));
@@ -13,7 +14,7 @@ const visible = (el: Element | null) =>
 	!!el && el.getBoundingClientRect().width > 0 && getComputedStyle(el).visibility !== "hidden";
 
 describe("MasterDetail (#744)", () => {
-	it("wide: list and detail side by side, the empty state until a row is selected", async () => {
+	it("wide: list beside detail, empty state until a row is selected", async () => {
 		await page.viewport(1440, 900);
 		const screen = await render(Harness, { width: "1200px" });
 		await expect.element(screen.getByText("Select a conversation")).toBeVisible();
@@ -38,7 +39,7 @@ describe("MasterDetail (#744)", () => {
 		await expect.element(screen.getByText("Select a conversation")).not.toBeVisible();
 	});
 
-	it("narrow: selecting opens the detail as a full-screen modal layer; back closes it and clears the selection", async () => {
+	it("narrow: a row opens a full-screen pane; the back button closes it", async () => {
 		await page.viewport(390, 844);
 		const onback = vi.fn();
 		const screen = await render(Harness, { width: "390px", onback });
@@ -49,7 +50,7 @@ describe("MasterDetail (#744)", () => {
 		expect(box.width).toBe(window.innerWidth);
 		expect(box.height).toBe(window.innerHeight);
 		await page.getByRole("button", { name: "Voltar" }).click();
-		await expect.element(pane).not.toBeVisible();
+		await expect.poll(() => visible(document.querySelector(".ca-md__detail"))).toBe(false);
 		expect(text("selected")).toBe("none");
 		expect(onback).toHaveBeenCalledOnce();
 		await expect.element(page.getByRole("button", { name: "Open joao" })).toHaveFocus();
@@ -85,7 +86,7 @@ describe("MasterDetail (#744)", () => {
 		expect(document.querySelector('[data-testid="thread"]')).toBe(node);
 	});
 
-	it("the first paint is right without JavaScript layout: narrow container hides the detail before any effect", async () => {
+	it("first paint: a narrow container hides the detail before any effect", async () => {
 		await page.viewport(390, 844);
 		const screen = await render(Harness, { width: "390px" });
 		const detail = screen.container.querySelector(".ca-md__detail") as HTMLElement;
@@ -98,5 +99,50 @@ describe("MasterDetail (#744)", () => {
 		await expect.element(page.getByRole("dialog", { name: "Chat maria" })).toBeVisible();
 		expect(await checkA11y(document.body)).toHaveNoViolations();
 		screen.unmount();
+	});
+
+	describe("browser Back (overlay-history bridge)", () => {
+		let bridge: OverlayBridge | undefined;
+		// The bridge hands its entries back in one traversal and resolves on arrival; no fixed wait.
+		afterEach(async () => {
+			await bridge?.unwind();
+			bridge?.();
+			bridge = undefined;
+		});
+
+		it("narrow: Back closes the pane, clears the selection and stays on the page", async () => {
+			await page.viewport(390, 844);
+			bridge = bridgeOverlaysToHistory();
+			const url = location.href;
+			const screen = await render(Harness, { width: "390px" });
+			const opener = screen.getByRole("button", { name: "Open joao" });
+			await opener.click();
+			await expect.element(page.getByRole("dialog", { name: "Chat joao" })).toBeVisible();
+			await expect.poll(() => bridge?.entries()).toBe(1);
+			history.back();
+			await expect.poll(() => text("selected")).toBe("none");
+			await expect.poll(() => visible(document.querySelector(".ca-md__detail"))).toBe(false);
+			expect(bridge.entries()).toBe(0);
+			expect(location.href).toBe(url);
+			await expect.element(opener).toHaveFocus();
+		});
+
+		it("history={false}: the narrow pane takes no history entry", async () => {
+			await page.viewport(390, 844);
+			bridge = bridgeOverlaysToHistory();
+			const screen = await render(Harness, { width: "390px", history: false });
+			await screen.getByRole("button", { name: "Open ana" }).click();
+			await expect.element(page.getByRole("dialog", { name: "Chat ana" })).toBeVisible();
+			expect(bridge.entries()).toBe(0);
+		});
+
+		it("wide: the inline detail is not a layer, so selecting adds no history entry", async () => {
+			await page.viewport(1440, 900);
+			bridge = bridgeOverlaysToHistory();
+			const screen = await render(Harness, { width: "1200px" });
+			await screen.getByRole("button", { name: "Open maria" }).click();
+			await expect.element(screen.getByRole("textbox", { name: "Reply" })).toBeVisible();
+			expect(bridge.entries()).toBe(0);
+		});
 	});
 });

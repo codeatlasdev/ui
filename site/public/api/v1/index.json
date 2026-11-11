@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 391,
+	"count": 392,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 352,
+			"component": 353,
 			"motion": 39
 		},
 		"subtype": {
@@ -17,7 +17,7 @@
 			"component/feedback": 38,
 			"component/foundation": 19,
 			"component/input": 90,
-			"component/layout": 48,
+			"component/layout": 49,
 			"component/map": 1,
 			"component/navigation": 39,
 			"component/surface": 17,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 374,
+			"default": 375,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,15 +42,15 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 101,
-			"subtle": 230
+			"subtle": 231
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 33,
 			"hover": 79,
-			"keyboard": 271,
+			"keyboard": 272,
 			"none": 78,
-			"press": 230,
+			"press": 231,
 			"scroll": 22
 		},
 		"layout": {
@@ -59,27 +59,27 @@
 			"grid": 36,
 			"overlay": 50,
 			"single-column": 131,
-			"split": 13,
+			"split": 14,
 			"stack": 144,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 389,
+			"both": 390,
 			"light": 2
 		},
 		"density": {
 			"airy": 12,
 			"compact": 49,
-			"regular": 330
+			"regular": 331
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 391,
+			"css": 392,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 351,
+			"css": 352,
 			"js-light": 40
 		},
 		"component": {
@@ -146,7 +146,7 @@
 			"DropdownMenuSub": 3,
 			"DropdownMenuSubTrigger": 3,
 			"EditableRow": 1,
-			"EmptyState": 6,
+			"EmptyState": 7,
 			"ErrorPage": 1,
 			"ExportMenu": 1,
 			"ExternalLink": 1,
@@ -178,6 +178,7 @@
 			"MapControls": 1,
 			"MapStage": 1,
 			"MaskedField": 1,
+			"MasterDetail": 1,
 			"MediaGrid": 1,
 			"Menubar": 2,
 			"MenubarMenu": 2,
@@ -655,6 +656,7 @@
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["CopyField"],"aliases":["read-only copy box","copy box","show once"],"related":["012","999","5000"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"998","path":"inputs/copy-field/Default","title":"Single line, icon only and multiline","summary":"A CopyField in three forms: single line, icon-only copy and a multiline command.","use":"Webhook URLs, request snippets and IDs a user must copy exactly.","tags":["copy-field","clipboard","copy","secret","api-key","read-only"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["CopyField"],"aliases":["read-only copy box","copy box","show once"],"related":["012","998","5000"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"999","path":"inputs/copy-field/Masked","title":"Masked","summary":"A masked CopyField: dots with a reveal toggle; copy always copies the real value.","use":"API keys and tokens on a settings page.","tags":["copy-field","clipboard","copy","secret","api-key","read-only"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AlertDialog","Button","CopyField"],"aliases":["read-only copy box","copy box","show once"],"related":["012","998","999"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"5000","path":"inputs/copy-field/ShowOnce","title":"Show once","summary":"Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.","use":"After creating an API key or a recovery code the user must save.","tags":["copy-field","clipboard","copy","secret","api-key","read-only"],"names":[]},
-		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","TextField","Select","NumberField","Button"],"aliases":["filter bar","action bar","search bar"],"related":["980","982","992"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"5001","path":"inputs/toolbar/Filters","title":"Filter bar","summary":"A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.","use":"A filter bar above a list or table where the fields have their own widths instead of stretching to the row.","tags":["toolbar","filter-bar","text-field","select","number-field","width","wrap","role-toolbar"],"names":[]}
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Toolbar","TextField","Select","NumberField","Button"],"aliases":["filter bar","action bar","search bar"],"related":["980","982","992"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"5001","path":"inputs/toolbar/Filters","title":"Filter bar","summary":"A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.","use":"A filter bar above a list or table where the fields have their own widths instead of stretching to the row.","tags":["toolbar","filter-bar","text-field","select","number-field","width","wrap","role-toolbar"],"names":[]},
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["EmptyState","MasterDetail"],"aliases":["split view","list and detail","inbox layout"],"related":["186"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"5002","path":"layout/master-detail/Inbox","title":"Inbox","summary":"A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.","use":"Inboxes and any list where a row opens a detail: two columns when wide, a full-screen pane with Back on a phone.","tags":["master-detail","inbox","conversation","list","responsive","split"],"names":[]}
 	]
 }

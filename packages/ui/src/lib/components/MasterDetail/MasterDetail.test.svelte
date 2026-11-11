@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from "svelte";
 	import EmptyState from "../EmptyState/EmptyState.svelte";
 	import MasterDetail from "./MasterDetail.svelte";
 
@@ -12,9 +13,9 @@
 	let { selected = $bindable(null), width = "100%", onback, history, resizable = false }: Props = $props();
 	const rows = ["maria", "joao", "ana"];
 	let mounts = $state(0);
-	function counted(node: HTMLElement) {
-		mounts++;
-		return () => node.remove();
+	function counted() {
+		// `untrack`: an attachment is an effect, and `mounts++` reads before it writes.
+		untrack(() => mounts++);
 	}
 </script>
 

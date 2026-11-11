@@ -29,15 +29,15 @@ The detail is one DOM node and the split is a container query, so the first pain
 <Demo title="Inbox" description="Narrow the window below 900px to see the detail become a full-screen pane." src={InboxSrc}><Inbox client:visible /></Demo>
 
 <Props rows={[
-  { name: "selected", type: "string | null", default: "null", description: "Id of the selected row (bindable). The back button and Escape set it to null." },
-  { name: "breakpoint", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Container width from which the two columns show: 600, 900 or 1200px." },
-  { name: "listWidth", type: "string", default: "'22rem'", description: "Width of the master column when wide." },
-  { name: "detailTitle", type: "string", description: "Header title and accessible name of the narrow pane." },
-  { name: "onback", type: "() => void", description: "Called after the back button or Escape closes the narrow pane." },
-  { name: "resizable", type: "boolean", default: "false", description: "Wide only: a splitter between the columns (drag, or Left and Right arrow keys)." },
-  { name: "history", type: "boolean", default: "true", description: "Give the narrow pane a browser-history entry under the overlay-history bridge." },
+  { name: "selected", type: "string | null", default: "null", description: "Selected row id (bindable). Back and Escape set it to null." },
+  { name: "breakpoint", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Container width for two columns: 600, 900 or 1200px." },
+  { name: "listWidth", type: "string", default: "'22rem'", description: "Master column width when wide." },
+  { name: "detailTitle", type: "string", description: "Header title and name of the narrow pane." },
+  { name: "onback", type: "() => void", description: "Called after Back or Escape closes the pane." },
+  { name: "resizable", type: "boolean", default: "false", description: "Wide only: a splitter (drag or arrow keys)." },
+  { name: "history", type: "boolean", default: "true", description: "Give the pane a history entry under the overlay-history bridge." },
   { name: "masterLabel", type: "string", description: "Accessible name of the master region." },
   { name: "master", type: "Snippet", description: "Required. The list." },
-  { name: "detail", type: "Snippet", description: "Required. The detail of the selected row." },
+  { name: "detail", type: "Snippet", description: "Required. The selected row's detail." },
   { name: "empty", type: "Snippet", description: "Wide only: shown while nothing is selected." },
 ]} />
