@@ -35,3 +35,11 @@ The parent owns visibility: render the alert conditionally and hide it from `onc
   { name: "class", type: "string", default: "''", description: "Extra class names on the root element." },
   { name: "children", type: "Snippet", default: "undefined", description: "Alert body content." },
 ]} />
+
+## Banner
+
+`variant="banner"` spans its container edge to edge, square, with the severity on the bottom border: a page-wide notice at the top of a page or of the shell (maintenance, a trial that ends soon).
+
+```svelte
+<Alert severity="warning" variant="banner" closable>Scheduled maintenance tonight from 23:00.</Alert>
+```

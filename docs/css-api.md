@@ -16,7 +16,7 @@ Total: 836 unique classes across 84 components.
 
 ## Alert
 
-`.ca-alert` `.ca-alert--error` `.ca-alert--info` `.ca-alert--success` `.ca-alert--warning` `.ca-alert__bar` `.ca-alert__body` `.ca-alert__close` `.ca-alert__content` `.ca-alert__icon` `.ca-alert__title`
+`.ca-alert` `.ca-alert--banner` `.ca-alert--error` `.ca-alert--info` `.ca-alert--success` `.ca-alert--warning` `.ca-alert__bar` `.ca-alert__body` `.ca-alert__close` `.ca-alert__content` `.ca-alert__icon` `.ca-alert__title`
 
 ## AlertDialog
 
