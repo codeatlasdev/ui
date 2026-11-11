@@ -1,0 +1,40 @@
+{
+	"summary": "A labelled group of six overlapping avatars: three photos and three initials, capped at four with an overflow chip counting the other two.",
+	"use": "Showing who is on a review, task or document when only the first few fit: the chip says how many more, in the page language.",
+	"spec": [
+		"`const reviewers` has 6 entries: Alice, Bob and Clara with `src`, Davi, Eva and Fabio without",
+		"`<AvatarGroup items={reviewers} max={4} label=\"Reviewers\" />` renders four avatars and a chip for the rest"
+	],
+	"tags": ["avatar", "avatar-group", "overlap", "overflow", "max", "collaborators"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AvatarGroup"],
+		"aliases": [
+			"avatar group",
+			"overlapping avatars",
+			"facepile",
+			"team members",
+			"plus n overflow"
+		],
+		"related": ["111", "107", "110"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

@@ -1,0 +1,44 @@
+---
+title: AvatarGroup
+description: "Overlapping avatars with a +N chip for the ones max hides; the group is labelled, each avatar keeps its name and the chip says how many more."
+group: Display
+order: 25
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Group from "~/demos/display/avatar/Group.svelte";
+import GroupSrc from "~/demos/display/avatar/Group.svelte?raw";
+import GroupSizes from "~/demos/display/avatar/GroupSizes.svelte";
+import GroupSizesSrc from "~/demos/display/avatar/GroupSizes.svelte?raw";
+
+```svelte
+<script>
+  import { AvatarGroup } from "@codeatlasdev/ui";
+</script>
+
+<AvatarGroup
+  label="Reviewers"
+  max={3}
+  items={[{ name: "Ana Lima", src: "/ana.jpg" }, { name: "Bruno Souza" }, { name: "Carla Dias" }, { name: "Diego Alves" }]}
+/>
+```
+
+Overlapping avatars from `items`, or your own [`Avatar`](/docs/display/avatar/) children (give them the same `size`; `max` counts `items` only). `max` draws that many and turns the rest into one `+N` chip. The group is `role="group"` named by `label` (default "Avatars" / "Avatares"); each avatar is an image named after the person, and the chip is an image named "2 more" / "mais 2", so a screen reader hears who is shown and how many are not. `moreLabel={(n) => ...}` replaces that name.
+
+<Demo title="Avatar group" description={"Six people, `max={4}`: four avatars and a chip for the other two."} src={GroupSrc}><Group client:visible /></Demo>
+<Demo title="Group sizes" description={"`size` takes the same values as Avatar, the chip included; the overlap scales with it. `shape=\"rounded\"` rounds the avatars and the chip."} src={GroupSizesSrc}><GroupSizes client:visible /></Demo>
+
+## Tokens
+
+`--ca-avatar-group-overlap` sets how far each avatar slides under the previous one (default 20% of the size). `--ca-avatar-group-ring` is the colour of the 2px ring that separates them (default `--ca-bg-body`): set it to the surface the group sits on, for instance `--ca-surface-raised` inside a card.
+
+<Props rows={[
+  { name: "items", type: "{ name: string; src?: string }[]", default: "[]", description: "The avatars. `name` is the accessible name and the source of the initials." },
+  { name: "max", type: "number", default: "undefined", description: "Draw at most this many of `items`; the rest become a `+N` chip. Unset draws all." },
+  { name: "size", type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number", default: "'md'", description: "Same sizes as Avatar; applies to the avatars of `items` and to the chip." },
+  { name: "shape", type: "'circle' | 'rounded'", default: "'circle'", description: "Outline of the avatars and the chip." },
+  { name: "label", type: "string", default: "undefined", description: "Accessible name of the group. Default: the catalog's \"Avatars\"." },
+  { name: "moreLabel", type: "(hidden: number) => string", default: "undefined", description: "Accessible name of the `+N` chip. Default: the catalog's \"{n} more\"." },
+  { name: "children", type: "Snippet", default: "undefined", description: "Your own `<Avatar>`s instead of `items`; they get the same overlap and ring." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

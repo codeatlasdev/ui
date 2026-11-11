@@ -58,6 +58,7 @@ export { default as AuthCard } from "./components/AuthLayout/AuthCard.svelte";
 export { default as AuthLayout } from "./components/AuthLayout/AuthLayout.svelte";
 // ── DISPLAY ───────────────────────────────────────────────────────────────────
 export { default as Avatar } from "./components/Avatar/Avatar.svelte";
+export { default as AvatarGroup } from "./components/Avatar/AvatarGroup.svelte";
 export { default as Badge } from "./components/Badge/Badge.svelte";
 // ── GLASS SURFACES ────────────────────────────────────────────────────────────
 export { default as Box } from "./components/Box/Box.svelte";

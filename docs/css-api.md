@@ -58,6 +58,12 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 `.ca-avatar` `.ca-avatar__fallback` `.ca-avatar__img` `.ca-avatar__status` `.ca-avatar__status--away` `.ca-avatar__status--busy` `.ca-avatar__status--offline` `.ca-avatar__status--online`
 
+## AvatarGroup
+
+`.ca-avatar-group` `.ca-avatar-group__item` `.ca-avatar-group__more`
+
+`--ca-avatar-group-overlap` (how far each avatar slides under the previous one; default 20% of the size) and `--ca-avatar-group-ring` (the colour of the 2px ring between avatars; default `--ca-bg-body`, set it to the surface the group sits on). The group writes `--ca-avatar-group-size` and `--ca-avatar-group-radius` inline from `size` and `shape`.
+
 ## Badge
 
 `.ca-badge` `.ca-badge--brand` `.ca-badge--danger` `.ca-badge--dot` `.ca-badge--error` `.ca-badge--info` `.ca-badge--inline` `.ca-badge--md` `.ca-badge--neutral` `.ca-badge--sm` `.ca-badge--subtle` `.ca-badge--success` `.ca-badge--warning` `.ca-badge__dot` `.ca-badge-wrapper`
@@ -622,6 +628,7 @@ A component token is a custom property a component reads before its default: `--
 - **SimpleTable** `--ca-table-cell-px` `--ca-table-cell-py` `--ca-table-row-h` `--ca-table-head-h` `--ca-table-head-py` `--ca-table-head-bg` `--ca-table-head-font-size` `--ca-table-head-weight` `--ca-table-cell-color` (every density); `.ca-table--no-hover` (`hover={false}`); `data-accent` + `--ca-table-group-accent` on a group row (`TableGroupRow accent`); `.ca-table-sort-th--end` (`TableSortHeader align="end"`)
 - **Kbd** `--ca-kbd-size` `--ca-kbd-font-size` `--ca-kbd-line-height`
 - **Avatar** `--ca-avatar-fallback-{bg,color,size,weight}` `--ca-avatar-{xs,sm,md,lg,xl}-fallback-{size,weight}`; prop `tone="neutral"` (`data-tone="neutral"` on `.ca-avatar`, `data-size` on named sizes)
+- **AvatarGroup** `--ca-avatar-group-overlap` `--ca-avatar-group-ring`
 - **Fields** (TextField, TextArea, Select, Combobox, NumberField, the date fields), one chain: `--ca-<prefix>-<token>` wins over `--ca-field-<token>` wins over the default. Prefixes `tf`, `ta`, `sel`, `cb`, `nf`, `date`. Tokens: `gap` (default `--ca-space-1`), `label-line-height` (shared name `--ca-field-label-leading`), `label-tracking` (default inherited), `hint-leading`, `hint-tracking`, `letter-spacing` and `line-height` of the typed text (shared names `--ca-input-letter-spacing` default `normal`, `--ca-input-line-height` default `1`; Select, Combobox, NumberField and the date fields keep inheriting both until set). Shared only: `--ca-field-hint-color`, `--ca-field-required-color`. Theme keys: `components.field|textField|textArea|select|combobox|numberField` take `gap`, `labelLeading`, `labelTracking`, `hintLeading`, `hintTracking`, `letterSpacing`, `lineHeight`
 - **Field variant** `data-ca-field="filled|underline"` on a field root or on `<html>` (prop `variant`, theme key `components.field.variant`) re-declares `--ca-field-bg`, `--ca-field-border-color`, `--ca-field-shadow` and `--ca-radius-control`; `--ca-field-border-width` (theme `components.field.borderWidth`) is read by every field border; theme `components.field.height|radius` emit `--ca-control-height` and `--ca-radius-control`
 - **TextField** `--ca-tf-addon-bg` `--ca-tf-reveal-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-icon-size` `--ca-tf-error-ring` (`none` keeps the border colour only); `--ca-ta-min-height` on TextArea (the visible box, border included); `--ca-radius-control-multiline` (TextArea corner, default the control radius capped at `--ca-radius-lg`, so `controlRadius: pill` never makes it a stadium)
