@@ -15,11 +15,15 @@ Import from the path in each heading. Charts, DataTable, CodeSnippet and the `fo
 | `type?` | `'single' \| 'multiple'` | `'single'` |  |
 | `value?` | `string \| string[]` |  | `bind:` |
 | `onValueChange?` | `(value: string \| string[]) => void` |  |  |
+| `variant?` | `'boxed' \| 'flush'` | `'boxed'` | `boxed` (default): every item is a bordered, rounded box. `flush`: no box, inherits the parent's gutter. |
+| `divided?` | `boolean` | `false` | With `variant="flush"`: a subtle top border between items. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
 Parts: `ca-accordion`
+
+Data attributes: `data-variant` (`flush`)
 
 ## AccordionItem
 
@@ -33,13 +37,13 @@ Parts: `ca-accordion`
 
 Snippets: `children`
 
-Parts: `ca-accordion-item` `ca-accordion-item__body` `ca-accordion-item__chevron` `ca-accordion-item__content` `ca-accordion-item__header` `ca-accordion-item__title` `ca-accordion-item__trigger`
+Parts: `ca-accordion` `ca-accordion-item` `ca-accordion-item__body` `ca-accordion-item__chevron` `ca-accordion-item__content` `ca-accordion-item__header` `ca-accordion-item__title` `ca-accordion-item__trigger`
 
 Internal (may change in any release): `ca-accordion-down` `ca-accordion-up`
 
 Variables: `--ca-accordion-height`
 
-Data attributes: `data-state` (`closed` `open`)
+Data attributes: `data-divided`, `data-state` (`closed` `open`), `data-variant` (`flush`)
 
 ## Alert
 
@@ -834,6 +838,8 @@ Parts: `ca-codetabs` `ca-codetabs__bar` `ca-codetabs__copy` `ca-codetabs__panels
 | `title` | `string` |  |  |
 | `open?` | `boolean` | `false` | `bind:` |
 | `disabled?` | `boolean` | `false` |  |
+| `variant?` | `'boxed' \| 'flush'` | `'boxed'` | `boxed` (default): bordered, rounded box. `flush`: no box, inherits the parent's gutter. |
+| `divided?` | `boolean` | `false` | With `variant="flush"`: a subtle top border separates this section from the previous one. |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
@@ -845,7 +851,7 @@ Internal (may change in any release): `ca-slide-down` `ca-slide-up`
 
 Variables: `--ca-collapsible-height`
 
-Data attributes: `data-state` (`closed` `open`)
+Data attributes: `data-divided`, `data-state` (`closed` `open`), `data-style` (`frosted` `glass`), `data-variant` (`flush`)
 
 ## ColorField
 
