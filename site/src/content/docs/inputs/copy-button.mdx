@@ -36,3 +36,11 @@ The result is announced through a polite live region (`Copied`), and a failed co
   { name: "class", type: "string", description: "Extra classes on the button." },
   { name: "oncopy", type: "(value: string) => void", description: "Called after a successful copy." },
 ]} />
+
+## Neutral tone
+
+`tone="neutral"` draws `outlined` and `ghost` without brand colour, as on `Button`: use it for a copy action beside a brand primary action.
+
+```svelte
+<CopyButton value={url} variant="outlined" tone="neutral" label="Copy link" />
+```

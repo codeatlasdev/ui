@@ -920,6 +920,7 @@ Parts: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca
 | `label?` | `string` |  | Visible label. Pass `''` for an icon-only button. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost'` | `'ghost'` |  |
+| `tone?` | `'brand' \| 'neutral'` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour, like `Button`: for a copy action beside a brand primary action. |
 | `toast?` | `string` |  | Success toast message shown after copying. Omit for no toast. |
 | `aria-label?` | `string` |  | Accessible name of the icon-only button (`label=""`). Give each row its own ("Copy client_id of Acme"). Defaults to the localized `Copy`. Ignored when `label` is visible, so the name keeps containing the visible text. |
 | `class?` | `string` | `''` |  |

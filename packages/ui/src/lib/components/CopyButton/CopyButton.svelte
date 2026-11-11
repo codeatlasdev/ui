@@ -17,6 +17,8 @@
     label?: string;
     size?: 'sm' | 'md' | 'lg';
     variant?: 'filled' | 'glass' | 'outlined' | 'ghost';
+    /** `'neutral'` draws `outlined` and `ghost` without brand colour, like `Button`: for a copy action beside a brand primary action. */
+    tone?: 'brand' | 'neutral';
     /** Success toast message shown after copying. Omit for no toast. */
     toast?: string;
     /** Accessible name of the icon-only button (`label=""`). Give each row its own ("Copy client_id of Acme"). Defaults to the localized `Copy`. Ignored when `label` is visible, so the name keeps containing the visible text. */
@@ -30,6 +32,7 @@
     label,
     size = 'md',
     variant = 'ghost',
+    tone = 'brand',
     toast: toastMessage,
     'aria-label': ariaLabel,
     class: className = '',
@@ -68,11 +71,11 @@
 {/snippet}
 
 {#if label !== ''}
-  <Button {...rest} {variant} {size} class="ca-copy {className}" onclick={copy} leading={icon}>
+  <Button {...rest} {variant} {tone} {size} class="ca-copy {className}" onclick={copy} leading={icon}>
     {label ?? t().copyButton.label}
   </Button>
 {:else}
-  <IconButton {...rest} variant={iconVariant} {size} class="ca-copy {className}" aria-label={ariaLabel ?? t().copyButton.label} onclick={copy}>
+  <IconButton {...rest} variant={iconVariant} {tone} {size} class="ca-copy {className}" aria-label={ariaLabel ?? t().copyButton.label} onclick={copy}>
     {@render icon()}
   </IconButton>
 {/if}
