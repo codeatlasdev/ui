@@ -1,4 +1,4 @@
-import { realpathSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { playwright } from "@vitest/browser-playwright";
@@ -21,6 +21,31 @@ const fontDirs = ["inter", "jetbrains-mono"].flatMap((name) => {
 		return [];
 	}
 });
+
+/** Build-time and server-side peers: never imported by a component a browser test renders. */
+export const NODE_ONLY_PEERS = [
+	"svelte",
+	"@sveltejs/kit",
+	"astro",
+	"typescript",
+	"@resvg/resvg-js",
+	"png-to-ico",
+];
+
+/** Dependencies and browser-side peers of the package that are installed here (#959). */
+function browserDeps(): string[] {
+	const here = fileURLToPath(new URL(".", import.meta.url));
+	const pkg = JSON.parse(readFileSync(`${here}package.json`, "utf8")) as Record<
+		string,
+		Record<string, string>
+	>;
+	return [
+		...Object.keys(pkg.dependencies ?? {}),
+		...Object.keys(pkg.peerDependencies ?? {}),
+	].filter(
+		(d) => !NODE_ONLY_PEERS.includes(d) && existsSync(`${here}node_modules/${d}/package.json`)
+	);
+}
 
 const browserPattern = "src/**/*.svelte.test.ts";
 const vrtPattern = "src/**/*.vrt.test.ts";
@@ -59,19 +84,11 @@ export default defineConfig({
 		// tests/vitest-warmup.test.ts fails when a setup file is missing here.
 		warmup: { clientFiles: browserWarmup },
 	},
-	// Pre-bundle lazily imported deps so the first browser run doesn't trigger an optimizer reload.
-	optimizeDeps: {
-		// Every dependency a test reaches: one Vite discovers mid-run is re-optimised and the page reloads, which
-		// fails the dynamic imports in flight (axe-core in checkA11y, 2026-11-11, #740).
-		include: [
-			"echarts",
-			"@tanstack/svelte-table",
-			"shiki",
-			"axe-core",
-			"@deck.gl/maplibre",
-			"@internationalized/date",
-		],
-	},
+	// Pre-bundle every package a browser test can reach. One Vite discovers mid-run is re-optimised and the page
+	// reloads, which fails every import in flight: 213 to 1513 component tests in one land gate (#959; axe-core
+	// in checkA11y before it, #740). Derived from package.json, so a new dependency cannot bring the reload back;
+	// a peer that is not installed here cannot be reached by a test and is left out (Vite fails on it).
+	optimizeDeps: { include: browserDeps() },
 	test: {
 		expect: { requireAssertions: true },
 		// Locally: the tooling's worker cap (scripts/cpu-cap.ts; each worker is a browser tab in one Chromium). CI keeps the default.
