@@ -34,7 +34,28 @@ import InHeaderSrc from "~/demos/navigation/locale-switcher/InHeader.svelte?raw"
 
 Options are data, the callback is yours: the component knows no router, cookie or store, so it fits an app with localized URLs (`/en/login`) as well as one that only sets a cookie. `onselect(locale)` may return a promise. While it is pending the trigger is disabled and `aria-busy`, and `value` changes only after it resolves; if it rejects the old value stays and `onerror` receives the error. Choosing the current language does nothing.
 
-Each option is named in its own language and its menu item carries a `lang` attribute (default the option `value`, override with `lang`), so screen readers pronounce "Português" in Portuguese. The trigger shows a globe and the native name from 600px, and the short code (`short`, default the first two letters of `value` uppercased) below it; `compact` always shows the code. The accessible name is "Language: " plus the visible text, so it always contains what is on screen. It has a 44px hit area on touch. The menu is a `DropdownMenu` radio group, so it opens with Enter, Space and the arrow keys.
+Each option is named in its own language and its menu item carries a `lang` attribute (default the option `value`, override with `lang`), so screen readers pronounce "Português" in Portuguese. The trigger shows a globe and the native name from 600px, and the short code (`short`, default the first two letters of `value` uppercased) below it; `compact` always shows the code. The accessible name is "Language: " plus the visible text, so it always contains what is on screen. It has a 44px hit area on touch, also when you make it shorter. The menu is a `DropdownMenu` radio group, so it opens with Enter, Space and the arrow keys.
+
+## Size, icon and tokens
+
+`size="sm"` is the compact trigger: `--ca-control-height-sm` and the caption size, for a bar whose other controls are taller. `icon` replaces the leading globe with any icon component (`icon={Languages}` from `@lucide/svelte`). Fine tuning is a token, never a selector against `.ca-locale`: set them in the theme (`components.localeSwitcher`) or on a wrapper.
+
+```ts
+export const theme = {
+  components: {
+    localeSwitcher: { height: "36px", weight: 400, iconSize: "14px", chevronSize: "16px", paddingX: "8px", gap: "6px" },
+  },
+};
+```
+
+| Token | Theme key | Default |
+|---|---|---|
+| `--ca-locale-height` | `height` | `--ca-control-height` (`--ca-control-height-sm` with `size="sm"`) |
+| `--ca-locale-font-weight` | `weight` | `--ca-font-weight-medium` |
+| `--ca-locale-icon-size` | `iconSize` | `16px` |
+| `--ca-locale-chevron-size` | `chevronSize` | `14px` |
+| `--ca-locale-padding-x` | `paddingX` | `--ca-space-2` |
+| `--ca-locale-gap` | `gap` | `--ca-space-1-5` |
 
 To put it in a header, use the `trailing` slot of [`SiteHeader`](/docs/layout/app-shell/) (the end of the bar), next to the primary call to action.
 
@@ -49,5 +70,7 @@ To put it in a header, use the `trailing` slot of [`SiteHeader`](/docs/layout/ap
   { name: "compact", type: "boolean", default: "false", description: "Always show the short code. Without it the name shows from 600px." },
   { name: "label", type: "string", default: "'Language'", description: "Accessible name prefix. Localized by default." },
   { name: "align", type: "'start' | 'center' | 'end'", default: "'end'", description: "Menu alignment to the trigger." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "`sm` is the compact trigger (`--ca-control-height-sm`, caption size). Every `--ca-locale-*` token still wins." },
+  { name: "icon", type: "Component", default: "Globe", description: "Leading icon, any component that renders an `svg` (a Lucide icon). Sized by `--ca-locale-icon-size`." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the trigger." },
 ]} />

@@ -295,7 +295,7 @@ The trend element (`.ca-kpi__trend`, `.ca-stat__trend`) carries `data-tone="good
 
 `.ca-loading-boundary` `.ca-loading-boundary__content` `.ca-loading-boundary__pending`
 
-`.ca-locale` `.ca-locale--compact` `.ca-locale__code` `.ca-locale__name` `.ca-map` `.ca-map-controls` `.ca-map-controls__needle` `.ca-map__canvas` `.ca-map__overlay`
+`.ca-locale` `.ca-locale--compact` `.ca-locale--sm` `.ca-locale__chevron` `.ca-locale__code` `.ca-locale__icon` `.ca-locale__name` `.ca-map` `.ca-map-controls` `.ca-map-controls__needle` `.ca-map__canvas` `.ca-map__overlay`
 
 ## MasterDetail
 
@@ -625,6 +625,7 @@ A component token is a custom property a component reads before its default: `--
 - **Card** `--ca-card-bg` `--ca-card-radius` `--ca-card-border` `--ca-card-shadow` (`--ca-card-padding` and `--ca-card-gap` already existed)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}`
 - **PasswordStrength** `--ca-pwstrength-{gap,empty-bg,label-leading,label-tracking}` (theme key `components.passwordStrength`; props `layout`, `hideWhenEmpty`)
+- **LocaleSwitcher** `--ca-locale-{height,font-weight,icon-size,chevron-size,padding-x,gap}` (theme key `components.localeSwitcher`: `height`, `weight`, `iconSize`, `chevronSize`, `paddingX`, `gap`); modifier `.ca-locale--sm` (prop `size="sm"`: `--ca-control-height-sm`, caption size); prop `icon` replaces the globe. A token wins over the size default; the 44px coarse-pointer hit area stays
 - **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight` `--ca-empty-title-leading` `--ca-empty-title-tracking` `--ca-empty-title-gap` `--ca-empty-icon-{bg,border,radius}` `--ca-empty-description-{size,leading,max-width}` `--ca-empty-actions-margin`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}` `--ca-seg-gap` (space between segments, default `0`); prop `sizing="content"` (`data-sizing="content"` on `.ca-seg`: segments as wide as their label, thumb placed from the measured segment, track scrolls on x when wider than its container)
 - **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)

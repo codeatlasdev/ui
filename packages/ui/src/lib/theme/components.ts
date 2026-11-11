@@ -254,6 +254,21 @@ export interface SwitchTokens extends SwitchSizeTokens {
 	sm?: SwitchSizeTokens;
 }
 
+export interface LocaleSwitcherTokens {
+	/** `--ca-locale-height`: height of the trigger (the 44px touch area stays on a coarse pointer). @default `--ca-control-height` (`--ca-control-height-sm` with `size="sm"`) */
+	height?: CssValue;
+	/** `--ca-locale-font-weight`. @default `--ca-font-weight-medium` */
+	weight?: CssValue;
+	/** `--ca-locale-icon-size`: the leading icon, square. @default 16px */
+	iconSize?: CssValue;
+	/** `--ca-locale-chevron-size`: the trailing chevron, square. @default 14px */
+	chevronSize?: CssValue;
+	/** `--ca-locale-padding-x`. @default `--ca-space-2` */
+	paddingX?: CssValue;
+	/** `--ca-locale-gap`: between icon, name and chevron. @default `--ca-space-1-5` */
+	gap?: CssValue;
+}
+
 /** `ThemeOptions.components`: component tokens, emitted on `:root`. */
 export interface ComponentTokens {
 	button?: ButtonTokens;
@@ -274,6 +289,7 @@ export interface ComponentTokens {
 	emptyState?: EmptyStateTokens;
 	passwordStrength?: PasswordStrengthTokens;
 	switch?: SwitchTokens;
+	localeSwitcher?: LocaleSwitcherTokens;
 }
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -428,6 +444,15 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		put(out, "--ca-pwstrength-empty-bg", pw.emptyBg);
 		put(out, "--ca-pwstrength-label-leading", pw.labelLeading);
 		put(out, "--ca-pwstrength-label-tracking", pw.labelTracking);
+	}
+	const l = c.localeSwitcher;
+	if (l) {
+		put(out, "--ca-locale-height", l.height);
+		put(out, "--ca-locale-font-weight", l.weight);
+		put(out, "--ca-locale-icon-size", l.iconSize);
+		put(out, "--ca-locale-chevron-size", l.chevronSize);
+		put(out, "--ca-locale-padding-x", l.paddingX);
+		put(out, "--ca-locale-gap", l.gap);
 	}
 	return out;
 }

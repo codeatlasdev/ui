@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Check, ChevronDown, Globe } from '@lucide/svelte';
+  import { ChevronDown, Globe } from '@lucide/svelte';
+  import type { IconComponent } from '../../types.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { localeSwitcher } from '../../i18n/groups/localeSwitcher.js';
   import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
@@ -36,6 +37,13 @@
     /** Accessible name prefix. Default "Language" (localized). */
     label?: string;
     align?: 'start' | 'center' | 'end';
+    /**
+     * `sm` is the compact trigger for a dense bar: `--ca-control-height-sm` and the caption size.
+     * Every `--ca-locale-*` token still wins. Default `md`.
+     */
+    size?: 'sm' | 'md';
+    /** Leading icon, any component that renders an `svg` (a Lucide icon). Default `Globe`. */
+    icon?: IconComponent;
     class?: string;
   }
 
@@ -47,6 +55,8 @@
     compact = false,
     label,
     align = 'end',
+    size = 'md',
+    icon: Icon = Globe,
     class: className = '',
   }: Props = $props();
 
@@ -77,15 +87,15 @@
     <button
       {...props}
       type="button"
-      class="ca-locale {compact ? 'ca-locale--compact' : ''} {className}"
+      class="ca-locale {compact ? 'ca-locale--compact' : ''} {size === 'sm' ? 'ca-locale--sm' : ''} {className}"
       aria-busy={busy || undefined}
       disabled={busy}
     >
-      <Globe size={16} aria-hidden="true" />
+      <Icon class="ca-locale__icon" />
       <span class="ca-sr-only">{name}:</span>
       <span class="ca-locale__name" lang={current?.lang ?? current?.value}>{current?.label}</span>
       <span class="ca-locale__code" lang={current?.lang ?? current?.value}>{code(current)}</span>
-      <ChevronDown size={14} aria-hidden="true" />
+      <ChevronDown class="ca-locale__chevron" aria-hidden="true" />
     </button>
   {/snippet}
   <DropdownMenuRadioGroup value={value ?? current?.value} aria-label={name} onValueChange={pick}>
@@ -103,16 +113,16 @@
     .ca-locale {
       display: inline-flex;
       align-items: center;
-      gap: var(--ca-space-1-5);
-      min-height: var(--ca-control-height);
-      padding: 0 var(--ca-space-2);
+      gap: var(--ca-locale-gap, var(--ca-space-1-5));
+      min-height: var(--ca-locale-height, var(--ca-control-height));
+      padding: 0 var(--ca-locale-padding-x, var(--ca-space-2));
       border: none;
       border-radius: var(--ca-radius-control);
       background: transparent;
       color: var(--ca-text-secondary);
       font: inherit;
       font-size: var(--ca-font-size-body2);
-      font-weight: var(--ca-font-weight-medium);
+      font-weight: var(--ca-locale-font-weight, var(--ca-font-weight-medium));
       cursor: pointer;
       transition:
         background var(--ca-duration-fast) var(--ca-ease-standard),
@@ -127,6 +137,20 @@
       outline-offset: calc(var(--ca-border-width-focus) * -1);
     }
     .ca-locale:disabled { cursor: progress; }
+
+    .ca-locale--sm {
+      min-height: var(--ca-locale-height, var(--ca-control-height-sm));
+      font-size: var(--ca-font-size-caption);
+    }
+    .ca-locale :global(.ca-locale__icon), .ca-locale :global(.ca-locale__chevron) { flex: none; }
+    .ca-locale :global(.ca-locale__icon) {
+      width: var(--ca-locale-icon-size, 16px);
+      height: var(--ca-locale-icon-size, 16px);
+    }
+    .ca-locale :global(.ca-locale__chevron) {
+      width: var(--ca-locale-chevron-size, 14px);
+      height: var(--ca-locale-chevron-size, 14px);
+    }
 
     .ca-locale__code { display: none; }
     .ca-locale--compact .ca-locale__name { display: none; }
