@@ -21,6 +21,10 @@ const back = async () => {
 let stop = () => {};
 beforeEach(async () => {
 	await page.viewport(VIEWPORTS.mobile[0], VIEWPORTS.mobile[1]);
+	// An earlier file in the same tab can leave an overlay entry under the page; the bridge would step out of it with
+	// an async Back that the test's first push then truncates (history.length L, not L + 1). Start every test clean.
+	if (history.state?.caOverlays)
+		history.replaceState({ ...history.state, caOverlays: undefined }, "");
 	stop = bridgeOverlaysToHistory();
 });
 // A close calls history.go, whose popstate arrives later: tearing the bridge down before it lands let the next test's
