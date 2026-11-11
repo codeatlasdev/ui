@@ -38,6 +38,8 @@
     overscan?: number;
     /** Height of the scrolling area (any CSS length). */
     height?: string;
+    /** Draw a border and radius around the scroller. Off by default: the surrounding screen frames the list. */
+    bordered?: boolean;
     /** Accessible name of the scrolling region (required). */
     label: string;
     /** Stay pinned to the newest row while the user is at the bottom. */
@@ -62,6 +64,7 @@
     estimateSize = 56,
     overscan = 6,
     height = '24rem',
+    bordered = false,
     label,
     follow = true,
     hasMore = false,
@@ -378,7 +381,7 @@
   });
 </script>
 
-<div class="ca-virtual-list {className}" style="--ca-virtual-list-h:{height}">
+<div class="ca-virtual-list {className}" class:ca-virtual-list--bordered={bordered} style="--ca-virtual-list-h:{height}">
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <div
     bind:this={scroller}
@@ -436,6 +439,9 @@
       overscroll-behavior-y: contain;
       /* Anchoring is done by hand (keyed): the browser heuristic fights absolute rows. */
       overflow-anchor: none;
+    }
+    /* No frame by default: the screen around the list (header, panel, footer) decides (#913). */
+    .ca-virtual-list--bordered .ca-virtual-list__scroller {
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       border-radius: var(--ca-radius-lg);
     }

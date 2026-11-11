@@ -3,7 +3,7 @@ Element: #254 Chat history (display/virtual-list)
 What it shows: A windowed chat history of 40 messages that loads 30 older ones at the top without moving the view.
 When to use: Long conversations where older messages load on scroll and the scroll position must be preserved.
 Spec:
-- `<VirtualList {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>`
+- `<VirtualList bordered {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>`
 - `async function loadOlder()` prepends a page of 30 messages with `items = [...page, ...items];`
 - `<Button size="sm" variant="outlined" onclick={add}>Receive a message</Button>` appends a new row
 Tags: virtual-list, history, chat, infinite, prepend
@@ -33,7 +33,7 @@ Live demo: https://ui.codeatlas.com.br/docs/display/virtual-list#chat-history
 </script>
 
 <Stack gap="3">
-  <VirtualList {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>
+  <VirtualList bordered {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>
     {#snippet item(m)}<div class="row">{m.text}</div>{/snippet}
   </VirtualList>
   <Button size="sm" variant="outlined" onclick={add}>Receive a message</Button>
