@@ -1,3 +1,8 @@
 # LF everywhere, whatever core.autocrlf says: Biome and the frontmatter/regex tests expect it,
 # so a Windows checkout behaves like CI.
 * text=auto eol=lf
+
+# Token and class lists only ever grow, one line per component: two PRs that append at the same
+# place keep both lines instead of stopping the land on a conflict (#906). Only for this file:
+# union never fails, so a real edit-edit clash would keep both versions.
+docs/css-api.md merge=union
