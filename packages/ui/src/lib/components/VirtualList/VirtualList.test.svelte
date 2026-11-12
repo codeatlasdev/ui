@@ -46,11 +46,16 @@
 	export function swap(from: number, n: number) {
 		items = Array.from({ length: n }, (_, i) => row(from + i));
 	}
+	let grown = $state(false);
+	/** Grows the last row by 80px, like an image decoding or a link wrapping. */
+	export function growLast() {
+		grown = true;
+	}
 </script>
 
 <VirtualList {items} getKey={(r) => r.id} label="Messages" {height} {bordered} {follow} {hasMore} {loadingMore} {onloadmore}>
 	{#snippet item(r)}
-		<div data-key={r.id} class="row" style="padding: 4px 8px">
+		<div data-key={r.id} class="row" style="padding: 4px 8px{grown && r.id === items[items.length - 1]?.id ? '; padding-block-end: 84px' : ''}">
 			<span>Message {r.id}</span>
 			{#each { length: r.lines - 1 } as _}<br />{/each}
 		</div>

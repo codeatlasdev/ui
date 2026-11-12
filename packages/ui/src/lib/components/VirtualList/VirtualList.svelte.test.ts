@@ -1,5 +1,6 @@
 import { tick } from "svelte";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { SLOW_FLOW } from "../../../../tests/settled";
@@ -377,6 +378,68 @@ describe("VirtualList swapping the list (#865)", () => {
 			screen.component.append(5);
 			await settle();
 			expect(Math.abs(el.scrollTop - at)).toBeLessThanOrEqual(1);
+		},
+		SLOW_FLOW
+	);
+});
+
+describe("VirtualList returning to the pinned offset (#1033)", () => {
+	const gap = (el: HTMLElement) => el.scrollHeight - el.scrollTop - el.clientHeight;
+	// Walks the whole list so every row is measured: the end offset then stays put while the user
+	// scrolls, which is what lets a wheel return to exactly the offset pin() last wrote.
+	const measureAll = async (el: HTMLElement) => {
+		for (let y = el.scrollHeight; y >= 0; y -= 150) {
+			el.scrollTop = y;
+			await frame();
+		}
+		for (let y = 0; y <= el.scrollHeight; y += 150) {
+			el.scrollTop = y;
+			await frame();
+		}
+		el.scrollTop = el.scrollHeight;
+		await settle();
+		await settle();
+		expect(gap(el)).toBeLessThan(2);
+	};
+
+	it(
+		"stays at the bottom after 200px up and 400px down, then the last row grows",
+		async () => {
+			const screen = await render(Harness, { props: { initial: 60 } });
+			await settle();
+			const el = scroller(screen.container);
+			await measureAll(el);
+			const pinned = el.scrollTop;
+			el.scrollTop = pinned - 200;
+			await settle();
+			expect(gap(el)).toBeGreaterThan(150);
+			el.scrollTop = pinned + 400;
+			await settle();
+			expect(el.scrollTop).toBe(pinned);
+			screen.component.growLast();
+			await settle();
+			expect(gap(el)).toBeLessThanOrEqual(1);
+		},
+		SLOW_FLOW
+	);
+
+	it(
+		"stays at the bottom after PageUp then End, then the last row grows",
+		async () => {
+			const screen = await render(Harness, { props: { initial: 60 } });
+			await settle();
+			const el = scroller(screen.container);
+			await measureAll(el);
+			el.focus();
+			await userEvent.keyboard("{PageUp}");
+			await waitFor(() => gap(el) > 150);
+			await userEvent.keyboard("{End}");
+			await waitFor(() => gap(el) < 2);
+			await settle();
+			expect(gap(el)).toBeLessThan(2);
+			screen.component.growLast();
+			await settle();
+			expect(gap(el)).toBeLessThanOrEqual(1);
 		},
 		SLOW_FLOW
 	);
