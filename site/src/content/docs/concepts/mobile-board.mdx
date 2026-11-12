@@ -1,0 +1,167 @@
+---
+title: Boards on a phone
+description: "How to present a pipeline board (kanban) on a phone: open on a stage that has items, show every stage's count at a glance, keep empty stages out of the way, move an item through a sheet, and measure each rule at 390 and 360 px. Sources read on 2026-11-12; products are practice examples, not evidence."
+group: Concepts
+order: 7
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+
+A board shows work as cards in columns, one column per stage. On a desktop several columns fit side by side. On a phone one column fills the screen, and everything the desktop gave for free (where the cards are, how many are in each stage, how to move one) has to be rebuilt. This page records what a real CRM got wrong, what the sources say, the pattern we chose, and how to check it.
+
+<Callout type="note" title="Where the numbers come from">
+  The budgets here (44px segments, an 8.5rem name cap, a 16px peek, 15% empty area) are **our own targets**, measured on one application and tracked in [#1054](https://github.com/codeatlasdev/ui/issues/1054) and [#1064](https://github.com/codeatlasdev/ui/issues/1064). No study backs the exact numbers. Where a source supports the *direction* of a rule, the claim says so. Products are shown as **practice examples**, never as evidence that a pattern works better.
+</Callout>
+
+## What went wrong: a measured case
+
+A deals board in production, opened on an iPhone (390×844) with a seven-stage pipeline in which stages 1, 3, 4 and 7 had no deals:
+
+- the screen opened on **stage 1, which had 0 deals**, so the whole screen was an empty box about 1100px tall;
+- the tab strip carried the full stage name next to each count ("Etapa de leads de entrada 0"); only the first tab and half of the second were visible, and the rest needed a sideways scroll to discover;
+- nothing showed that the next stage existed or had cards: the column filled the screen edge to edge;
+- the header gave the page title and the pipeline name about 180px to share, so they read "Neg…" and "Visto Americ…".
+
+The real pipeline behind this case has 22 open stages, 18 of them empty at the time. Any pattern that lists every stage, or opens on the first one, fails on it.
+
+Causes in the library's `Kanban` (4.6.0) are listed in [#1064](https://github.com/codeatlasdev/ui/issues/1064) with file and line.
+
+## Definition and vocabulary
+
+| Term | What it means here |
+|---|---|
+| Stage | One column of the board, in funnel order. |
+| Filled stage | A stage with at least one card in the current scope (filters, search, scope applied). |
+| Stage strip | One row of segments, one per filled stage, each showing its count. |
+| Pager | The row of stage pages that scrolls sideways and snaps to one page. |
+| Peek | The edge of the next page visible beside the current one. |
+| Move sheet | A bottom sheet that lists every stage as a destination for one card. |
+
+## Evidence
+
+<Claim strength="practice" refs="B01" scope="An NN/g article on carousels on mobile, from NN/g's own observation of users. It gives no sample size and is about carousels, not boards.">
+Carousel access is sequential, and most people stop after three or four pages, so NN/g recommends that the last item be reachable in three or four steps and that a list view be used when there are many items. Half-visible items signal that there is more, more strongly than dots do. Swiping should work, and leaving a gutter around the carousel eases swipe ambiguity near the screen edge.
+</Claim>
+
+<Claim strength="practice" refs="B02" scope="An NN/g article on tabs on the web and in apps. It does not study boards or numbers-only tabs.">
+When tabs overflow the tab list it becomes a carousel, hidden tabs are less discoverable and cost more to reach, and the fewer tabs the better. Labels should be short, the selected tab should show at least two indicators, and the default tab should be the high-use one.
+</Claim>
+
+<Claim strength="practice" refs="B03" scope="An NN/g article about horizontal scrolling on desktop sites. It says swiping is familiar on phones and tablets.">
+Content behind a horizontal scroll is often ignored, even with arrows. People should not have to guess how much is left, and swiping should not be the only way to move.
+</Claim>
+
+<Claim strength="practice" refs="B05" scope="An NN/g article on accordions on mobile. It does not study overview strips.">
+Showing the structure first gives people the big picture and direct access to a section, before they commit to details.
+</Claim>
+
+<Claim strength="practice" refs="B04" scope="An NN/g article on bottom sheets, from its own studies of overlays; no sample size on the page.">
+A bottom sheet suits a short interaction. It should close with Back and a visible Close button, should not be stacked and should not replace a page. The bottom of the screen is not universally the easiest to reach.
+</Claim>
+
+<Claim strength="practice" refs="B06" scope="MDN reference documentation for the CSS scroll snap module; it says nothing about feel on a given device.">
+`scroll-snap-type` and `scroll-snap-align` define snap positions, `scroll-snap-stop: always` prevents scrolling past an item, and `scroll-padding` adjusts the viewing region.
+</Claim>
+
+<Claim strength="practice" refs="B07" scope="Apple's layout guidance for Apple platforms.">
+Keep the same functionality at every size and change only how much is visible. Decide by the space available, not by device.
+</Claim>
+
+<Claim strength="practice" refs="B08, B09" scope="Two vendors documenting their own products. Practice examples only.">
+Practice examples: one CRM documents a mobile board where you swipe to view the records in each stage, with a list view as an alternative, and a deal's stage changed by choosing from a list; one issue tracker documents swiping across columns and long-pressing a card to drag it.
+</Claim>
+
+<Claim strength="practice" refs="B10, B11, B12" scope="Three vendors documenting their own products. Practice examples only; none of the pages says what its phone app does.">
+Practice examples: three products let you hide or collapse empty columns, and list the hidden ones elsewhere.
+</Claim>
+
+<Claim strength="heuristic">
+**No source documents "open on the first stage that has items" or "show every stage's count at a glance".** These two rules come from the measured case above and from the sequential-access and discoverability findings, not from a product or a study.
+</Claim>
+
+## The contract
+
+<Claim strength="heuristic">
+**Open on a stage that has items.** The board opens on the first filled stage in funnel order, never on an empty one while another has cards. If every stage is empty, show one empty state for the page that says why and what to do next. A change of filter, search or scope returns to the first filled stage; moving a card (which does not change the total) keeps the person where they are.
+</Claim>
+
+<Claim strength="heuristic">
+**Every filled stage is named and counted at a glance, and the count is never truncated.** A scrolling strip of segments, one per filled stage, each with an abbreviated name, the count and a bar in the stage colour. The name is cut with an ellipsis at a measured width (about 8.5rem; the selected one gets about 14rem, a heavier weight and a filled background, two indicators beyond the bar); the count is never cut. The full name is the heading of the page below the strip, which wraps instead of truncating, and the screen-reader label and tooltip of each segment. Segments are at least 44px tall and wide. A first version showed counts only; review found that nobody could tell which stage was which, so the name came back.
+</Claim>
+
+<Claim strength="heuristic">
+**Empty stages stay out of the way, and stay reachable.** They leave the strip and collapse into one "+N" segment that opens the list of every stage with its count, empty ones last. This matches the "Open" scope and the collapsed empty columns of the desktop board. Empty stages are still valid destinations when moving a card.
+</Claim>
+
+<Claim strength="heuristic">
+**Show that there is a next stage.** The pager is one page at a time with `scroll-snap-type: x mandatory` and `scroll-snap-stop: always`, a 12px gutter, and the next page peeking 16px. The strip and the heading are the direct route to any stage, so swiping is never the only way.
+</Claim>
+
+<Claim strength="heuristic">
+**Moving a card is a sheet, not a drag.** Each card has a 44px "Move to…" button that opens a sheet listing every stage with its count, the current one disabled. Apply it optimistically and roll back with an announcement if the request fails. Long-press drag is optional: on a phone the drop target is a whole screen, one stage at a time.
+</Claim>
+
+<Claim strength="heuristic">
+**An empty stage is a line, not a box.** If a person picks an empty stage, or empties one by moving its last card, the page is one sentence ("No deals in this stage.") and a shortcut to the next filled stage. Never a column stretched to the bottom of the screen.
+</Claim>
+
+## How the library implements it
+
+The library's compact `Kanban` covers swipe, snap and a "Move to…" menu, but not the points above: it opens on the first column, does not scroll the selected tab into view, shows full labels in the tabs, does not peek, cannot hide empty columns without losing them as destinations, and stretches an empty column to full height. The gaps, with file and line, are in [#1064](https://github.com/codeatlasdev/ui/issues/1064); until they are closed an application builds the pattern itself from `Sheet`, buttons and tokens.
+
+Library: [Kanban](/docs/display/kanban/), [Sheet](/docs/feedback/sheet/), [Carousel](/docs/display/carousel/). Related proposals: collapsed columns [#1039](https://github.com/codeatlasdev/ui/issues/1039), scroll and peek [#1043](https://github.com/codeatlasdev/ui/issues/1043), the umbrella [#1045](https://github.com/codeatlasdev/ui/issues/1045).
+
+## Checks that decide
+
+Run each at 390×844 and 360×740, in WebKit and Chromium, light and dark, with a fixture whose first stage is empty.
+
+| Rule | How to measure | Fails when |
+|---|---|---|
+| Opens on a filled stage | Read `aria-selected` of the strip and the first card's box on load | the selected segment is not the first with cards, or no card is visible without scrolling |
+| Counts at a glance | For each segment, the count element's `scrollWidth ≤ clientWidth`, the name present, and the segment box | any count is clipped, a stage has no name, or a segment is under 44px tall or wide |
+| No giant empty box | Rasterize the board region into 8px cells (text, controls, images, painted surfaces occupied); find the largest empty rectangle with the histogram method | it is above 15% of the region with enough cards to fill the screen |
+| Peek | Distance from the right edge of the viewport to the left edge of the next page | it is outside 8–32px |
+| Active segment in view | After a swipe, the selected segment's box against the strip's box | any part of it is outside the strip |
+| Move is optimistic | Hold the request, choose a destination, read the list before the response | the card is still in the source stage, or does not return after a 500 |
+| Header readable | `scrollWidth ≤ clientWidth` for the page title and the pipeline name | either is clipped |
+| Empty funnel | Fixture with zero cards | any segment is drawn, or a column is stretched |
+
+## Anti-patterns
+
+- Opening on the first stage because it is first.
+- Tabs that carry the full stage name next to the count (they overflow); and the opposite, counts with no name at all (nobody knows which stage is which).
+- A column that stretches to the bottom of the screen with nothing in it.
+- Hiding empty stages from the move menu together with the strip.
+- A page title and a context selector sharing 180px.
+- Swipe as the only way to change stage.
+- Stacking a second sheet on the move sheet.
+
+## Checklist
+
+- Opens on the first filled stage; all empty shows one page-level empty state.
+- One segment per filled stage: name (ellipsis), count (never cut), 44px targets, selected stage in view.
+- Empty stages collapse into "+N" and remain destinations.
+- One page at a time, snap, 16px peek, the strip or heading as direct access.
+- "Move to…" is a sheet with every stage, a Close button and Back to dismiss; optimistic with rollback.
+- Empty stage is one line plus a shortcut.
+- Title and context selector are both readable at 360px.
+
+## Prompt for your AI
+
+```text
+Build the phone version of a pipeline board as a stage strip plus a snap pager, not as the desktop columns shrunk. Open on the first stage that has cards (never an empty one while another has cards); if every stage is empty show one page-level empty state. Show one segment per stage that has cards in a single scrolling 44px row: an abbreviated name cut with an ellipsis (about 8.5rem; the selected one about 14rem, bold, filled background), the count that is never cut, and a bar in the stage colour; put the full name in the heading below (wrapping) and in the aria-label and tooltip; always bring the selected segment into view. Collapse empty stages into one "+N" segment that opens a sheet listing every stage with its count. The pager is one page at a time: scroll-snap-type x mandatory, scroll-snap-stop always, a 12px gutter and the next page peeking 16px; each page scrolls vertically by itself; the strip and heading are direct access, swipe is never the only way. Move a card through a "Move to…" sheet with every stage (empty ones too), the current one disabled, a visible Close button and Back to dismiss; apply it optimistically and roll back with an announcement on failure. An empty stage is one sentence plus a shortcut to the next filled stage, never a stretched box. Keep the page title and the pipeline name both readable at 360px. Measure at 390 and 360: first card visible without scrolling, no clipped count, targets at least 44px, peek between 8 and 32px, largest empty rectangle at most 15%.
+```
+
+<Limits reviewed="2026-11-12">
+- The numeric budgets (44px, 8.5rem and 14rem name caps, 16px peek, 12px gutter, 15%) are our targets from one application, not findings. No source gives them.
+- The two core rules, "open on a filled stage" and "every stage's count at a glance", come from one measured case and from general NN/g guidance on carousels and tabs. No source tests them on boards.
+- Abbreviated names cut with an ellipsis can make two stages with a common prefix look alike ("Aguardando…"); the full name is in the heading and the sheet. We have not tested how often that confuses people.
+- The NN/g articles are practice guidance from the publisher's own observation, with no sample sizes on the pages. The article on horizontal scrolling is about desktop sites.
+- HubSpot, Jira, Linear, ClickUp and Notion are cited as **practice examples** from their own documentation. We could not read their phone apps; where a page does not say what the phone app does, this page does not claim it. Trello and Asana are not cited: no official page about their phone boards was read.
+- Long-press drag, and drag across stages on a phone, were not built or tested.
+- The measured case is one CRM with one pipeline. Its numbers (a 1100px empty box, 22 stages, 18 empty) are that case, not a general finding.
+</Limits>
+
+<Refs ids="B01, B02, B03, B04, B05, B06, B07, B08, B09, B10, B11, B12" />
