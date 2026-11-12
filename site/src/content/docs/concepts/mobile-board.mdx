@@ -12,7 +12,7 @@ import Refs from "~/components/docs/Refs.astro";
 A board shows work as cards in columns, one column per stage. On a desktop several columns fit side by side. On a phone one column fills the screen, and everything the desktop gave for free (where the cards are, how many are in each stage, how to move one) has to be rebuilt. This page records what a real CRM got wrong, what the sources say, the pattern we chose, and how to check it.
 
 <Callout type="note" title="Where the numbers come from">
-  The budgets here (44px segments, a 16px peek, eight segments, 15% empty area) are **our own targets**, measured on one application and tracked in [#1054](https://github.com/codeatlasdev/ui/issues/1054) and [#1064](https://github.com/codeatlasdev/ui/issues/1064). No study backs the exact numbers. Where a source supports the *direction* of a rule, the claim says so. Products are shown as **practice examples**, never as evidence that a pattern works better.
+  The budgets here (44px segments, an 8.5rem name cap, a 16px peek, 15% empty area) are **our own targets**, measured on one application and tracked in [#1054](https://github.com/codeatlasdev/ui/issues/1054) and [#1064](https://github.com/codeatlasdev/ui/issues/1064). No study backs the exact numbers. Where a source supports the *direction* of a rule, the claim says so. Products are shown as **practice examples**, never as evidence that a pattern works better.
 </Callout>
 
 ## What went wrong: a measured case
@@ -88,7 +88,7 @@ Practice examples: three products let you hide or collapse empty columns, and li
 </Claim>
 
 <Claim strength="heuristic">
-**Every filled stage's count is visible at a glance and never truncated.** A strip of equal segments, one per filled stage, each with the count as the main figure and a bar in the stage colour; the selected one gets a filled background and a heavier figure (two indicators). The stage name does not go in the strip: it does not fit, and a clipped name is worse than none. The full name is the heading of the page below it, which wraps instead of truncating, and the screen-reader label and tooltip of each segment. Segments are at least 44×44px. Up to about eight fit in 390px; beyond that the strip scrolls and always brings the selected segment into view.
+**Every filled stage is named and counted at a glance, and the count is never truncated.** A scrolling strip of segments, one per filled stage, each with an abbreviated name, the count and a bar in the stage colour. The name is cut with an ellipsis at a measured width (about 8.5rem; the selected one gets about 14rem, a heavier weight and a filled background, two indicators beyond the bar); the count is never cut. The full name is the heading of the page below the strip, which wraps instead of truncating, and the screen-reader label and tooltip of each segment. Segments are at least 44px tall and wide. A first version showed counts only; review found that nobody could tell which stage was which, so the name came back.
 </Claim>
 
 <Claim strength="heuristic">
@@ -120,7 +120,7 @@ Run each at 390×844 and 360×740, in WebKit and Chromium, light and dark, with 
 | Rule | How to measure | Fails when |
 |---|---|---|
 | Opens on a filled stage | Read `aria-selected` of the strip and the first card's box on load | the selected segment is not the first with cards, or no card is visible without scrolling |
-| Counts at a glance | For each segment, the count element's `scrollWidth ≤ clientWidth`, and the segment box | any count is clipped, or a segment is under 44×44px |
+| Counts at a glance | For each segment, the count element's `scrollWidth ≤ clientWidth`, the name present, and the segment box | any count is clipped, a stage has no name, or a segment is under 44px tall or wide |
 | No giant empty box | Rasterize the board region into 8px cells (text, controls, images, painted surfaces occupied); find the largest empty rectangle with the histogram method | it is above 15% of the region with enough cards to fill the screen |
 | Peek | Distance from the right edge of the viewport to the left edge of the next page | it is outside 8–32px |
 | Active segment in view | After a swipe, the selected segment's box against the strip's box | any part of it is outside the strip |
@@ -131,7 +131,7 @@ Run each at 390×844 and 360×740, in WebKit and Chromium, light and dark, with 
 ## Anti-patterns
 
 - Opening on the first stage because it is first.
-- Tabs that carry the full stage name next to the count.
+- Tabs that carry the full stage name next to the count (they overflow); and the opposite, counts with no name at all (nobody knows which stage is which).
 - A column that stretches to the bottom of the screen with nothing in it.
 - Hiding empty stages from the move menu together with the strip.
 - A page title and a context selector sharing 180px.
@@ -141,7 +141,7 @@ Run each at 390×844 and 360×740, in WebKit and Chromium, light and dark, with 
 ## Checklist
 
 - Opens on the first filled stage; all empty shows one page-level empty state.
-- One segment per filled stage, count visible, no clipping, 44px targets, selected stage in view.
+- One segment per filled stage: name (ellipsis), count (never cut), 44px targets, selected stage in view.
 - Empty stages collapse into "+N" and remain destinations.
 - One page at a time, snap, 16px peek, the strip or heading as direct access.
 - "Move to…" is a sheet with every stage, a Close button and Back to dismiss; optimistic with rollback.
@@ -151,13 +151,13 @@ Run each at 390×844 and 360×740, in WebKit and Chromium, light and dark, with 
 ## Prompt for your AI
 
 ```text
-Build the phone version of a pipeline board as a stage strip plus a snap pager, not as the desktop columns shrunk. Open on the first stage that has cards (never an empty one while another has cards); if every stage is empty show one page-level empty state. Show one segment per stage that has cards in a single 44px row: the count as the main figure, a bar in the stage colour, a filled background for the selected one; never put the stage name in the segment (put it in the heading below, wrapping, and in the aria-label and tooltip). Up to about eight segments fit at 390px; more scroll and always bring the selected one into view. Collapse empty stages into one "+N" segment that opens a sheet listing every stage with its count. The pager is one page at a time: scroll-snap-type x mandatory, scroll-snap-stop always, a 12px gutter and the next page peeking 16px; each page scrolls vertically by itself; the strip and heading are direct access, swipe is never the only way. Move a card through a "Move to…" sheet with every stage (empty ones too), the current one disabled, a visible Close button and Back to dismiss; apply it optimistically and roll back with an announcement on failure. An empty stage is one sentence plus a shortcut to the next filled stage, never a stretched box. Keep the page title and the pipeline name both readable at 360px. Measure at 390 and 360: first card visible without scrolling, no clipped count, targets at least 44px, peek between 8 and 32px, largest empty rectangle at most 15%.
+Build the phone version of a pipeline board as a stage strip plus a snap pager, not as the desktop columns shrunk. Open on the first stage that has cards (never an empty one while another has cards); if every stage is empty show one page-level empty state. Show one segment per stage that has cards in a single scrolling 44px row: an abbreviated name cut with an ellipsis (about 8.5rem; the selected one about 14rem, bold, filled background), the count that is never cut, and a bar in the stage colour; put the full name in the heading below (wrapping) and in the aria-label and tooltip; always bring the selected segment into view. Collapse empty stages into one "+N" segment that opens a sheet listing every stage with its count. The pager is one page at a time: scroll-snap-type x mandatory, scroll-snap-stop always, a 12px gutter and the next page peeking 16px; each page scrolls vertically by itself; the strip and heading are direct access, swipe is never the only way. Move a card through a "Move to…" sheet with every stage (empty ones too), the current one disabled, a visible Close button and Back to dismiss; apply it optimistically and roll back with an announcement on failure. An empty stage is one sentence plus a shortcut to the next filled stage, never a stretched box. Keep the page title and the pipeline name both readable at 360px. Measure at 390 and 360: first card visible without scrolling, no clipped count, targets at least 44px, peek between 8 and 32px, largest empty rectangle at most 15%.
 ```
 
 <Limits reviewed="2026-11-12">
-- The numeric budgets (44px, 16px peek, 12px gutter, eight segments, 15%) are our targets from one application, not findings. No source gives them.
+- The numeric budgets (44px, 8.5rem and 14rem name caps, 16px peek, 12px gutter, 15%) are our targets from one application, not findings. No source gives them.
 - The two core rules, "open on a filled stage" and "every stage's count at a glance", come from one measured case and from general NN/g guidance on carousels and tabs. No source tests them on boards.
-- A strip of numbers and colours is less self-describing than labelled tabs, which NN/g prefers. We accept that because labels do not fit; the full name is one tap or one swipe away, in the heading. We have not tested whether people find the stage from the colour and position alone.
+- Abbreviated names cut with an ellipsis can make two stages with a common prefix look alike ("Aguardando…"); the full name is in the heading and the sheet. We have not tested how often that confuses people.
 - The NN/g articles are practice guidance from the publisher's own observation, with no sample sizes on the pages. The article on horizontal scrolling is about desktop sites.
 - HubSpot, Jira, Linear, ClickUp and Notion are cited as **practice examples** from their own documentation. We could not read their phone apps; where a page does not say what the phone app does, this page does not claim it. Trello and Asana are not cited: no official page about their phone boards was read.
 - Long-press drag, and drag across stages on a phone, were not built or tested.
