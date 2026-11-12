@@ -221,13 +221,19 @@
     return !!scroller && scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight <= STICK;
   }
 
-  /** Where WE last put the scroll position; a scroll event at any other offset is the user. */
+  /** Where WE last put the scroll position; `pin()` compares against it to spot a scroll since. */
   let pinnedAt = -1;
+  /** Set by `pin()` around its own write; consumed by the scroll event that write fires. */
+  let selfScroll = false;
 
   function onscroll() {
     if (!scroller) return;
     scrollTop = scroller.scrollTop;
-    if (Math.abs(scroller.scrollTop - pinnedAt) > 1) atBottom = nearBottom();
+    // `pin()`'s own write echoes one scroll event: ignore it while it still lands at the end. Any
+    // other event is the user, wherever it lands (even back on the offset `pin()` wrote, #1033).
+    const echo = selfScroll;
+    selfScroll = false;
+    if (!(echo && nearBottom())) atBottom = nearBottom();
     maybeLoad();
   }
 
@@ -252,7 +258,10 @@
       atBottom = false;
       return;
     }
+    const before = scroller.scrollTop;
     scroller.scrollTop = scroller.scrollHeight;
+    // No offset change, no scroll event: a flag set now would swallow the user's next scroll.
+    if (scroller.scrollTop !== before) selfScroll = true;
     pinnedAt = scroller.scrollTop;
     scrollTop = pinnedAt;
   }
@@ -303,6 +312,7 @@
         sizes.clear();
         atBottom = true;
         pinnedAt = -1;
+        selfScroll = false;
         anchor = null;
         restoring = false;
         scrollTop = 0;
