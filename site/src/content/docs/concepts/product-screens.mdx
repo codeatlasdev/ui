@@ -153,6 +153,7 @@ Rules for a product on a phone, below the breakpoint where the shell swaps its s
 
 - **One scroll owner per axis.** The page or one region scrolls, never both. Full-height screens subtract the top bar and the bottom navigation and never use `100vh` ([viewport units](/docs/concepts/viewport/)).
 - **Bottom navigation** holds the same destinations as the wide top navigation; "More" opens a sheet with one block per group. Page actions are not tabs.
+- **Persistent chrome:** the top bar and the bottom navigation are one instance for the whole session: the same node, never remounted, never animated, between sections and subpages. Only the page content changes, and the active item of the bottom navigation updates in place. The one exception is the intentional drill from a list into a detail, where the bars give way to the detail header in the same frame. No `view-transition-name` on global bars and no route-level `startViewTransition` over them: the browser then paints two frozen images of the bar in a cross-fade, which looks like the bar re-rendering.
 - **Master/detail becomes a stack:** the list fills the screen and the detail opens in a pane with a back control, Esc, the safe area and the keyboard handled ([MobilePane](/docs/layout/mobile-pane/)).
 - **Popovers and menus become sheets,** with a close button and Back support.
 - **Inputs at 16px or larger,** so iOS does not zoom on focus (the library's [mobile guide](/docs/getting-started/mobile/#input-font-size) sets this for you).
@@ -162,6 +163,8 @@ Rules for a product on a phone, below the breakpoint where the shell swaps its s
 <Claim strength="practice" refs="W11" scope="WCAG 2.2 Understanding document for 2.5.5, Level AAA. The AA minimum is 24px (see Targets and focus).">
 At Level AAA the target for pointer inputs is at least 44 by 44 CSS pixels, with exceptions for equivalent controls, inline text, user-agent controls and essential sizes.
 </Claim>
+
+How to measure persistence: visit eight or more sections and subpages by in-app navigation, sampling every painted frame (`requestAnimationFrame`) and assert that the top bar and bottom navigation are the same DOM nodes in every frame (a `MutationObserver` sees no removal or insertion), that no frame has an effective opacity (the node times its ancestors) below 1, `visibility: hidden`, `display: none` or a different rectangle, and that no `::view-transition` animation is running over them. In our application the production build measured 0 replaced nodes, 0 hidden frames and a minimum opacity of 1 on every navigation, against about 30 frames per navigation with the bars cross-fading (opacity 1 to 0 over about 250ms) before the fix.
 
 How to measure: at 390×844 and 360×800 with touch emulation, assert that the document is not wider than the viewport, that at most one element scrolls on the vertical axis inside the main area, that every input computes to at least 16px, that every interactive element is at least 44px on both sides (excluding inline links), and that every control revealed by hover is also reachable without it.
 
@@ -212,6 +215,7 @@ Library: [Skeleton](/docs/feedback/skeleton/), [LoadingBoundary](/docs/navigatio
 | A segmented control with four long labels in 330px | Labels clip or touch | A list of 44px options, or the control only while labels fit |
 | ↑ ↓ and a trash can on every row | Does not work with 100 rows; crowds the row | A handle, "Move to position…" and a menu |
 | A card that grows by one row per tag | The board jumps | A count that fits and "+N" |
+| A route transition (View Transition) over the whole page, with the bars named | The bars are painted as two frozen images in a cross-fade on every navigation | No transition over the chrome; only the content enters |
 | `100vh` for a full-height screen on a phone | The bottom is behind the browser bar | The shell's height token, minus the navigation |
 | Filters and sort held in component state | Reload and a shared link lose them | State in the URL, preference per user |
 | A permanent "Drop here" in every empty column | Noise that explains nothing at rest | Show it while dragging |
@@ -226,6 +230,7 @@ Library: [Skeleton](/docs/feedback/skeleton/), [LoadingBoundary](/docs/navigatio
 - Tag rows show the count that fits and "+N"; no segmented control clips at 360px.
 - An editable list works at 100 rows, has a non-drag way to reorder, and keeps "New …" in view.
 - On a phone: one scroll owner, bottom navigation, sheets instead of popovers, inputs at 16px, targets at 44px.
+- The top bar and the bottom navigation are the same nodes across navigations: no remount, no frame with opacity below 1, hidden or moved (except the intentional drill into a detail).
 - A canvas editor takes at least 85% of the viewport height.
 - A failed mutation rolls back and is announced; skeletons match the final size.
 - Every empty state says why it is empty and what to do next.
