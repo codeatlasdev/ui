@@ -19,7 +19,7 @@ import HistorySrc from "~/demos/display/virtual-list/History.svelte?raw";
 </VirtualList>
 ```
 
-Only the rows in view (plus `overscan`) are in the DOM; row heights are measured, so they can vary. Prepending older rows keeps the row you were reading in the same place: the list finds the previous first row by `getKey` and corrects `scrollTop`. `LiveList` follows the bottom but cannot prepend history without a jump; this one can, and also follows new rows while you are at the bottom. A visible "Load older messages" button gives keyboard and screen reader users the same trigger as scrolling.
+Only the rows in view (plus `overscan`) are in the DOM; row heights are measured, so they can vary. Prepending older rows keeps the row you were reading in the same place: the list finds the previous first row by `getKey` and corrects `scrollTop`. `LiveList` follows the bottom but cannot prepend history without a jump; this one can, and also follows new rows while you are at the bottom. A visible "Load older messages" button gives keyboard and screen reader users the same trigger as scrolling. The button (or the "Loading older messages" note) is the first item of the content, a fixed-height block in the flow: it is in view only when the start of the history is, never covers a row, and its height is the same in every state, so nothing moves when the last page arrives.
 
 Passing a different list (the previous first row is gone, for example switching conversation) resets the scroll state and measured heights, and the new list opens at its end like a fresh mount; no `{#key}` is needed.
 

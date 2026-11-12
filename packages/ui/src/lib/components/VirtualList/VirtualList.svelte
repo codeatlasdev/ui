@@ -83,6 +83,8 @@
   let viewport = $state(0);
   /** Bumped whenever a measured size changes, so offsets recompute. */
   let sizeVersion = $state(0);
+  /** Measured height of the in-flow "load older" header; 0 while it is not rendered. */
+  let headH = $state(0);
   let atBottom = true;
 
   /** Measured heights by key. Not reactive on purpose: `sizeVersion` signals changes. */
@@ -91,11 +93,14 @@
 
   const keys = $derived(items.map((it, i) => getKey(it, i)));
 
-  /** `offsets[i]` is the top of row i; `offsets[n]` the total height. */
+  /**
+   * `offsets[i]` is the top of row i in scroller coordinates (the header's height included);
+   * `offsets[n]` the total content height.
+   */
   const offsets = $derived.by(() => {
     sizeVersion;
     const out = new Array<number>(keys.length + 1);
-    let y = 0;
+    let y = headH;
     for (let i = 0; i < keys.length; i++) {
       out[i] = y;
       y += sizes.get(keys[i]) ?? estimateSize;
@@ -133,7 +138,7 @@
   const rows = $derived(
     Array.from({ length: range.end - range.start }, (_, j) => {
       const i = range.start + j;
-      return { i, key: keys[i], it: items[i], top: offsets[i] };
+      return { i, key: keys[i], it: items[i], top: offsets[i] - headH };
     })
   );
 
@@ -165,6 +170,19 @@
       }
       if (changed) flush();
     }));
+  }
+
+  /** Tracks the header's height so it shifts every row offset (it is content, not an overlay). */
+  function measureHead(el: HTMLElement) {
+    headH = el.getBoundingClientRect().height;
+    const ho = new ResizeObserver(() => {
+      headH = el.getBoundingClientRect().height;
+    });
+    ho.observe(el);
+    return () => {
+      ho.disconnect();
+      headH = 0;
+    };
   }
 
   function measure(el: HTMLElement, key: string | number) {
@@ -402,7 +420,7 @@
     {onscroll}
   >
     {#if hasMore || loadingMore}
-      <div class="ca-virtual-list__head">
+      <div class="ca-virtual-list__head" {@attach measureHead}>
         {#if loadingMore}
           <p class="ca-virtual-list__loading" aria-busy="true">{t().virtualList.loadingOlder}</p>
         {:else}
@@ -416,7 +434,7 @@
     {#if items.length === 0}
       <div class="ca-virtual-list__empty">{@render empty?.()}</div>
     {:else}
-      <ul class="ca-virtual-list__list" style="block-size:{total}px">
+      <ul class="ca-virtual-list__list" style="block-size:{total - headH}px">
         {#each rows as row (row.key)}
           <li
             class="ca-virtual-list__item"
@@ -460,18 +478,18 @@
       outline-offset: 2px;
     }
 
-    /* Zero layout height: the control floats over the first rows, so list offsets stay equal to scroll offsets. */
+    /*
+     * In flow at the top of the content, so it is only in view when the start of the history is and never
+     * covers a row (#1032). Its measured height is part of the list offsets. One fixed block-size for the
+     * button and the loading note: the swap between them, or the header going away, moves nothing.
+     */
     .ca-virtual-list__head {
-      position: sticky;
-      inset-block-start: 0;
-      z-index: 1;
-      block-size: 0;
+      box-sizing: border-box;
       display: flex;
+      align-items: center;
       justify-content: center;
-      padding-block-start: var(--ca-space-2);
-      pointer-events: none;
+      block-size: calc(var(--ca-touch-target) + var(--ca-space-2) * 2);
     }
-    .ca-virtual-list__head > * { pointer-events: auto; }
 
     .ca-virtual-list__older {
       min-block-size: var(--ca-touch-target);

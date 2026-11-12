@@ -210,8 +210,10 @@ describe("VirtualList", () => {
 		const onloadmore = vi.fn();
 		const screen = await render(Harness, { props: { initial: 50, hasMore: true, onloadmore } });
 		await settle();
-		scroller(screen.container).scrollTop = 600;
+		// The button is the first thing in the content: it is reached by scrolling to the top.
+		scroller(screen.container).scrollTop = 0;
 		await settle();
+		onloadmore.mockClear();
 		const btn = screen.getByRole("button", { name: "Load older messages" });
 		await btn.click();
 		expect(onloadmore).toHaveBeenCalledTimes(1);
@@ -473,5 +475,94 @@ describe("VirtualList frame (#913)", () => {
 		expect(Number.parseFloat(s.borderTopWidth)).toBeGreaterThan(0);
 		expect(Number.parseFloat(s.borderTopLeftRadius)).toBeGreaterThan(0);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("VirtualList load-earlier header (#1032)", () => {
+	const head = (c: Element) => c.querySelector(".ca-virtual-list__head") as HTMLElement;
+	const rect = (el: Element) => el.getBoundingClientRect();
+	const overlaps = (a: Element, b: Element) => {
+		const [x, y] = [rect(a), rect(b)];
+		return x.top < y.bottom - 0.5 && y.top < x.bottom - 0.5;
+	};
+
+	it(
+		"is not over any row once the list is scrolled away from the start",
+		async () => {
+			const screen = await render(Harness, {
+				props: { initial: 80, hasMore: true, onloadmore: () => {} },
+			});
+			await settle();
+			const el = scroller(screen.container);
+			el.scrollTop = el.scrollHeight / 2;
+			await settle();
+			const box = rect(el);
+			const h = rect(head(screen.container));
+			// Scrolled out of view: it is part of the content, not floating over the viewport.
+			expect(h.bottom <= box.top + 0.5 || h.top >= box.bottom - 0.5).toBe(true);
+			for (const li of lis(screen.container))
+				expect(overlaps(head(screen.container), li)).toBe(false);
+		},
+		SLOW_FLOW
+	);
+
+	it(
+		"leaves the first row below it at scrollTop 0",
+		async () => {
+			const screen = await render(Harness, {
+				props: { initial: 80, hasMore: true, onloadmore: () => {} },
+			});
+			await settle();
+			const el = scroller(screen.container);
+			el.scrollTop = 0;
+			await waitFor(() => rowOf(screen.container, 1) !== null);
+			await settle();
+			const first = rowOf(screen.container, 1) as HTMLElement;
+			const control = screen.container.querySelector(".ca-virtual-list__older") as HTMLElement;
+			expect(overlaps(control, first)).toBe(false);
+			expect(overlaps(head(screen.container), first)).toBe(false);
+			expect(rect(first).top).toBeGreaterThanOrEqual(rect(head(screen.container)).bottom - 0.5);
+		},
+		SLOW_FLOW
+	);
+
+	it(
+		"keeps the visible row in place when older rows arrive with the header present",
+		async () => {
+			const screen = await render(Harness, {
+				props: { initial: 300, hasMore: true, onloadmore: () => {} },
+			});
+			await settle();
+			const el = scroller(screen.container);
+			el.scrollTop = 4000;
+			await settle();
+			const box = rect(el);
+			const anchor = lis(screen.container)
+				.map((li) => li.querySelector("[data-key]") as HTMLElement)
+				.find((n) => rect(n).top >= box.top + 1) as HTMLElement;
+			const key = Number(anchor.dataset.key);
+			const before = top(anchor);
+			screen.component.prepend(20);
+			await waitFor(() =>
+				lis(screen.container).some((li) => li.getAttribute("aria-setsize") === "320")
+			);
+			await settle();
+			const moved = rowOf(screen.container, key) as HTMLElement;
+			expect(Math.abs(top(moved) - before)).toBeLessThanOrEqual(1);
+		},
+		SLOW_FLOW
+	);
+
+	it("has the same height as button, loading and (while mounted) no-more states", async () => {
+		const screen = await render(Harness, {
+			props: { initial: 20, hasMore: true, onloadmore: () => {} },
+		});
+		await settle();
+		const button = rect(head(screen.container)).height;
+		expect(button).toBeGreaterThan(0);
+		await screen.rerender({ initial: 20, hasMore: true, loadingMore: true, onloadmore: () => {} });
+		await settle();
+		const loading = rect(head(screen.container)).height;
+		expect(loading).toBe(button);
 	});
 });
