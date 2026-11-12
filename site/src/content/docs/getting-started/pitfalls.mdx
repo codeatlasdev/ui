@@ -1,0 +1,93 @@
+---
+title: Pitfalls and recipes
+description: Eight traps a production app hit on top of the library (sheet focus, attributes that do not reach the DOM, load-older versus the scroll threshold, wheel targets on a board, layout shift on slow data, popover on a phone, route transitions over persistent bars, an audit that cannot pass by absence) and what to do today.
+group: Getting started
+order: 21
+---
+import { Callout } from "@codeatlasdev/ui";
+
+Each entry says what goes wrong, what to do today and which issue tracks the library side. Open items are marked; when the issue closes, the recipe moves into the component page. Parent issue: [#1072](https://github.com/codeatlasdev/ui/issues/1072).
+
+## 1. A sheet opened by touch lights up its close button
+
+`Sheet`, `Dialog` and `Drawer` are native modal `<dialog>` elements, so focus lands on the first focusable control when they open. Opened by a tap, that is the close button, drawn with `:focus-visible`. The layer engine can place focus on the panel (`initialFocus: 'container'`, used by `AlertDialog`, `Lightbox` and `MobilePane`), but `Sheet`, `Dialog` and `Drawer` do not expose it yet.
+
+Today, put a non-interactive focus target first in the content:
+
+```svelte
+<Sheet bind:open title="Status">
+  <!-- svelte-ignore a11y_autofocus -->
+  <div tabindex="-1" autofocus>…content…</div>
+</Sheet>
+```
+
+Tracked: [#1056](https://github.com/codeatlasdev/ui/issues/1056) (focus on open), [#1059](https://github.com/codeatlasdev/ui/issues/1059) (the panel itself takes Tab in WebKit).
+
+## 2. An attribute you pass is not in the DOM
+
+Components that forward their remaining attributes to the root element say so on their page (`Tabs`, `DropdownMenu` items, `Checkbox`, `Drawer`, `TextField`, `Card`, `Button`). Most leaf components do not yet: `Badge`, `StatusChip`, `Chip`, `Avatar`, `Stat`, `Progress`, `Spinner`, `Switch`, `Select`, `Sheet`, `Dialog`, `Alert`, `Divider`, `Kbd` and `EmptyState` reject `data-testid`, `id` and `aria-*` in the type check.
+
+Today, wrap the component in your own element that carries the attribute, or select by role and accessible name in tests. Do not cast the props to silence the type error: the attribute is dropped at runtime.
+
+Tracked: [#1066](https://github.com/codeatlasdev/ui/issues/1066).
+
+## 3. `VirtualList`: the load-older button and the scroll threshold
+
+`VirtualList` loads the previous page by itself when the scroll position is within `loadThreshold` (120 px) of the top, and also shows a "Load older messages" button. Scrolling to the button crosses the threshold, and the button is replaced by the loading note in the middle of the gesture. A test that scrolls to the button and calls `click()` fails with "element was detached" (4 of 180 runs under load in the app that found it).
+
+To test scroll loading, use the real gesture: put the pointer over the list and repeat `page.mouse.wheel(0, -60)` until the loading indicator appears. Never `dispatchEvent('click')`: it skips the actionability checks. To test the button, keep the list away from the threshold, or set `loadThreshold={0}`.
+
+Tracked: [#1067](https://github.com/codeatlasdev/ui/issues/1067), related [#1046](https://github.com/codeatlasdev/ui/issues/1046).
+
+## 4. `Kanban`: the wheel over a board
+
+A vertical wheel over the gap between columns, or past the end of a column's list, should move the board sideways. If the target is decided on every event, the board moves under a still cursor and the next notch scrolls the neighbouring column. Latch the target for the whole gesture: the first notch decides, and the decision holds until the wheel stops. With a still cursor, hold it for about 1 s (slow wheels and a loaded machine space notches by more than 160 ms); only a real pointer move, compared by **screen** position (the browser fires a synthetic `pointermove` when content scrolls under a still cursor), returns to the short 160 ms pause.
+
+Tracked: [#1049](https://github.com/codeatlasdev/ui/issues/1049).
+
+## 5. Layout shift appears only with slow data
+
+A header with a row of status chips that fills in piece by piece, and a two-column page whose side panel moves when the list arrives, shift 0.17 to 0.54 on a 360 px phone when each call takes 300 to 1500 ms; with a fast local API they shift 0. Reserve the final size before the data arrives: a status row with a one-line minimum height, chip placeholders of the real width, a side panel whose position in the DOM and height do not depend on the data. Run the screen audit with a slowed API (entry 8).
+
+Tracked: [#1068](https://github.com/codeatlasdev/ui/issues/1068).
+
+## 6. A popover on a phone
+
+A `Popover` is anchored to its trigger. In a phone header the trigger sits near an edge, so the panel opens beside it, over the brand, with wide buttons at the border. Below 900 px use a `Sheet`; from 900 px use a `Popover` with its width limited to the screen:
+
+```svelte
+<script lang="ts">
+  import { Popover, Sheet, responsive } from "@codeatlasdev/ui";
+  let open = $state(false);
+</script>
+
+{#snippet body()}…one body, rendered once…{/snippet}
+
+{#if responsive.isMobile}
+  <button type="button" onclick={() => (open = true)}>Status</button>
+  <Sheet bind:open title="Status">{@render body()}</Sheet>
+{:else}
+  <Popover bind:open side="bottom" align="end">
+    {#snippet triggerChild(props)}<button type="button" {...props}>Status</button>{/snippet}
+    {@render body()}
+  </Popover>
+{/if}
+```
+
+Tracked: [#1069](https://github.com/codeatlasdev/ui/issues/1069).
+
+## 7. The bars blink on every page change
+
+A view transition on every navigation, with `view-transition-name` on the top bar or bottom navigation, paints two frozen images of the bar and cross-fades them for about 250 ms (measured on a real iPhone: opacity painted 1 to 0). Persistent chrome must be the same nodes with opacity 1 in every frame. Do not name the bars, and do not call `startViewTransition` for navigations that keep the same shell; transition only the content region, or only a real drill from a list to a detail. The router snippet on [App navigation](/docs/navigation/app-navigation/#view-transitions) starts a transition on every route: add that condition before using it in an app with persistent bars.
+
+Tracked: [#1070](https://github.com/codeatlasdev/ui/issues/1070).
+
+## 8. An audit that passes by absence
+
+A screen audit is only a gate if it cannot pass without looking. Fail the run on: a serious finding without an exception; any detector that threw (the visit may be incomplete); a missing visit (screen times project without a result file, against a saved list); a failed discovery of dynamic ids (an API error removes screens silently otherwise). Keep exceptions narrow: serious findings only, matched by detector, screen, rule and selector, with a cap equal to the count measured when it was registered and an open issue. Add a slow-API mode (each call delayed 300 to 1500 ms, deterministic by URL) to see what arrives late and pushes the page. When the build runs behind a proxy header (`ADDRESS_HEADER=X-Forwarded-For`), every browser context needs that header or the server answers 500. Always pass the URL of the tree you test.
+
+Tracked: [#1071](https://github.com/codeatlasdev/ui/issues/1071).
+
+<Callout type="note" title="Found another?">
+  Mark the workaround with `ca-ui-workaround(#issue)` and open the issue as described in [Reporting problems](/docs/getting-started/reporting/).
+</Callout>
