@@ -1,0 +1,423 @@
+---
+title: Release audit
+description: "A per-screen audit matrix (desktop and phone, light and dark) and the detectors that run on every cell: axe, overflow, text overlap, layout shift, tap targets, hover-only actions, popovers off-screen, focus return, nested buttons, scroll owners and console and network errors. Generic Playwright snippets."
+group: Concepts
+order: 7
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+
+A component can be correct and the screen built from it still broken: a popover that opens off the edge, a list that scrolls inside a page that also scrolls, a button nested in a button, a field that zooms the page on iOS. These are faults of composition, so they show up only when a whole screen is rendered with real data. A release audit renders **every screen in every cell of a matrix** and runs the same detectors on each.
+
+The structure rules the audit enforces are on [Product screens](/docs/concepts/product-screens/). Target size, focus and motion are explained on [Targets and focus](/docs/concepts/targets-and-focus/) and [Motion that respects people](/docs/concepts/reduced-motion/); the detectors here only measure them.
+
+## Definition and vocabulary
+
+| Term | What it means here |
+|---|---|
+| Cell | One combination of screen, viewport, color scheme and (where it matters) pointer type. |
+| Detector | A function that takes a rendered page and returns a list of findings, each with the element and the rule it broke. |
+| Finding | A detector result that fails a cell. It carries an id so a release note can name it. |
+| Screen inventory | The list of routes, with the data a route needs, that the audit visits. A route missing from it is not audited. |
+| Gate | The command that fails the release when any finding exists. |
+
+## The matrix
+
+| Axis | Values | Why |
+|---|---|---|
+| Screen | Every route in the inventory, with realistic data (a long name, many rows, an empty list) | Most faults need data to appear |
+| Viewport | Desktop 1440×900 and 1920×1080; phone 390×844 and 360×800 | Wide screens expose dead area; 360px exposes clipping; 390px is the common phone |
+| Scheme | Light and dark | Contrast, borders and shadows differ; a hard-coded color fails in one |
+| Pointer | Mouse on desktop; touch with `hasTouch` and `isMobile` on phone | Hover-only actions and tap targets differ |
+| Motion | `reducedMotion: 'reduce'` for measurement runs | Removes animation as a source of noise in layout measurements |
+
+Four viewports times two schemes is eight cells per screen. With 40 screens that is 320 page loads: cheap when run in parallel workers and a few minutes in CI, and far cheaper than finding the fault in production.
+
+<Callout type="note" title="Seed the data">
+  An empty database hides most findings. Seed at least one record with a very long name, one with no optional fields, a list long enough to scroll, and a collection that is empty. Use the same seed for every cell so a failure reproduces.
+</Callout>
+
+## The detectors
+
+Each detector is a function run inside the page (`page.evaluate`) or around it (`page.on`). The snippets are generic; adapt the selectors to your markup. Every detector returns an array; an empty array passes.
+
+### 1. Accessibility (axe)
+
+<Claim strength="practice" refs="W06" scope="WCAG 2.2 Understanding document for 2.5.8, Level AA. Automated rules cover part of the criteria; the rest needs a keyboard and a device pass.">
+The target for pointer inputs is at least 24 by 24 CSS pixels unless an exception applies, and this is one of the criteria an automated pass can only partly check.
+</Claim>
+
+```ts
+import AxeBuilder from "@axe-core/playwright";
+
+export async function axe(page: Page) {
+	const r = await new AxeBuilder({ page })
+		.withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+		.analyze();
+	return r.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.length} node(s), e.g. ${v.nodes[0]?.target}`);
+}
+```
+
+Run it in both schemes: `color-contrast` often fails in only one. Treat `serious` and `critical` as failures; track `moderate` as a number that must not grow.
+
+### 2. Horizontal overflow
+
+<Claim strength="practice" refs="W01" scope="WCAG 2.2 Understanding document for 1.4.10, Level AA. It states a threshold of 320 CSS pixels for vertical-scrolling content, with exceptions for content that needs two-dimensional layout.">
+Content must be presentable without loss of information or functionality, and without scrolling in two dimensions, at a width equivalent to 320 CSS pixels.
+</Claim>
+
+```ts
+export const overflowX = (page: Page) =>
+	page.evaluate(() => {
+		const root = document.documentElement;
+		if (root.scrollWidth <= root.clientWidth + 1) return [];
+		// Name the culprits: elements whose right edge is beyond the viewport.
+		return [...document.body.querySelectorAll("*")]
+			.filter((e) => e.getBoundingClientRect().right > root.clientWidth + 1)
+			.slice(0, 5)
+			.map((e) => `overflow-x: <${e.tagName.toLowerCase()} class="${e.className}"> right=${Math.round(e.getBoundingClientRect().right)}`);
+	});
+```
+
+Run it at 360px, the narrowest cell. A container that scrolls on purpose (a table in its own scroll area) is not a finding; the document is.
+
+### 3. Text overlap and clipping
+
+```ts
+export const textProblems = (page: Page) =>
+	page.evaluate(() => {
+		const out: string[] = [];
+		const leaves = [...document.querySelectorAll<HTMLElement>("body *")].filter(
+			(e) => e.childElementCount === 0 && e.textContent?.trim() && e.getBoundingClientRect().width > 0
+		);
+		// Clipped without an ellipsis or an accessible full value.
+		for (const e of leaves) {
+			const s = getComputedStyle(e);
+			if (e.scrollWidth > e.clientWidth + 1 && s.textOverflow !== "ellipsis" && s.overflow !== "visible" && !e.title)
+				out.push(`clipped: "${e.textContent!.trim().slice(0, 40)}"`);
+		}
+		// Two text boxes that intersect.
+		const r = leaves.map((e) => [e, e.getBoundingClientRect()] as const);
+		for (let i = 0; i < r.length; i++)
+			for (let j = i + 1; j < r.length; j++) {
+				const [a, A] = r[i], [b, B] = r[j];
+				if (a.contains(b) || b.contains(a)) continue;
+				const w = Math.min(A.right, B.right) - Math.max(A.left, B.left);
+				const h = Math.min(A.bottom, B.bottom) - Math.max(A.top, B.top);
+				if (w > 2 && h > 2) out.push(`overlap: "${a.textContent!.trim().slice(0, 25)}" over "${b.textContent!.trim().slice(0, 25)}"`);
+			}
+		return out.slice(0, 10);
+	});
+```
+
+The pairwise loop is quadratic; limit it to the main region and to the first few hundred text boxes on very large pages.
+
+### 4. Layout shift
+
+<Claim strength="practice" refs="D01" scope="web.dev's account of how the Core Web Vitals thresholds were defined: 0.1 is the good threshold for Cumulative Layout Shift at the 75th percentile of page loads, a field measure for pages.">
+Cumulative Layout Shift is good at 0.1 or less, measured at the 75th percentile of page loads.
+</Claim>
+
+```ts
+export async function trackShift(page: Page) {
+	await page.addInitScript(() => {
+		(window as any).__cls = 0;
+		new PerformanceObserver((list) => {
+			for (const e of list.getEntries() as any[]) if (!e.hadRecentInput) (window as any).__cls += e.value;
+		}).observe({ type: "layout-shift", buffered: true });
+	});
+}
+export const cls = (page: Page) => page.evaluate(() => (window as any).__cls as number);
+// Gate: cls(page) <= 0.1 on every screen; for an internal screen with a skeleton, aim for 0.
+```
+
+Call `trackShift` before `goto`, load the screen, wait for the data to settle, then read it. A skeleton that does not match the final content is the usual cause.
+
+### 5. Tap targets
+
+<Claim strength="practice" refs="W06, W11" scope="WCAG 2.2 Understanding documents for 2.5.8 (Level AA, 24px) and 2.5.5 (Level AAA, 44px), each with exceptions for equivalent controls, inline text, user-agent controls and essential sizes.">
+The Level AA minimum for a pointer target is 24 by 24 CSS pixels, and 44 by 44 is the Level AAA size.
+</Claim>
+
+```ts
+export const smallTargets = (page: Page, min: number) =>
+	page.evaluate((min) => {
+		const sel = 'button, a[href], [role="button"], [role="menuitem"], input:not([type="hidden"]), select, textarea, [tabindex="0"]';
+		return [...document.querySelectorAll<HTMLElement>(sel)]
+			.filter((e) => {
+				const r = e.getBoundingClientRect();
+				if (r.width === 0 || getComputedStyle(e).visibility === "hidden") return false;
+				if (e.closest("p, li, td") && e.tagName === "A" && getComputedStyle(e).display === "inline") return false; // inline exception
+				return r.width < min || r.height < min;
+			})
+			.slice(0, 10)
+			.map((e) => `<${e.tagName.toLowerCase()}> ${Math.round(e.getBoundingClientRect().width)}×${Math.round(e.getBoundingClientRect().height)}: ${(e.getAttribute("aria-label") || e.textContent || "").trim().slice(0, 30)}`);
+	}, min);
+// Desktop: min = 24. Phone (touch): min = 44.
+```
+
+A control whose hit area is larger than its drawing, through padding or a pseudo-element, is measured by its element box, which is what a person taps. Read the box of the element that receives the event.
+
+### 6. Actions that only exist on hover
+
+```ts
+export async function hoverOnlyActions(page: Page, rowSel: string, actionSel: string) {
+	// In a touch context, an action revealed by :hover is unreachable.
+	return page.evaluate(([row, act]) => {
+		const out: string[] = [];
+		for (const r of document.querySelectorAll(row)) {
+			const a = r.querySelector<HTMLElement>(act);
+			if (!a) continue;
+			const s = getComputedStyle(a);
+			const hidden = s.opacity === "0" || s.visibility === "hidden" || a.getBoundingClientRect().width === 0;
+			if (hidden && !matchMedia("(hover: hover)").matches) out.push(`hidden on touch: ${act}`);
+		}
+		return out.slice(0, 5);
+	}, [rowSel, actionSel]);
+}
+// Run in a context with { hasTouch: true, isMobile: true } so (hover: none) is true.
+```
+
+The fix is to show the action always on `(hover: none)`, or to move it into the row's menu. The information in a row must never depend on hover.
+
+### 7. Popovers and menus off screen
+
+```ts
+export async function popoverInView(page: Page, openers: string[]) {
+	const out: string[] = [];
+	const { width: vw, height: vh } = page.viewportSize()!;
+	for (const sel of openers) {
+		await page.locator(sel).first().click();
+		const panel = page.locator('[role="menu"], [role="dialog"], [data-popover], [role="listbox"]').last();
+		await panel.waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
+		const b = await panel.boundingBox();
+		if (b && (b.x < -1 || b.y < -1 || b.x + b.width > vw + 1 || b.y + b.height > vh + 1))
+			out.push(`${sel}: panel ${Math.round(b.x)},${Math.round(b.y)} ${Math.round(b.width)}×${Math.round(b.height)} outside ${vw}×${vh}`);
+		await page.keyboard.press("Escape");
+	}
+	return out;
+}
+```
+
+Open each menu that sits near an edge, at 360px wide. A panel taller than the screen must scroll inside, not extend past it.
+
+### 8. Focus returns after Escape
+
+<Claim strength="practice" refs="W08" scope="The ARIA Authoring Practices Guide's modal dialog pattern: a recommended pattern, not a conformance criterion.">
+In a modal dialog focus moves in on open, Tab and Shift+Tab stay inside, and Escape closes it.
+</Claim>
+
+```ts
+export async function focusReturns(page: Page, trigger: string) {
+	const t = page.locator(trigger).first();
+	await t.focus();
+	await page.keyboard.press("Enter");
+	await page.keyboard.press("Escape");
+	const back = await t.evaluate((el) => el === document.activeElement);
+	return back ? [] : [`${trigger}: focus did not return to the trigger after Escape`];
+}
+```
+
+Run it for every dialog, menu, popover and sheet. The standard dialog pattern is also on [Targets and focus](/docs/concepts/targets-and-focus/) and the component page for [Dialog](/docs/feedback/dialog/).
+
+### 9. Nested interactive elements
+
+```ts
+export const nestedInteractive = (page: Page) =>
+	page.evaluate(() => {
+		const i = 'a[href], button, [role="button"], [role="link"], input, select, textarea';
+		return [...document.querySelectorAll<HTMLElement>(i)]
+			.filter((e) => e.parentElement?.closest(i))
+			.slice(0, 5)
+			.map((e) => `<${e.tagName.toLowerCase()}> inside <${e.parentElement!.closest(i)!.tagName.toLowerCase()}>: ${(e.textContent || "").trim().slice(0, 30)}`);
+	});
+```
+
+A button inside a button, or a link inside a link, is invalid HTML and breaks keyboard and screen reader behavior. The usual cause is a clickable card that wraps its own action buttons; make the card a container with one primary link and the actions its siblings.
+
+### 10. Scroll owners
+
+```ts
+export const scrollOwners = (page: Page, mainSel = "main") =>
+	page.evaluate((mainSel) => {
+		const main = document.querySelector(mainSel) ?? document.body;
+		const scrollers = [main, ...main.querySelectorAll<HTMLElement>("*")].filter((e) => {
+			const s = getComputedStyle(e);
+			return /(auto|scroll)/.test(s.overflowY) && e.scrollHeight > e.clientHeight + 4 && e.clientHeight > 120;
+		});
+		const out: string[] = [];
+		// Two nested scrollers on the same axis fight each other.
+		for (const a of scrollers) for (const b of scrollers) if (a !== b && a.contains(b)) out.push(`nested vertical scroll: <${b.tagName.toLowerCase()} class="${b.className}"> inside <${a.tagName.toLowerCase()} class="${a.className}">`);
+		// The page itself must not scroll when the screen is full height.
+		const root = document.documentElement;
+		if (root.scrollHeight > root.clientHeight + 1 && scrollers.length > 0) out.push("page scrolls and a region scrolls too");
+		return out.slice(0, 5);
+	}, mainSel);
+```
+
+On a full-height screen exactly one element scrolls. A nested scroller is sometimes right (a chat list in a split view); decide it per screen and put the exceptions in an allow-list with a reason.
+
+### 11. Console and network errors
+
+```ts
+export function watchErrors(page: Page) {
+	const found: string[] = [];
+	page.on("console", (m) => m.type() === "error" && found.push(`console.error: ${m.text()}`));
+	page.on("pageerror", (e) => found.push(`pageerror: ${e.message}`));
+	page.on("requestfailed", (r) => found.push(`requestfailed: ${r.method()} ${r.url()} ${r.failure()?.errorText}`));
+	page.on("response", (r) => r.status() >= 400 && found.push(`http ${r.status()}: ${r.request().method()} ${r.url()}`));
+	return found;
+}
+```
+
+An expected error (a 401 on the sign-in screen, a handled 404) goes in an allow-list by URL and status, never a blanket ignore.
+
+### 12. Inputs that zoom on iOS
+
+```ts
+export const smallInputs = (page: Page) =>
+	page.evaluate(() =>
+		[...document.querySelectorAll<HTMLElement>("input:not([type=checkbox]):not([type=radio]):not([type=hidden]), textarea, select")]
+			.filter((e) => e.getBoundingClientRect().width > 0 && parseFloat(getComputedStyle(e).fontSize) < 16)
+			.map((e) => `font-size ${getComputedStyle(e).fontSize}: ${e.getAttribute("name") || e.getAttribute("aria-label") || e.tagName}`)
+	);
+```
+
+Run it only in the phone cells. The library already sets 16px for its own controls, so a finding is usually a custom field; see the [mobile guide](/docs/getting-started/mobile/#input-font-size).
+
+## Wiring it in Playwright
+
+Put the matrix in the config as projects, the inventory in one file, and the detectors in a shared module. Every cell then becomes one test, and one failure names the screen, the viewport, the scheme and the finding.
+
+```ts
+// playwright.config.ts
+import { defineConfig, devices } from "@playwright/test";
+
+const schemes = ["light", "dark"] as const;
+const cells = [
+	{ name: "desktop-1440", viewport: { width: 1440, height: 900 }, touch: false },
+	{ name: "desktop-1920", viewport: { width: 1920, height: 1080 }, touch: false },
+	{ name: "phone-390", viewport: { width: 390, height: 844 }, touch: true },
+	{ name: "phone-360", viewport: { width: 360, height: 800 }, touch: true },
+];
+
+export default defineConfig({
+	testDir: "./tests/audit",
+	fullyParallel: true,
+	retries: 0, // a flaky audit hides real findings
+	projects: cells.flatMap((c) =>
+		schemes.map((colorScheme) => ({
+			name: `${c.name}-${colorScheme}`,
+			use: {
+				...devices["Desktop Chrome"],
+				viewport: c.viewport,
+				colorScheme,
+				hasTouch: c.touch,
+				isMobile: c.touch,
+				reducedMotion: "reduce" as const,
+			},
+		}))
+	),
+});
+```
+
+```ts
+// tests/audit/screens.spec.ts
+import { test, expect } from "@playwright/test";
+import { SCREENS } from "./inventory";
+import { axe, overflowX, textProblems, smallTargets, nestedInteractive, scrollOwners, smallInputs, trackShift, cls, watchErrors } from "./detectors";
+
+for (const screen of SCREENS) {
+	test(screen.name, async ({ page }, info) => {
+		const touch = info.project.use.hasTouch;
+		const errors = watchErrors(page);
+		await trackShift(page);
+		await page.goto(screen.path);
+		await page.waitForLoadState("networkidle");
+		await screen.ready?.(page); // wait for the data, not a timeout
+
+		const findings = [
+			...(await axe(page)),
+			...(await overflowX(page)),
+			...(await textProblems(page)),
+			...(await smallTargets(page, touch ? 44 : 24)),
+			...(await nestedInteractive(page)),
+			...(await scrollOwners(page)),
+			...(touch ? await smallInputs(page) : []),
+			...errors.filter((e) => !screen.allow?.some((a) => e.includes(a))),
+		];
+		const shift = await cls(page);
+		if (shift > 0.1) findings.push(`layout shift ${shift.toFixed(3)} > 0.1`);
+
+		await info.attach("findings.json", { body: JSON.stringify(findings, null, 2), contentType: "application/json" });
+		expect(findings, findings.join("\n")).toEqual([]);
+	});
+}
+```
+
+Guidelines for the harness:
+
+- **Inventory, not crawl.** List the routes in a file with the data each needs. A test that fails when a route in the router is missing from the inventory keeps it honest.
+- **Wait for data, not time.** A `ready` hook per screen waits for a real element. A fixed `waitForTimeout` makes the audit slow and flaky.
+- **Allow-lists carry a reason.** An exception names the screen, the detector and why, and is reviewed when the screen changes.
+- **No retries.** A finding that appears one run in three is still a finding.
+- **Save the output.** Write each cell's findings to a file and attach a screenshot, so a reviewer can read the result without rerunning it.
+- **Run it against the build you will ship,** with the seed data, in CI, before the release is tagged.
+
+## Measuring instead of passing
+
+Some rules are not pass or fail but a number to track. Run them as probes that print a table and compare the table before and after a change, instead of as gates:
+
+- **Dead area.** The largest empty rectangle as a share of the working area at 1440 and 1920, by the method on [Product screens](/docs/concepts/product-screens/#the-dead-area-budget).
+- **Header height.** Pixels from the bottom of the top bar to the first content, and the x of the title and of the first block, at 1440×900 and 390×844.
+- **Scroll smoothness.** Per frame (`requestAnimationFrame`), the scroll position, the number of rows drawn, and how far the row under the pointer moves during a fling, a wheel gesture, the keyboard and a scrollbar drag. A row that jumps under the cursor is a defect that no static check sees.
+- **Card height.** The height of a card with 0, 2 and 5 tags and how many tags show.
+
+A probe becomes a gate when the number is stable and the budget is agreed: the dead-area probe, for example, fails any screen above 15% once the team accepts the budget.
+
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Instead |
+|---|---|---|
+| Auditing only the happy path with an empty database | Most findings need long names, many rows or an empty list | A seed with the extremes, the same for every cell |
+| One viewport, one scheme | A hard-coded color or a clipped label fails in only one cell | The full matrix, in parallel |
+| `retries: 2` on the audit | Hides the finding that appears one run in three | `retries: 0` |
+| `waitForTimeout(2000)` before measuring | Slow, and still measures before the data lands | A per-screen `ready` hook |
+| A blanket `ignore` for console errors | The next real error hides in it | An allow-list by URL and status with a reason |
+| Relying on axe alone | It covers part of WCAG and none of composition | axe plus the detectors above plus a keyboard and device pass |
+| Testing a release worktree against the dev server of another branch | The audit passes or fails on the wrong code | Start the server from the tree you test, and pass its URL |
+
+## Checklist
+
+- Every route is in the inventory, with seeded data, and a test fails when one is missing.
+- The matrix covers 1440, 1920, 390 and 360 wide, light and dark, with touch on the phone cells.
+- axe runs in both schemes; `serious` and `critical` fail the release.
+- The document does not scroll horizontally at 360px.
+- No clipped text without an ellipsis and a full value, and no overlapping text.
+- Layout shift is at most 0.1 on every screen, and zero where a skeleton is used.
+- Targets are at least 24px on desktop and 44px on touch; no inputs under 16px on a phone.
+- No action depends on hover; every popover opens inside the viewport; Escape returns focus to the trigger.
+- No interactive element nested in another; one scroll owner per full-height screen.
+- Console errors and failed or 4xx and 5xx requests fail the cell unless allow-listed with a reason.
+- The findings of every cell are saved to a file.
+
+## Prompt for your AI
+
+```text
+Add a release audit. Render every route in an inventory (with seeded data: a very long name, an empty list, a long list) in a matrix: 1440x900, 1920x1080, 390x844, 360x800, each in light and dark, with hasTouch and isMobile on the phone cells. On every cell run these detectors and fail on any finding: axe (wcag2a, wcag2aa, wcag21aa, wcag22aa), horizontal overflow of the document, text clipped without an ellipsis or overlapping, layout shift above 0.1, interactive targets under 24px (44px on touch), actions hidden unless hovered, popovers and menus outside the viewport, focus not returning to the trigger after Escape, interactive elements nested inside interactive elements, nested vertical scrollers, inputs under 16px on phone cells, and console errors or failed requests.
+
+Use retries: 0, wait for a per-screen ready element instead of a timeout, put every exception in an allow-list with a reason, and save each cell's findings to a file. Also run measurement probes (largest empty rectangle at 1440 and 1920, pixels to first content, scroll smoothness) and compare before and after a change. Do not rely on axe alone.
+```
+
+<Limits reviewed="2026-11-12">
+- The snippets are starting points written to be read: they use heuristics (an element that is 4px past the viewport, a font under 16px) and will need selectors and allow-lists for your markup. They have not been run against every component in this library.
+- axe finds part of the WCAG criteria. Keyboard order, meaningful labels, reading order and whether a screen reader announces a change need a person with the real tools.
+- Playwright's WebKit does not simulate the iOS on-screen keyboard. Keyboard-covers-field and safe-area faults need a real device or the simulator.
+- Layout shift measured in a lab run is a single page load on a fast machine. The 0.1 threshold is defined on the 75th percentile of field page loads, so a lab number approximates it and does not replace a field measure.
+- The pairwise text-overlap and nested-scroller detectors are quadratic or heuristic; on a very large page limit them to the main region.
+- The matrix values and the 24 and 44px thresholds are our defaults; 24px is the WCAG minimum and 44px is a larger size we choose (see [Targets and focus](/docs/concepts/targets-and-focus/)).
+</Limits>
+
+<Refs ids="W06, W11, W01, W08, D01" />

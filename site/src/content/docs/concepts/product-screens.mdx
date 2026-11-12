@@ -1,0 +1,259 @@
+---
+title: Product screens
+description: "How to structure the screens of a dense product such as a CRM or an inbox: one content header, view options in one popover, a dead-area budget, lists that fit, editable lists, mobile rules, a focus mode for canvas editors, optimistic mutations and honest empty states. Each rule says how to measure it."
+group: Concepts
+order: 6
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+
+A product screen is a screen people return to many times a day to get work done: a list of deals, an inbox, a settings page, a flow editor. A landing page can spend the first 800 pixels on a headline. A product screen cannot. The rules below come from building a dense CRM on this library and measuring every screen; each one is written so that a script, not an opinion, decides whether a screen follows it.
+
+This page holds the **structure** rules. Target size, focus, motion and viewport units already have their own pages and are linked, not repeated: [Targets and focus](/docs/concepts/targets-and-focus/), [Motion that respects people](/docs/concepts/reduced-motion/), [Viewport-complete UX](/docs/concepts/viewport/) and [Appeal is not usability](/docs/concepts/appeal-and-usability/). How to run these checks on every screen before a release is on [Release audit](/docs/concepts/release-audit/).
+
+<Callout type="note" title="Where the numbers come from">
+  The budgets on this page (44px header, 15% dead area, 88px to first content) are **our own targets**, measured on one real application and tracked in [#1054](https://github.com/codeatlasdev/ui/issues/1054). No study backs the exact numbers. Where a source supports the *direction* of a rule, the claim says so; where it does not, the claim is labelled as our judgement. Products such as Linear are shown as **practice examples**, never as evidence.
+</Callout>
+
+## Definition and vocabulary
+
+| Term | What it means here |
+|---|---|
+| Content header | The block above the working area of a screen: title, count and actions. One per app, not one per page. |
+| Display options | The ways a person changes how a collection looks without changing what it contains: layout, grouping, ordering, visible properties. |
+| Dead area | The largest rectangle of the working area that holds no text, control, media or painted surface. Measured as a share of the area below the top bar. |
+| Scroll owner | The one element that scrolls on an axis. Two nested scrollers on the same axis make the page fight the list. |
+| Focus mode | A screen where the editor is the page: no page header, tabs or bordered card around the canvas. |
+| Optimistic mutation | Showing the result of an action at once and reconciling with the server afterwards, with a rollback if it fails. |
+
+## The header: one row, aligned to the content
+
+<Claim strength="heuristic">
+**One content header per app.** A single row of 44px: the title on the left (with its count beside it, in a tabular figure) and **one** primary action on the right, with every other control an icon. The title is also where context lives (a pipeline, a settings section); a description becomes the title's tooltip. A second row of 40px exists only on list and board screens, and holds search, filters and view options. Active filters appear as removable chips on that row **only when a filter is active**.
+</Claim>
+
+Why: every pixel the header takes is a pixel the work does not get. In the application these rules came from, the first content sat 155px below the top bar on the deals board and 444px on a phone; the one-row header brought them to 104px and 64px. That is a measured result in one application, not a general finding.
+
+<Claim strength="heuristic">
+**Alignment is a rule, not a taste.** The title, the count and the first block of content start at the same x (the page gutter). The last action of row one and the last tool of row two end at the right edge of the content, within 1px. One vertical step separates the header from the content, and wrapper elements add no padding of their own.
+</Claim>
+
+How to measure: for each screen, read the left edge of the title, the left edge of the first content block, and the right edge of the last button on each header row from the live DOM; read the distance from the bottom of the top bar to the top of the first content block. Run it at 1440×900 and 390×844 with no filter active, and fail on any difference above 1px. Budgets we use: at most 88px to first content on list and board screens and 44px elsewhere at 1440×900, and at most 100px on a phone.
+
+Library: [PageShell](/docs/layout/page-shell/), [AppList](/docs/layout/list-page/), [Breadcrumb](/docs/navigation/breadcrumb/) and the open proposal for a compact one-row header and a measurable height budget, [#1044](https://github.com/codeatlasdev/ui/issues/1044). Page padding and rhythm: [#922](https://github.com/codeatlasdev/ui/issues/922).
+
+## View and display options: one popover, remembered
+
+<Claim strength="practice" refs="H01" scope="Apple Human Interface Guidelines for popovers: platform guidance for Apple devices, not for web apps and not a measured outcome.">
+A popover suits a small amount of related functionality that is needed only temporarily, and only one should be open at a time, never a cascade. View options fit that description.
+</Claim>
+
+<Claim strength="heuristic">
+**Put layout, grouping, ordering and visible properties behind one control**, not as a row of selects above the list. The popover has a label on the left and a control on the right for each option, a compact chip for each property, a "Reset" action, and a dot on the trigger when anything differs from the default. On a phone the same content opens in a bottom sheet.
+</Claim>
+
+<Claim strength="practice" refs="P01" scope="One vendor describing its own product. A practice example of the pattern, not evidence that it works better than another.">
+Practice example: Linear puts layout, grouping, ordering and the displayed properties behind a single Display options button, and lets people save them as personal preferences or as the workspace default.
+</Claim>
+
+<Claim strength="heuristic">
+**Split what is state from what is preference.** State that changes *what you see* (layout, filters, search, sort, open item, page) lives in the URL, so reload, Back and a shared link restore the screen. Preference that changes *how you see it* (columns, lanes, properties, density) is stored per user and per screen, for example under a key such as `app:display:<screen>:<user>`. Never keep screen state in a component.
+</Claim>
+
+How to measure: change each option, reload and compare. Anything in the first group must survive a reload and a copied link in a new tab; anything in the second must survive a reload for the same user and not leak to another. A dot must appear on the trigger exactly when the stored value differs from the default.
+
+Library: [Popover](/docs/navigation/popover/), [Sheet](/docs/feedback/sheet/), [SegmentedControl](/docs/inputs/segmented-control/), [ChipGroup](/docs/inputs/chip-group/), [FilterGroup](/docs/inputs/filter-group/). Proposed and not shipped: a standard display-options popover with persistence and a "modified" indicator ([#1041](https://github.com/codeatlasdev/ui/issues/1041)) and screen state in the URL ([#1020](https://github.com/codeatlasdev/ui/issues/1020)).
+
+## Density and spacing
+
+<Claim strength="heuristic">
+**One scale, three steps.** Use the spacing scale in three roles: a small step inside an item, a medium step between items, a large step between sections, and one gutter per nesting level. A child never adds horizontal padding to its parent's. Body text 13px, secondary 12px, title 15px, two weights (emphasis by lightness before weight). One bordered surface per group: inside it separate with a hairline or space, never with another card. Use a border, not an inset shadow, so the box is measurable.
+</Claim>
+
+How to measure: scan computed styles for padding or margin values outside the scale, for `box-shadow: inset` used as a border, for a bordered element inside a bordered element, and for font sizes or weights outside the set. Report counts per screen.
+
+Related: [Appeal is not usability](/docs/concepts/appeal-and-usability/) for what visual polish does and does not tell you, and [#922](https://github.com/codeatlasdev/ui/issues/922) for the layout principles.
+
+## The dead-area budget
+
+<Claim strength="practice" refs="N06" scope="An NN/g article on mobile-first layouts shown on desktop: it names content dispersion and expansive white space as a cost. It does not give a percentage.">
+A layout designed for a narrow viewport and stretched to a wide one disperses its content and leaves large areas of white space, which makes it harder to consume.
+</Claim>
+
+<Claim strength="heuristic">
+**At 1440 and 1920 wide, the largest empty rectangle is at most 15% of the working area**, except where the emptiness is intentional and carries a sentence and a next action. Never fix it by stretching a field or a card. Compose the spare width by **purpose**: a form gets a sticky aside that previews the result live; a detail screen gets a properties panel; a settings screen gets a side navigation plus an aside with the state of what the section changes; a master/detail screen gets a list plus a preview of the selected row; a list or dashboard uses the full width with auto-filling columns. Only an intrinsically narrow screen (sign-in, an invitation, an empty state) is centered, and it is anchored by something: a mark, an illustration, the next action.
+</Claim>
+
+| Screen type | Composition |
+|---|---|
+| Form or wizard | Main column (fields no wider than 56rem) plus a sticky aside with a live preview, the computed result and what is missing |
+| Detail | Elastic main column plus a properties panel (about 18 to 22rem) always in view |
+| Settings | Side navigation, content, and an aside with where this setting shows up |
+| List, board, dashboard | Full width, auto-fill grids, no narrow centered column |
+| Master and detail | Fixed columns per band, independent of the selection |
+| Intrinsically narrow | Centered and anchored |
+
+<Claim strength="heuristic">
+**The aside is live and useful, never decoration.** It derives from the draft or the current state, it is a landmark with a name (`aside` with an accessible label), it comes after the main column in the DOM so the reading order matches, and below the breakpoint it drops under the main column (nothing is mounted twice). Only the result that changes is a live region. Its shortcuts are at least 44px. The split is decided by the width of the container, not of the viewport.
+</Claim>
+
+How to measure: rasterize the working area into 8px cells; mark a cell occupied when text, a control, an image or media, a separator, or a painted surface (a background or a border) covers it; ignore wrappers that paint nothing; then find the largest rectangle with no occupied cell using the histogram method for the largest rectangle in a binary matrix, and report it as a percentage of the area below the top bar. Run it at 1440 and 1920, light and dark, on every route, with data in it. In our run the largest empty rectangle on the screens that were short dropped from 42–67% to 3–14% at 1440. At 1920, screens with little real data (one user, four loss reasons) stayed above the budget: those need more data or more purpose, not more padding.
+
+Library: [PageShell](/docs/layout/page-shell/), [AppForm and AppSettings](/docs/layout/list-page/), [MasterDetail](/docs/layout/master-detail/), [ResizablePanels](/docs/layout/resizable-panels/). Proposed: an `aside` layout with a container breakpoint on every page frame ([#1055](https://github.com/codeatlasdev/ui/issues/1055)), a master/detail with stable columns ([#1021](https://github.com/codeatlasdev/ui/issues/1021)), a properties panel ([#1053](https://github.com/codeatlasdev/ui/issues/1053)) and resizable panels with a pixel minimum ([#996](https://github.com/codeatlasdev/ui/issues/996)).
+
+## Lists that fit
+
+<Claim strength="practice" refs="H03" scope="Apple Human Interface Guidelines for lists and tables: platform guidance for Apple devices.">
+Preserve readability of text that would otherwise be clipped. An ellipsis in the middle of a text can make an item easier to distinguish because it keeps both its beginning and its end.
+</Claim>
+
+<Claim strength="heuristic">
+**Show the count that fits, then "+N".** A row of tags or pills measures its container and shows as many as fit, then a "+N" pill whose tooltip lists the rest in full. The height of a card never depends on how many tags it holds. A single choice that does not fit is not a compressed segmented control: it becomes a list of 44px options, one per line, each with a line of explanation. An identifier is truncated in the middle, a name at the end, and the full value stays reachable (tooltip, title or detail).
+</Claim>
+
+<Claim strength="practice" refs="N09" scope="An NN/g article on tooltip use. It concerns tooltips on the web in general.">
+Tooltips disappear, so directly actionable information, such as the requirement for a field, should not live in one. Put the rest of a truncated list there; do not put instructions there.
+</Claim>
+
+How to measure: render the same card with 0, 2 and 5 tags and read its height and how many tags are visible; the height must be equal for 2 and 5 and the "+N" must equal the hidden count. Render a segmented control at 360px and fail if any label is clipped (its scroll width exceeds its client width without an ellipsis). Walk every element whose scroll width exceeds its client width and fail those that have no title, tooltip or expansion.
+
+Library: [Chip and ChipGroup](/docs/inputs/chip-group/), [Tooltip](/docs/display/tooltip/), [SegmentedControl](/docs/inputs/segmented-control/), [Stepper](/docs/navigation/stepper/), [RecordList](/docs/layout/record-list/). Open: a segmented control that does not fit ([#1051](https://github.com/codeatlasdev/ui/issues/1051)) and a compact stepper for six steps in 360px ([#1050](https://github.com/codeatlasdev/ui/issues/1050)).
+
+## Editable lists
+
+<Claim strength="practice" refs="W09" scope="WCAG 2.2 Understanding document for 2.5.7, Level AA. It requires a single-pointer alternative to dragging, not the removal of dragging.">
+Anything that works by dragging must also be achievable with a single pointer without dragging.
+</Claim>
+
+<Claim strength="heuristic">
+**An editable list must work with 100 items, not 5.** One row of 44px: handle, leading element, name (elastic, ellipsis), a quiet tag, a count, a "more" menu. Nothing overlaps. "New …" lives in the list header, which stays in view while the list scrolls, plus "Add below" on the row (on hover and focus on a pointer; in the menu on touch). Order is changed by a drag handle (keyboard: Space, arrows, Space, Esc) **and** a "Move to position…" item in the menu, which is the single-pointer alternative. Editing opens a side panel on wide screens or a sheet on narrow ones. Deleting is only in the menu, with a specific confirmation, and asks for a destination when other records depend on the item. From about 15 items add search and a "N of M" count, and give the rows `content-visibility: auto`. If the server has no order, hide the handle instead of faking it. Do not build a list of cards, up and down arrows on every row, a trash can on every row, or a card that expands in place.
+</Claim>
+
+How to measure: render the list with 100 rows and check the row height is 44px, that no two boxes inside a row intersect, that the add action stays in view after scrolling the list to the end, that the order can be changed with the keyboard only, and that "Move to position…" exists whenever the handle does.
+
+Library: [SortableList](/docs/layout/sortable-list/), [VirtualList](/docs/display/virtual-list/), [Dialog](/docs/feedback/dialog/), [Sheet](/docs/feedback/sheet/). Proposed: an editable list at scale ([#1052](https://github.com/codeatlasdev/ui/issues/1052)). Drag target size and focus rules are on [Targets and focus](/docs/concepts/targets-and-focus/).
+
+## Mobile
+
+<Claim strength="practice" refs="G01" scope="Material Components documentation for Android's navigation bar: platform guidance, not a study.">
+A navigation bar at the bottom lets people switch between views on a small device; it holds three to five destinations, each an icon with a label.
+</Claim>
+
+<Claim strength="practice" refs="H02" scope="Apple Human Interface Guidelines for tab bars: platform guidance for Apple devices.">
+A tab bar is for navigation, not for actions on the current view (use a toolbar for those), and it should stay visible so people do not forget which section they are in.
+</Claim>
+
+<Claim strength="practice" refs="N10, G02" scope="An NN/g article based on its own studies of overlays, and Material's component documentation. Both concern mobile apps.">
+A bottom sheet is a partial overlay for extra details or controls, anchored to the bottom of the screen. It obscures part of the screen, so it is not for information that is always needed, and it should close with Back and with a visible close button.
+</Claim>
+
+Rules for a product on a phone, below the breakpoint where the shell swaps its structure (one breakpoint, 900px in our application):
+
+- **One scroll owner per axis.** The page or one region scrolls, never both. Full-height screens subtract the top bar and the bottom navigation and never use `100vh` ([viewport units](/docs/concepts/viewport/)).
+- **Bottom navigation** holds the same destinations as the wide top navigation; "More" opens a sheet with one block per group. Page actions are not tabs.
+- **Persistent chrome:** the top bar and the bottom navigation are one instance for the whole session: the same node, never remounted, never animated, between sections and subpages. Only the page content changes, and the active item of the bottom navigation updates in place. The one exception is the intentional drill from a list into a detail, where the bars give way to the detail header in the same frame. No `view-transition-name` on global bars and no route-level `startViewTransition` over them: the browser then paints two frozen images of the bar in a cross-fade, which looks like the bar re-rendering.
+- **Master/detail becomes a stack:** the list fills the screen and the detail opens in a pane with a back control, Esc, the safe area and the keyboard handled ([MobilePane](/docs/layout/mobile-pane/)).
+- **Popovers and menus become sheets,** with a close button and Back support.
+- **Inputs at 16px or larger,** so iOS does not zoom on focus (the library's [mobile guide](/docs/getting-started/mobile/#input-font-size) sets this for you).
+- **Targets of 44px** and no action that exists only on hover ([Targets and focus](/docs/concepts/targets-and-focus/)).
+- **Banners stay in the flow,** one line with the full text in the title, never absolutely positioned over the list.
+
+<Claim strength="practice" refs="W11" scope="WCAG 2.2 Understanding document for 2.5.5, Level AAA. The AA minimum is 24px (see Targets and focus).">
+At Level AAA the target for pointer inputs is at least 44 by 44 CSS pixels, with exceptions for equivalent controls, inline text, user-agent controls and essential sizes.
+</Claim>
+
+How to measure persistence: visit eight or more sections and subpages by in-app navigation, sampling every painted frame (`requestAnimationFrame`) and assert that the top bar and bottom navigation are the same DOM nodes in every frame (a `MutationObserver` sees no removal or insertion), that no frame has an effective opacity (the node times its ancestors) below 1, `visibility: hidden`, `display: none` or a different rectangle, and that no `::view-transition` animation is running over them. In our application the production build measured 0 replaced nodes, 0 hidden frames and a minimum opacity of 1 on every navigation, against about 30 frames per navigation with the bars cross-fading (opacity 1 to 0 over about 250ms) before the fix.
+
+How to measure: at 390×844 and 360×800 with touch emulation, assert that the document is not wider than the viewport, that at most one element scrolls on the vertical axis inside the main area, that every input computes to at least 16px, that every interactive element is at least 44px on both sides (excluding inline links), and that every control revealed by hover is also reachable without it.
+
+Library: [BottomNav and the app shell](/docs/layout/app-shell/), [MobilePane](/docs/layout/mobile-pane/), [Sheet](/docs/feedback/sheet/), [StickyActions](/docs/layout/sticky-actions/), and the [mobile guide](/docs/getting-started/mobile/).
+
+## Focus mode for canvas editors
+
+<Claim strength="heuristic">
+**When the editor is the page, give it the page.** A flow or canvas editor drops the page header, the tabs, the banners and the bordered card, and takes the height of the viewport minus the top bar (and minus the bottom navigation and safe area on a phone). One thin bar of about 45px holds, from the start: back, the studio or section switcher, the name, the draft and saved state; in the middle: undo, redo, auto-arrange, the map/list switch; at the end: warning chips, publication progress, test, publish. The palette is a rail of icons with tooltips, expandable to names. Zoom, fit and the minimap share one corner. On a phone the list is the editor and the canvas is read-only.
+</Claim>
+
+How to measure: read the canvas height divided by the viewport height at 1280×800, 1440×900 and 1920×1080. In our editor it went from 64–73% to 87–90%. Also check that every canvas action has a keyboard route (pan, zoom, fit, delete, undo and redo) and that text inside blocks is at least 13px.
+
+Library: [ResizablePanels](/docs/layout/resizable-panels/), [Tooltip](/docs/display/tooltip/), [Toolbar](/docs/inputs/toolbar/). Proposed: a focus layout for editors ([#1047](https://github.com/codeatlasdev/ui/issues/1047)) and a flow canvas with routed edges ([#1048](https://github.com/codeatlasdev/ui/issues/1048)). Drag alternatives for nodes follow the same single-pointer rule as lists.
+
+## Optimistic mutations and honest empty states
+
+<Claim strength="practice" refs="N11" scope="Nielsen's limits for response time, reported by NN/G. They describe human perception of delay, not any particular implementation.">
+About 0.1 second is the limit for a system to feel instantaneous, with no special feedback needed; about 1 second keeps a person's flow of thought uninterrupted.
+</Claim>
+
+<Claim strength="heuristic">
+**Apply the result of a frequent action at once and reconcile later.** Moving a card, ticking a task, renaming a stage: update the screen in the same frame, send the request, and on failure roll the screen back and say so (with an undo for destructive actions). Loading shows a skeleton of the exact size of the final content, after a short delay so a fast response never flashes, and for a minimum time once shown. Do not use an optimistic update for something whose outcome the server decides, such as a payment.
+</Claim>
+
+How to measure: abort the mutation request and assert that the screen returns to the previous state and an error is announced; delay the response by 50ms and by 800ms and assert the skeleton does not appear in the first case and does not vanish too fast in the second; compare the skeleton's box with the final content's (within 2px) and the layout shift across the load.
+
+<Claim strength="practice" refs="W10" scope="WCAG 2.2 Understanding document for 4.1.3, Level AA.">
+Status messages must be programmatically determinable through role or properties so that assistive technology can present them without receiving focus.
+</Claim>
+
+<Claim strength="practice" refs="N08" scope="An NN/g article on empty states in complex applications, with worked examples; it is not a controlled study.">
+A totally empty panel leaves people unsure whether the system is working, still loading or has failed. A designed empty state can communicate system status and give a direct pathway to a key task.
+</Claim>
+
+<Claim strength="heuristic">
+**An empty state is one sentence and the next action.** It says whether the list is empty because nothing exists yet, because a filter removed everything, or because loading failed, and each case has its own sentence and action. Never several "nobody here" cards in a row: group them into one line. A drop target in an empty board column shows its instruction only **during the drag**, never as permanent text. Permanent help that would fit in a tooltip is removed.
+</Claim>
+
+Library: [Skeleton](/docs/feedback/skeleton/), [LoadingBoundary](/docs/navigation/loading-boundary/), [Toast](/docs/feedback/toast/), [EmptyState](/docs/layout/empty-state/), [Kanban](/docs/display/kanban/). Open: empty states inside collections ([#992](https://github.com/codeatlasdev/ui/issues/992)). Reduced-motion handling of skeletons and entrances: [Motion that respects people](/docs/concepts/reduced-motion/).
+
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Instead |
+|---|---|---|
+| A page header of title, description, tile icon, filter row and a primary button | The first content starts a third of the way down | One row; description in a tooltip; filters in a popover |
+| A form column of 56rem on the left of a 1920px screen | Half of the screen is empty and reads as unfinished | A live preview aside |
+| A segmented control with four long labels in 330px | Labels clip or touch | A list of 44px options, or the control only while labels fit |
+| ↑ ↓ and a trash can on every row | Does not work with 100 rows; crowds the row | A handle, "Move to position…" and a menu |
+| A card that grows by one row per tag | The board jumps | A count that fits and "+N" |
+| A route transition (View Transition) over the whole page, with the bars named | The bars are painted as two frozen images in a cross-fade on every navigation | No transition over the chrome; only the content enters |
+| `100vh` for a full-height screen on a phone | The bottom is behind the browser bar | The shell's height token, minus the navigation |
+| Filters and sort held in component state | Reload and a shared link lose them | State in the URL, preference per user |
+| A permanent "Drop here" in every empty column | Noise that explains nothing at rest | Show it while dragging |
+
+## Checklist
+
+- The header is one row of 44px with at most one text action; first content is within the budget at 1440×900 and 390×844.
+- Title, count and first content start at the same x; the last action ends at the right edge of the content (within 1px).
+- Layout and filters are in the URL; preferences are per user; the trigger shows a dot when modified.
+- The largest empty rectangle is at most 15% at 1440 and 1920, or the emptiness carries a sentence and an action.
+- No fixed-width centered column without an aside, and the aside drops below the main column at 390px.
+- Tag rows show the count that fits and "+N"; no segmented control clips at 360px.
+- An editable list works at 100 rows, has a non-drag way to reorder, and keeps "New …" in view.
+- On a phone: one scroll owner, bottom navigation, sheets instead of popovers, inputs at 16px, targets at 44px.
+- The top bar and the bottom navigation are the same nodes across navigations: no remount, no frame with opacity below 1, hidden or moved (except the intentional drill into a detail).
+- A canvas editor takes at least 85% of the viewport height.
+- A failed mutation rolls back and is announced; skeletons match the final size.
+- Every empty state says why it is empty and what to do next.
+
+## Prompt for your AI
+
+```text
+Build product screens, not pages. One content header per app: a 44px row with the title and its count on the left and one primary text action on the right; every other control is an icon. List and board screens get one second row of 40px for search, filters and view options, which open in a popover (a bottom sheet on a phone). Put layout, filters, search, sort and the open item in the URL; keep columns, lanes and visible properties as a per-user preference with a "modified" dot and a Reset.
+
+Do not leave dead area: at 1440 and 1920 wide the largest empty rectangle is at most 15% of the working area. Compose spare width by purpose (a form gets a sticky live-preview aside, a detail gets a properties panel, a list uses the full width). Never stretch a field or add a fixed-width centered column without an aside; the aside drops below the main column on a phone.
+
+Show the tags that fit and "+N" with the full list in a tooltip. A choice that does not fit is a list of 44px options. An editable list works with 100 rows: handle plus "Move to position…" (a single-pointer alternative to dragging), "New …" in the list header, delete only in the menu. On a phone use one scroll owner, the bottom navigation, sheets instead of popovers, 16px inputs and 44px targets.
+
+A canvas editor is a focus-mode page: one thin bar, an icon rail and at least 85% of the viewport height. Apply frequent actions optimistically and roll back with an announcement on failure. Every empty state says why it is empty and what to do next. Link target, focus and motion rules to their own concept pages instead of restating them. Measure, do not guess: run the checks on the Release audit page at 1440, 1920, 390 and 360.
+```
+
+<Limits reviewed="2026-11-12">
+- The numeric budgets (44px, 40px, 88px, 15%, 85% of the height, 15 items before search) are our targets from one application, not findings. No source gives them.
+- The measured before and after numbers come from one CRM on one version of this library, with its own data. Screens with little real data stay above the dead-area budget at 1920 wide, which is a data problem as much as a layout one.
+- Apple, Material and NN/G sources are platform guidance and practitioner articles; they support the direction of a rule (one popover at a time, sheets are dismissible, empty states need a pathway), not a size or a threshold.
+- Linear is cited as a practice example of one product. It is not evidence that its pattern performs better.
+- Several of the components named as proposals (display options, URL state, properties panel, editable list, focus layout) are open issues on [#1054](https://github.com/codeatlasdev/ui/issues/1054) and are not shipped; check the component pages before relying on a name.
+- The dead-area probe counts painted surfaces as occupied, so a large empty card looks full. It finds layout gaps, not poor content.
+</Limits>
+
+<Refs ids="H01, P01, N06, H03, N09, W09, G01, H02, N10, G02, W11, N11, W10, N08" />

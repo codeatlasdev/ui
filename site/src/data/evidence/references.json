@@ -855,6 +855,253 @@
 				"how": "Page text",
 				"excerpt": "Connecting font sizes to the viewport's width means that the text will grow and shrink in proportion to the browser width. This makes it difficult to predict what the text size will be at any specific width"
 			}
+		},
+		{
+			"id": "N08",
+			"authors": "Kaplan",
+			"year": 2021,
+			"title": "Designing Empty States in Complex Applications: 3 Guidelines",
+			"venue": "Nielsen Norman Group, September 19, 2021",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/empty-state-interface-design/",
+			"topic": "Empty states",
+			"supports": "A totally empty panel leaves people unsure whether the system is working, still loading or has failed; a designed empty state can communicate system status and give a direct pathway to a key task.",
+			"doesNotSupport": "A measured effect of any particular empty-state wording. It is a practitioner article about complex applications, with worked examples, not a controlled study.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Empty states provide opportunities for designers to communicate system status, increase learnability of the system, and deliver direct pathways for key tasks. [...] Totally empty states cause confusion about how and whether the system is working."
+			}
+		},
+		{
+			"id": "N09",
+			"authors": "Kendrick",
+			"year": 2019,
+			"title": "Tooltip Guidelines",
+			"venue": "Nielsen Norman Group, January 27, 2019",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/tooltip-guidelines/",
+			"topic": "Tooltips",
+			"supports": "Tooltips disappear, so instructions or other directly actionable information, such as field requirements, should not live in one; they suit extra explanation of an unfamiliar field.",
+			"doesNotSupport": "That tooltips are discovered by touch users or that a given delay is right. It is a practitioner article.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Remember that tooltips disappear, so instructions or other directly actionable information, like field requirements, shouldn't be in a tooltip."
+			}
+		},
+		{
+			"id": "N10",
+			"authors": "Laubheimer",
+			"year": 2023,
+			"title": "Bottom Sheets: Definition and UX Guidelines",
+			"venue": "Nielsen Norman Group, June 11, 2023",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/bottom-sheet/",
+			"topic": "Bottom sheets on mobile",
+			"supports": "A bottom sheet is a partial overlay anchored to the bottom of a mobile screen for extra details or controls; because it obscures part of the screen it is not suited to always-needed information, and it should be dismissible by Back and by a close button.",
+			"doesNotSupport": "That a bottom sheet beats a page for every task. The guidance comes from NN/G's own studies of overlays; sample sizes are not given on the page.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Bottom sheets are a form of progressive disclosure -- they are typically invoked by a user interaction and provide extra details. Since they intentionally obscure some of the screen, they aren't suited for displaying always needed information or tools. [...] Allow the Use of Back for Dismissing the Bottom Sheet [...] Include a Close Button"
+			}
+		},
+		{
+			"id": "N11",
+			"authors": "Nielsen",
+			"year": 1993,
+			"title": "Response Time Limits: Article by Jakob Nielsen",
+			"venue": "Nielsen Norman Group, January 1, 1993",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/response-times-3-important-limits/",
+			"topic": "Response time limits",
+			"supports": "About 0.1 s is the limit for the system to feel instantaneous with no special feedback, about 1 s keeps a person's flow of thought uninterrupted, and about 10 s is the limit for keeping attention on the dialogue.",
+			"doesNotSupport": "That a screen must answer in 0.1 s, or that an optimistic update is required. The limits come from human perception research reported by Nielsen, not from a test of this library.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "0.1 second is about the limit for having the user feel that the system is reacting instantaneously, meaning that no special feedback is necessary except to display the result. 1.0 second is about the limit for the user's flow of thought to stay uninterrupted"
+			}
+		},
+		{
+			"id": "W09",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 2.5.7: Dragging Movements",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
+			"topic": "Dragging alternatives",
+			"supports": "All functionality that uses a dragging movement can also be achieved by a single pointer without dragging, unless dragging is essential.",
+			"doesNotSupport": "That drag and drop is bad. It requires an alternative, not the removal of dragging.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "All functionality that uses a dragging movement for operation can be achieved by a single pointer without dragging, unless dragging is essential or the functionality is determined by the user agent and not modified by the author."
+			}
+		},
+		{
+			"id": "W10",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 4.1.3: Status Messages",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html",
+			"topic": "Announcing status changes",
+			"supports": "Status messages can be programmatically determined through role or properties so assistive technology can present them without receiving focus.",
+			"doesNotSupport": "Which role to use for a given message, or that every change is a status message.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "In content implemented using markup languages, status messages can be programmatically determined through role or properties such that they can be presented to the user by assistive technologies without receiving focus."
+			}
+		},
+		{
+			"id": "W11",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 2.5.5: Target Size (Enhanced)",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AAA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html",
+			"topic": "Larger pointer targets",
+			"supports": "At Level AAA the target for pointer inputs is at least 44 by 44 CSS pixels, with equivalent, inline, user-agent and essential exceptions.",
+			"doesNotSupport": "That 44 px is required at the AA level; the AA minimum is 24 px (see W06).",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "The size of the target for pointer inputs is at least 44 by 44 CSS pixels except when:"
+			}
+		},
+		{
+			"id": "H01",
+			"authors": "Apple",
+			"year": 2025,
+			"title": "Popovers, Human Interface Guidelines",
+			"venue": "Apple Developer Documentation",
+			"kind": "guideline",
+			"url": "https://developer.apple.com/design/human-interface-guidelines/popovers",
+			"topic": "Popovers",
+			"supports": "A popover exposes a small amount of information or functionality; show one at a time, never a cascade, and save work when a nonmodal popover closes by an outside click.",
+			"doesNotSupport": "Web popovers, or evidence of outcomes. It is platform guidance for Apple devices.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page content from Apple's documentation data endpoint for this page",
+				"excerpt": "Use a popover to expose a small amount of information or functionality. [...] Show one popover at a time. Displaying multiple popovers clutters the interface and causes confusion. Never show a cascade or hierarchy of popovers"
+			}
+		},
+		{
+			"id": "H02",
+			"authors": "Apple",
+			"year": 2025,
+			"title": "Tab bars, Human Interface Guidelines",
+			"venue": "Apple Developer Documentation",
+			"kind": "guideline",
+			"url": "https://developer.apple.com/design/human-interface-guidelines/tab-bars",
+			"topic": "Tab bars",
+			"supports": "A tab bar supports navigation among sections, not actions on the current view; keep it visible so people do not forget which area they are in.",
+			"doesNotSupport": "Web bottom navigation, or the number of destinations. It is platform guidance for Apple devices.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page content from Apple's documentation data endpoint for this page",
+				"excerpt": "Use a tab bar to support navigation, not to provide actions. [...] If you hide the tab bar, people can forget which area of the app they're in."
+			}
+		},
+		{
+			"id": "H03",
+			"authors": "Apple",
+			"year": 2025,
+			"title": "Lists and tables, Human Interface Guidelines",
+			"venue": "Apple Developer Documentation",
+			"kind": "guideline",
+			"url": "https://developer.apple.com/design/human-interface-guidelines/lists-and-tables",
+			"topic": "Truncated text in lists",
+			"supports": "Preserve readability of text that would be clipped or truncated; an ellipsis in the middle of text can make an item easier to distinguish because it keeps both the beginning and the end.",
+			"doesNotSupport": "Outcomes on the web or any number of visible items. It is platform guidance for Apple devices.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page content from Apple's documentation data endpoint for this page",
+				"excerpt": "Consider ways to preserve readability of text that might otherwise get clipped or truncated. [...] Sometimes, an ellipsis in the middle of text can make an item easier to distinguish because it preserves both the beginning and the end of the content."
+			}
+		},
+		{
+			"id": "G01",
+			"authors": "Material Components Android",
+			"year": 2025,
+			"title": "Bottom navigation (Navigation bar), Material Components documentation",
+			"venue": "GitHub, material-components-android",
+			"kind": "guideline",
+			"url": "https://github.com/material-components/material-components-android/blob/master/docs/components/BottomNavigation.md",
+			"topic": "Bottom navigation",
+			"supports": "A navigation bar lets people switch between views on smaller devices, has three to five destinations, sits at the bottom of the screen and shows an icon and a label for each.",
+			"doesNotSupport": "Behavior on desktop widths, or evidence that people prefer it. It is platform guidance for Android.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Raw markdown of the component documentation on GitHub (the m3.material.io page needs JavaScript)",
+				"excerpt": "Navigation bars can have three to five destinations. The nav bar is positioned at the bottom of screens for convenient access. Each destination is represented by an icon and label text."
+			}
+		},
+		{
+			"id": "G02",
+			"authors": "Material Components Android",
+			"year": 2025,
+			"title": "Bottom sheets, Material Components documentation",
+			"venue": "GitHub, material-components-android",
+			"kind": "guideline",
+			"url": "https://github.com/material-components/material-components-android/blob/master/docs/components/BottomSheet.md",
+			"topic": "Bottom sheets",
+			"supports": "Bottom sheets show secondary content anchored to the bottom of the screen, as a standard sheet without a scrim or a modal one above a scrim.",
+			"doesNotSupport": "When to choose a sheet over a page, or evidence of outcomes. It is platform guidance for Android.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Raw markdown of the component documentation on GitHub (the m3.material.io page needs JavaScript)",
+				"excerpt": "Bottom sheets show secondary content anchored to the bottom of the screen. There are two variants of bottom sheets. [...] Modal bottom sheets are above a scrim while standard bottom sheets don't have a scrim."
+			}
+		},
+		{
+			"id": "P01",
+			"authors": "Linear",
+			"year": 2025,
+			"title": "Display options, Linear Docs",
+			"venue": "Linear Docs",
+			"kind": "guideline",
+			"url": "https://linear.app/docs/display-options",
+			"topic": "Practice example: one display-options control",
+			"supports": "A practice example, not evidence: one product puts layout, grouping, ordering and displayed properties behind a single Display options button, and lets people save them as personal preferences or as the workspace default.",
+			"doesNotSupport": "That this pattern works better than another, or anything about users. It is one vendor describing its own product.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Display options let you group and order issues and projects to determine which information appears in your view. [...] Display options can be saved as personal preferences or as the default display options on that page for your workspace."
+			}
 		}
 	]
 }
