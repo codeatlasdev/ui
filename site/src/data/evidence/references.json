@@ -855,6 +855,234 @@
 				"how": "Page text",
 				"excerpt": "Connecting font sizes to the viewport's width means that the text will grow and shrink in proportion to the browser width. This makes it difficult to predict what the text size will be at any specific width"
 			}
+		},
+		{
+			"id": "B01",
+			"authors": "Budiu",
+			"year": 2018,
+			"title": "Carousels on Mobile Devices",
+			"venue": "Nielsen Norman Group, August 19, 2018",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/mobile-carousels/",
+			"topic": "Mobile carousels: sequential access, cues, swipe",
+			"supports": "Carousels use sequential access, so NN/g recommends reaching the last item in 3-4 steps and using a list view for many items; half-visible items signal continuity more strongly than dots; swipe should work and a gutter around the carousel eases swipe ambiguity near screen edges.",
+			"doesNotSupport": "A number of stages that works for a pipeline, or that peeking raises task success. The guidance comes from NN/g observation; the page gives no sample size.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "we recommend that users should be able to reach the last item in the carousel in 3-4 steps (i.e., taps or swipes). [...] If you have a high number of items, use a list view instead and allow people to directly access any of the items on the page. [...] The illusion of continuity, created by half images or text that look like they are continued beyond the vertical edge of the screen, is a strong carousel cue"
+			}
+		},
+		{
+			"id": "B02",
+			"authors": "Sunwall",
+			"year": 2024,
+			"title": "Tabs, Used Right",
+			"venue": "Nielsen Norman Group, August 2, 2024 (reviewed Sep. 2, 2026)",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/tabs-used-right/",
+			"topic": "Tabs: count, labels, selection indicators",
+			"supports": "When tabs overflow the tab list it becomes a carousel, hidden tabs are less discoverable and cost more to reach, so fewer tabs are better; labels should be short (1-2 words); use at least two selection indicators; keep one row; the default tab should be the high-use one.",
+			"doesNotSupport": "That a given number of tabs is right, or that numbers-only tabs are as findable as labelled ones. It is general guidance about tabs on the web and in apps.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "The fewer tabs, the better. [...] Use at least two selection indicators to enhance the visual salience of the selected tab. [...] Arrange tab content so high-use content is first in the list and selected by default."
+			}
+		},
+		{
+			"id": "B03",
+			"authors": "Sherwin",
+			"year": 2014,
+			"title": "Beware Horizontal Scrolling and Mimicking Swipe on Desktop",
+			"venue": "Nielsen Norman Group, April 27, 2014",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/horizontal-scrolling/",
+			"topic": "Horizontal scrolling and swipe: discoverability",
+			"supports": "Content behind a horizontal scroll is often ignored even with arrows, users should not have to guess how much content is left, and swiping should not be the only way to navigate.",
+			"doesNotSupport": "Touch behaviour: the article is about desktop sites and says swiping is familiar on phones and tablets.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Don't make users guess how much content is left. [...] Don't make \"swiping\" the primary navigation on your site. [...] Allow for alternative ways of navigation"
+			}
+		},
+		{
+			"id": "B04",
+			"authors": "Laubheimer",
+			"year": 2023,
+			"title": "Bottom Sheets: Definition and UX Guidelines",
+			"venue": "Nielsen Norman Group, June 11, 2023",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/bottom-sheet/",
+			"topic": "Bottom sheets: dismissal and use",
+			"supports": "A bottom sheet suits short interactions and contextual controls; it should close with Back and have a visible Close button, not be stacked, and not replace a page. The bottom of the screen is not universally the easiest to reach.",
+			"doesNotSupport": "That a sheet beats a menu for choosing a stage, or any outcome measure. The guidance comes from NN/g studies of overlays.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Bottom sheets are a form of progressive disclosure [...] Allow the Use of Back for Dismissing the Bottom Sheet [...] Include a Close Button [...] Do Not Stack Bottom Sheets [...] Use Bottom Sheets Only for Short Interactions"
+			}
+		},
+		{
+			"id": "B05",
+			"authors": "Budiu",
+			"year": 2015,
+			"title": "Accordions on Mobile",
+			"venue": "Nielsen Norman Group, May 31, 2015",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/mobile-accordions/",
+			"topic": "Overview before detail on mobile",
+			"supports": "Showing the structure of a page first (a mini-IA) gives users the big picture and direct access to a section before they commit to details.",
+			"doesNotSupport": "That an overview strip of counts is such a mini-IA. The article is about accordions and page sections.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "they often allow users to get the big picture before focusing on details [...] It gives users direct access to a section of interest."
+			}
+		},
+		{
+			"id": "B06",
+			"authors": "MDN contributors",
+			"year": 2026,
+			"title": "CSS scroll snap",
+			"venue": "MDN Web Docs",
+			"kind": "guideline",
+			"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll_snap",
+			"topic": "Scroll snap properties",
+			"supports": "scroll-snap-type and scroll-snap-align define snap positions, scroll-snap-stop: always prevents scrolling past boxes, and scroll-padding and scroll-margin adjust the optimal viewing region.",
+			"doesNotSupport": "Browser support or feel of snapping on a given device; check compatibility data.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Using snap properties, you can allow or block the scrolling past an element [...] This module includes the scroll container scroll-padding properties to adjust the optimal viewing region of paging during scroll-into-view operations."
+			}
+		},
+		{
+			"id": "B07",
+			"authors": "Apple",
+			"year": 2026,
+			"title": "Layout, Human Interface Guidelines",
+			"venue": "Apple Developer",
+			"kind": "guideline",
+			"url": "https://developer.apple.com/design/human-interface-guidelines/layout",
+			"topic": "Same function at every size",
+			"supports": "Keep functionality the same as size classes change; change only how much is visible, and decide by available space, not device type. Use progressive disclosure.",
+			"doesNotSupport": "That a particular layout is best on a phone. It is platform guidance for Apple devices.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text (markdown alternate)",
+				"excerpt": "Don't change your app's functionality based on the space it occupies. However, you can change the amount of functionality that's visible onscreen as the amount of space changes."
+			}
+		},
+		{
+			"id": "B08",
+			"authors": "HubSpot",
+			"year": 2026,
+			"title": "Create and manage records in the HubSpot mobile app",
+			"venue": "HubSpot Knowledge Base, last updated Nov 10, 2026",
+			"kind": "guideline",
+			"url": "https://knowledge.hubspot.com/records/work-with-records-in-the-hubspot-mobile-app",
+			"topic": "Practice example: CRM mobile board and stage picker",
+			"supports": "A practice example, not evidence: one CRM documents a mobile board where you swipe to view the records in each stage, a list view as an alternative, and changing a deal's stage by opening it and choosing from a list.",
+			"doesNotSupport": "That this works better than another pattern, or anything about users. It is one vendor describing its own product.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "In board view, you can swipe to view the records in each stage/status. [...] Tap [Stage/Status] under the deal or ticket record's name, then tap the [stage/status] you want to move the deal or ticket to."
+			}
+		},
+		{
+			"id": "B09",
+			"authors": "Atlassian",
+			"year": 2026,
+			"title": "Manage your board, Jira Cloud app for Android",
+			"venue": "Atlassian Support",
+			"kind": "guideline",
+			"url": "https://support.atlassian.com/jira-cloud-android/docs/manage-your-board/",
+			"topic": "Practice example: swipe across columns, long-press to move",
+			"supports": "A practice example, not evidence: one product documents swiping across columns on a phone and long-pressing an issue to drag it between columns.",
+			"doesNotSupport": "Anything about usability or that long-press is discoverable. It is one vendor describing its own product.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Long-press an issue to drag-and-drop it elsewhere. Move issues between columns as work is completed or updated. [...] Swipe across columns until you reach Add column beside the furthest column on the board."
+			}
+		},
+		{
+			"id": "B10",
+			"authors": "Linear",
+			"year": 2026,
+			"title": "Board layout, Linear Docs",
+			"venue": "Linear Docs",
+			"kind": "guideline",
+			"url": "https://linear.app/docs/board-layout",
+			"topic": "Practice example: hide empty columns",
+			"supports": "A practice example, not evidence: one product lets you hide columns, lists hidden columns last, lets you drop into a hidden column, and hides empty columns when \"Show empty groups\" is off.",
+			"doesNotSupport": "That hiding empty columns works better, or what the phone app does (the page does not say).",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text (markdown)",
+				"excerpt": "Hide a column by clicking the more menu (three dots). Unhide a column by scrolling to the right-most column. Filter to show only specific columns or toggle off the View Option Show empty groups to hide empty columns."
+			}
+		},
+		{
+			"id": "B11",
+			"authors": "ClickUp",
+			"year": 2026,
+			"title": "Customize Board view, ClickUp Help",
+			"venue": "ClickUp Help Center",
+			"kind": "guideline",
+			"url": "https://help.clickup.com/hc/en-us/articles/35342044832279-Customize-Board-view",
+			"topic": "Practice example: collapse empty columns",
+			"supports": "A practice example, not evidence: one product has a \"Collapse empty columns\" board option for columns without tasks.",
+			"doesNotSupport": "That collapsing empty columns works better, or how its phone app behaves.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Card size: Set the size of the cards. [...] Collapse empty columns: Collapse columns without tasks. [...] Show closed tasks: Show tasks in the Closed status."
+			}
+		},
+		{
+			"id": "B12",
+			"authors": "Notion",
+			"year": 2026,
+			"title": "Board view (Kanban), Notion Help",
+			"venue": "Notion Help Center",
+			"kind": "guideline",
+			"url": "https://www.notion.com/help/boards",
+			"topic": "Practice example: hide group, per-column count",
+			"supports": "A practice example, not evidence: one product lets you hide a group (column), lists hidden columns in the Group menu, and shows a count beside every column heading.",
+			"doesNotSupport": "That this works better than another pattern, or how its phone app behaves.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-11-12",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Hide group [...] Reveal hidden columns by opening the settings menu at the top of your database -> Group. [...] To the immediate right of each column heading, you'll see a gray number. The default is for this to show the number of cards in each column"
+			}
 		}
 	]
 }
