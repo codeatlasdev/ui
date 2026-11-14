@@ -112,6 +112,14 @@
   function focusInput(e: MouseEvent) {
     if (e.target === e.currentTarget) ref?.focus();
   }
+  /** A type's usual keyboard and autofill by default (#1213); an explicit `inputmode` / `autocomplete` wins. */
+  const KEYBOARD: Record<string, Pick<HTMLInputAttributes, 'inputmode' | 'autocomplete'>> = {
+    email: { inputmode: 'email', autocomplete: 'email' },
+    tel: { inputmode: 'tel', autocomplete: 'tel' },
+    url: { inputmode: 'url', autocomplete: 'url' },
+  };
+  const keyboard = $derived(KEYBOARD[type]);
+
   const canReveal = $derived(revealable && type === 'password');
   let revealed    = $state(false);
   const inputType = $derived(canReveal && revealed ? 'text' : type);
@@ -147,7 +155,8 @@
       disabled={disabled || skeleton}
       {required}
       {readonly}
-      {autocomplete}
+      autocomplete={autocomplete ?? keyboard?.autocomplete}
+      inputmode={rest.inputmode ?? keyboard?.inputmode}
       bind:value
       class="ca-tf__input"
       aria-describedby={describedBy}
