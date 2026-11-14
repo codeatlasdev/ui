@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
+import { SLOW_FLOW } from "../../../../tests/settled";
 import Harness from "./CommandPalette.test.svelte";
 
 // #97: a starved CPU (CI under load) turns every Playwright step into hundreds of ms. These are the
@@ -26,13 +27,17 @@ describe("CommandPalette under 40x CPU throttle — minQueryLength (#97)", () =>
 		await cdp().send("Emulation.setCPUThrottlingRate", { rate: 1 });
 	});
 
-	it("opens with clean state; minQueryLength filters at threshold", async () => {
-		// open() proves: dialog mounts, input gets focus synchronously (no rAF race)
-		await open({ minQueryLength: 3 });
-		// At threshold → filter to one result; fill() = 1 CDP call, not per-char keyboard events
-		await input().fill(" rep ");
-		await expect.element(page.getByRole("option")).toHaveLength(1);
-	});
+	it(
+		"opens with clean state; minQueryLength filters at threshold",
+		async () => {
+			// open() proves: dialog mounts, input gets focus synchronously (no rAF race)
+			await open({ minQueryLength: 3 });
+			// At threshold → filter to one result; fill() = 1 CDP call, not per-char keyboard events
+			await input().fill(" rep ");
+			await expect.element(page.getByRole("option")).toHaveLength(1);
+		},
+		SLOW_FLOW
+	);
 });
 
 // ArrowDown: both 40x and 150x exercise the selection-state race.
@@ -41,8 +46,9 @@ describe("CommandPalette under 40x CPU throttle — minQueryLength (#97)", () =>
 // ENAMETOOLONG, losing the trace exactly when the test fails.
 describe.each([40, 150])("CommandPalette %dx throttle, ArrowDown (#97)", (rate) => {
 	// The limit is a hang detector, not an assertion: at 150x this test takes ~19 s on a quiet machine and 26 s
-	// at load 45, so 30 s failed it whenever other suites shared the machine (#546).
-	const budget = rate >= 150 ? 90_000 : 30_000;
+	// at load 45, so 30 s failed it whenever other suites shared the machine (#546). Throttling multiplies the host's
+	// own speed, and a slower host beside the other test files passed 90 s at 150x (Windows, #1250): SLOW_FLOW units.
+	const budget = rate >= 150 ? 2 * SLOW_FLOW : SLOW_FLOW;
 
 	beforeEach(async () => {
 		await cdp().send("Emulation.setCPUThrottlingRate", { rate });

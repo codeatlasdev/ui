@@ -1,6 +1,7 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
+import { SLOW_FLOW } from "../../../../tests/settled";
 import { setLocale } from "../../i18n/index.js";
 import DocsSearchHarness from "./DocsSearchHarness.test.svelte";
 import type { DocsSearchEntry } from "./types";
@@ -42,7 +43,8 @@ afterAll(() => setLocale("en"));
 describe.each([40, 150])("DocsSearch under %dx CPU throttle (#97)", (rate) => {
 	// Throttling multiplies the host's speed: ~13 s here at 150x, and on the 4-vCPU CI runner, alone in its job with one
 	// worker, one run passed and one hit 30 s (#833). The timeout bounds the run; what is asserted is the selection.
-	const budget = rate >= 150 ? 90_000 : 15_000;
+	// A slower host beside the other test files passed 15 s at 40x and 90 s at 150x (Windows, #1250): SLOW_FLOW units.
+	const budget = rate >= 150 ? 2 * SLOW_FLOW : SLOW_FLOW;
 
 	beforeEach(async () => {
 		await cdp().send("Emulation.setCPUThrottlingRate", { rate });

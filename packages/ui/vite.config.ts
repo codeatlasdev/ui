@@ -94,7 +94,12 @@ const runTag = process.env.CA_TEST_RUN ? [`--ca-test-run=${process.env.CA_TEST_R
 const browserBase = (channel?: "chromium") => ({
 	enabled: true,
 	headless: true,
-	provider: playwright({ launchOptions: { ...(channel ? { channel } : {}), args: runTag } }),
+	// en-US whatever the host language: counts and dates are formatted with the browser locale, and a pt-BR host
+	// printed `1.000 results` where the tests read `1,000 results` (#1250).
+	provider: playwright({
+		launchOptions: { ...(channel ? { channel } : {}), args: runTag },
+		contextOptions: { locale: "en-US" },
+	}),
 	instances: [{ browser: "chromium" as const, viewport: { width: 1280, height: 720 } }],
 	locators: { errorFormat: "aria" as const },
 	trace: "retain-on-failure" as const,

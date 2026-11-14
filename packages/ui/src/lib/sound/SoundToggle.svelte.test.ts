@@ -44,7 +44,8 @@ describe("SoundToggle", () => {
 		localStorage.setItem("ca-sound", JSON.stringify({ enabled: true, volume: 0.4 }));
 		// A reload re-evaluates the module: a query string makes the browser do the same.
 		const fresh = (await import(
-			/* @vite-ignore */ `./engine.js?reload=${Date.now()}`
+			// The source file by its own name: no `.js` -> `.ts` mapping for a URL the browser requests as is (#1250).
+			/* @vite-ignore */ `./engine.ts?reload=${Date.now()}`
 		)) as typeof import("./engine.js");
 		expect(fresh.sound.enabled).toBe(true);
 		expect(fresh.sound.volume).toBe(0.4);
