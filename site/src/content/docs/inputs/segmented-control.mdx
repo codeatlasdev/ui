@@ -32,7 +32,9 @@ Unlike [ToggleGroup](/docs/inputs/toggle-group/), exactly one item is always sel
 
 `size="sm" | "md"` picks the preset; `--ca-seg-item-{padding-x,font-size,line-height}` tune both, and `--ca-seg-{sm,md}-item-*` one size (it wins). `--ca-seg-gap` sets the space between segments (default `0`). No rule against `.ca-seg__item`.
 
-`sizing="content"` makes each segment as wide as its label plus the item padding instead of sharing the widest column, so a control with short labels stays compact. The thumb follows the measured active segment (re-measured on resize, font load and label change). On a coarse pointer each segment keeps a 44px target. When the control is wider than its container it scrolls on the x axis (hidden scrollbar): a horizontal wheel or trackpad gesture, or shift + wheel, scrolls it, and a plain vertical wheel keeps scrolling the page.
+`sizing="content"` makes each segment as wide as its label plus the item padding instead of sharing the widest column, so a control with short labels stays compact. The thumb follows the measured active segment (re-measured on resize, font load and label change). On a coarse pointer each segment keeps a 44px target. When the control is wider than its container it scrolls on the x axis (hidden scrollbar): a horizontal wheel or trackpad gesture, or shift + wheel, scrolls it, and a plain vertical wheel keeps scrolling the page. The selected segment is scrolled into the track when it is out of view (selected at mount, or set from outside).
+
+Long labels or four or more options on a phone (about 330 px): use `sizing="content"`, so every label stays whole and the strip scrolls. With the default equal columns a label that does not fit is cut with an ellipsis and carries its full text as `title`; one that fits has none. When the options need a sentence each, a `RadioGroup` (one choice per row) reads better than any segmented strip.
 
 <Props rows={[
   { name: "value", type: "string", default: "first enabled item", description: "Bindable selected value." },

@@ -6,6 +6,7 @@ import { touchTarget } from "../../../../tests/touch-target";
 import { reducedMotion } from "../../stores/reduced-motion.svelte";
 import SegmentedControlContent from "./SegmentedControlContent.test.svelte";
 import SegmentedControlHarness from "./SegmentedControlHarness.test.svelte";
+import SegmentedControlLong from "./SegmentedControlLong.test.svelte";
 import SegmentedControlNarrow from "./SegmentedControlNarrow.test.svelte";
 
 const segIndex = (el: Element) => (el as HTMLElement).style.getPropertyValue("--seg-index");
@@ -275,6 +276,43 @@ describe("SegmentedControl", () => {
 			});
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 			await screen.getByRole("radio", { name: "100" }).click();
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+	});
+	// #1051: four long labels in a 330px slot.
+	describe("narrow slot (#1051)", () => {
+		const items = (root: Element) => [...root.querySelectorAll<HTMLElement>(".ca-seg__item")];
+		const inside = (el: Element, box: Element) => {
+			const a = el.getBoundingClientRect();
+			const b = box.getBoundingClientRect();
+			return a.left >= b.left - 0.5 && a.right <= b.right + 0.5;
+		};
+		const fonts = () => document.fonts.ready;
+
+		it("content: reveals the selected segment", async () => {
+			const screen = await render(SegmentedControlLong, { sizing: "content", initial: "d" });
+			await fonts();
+			const root = screen.getByRole("group", { name: "Discount" }).element();
+			expect(root.scrollWidth).toBeGreaterThan(root.clientWidth);
+			const [first, , , last] = items(root);
+			await expect.poll(() => inside(last, root)).toBe(true);
+			await screen.getByRole("button", { name: "Pick first" }).click();
+			await expect.poll(() => inside(first, root)).toBe(true);
+			await screen.getByRole("button", { name: "Pick last" }).click();
+			await expect.poll(() => inside(last, root)).toBe(true);
+		});
+
+		it("equal: title on a cut label only", async () => {
+			const screen = await render(SegmentedControlLong);
+			await fonts();
+			const root = screen.getByRole("group", { name: "Discount" }).element();
+			const all = items(root);
+			const cut = all.filter((i) => i.scrollWidth > i.clientWidth);
+			expect(cut.length).toBeGreaterThan(0);
+			await expect
+				.poll(() => cut.map((i) => i.title))
+				.toEqual(cut.map((i) => i.textContent?.trim()));
+			expect(all[0].hasAttribute("title")).toBe(false);
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		});
 	});
