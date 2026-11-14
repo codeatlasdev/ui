@@ -1,5 +1,6 @@
 // ─── Display formatting helpers ───────────────────────────────────────────────
 
+import { maskPhoneBR } from "../forms/masks.js";
 import { centsToDisplay, currencyDecimals } from "../forms/money.js";
 
 /**
@@ -355,4 +356,140 @@ export function getInitials(
 	if (!list.length) return empty;
 	const initial = (w: string) => (w.match(/[\p{L}\p{N}]/u)?.[0] ?? "").toLocaleUpperCase(locale);
 	return list.length === 1 ? initial(list[0]) : initial(list[0]) + initial(list[list.length - 1]);
+}
+
+// ─── Copy, plurals, phones, company names and months (#1287) ──────────────────
+
+/** Values `formatCopy` puts into a template; `null` and `undefined` count as missing. */
+export type CopyValues = Readonly<Record<string, string | number | null | undefined>>;
+
+const PLACEHOLDER = /\{([^{}\s]+)\}/g;
+
+/**
+ * Fills the `{key}` placeholders of a template in one pass:
+ * `formatCopy("Olá {nome}", { nome: "Ana" })` is `"Olá Ana"`. A key with no value (absent, `null` or
+ * `undefined`) stays visible, so `formatCopy("Olá {nome}", {})` is `"Olá {nome}"` and a missing
+ * value shows on the page instead of reading `"Olá undefined"` or `"Olá "`. Values go in with
+ * `String()` (format a number first with `plural` or `formatNumber`) and are never expanded again.
+ */
+export function formatCopy(template: string, values: CopyValues): string {
+	return template.replace(PLACEHOLDER, (match, key: string) => {
+		const value = Object.hasOwn(values, key) ? values[key] : undefined;
+		return value == null ? match : String(value);
+	});
+}
+
+/**
+ * A count and the word that agrees with it: the form chosen by `Intl.PluralRules`, the number
+ * written by `Intl.NumberFormat`, both in `locale` (default `"pt-BR"`):
+ * `plural(1, "item", "itens")` is `"1 item"`, `plural(1000, "item", "itens")` is `"1.000 itens"`.
+ * The `one` category takes `one`; every other (`other`, and `zero`, `two`, `few` or `many` where
+ * the locale has them) takes `many`. In Portuguese (CLDR) `one` is any count whose integer part is
+ * 0 or 1: `plural(0, "item", "itens")` is `"0 item"` and `plural(1.5, "hora", "horas")` is
+ * `"1,5 hora"`; write your own text for zero (`"Nenhum item"`) when you want one. A missing count
+ * is `"—"`.
+ */
+export function plural(
+	count: number | null | undefined,
+	one: string,
+	many: string,
+	locale = "pt-BR"
+): string {
+	if (!finite(count)) return EMPTY;
+	const form = cached(Intl.PluralRules, locale, {}).select(count) === "one" ? one : many;
+	return `${numberFormat(locale, {}).format(count)} ${form}`;
+}
+
+/** Area code (no 0 in it), then 9 + 8 digits (mobile) or 8 digits that do not start with 0 or 1. */
+const BR_PHONE = /^[1-9]{2}(?:9\d{8}|[2-9]\d{7})$/;
+
+/**
+ * The national digits of a Brazilian phone, area code first (`"11987654321"`, `"1134567890"`),
+ * from E.164 (`"+5511987654321"`), bare digits or masked text. The country code (`+55`, or `55`
+ * before 10 or 11 more digits) and a trunk `0` are dropped; a number in area code 55 keeps it.
+ * Empty when the text is not a whole Brazilian number: another country, a partial number, an area
+ * code with a 0, or 9 digits after the area code that do not start with 9. Its E.164 is
+ * `` `+55${phoneDigits(text)}` ``.
+ */
+export function phoneDigits(text: string | null | undefined): string {
+	if (typeof text !== "string") return "";
+	let d = text.replace(/\D/g, "");
+	if (text.trim().startsWith("+")) d = d.startsWith("55") ? d.slice(2) : "";
+	else if ((d.length === 12 || d.length === 13) && d.startsWith("55")) d = d.slice(2);
+	else if ((d.length === 11 || d.length === 12) && d.startsWith("0")) d = d.slice(1);
+	return BR_PHONE.test(d) ? d : "";
+}
+
+/**
+ * A Brazilian phone as people read it, `"(11) 98765-4321"` or `"(11) 3456-7890"`, from what
+ * `phoneDigits` reads, with the mask of `PhoneField` (`maskPhoneBR` from `@codeatlasdev/ui/forms`).
+ * Text that is not a whole Brazilian number (a foreign or partial one) is shown as given, trimmed,
+ * so nothing is hidden; a blank one is `empty`.
+ */
+export function formatPhone(
+	input: string | null | undefined,
+	{ empty = EMPTY }: Pick<FormatOptions, "empty"> = {}
+): string {
+	const text = typeof input === "string" ? input.trim() : "";
+	if (!text) return empty;
+	const digits = phoneDigits(text);
+	return digits ? maskPhoneBR(digits) : text;
+}
+
+/** How each legal-form suffix is written, keyed by the suffix in lowercase without `.`, `/` or spaces. */
+const LEGAL_FORMS: Record<string, string> = {
+	ltda: "Ltda.",
+	sa: "S.A.",
+	me: "ME",
+	epp: "EPP",
+	eireli: "EIRELI",
+	slu: "SLU",
+};
+/**
+ * A legal suffix at the end, with the spaces, commas or dashes before it. The lookbehind starts
+ * the separator at the beginning of its run, so a long run of them is scanned once, not once per
+ * character.
+ */
+const LEGAL_TAIL = /(?<![\s,–-])([\s,–-]+)(ltda|s\s?[./]?\s?a|me|epp|eireli|slu)\.?$/iu;
+const ENDS_LEGAL = /(?:^|[\s,–-])(?:ltda|s\s?[./]?\s?a|me|epp|eireli|slu)\.?$/iu;
+
+/**
+ * A company name with single spaces and its legal-form suffixes written one way: `ltda` is
+ * `Ltda.`, `sa`, `s.a`, `s/a` and `S. A.` are `S.A.`, and `me`, `epp`, `eireli` and `slu` are in
+ * capitals: `"  acme   comércio  ltda "` is `"acme comércio Ltda."`. Only suffixes at the end of
+ * the name, after its first word, are touched (`"Acme Ltda - me"` is `"Acme Ltda. - ME"`); the
+ * rest keeps the case it was typed in, and the spaces, commas and dashes between suffixes are kept.
+ * A bare hyphen joins two suffixes (`"LTDA-ME"`), never a word and a suffix (`"Encontre-me"`).
+ */
+export function formatCompanyName(
+	name: string | null | undefined,
+	{ empty = EMPTY }: Pick<FormatOptions, "empty"> = {}
+): string {
+	let head = typeof name === "string" ? name.normalize("NFC").trim().replace(/\s+/g, " ") : "";
+	if (!head) return empty;
+	let tail = "";
+	for (let m = LEGAL_TAIL.exec(head); m; m = LEGAL_TAIL.exec(head)) {
+		const before = head.slice(0, m.index);
+		if (!/[\p{L}\p{N}]/u.test(before)) break;
+		if (!/[\s,]/.test(m[1]) && !ENDS_LEGAL.test(before)) break;
+		tail = m[1] + LEGAL_FORMS[m[2].toLowerCase().replace(/[\s./]/g, "")] + tail;
+		head = before;
+	}
+	return head + tail;
+}
+
+/**
+ * The 12 month names of a locale, January first, from `Intl.DateTimeFormat` (Gregorian calendar,
+ * standalone form) instead of a hand-kept list: `monthLabels()` is `["Janeiro", …, "Dezembro"]`,
+ * `monthLabels("pt-BR", "short")` is `["Jan.", …, "Dez."]`. They are labels (a select, a chart axis,
+ * a column header), so the first letter is capitalised in the locale, as `MonthPicker` shows them;
+ * the rest is what `Intl` returns. Inside a sentence pt-BR writes months in lowercase: use
+ * `formatDate` there.
+ */
+export function monthLabels(locale = "pt-BR", style: "long" | "short" = "long"): string[] {
+	const format = dateFormat(locale, { month: style, timeZone: "UTC", calendar: "gregory" });
+	return Array.from({ length: 12 }, (_, i) => {
+		const name = format.format(Date.UTC(2026, i, 15));
+		return name.slice(0, 1).toLocaleUpperCase(locale) + name.slice(1);
+	});
 }

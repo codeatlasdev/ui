@@ -74,3 +74,5 @@ Documents try these values: CPF `123.456.789-09` is valid and `111.111.111-11` i
   { name: "isValidCPF / isValidCNPJ / isValidDateBR", type: "(value: string) => boolean", description: "Validators for use in validate." },
   { name: "mask", type: "Action<HTMLInputElement, (raw: string) => string>", description: "Svelte action that applies a mask to any input." },
 ]} />
+
+To show a stored phone outside a field (a table cell, a card), `formatPhone` from `@codeatlasdev/ui/utils/format` writes the E.164 value of `PhoneField` with the same mask, and `phoneDigits` turns masked or international text into the national digits; see [Internationalization](/docs/getting-started/i18n/#copy-plurals-phones-companies-and-months).

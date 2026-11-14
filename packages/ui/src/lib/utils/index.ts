@@ -8,6 +8,7 @@ export { downloadFile, toCsv, toJson } from "./export.js";
 export type {
 	BytesOptions,
 	CompactMoneyOptions,
+	CopyValues,
 	DateInZoneOptions,
 	DateTimeInZoneOptions,
 	FormatOptions,
@@ -17,6 +18,8 @@ export type {
 } from "./format.js";
 export {
 	formatBytes,
+	formatCompanyName,
+	formatCopy,
 	formatCurrency,
 	formatDate,
 	formatDateInZone,
@@ -26,9 +29,13 @@ export {
 	formatName,
 	formatNumber,
 	formatPercent,
+	formatPhone,
 	formatRelativeTime,
 	formatRelativeTimeShort,
 	getInitials,
+	monthLabels,
+	phoneDigits,
+	plural,
 } from "./format.js";
 export { storageGet, storageRemove, storageSet } from "./local-storage.js";
 export type { PresetTokens } from "./palette-generator.js";

@@ -1,0 +1,5 @@
+---
+"@codeatlasdev/ui": minor
+---
+
+More helpers in `@codeatlasdev/ui/utils/format` (and the package root): `formatCopy(template, values)` fills `{key}` placeholders and leaves a missing key visible (`formatCopy("Olá {nome}", {})` is `Olá {nome}`); `plural(count, one, many, locale = "pt-BR")` picks the form with `Intl.PluralRules` and writes the count with `Intl.NumberFormat` (`1 item`, `2 itens`, `1.000 itens`; Portuguese counts 0 and 1,5 as singular, as CLDR does); `phoneDigits` and `formatPhone` read a Brazilian phone from E.164, digits or masked text and return its national digits or the `(11) 98765-4321` mask of `PhoneField` (`55` before 10 or 11 digits is the country code, area code 55 is kept, anything else is shown as given); `formatCompanyName` trims, collapses spaces and writes the trailing legal suffixes as `Ltda.`, `S.A.`, `ME`, `EPP`, `EIRELI` and `SLU` without touching the case of the rest of the name; `monthLabels(locale = "pt-BR", style = "long" | "short")` returns the 12 Gregorian month names of `Intl.DateTimeFormat`, standalone and with the first letter capitalised, as `MonthPicker` shows them (`Janeiro`, `Jan.`).

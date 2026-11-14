@@ -1,17 +1,24 @@
 // #1141: locale and time-zone formatters (@codeatlasdev/ui/utils/format). Every expectation
 // passes the locale and time zone it depends on, or relies on the module's documented pt-BR /
-// America/Sao_Paulo defaults, never on the machine's.
+// America/Sao_Paulo defaults, never on the machine's. #1287 adds copy, plural, phone, company
+// name and month helpers to the same subpath.
 import { describe, expect, test } from "bun:test";
 import {
 	formatBytes,
+	formatCompanyName,
+	formatCopy,
 	formatDateInZone,
 	formatDateTimeInZone,
 	formatMoneyAxis,
 	formatMoneyCompact,
 	formatName,
 	formatPercent,
+	formatPhone,
 	formatRelativeTimeShort,
 	getInitials,
+	monthLabels,
+	phoneDigits,
+	plural,
 } from "../src/lib/utils/format.js";
 
 const NBSP = " ";
@@ -228,5 +235,181 @@ describe("getInitials", () => {
 	});
 	test("locale-aware casing", () => {
 		expect(getInitials("ilker işık", { locale: "tr" })).toBe("İİ");
+	});
+});
+
+describe("issue #1287 acceptance", () => {
+	test("formatCopy keeps a missing key visible", () => {
+		expect(formatCopy("Olá {nome}", {})).toBe("Olá {nome}");
+		expect(formatCopy("Olá {nome}", { nome: "Ana" })).toBe("Olá Ana");
+	});
+	test("plural picks the form and writes the number", () => {
+		expect(plural(1, "item", "itens")).toBe("1 item");
+		expect(plural(2, "item", "itens")).toBe("2 itens");
+	});
+});
+
+describe("formatCopy", () => {
+	test("every occurrence, numbers as text", () => {
+		expect(formatCopy("{a} e {b} e {a}", { a: "x", b: 2 })).toBe("x e 2 e x");
+	});
+	test("null and undefined count as missing", () => {
+		expect(formatCopy("Olá {nome}", { nome: undefined })).toBe("Olá {nome}");
+		expect(formatCopy("Olá {nome}", { nome: null })).toBe("Olá {nome}");
+		expect(formatCopy("Olá {nome}!", { nome: "" })).toBe("Olá !");
+	});
+	test("inherited properties are not values", () => {
+		expect(formatCopy("{constructor} {toString}", {})).toBe("{constructor} {toString}");
+	});
+	test("an inserted value is not expanded again", () => {
+		expect(formatCopy("{a}", { a: "{b}", b: "x" })).toBe("{b}");
+	});
+});
+
+describe("plural", () => {
+	// CLDR's rule for pt (Brazil) is "one" for i = 0..1: 0 and 1,5 take the singular. Intl.PluralRules
+	// returns it, so the helper does too; en puts 0 and 1.5 in "other".
+	test("pt-BR follows Intl.PluralRules: 0 and 1,5 are singular", () => {
+		expect(new Intl.PluralRules("pt-BR").select(0)).toBe("one");
+		expect(plural(0, "item", "itens")).toBe("0 item");
+		expect(plural(1.5, "hora", "horas")).toBe("1,5 hora");
+		expect(plural(-1, "item", "itens")).toBe("-1 item");
+	});
+	test("the number is formatted in the locale", () => {
+		expect(plural(1000, "item", "itens")).toBe("1.000 itens");
+		// pt has a "many" category for exact millions; it takes the plural form.
+		expect(new Intl.PluralRules("pt-BR").select(1_000_000)).toBe("many");
+		expect(plural(1_000_000, "item", "itens")).toBe("1.000.000 itens");
+	});
+	test("other locales", () => {
+		expect(plural(0, "item", "items", "en")).toBe("0 items");
+		expect(plural(1, "item", "items", "en")).toBe("1 item");
+		expect(plural(1.5, "hour", "hours", "en")).toBe("1.5 hours");
+		expect(plural(1234, "item", "items", "en-US")).toBe("1,234 items");
+	});
+	test("the form matches the rounded number", () => {
+		expect(plural(1.0001, "item", "items", "en")).toBe("1 item");
+	});
+	test("a missing count is empty", () => {
+		expect(plural(null, "item", "itens")).toBe(DASH);
+		expect(plural(Number.NaN, "item", "itens")).toBe(DASH);
+	});
+});
+
+describe("formatPhone / phoneDigits", () => {
+	test.each([
+		["+5511987654321", "(11) 98765-4321"],
+		["+55 11 98765-4321", "(11) 98765-4321"],
+		["5511987654321", "(11) 98765-4321"],
+		["11987654321", "(11) 98765-4321"],
+		["(11) 98765-4321", "(11) 98765-4321"],
+		["011987654321", "(11) 98765-4321"],
+		["1134567890", "(11) 3456-7890"],
+		["+55 (11) 3456-7890", "(11) 3456-7890"],
+		["551134567890", "(11) 3456-7890"],
+	])("%s is %s", (input, text) => {
+		expect(formatPhone(input)).toBe(text);
+	});
+	test("area code 55 is not taken for the country code", () => {
+		expect(formatPhone("55998765432")).toBe("(55) 99876-5432");
+		expect(phoneDigits("5555998765432")).toBe("55998765432");
+	});
+	test("phoneDigits is the national number", () => {
+		expect(phoneDigits("+55 (11) 98765-4321")).toBe("11987654321");
+		expect(phoneDigits("(11) 3456-7890")).toBe("1134567890");
+	});
+	test("phoneDigits is empty for what is not a BR phone", () => {
+		for (const text of ["(11) 9876", "+1 415 555 0123", "(11) 88765-4321", "(01) 3456-7890", ""]) {
+			expect(phoneDigits(text)).toBe("");
+		}
+	});
+	test("formatPhone shows unreadable text as given", () => {
+		expect(formatPhone(" +1 415 555 0123 ")).toBe("+1 415 555 0123");
+		expect(formatPhone("12345")).toBe("12345");
+	});
+	test("a missing phone is empty", () => {
+		expect(formatPhone(null)).toBe(DASH);
+		expect(formatPhone("   ")).toBe(DASH);
+		expect(formatPhone(undefined, { empty: "" })).toBe("");
+	});
+});
+
+describe("formatCompanyName", () => {
+	test("trims, collapses spaces, keeps the name's case", () => {
+		expect(formatCompanyName("  acme   comércio  ltda ")).toBe("acme comércio Ltda.");
+		expect(formatCompanyName("ACME INDUSTRIA SA")).toBe("ACME INDUSTRIA S.A.");
+	});
+	test.each([
+		["Acme ltda.", "Acme Ltda."],
+		["Acme LTDA", "Acme Ltda."],
+		["Acme s/a", "Acme S.A."],
+		["Acme S. A.", "Acme S.A."],
+		["Acme s.a", "Acme S.A."],
+		["Acme me", "Acme ME"],
+		["Acme Epp", "Acme EPP"],
+		["Acme eireli", "Acme EIRELI"],
+		["Acme slu", "Acme SLU"],
+	])("%s is %s", (input, text) => {
+		expect(formatCompanyName(input)).toBe(text);
+	});
+	test("several suffixes keep their separators", () => {
+		expect(formatCompanyName("Acme Ltda - me")).toBe("Acme Ltda. - ME");
+		expect(formatCompanyName("ACME LTDA-ME")).toBe("ACME Ltda.-ME");
+		expect(formatCompanyName("Acme, ltda")).toBe("Acme, Ltda.");
+	});
+	test("only a trailing suffix after the first word", () => {
+		expect(formatCompanyName("Sa Distribuidora")).toBe("Sa Distribuidora");
+		expect(formatCompanyName("Ltda Comércio")).toBe("Ltda Comércio");
+		expect(formatCompanyName("Casa")).toBe("Casa");
+		expect(formatCompanyName("Me")).toBe("Me");
+		expect(formatCompanyName("Encontre-me")).toBe("Encontre-me");
+	});
+	test("a missing name is empty", () => {
+		expect(formatCompanyName(null)).toBe(DASH);
+		expect(formatCompanyName("  ")).toBe(DASH);
+	});
+});
+
+describe("monthLabels", () => {
+	test("12 long names in pt-BR, first letter capitalised", () => {
+		expect(monthLabels()).toEqual([
+			"Janeiro",
+			"Fevereiro",
+			"Março",
+			"Abril",
+			"Maio",
+			"Junho",
+			"Julho",
+			"Agosto",
+			"Setembro",
+			"Outubro",
+			"Novembro",
+			"Dezembro",
+		]);
+	});
+	test("short names keep the abbreviation of Intl", () => {
+		expect(monthLabels("pt-BR", "short")).toEqual([
+			"Jan.",
+			"Fev.",
+			"Mar.",
+			"Abr.",
+			"Mai.",
+			"Jun.",
+			"Jul.",
+			"Ago.",
+			"Set.",
+			"Out.",
+			"Nov.",
+			"Dez.",
+		]);
+	});
+	test("other locales, standalone form", () => {
+		expect(monthLabels("en-US", "short").slice(0, 5)).toEqual(["Jan", "Feb", "Mar", "Apr", "May"]);
+		// Russian has a standalone form (январь) and one inside a date (15 января).
+		expect(monthLabels("ru")[0]).toBe("Январь");
+	});
+	test("Gregorian months in a locale with another calendar", () => {
+		// fa defaults to the Persian calendar, where 15 January is in the month دی.
+		expect(monthLabels("fa")[0]).toBe("ژانویه");
 	});
 });
