@@ -204,6 +204,75 @@
   @keyframes ca-date-in  { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
   @keyframes ca-date-out { from { opacity: 1; transform: scale(1); }    to { opacity: 0; transform: scale(0.96); } }
 
+  /* ── DateRangePicker presets (#1139) ──────────────────────────── */
+  /* A column of shortcut buttons before the calendar; on a narrow screen a row above it that scrolls sideways. */
+  .ca-date__content:has(> .ca-date__presets) {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+  }
+
+  .ca-date__presets {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: var(--ca-space-0-5);
+    padding-inline-end: var(--ca-space-3);
+    border-inline-end: var(--ca-border-width) solid var(--ca-outline-subtle);
+  }
+
+  .ca-date__preset {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-2-5);
+    border: var(--ca-border-width) solid transparent;
+    border-radius: var(--ca-radius-sm);
+    background: transparent;
+    font-family: var(--ca-font-sans);
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-primary);
+    text-align: start;
+    white-space: nowrap;
+    outline: none;
+    transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+  }
+
+  .ca-date__preset:hover:not(:disabled):not([aria-pressed='true']) { background: var(--ca-action-hover); }
+  .ca-date__preset:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
+  .ca-date__preset:disabled { color: var(--ca-text-disabled); }
+  .ca-date__preset[aria-pressed='true'] {
+    background: var(--ca-brand-fill);
+    color: var(--ca-brand-contrast);
+    font-weight: var(--ca-font-weight-semibold);
+  }
+
+  @media (max-width: 599.98px) {
+    .ca-date__content:has(> .ca-date__presets) { flex-direction: column; align-items: stretch; }
+    .ca-date__presets {
+      flex-direction: row;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      padding-inline-end: 0;
+      padding-block-end: var(--ca-space-2);
+      border-inline-end: none;
+      border-block-end: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
+  }
+
+  @media (pointer: coarse) {
+    .ca-date__preset { min-height: var(--ca-touch-target); min-width: var(--ca-touch-target); }
+  }
+
+  @media (forced-colors: active) {
+    .ca-date__preset[aria-pressed='true'] { border-color: Highlight; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ca-date__preset { transition: none; }
+  }
+
   /* ── Calendar ─────────────────────────────────────────────────── */
   .ca-cal {
     max-width: 100%;

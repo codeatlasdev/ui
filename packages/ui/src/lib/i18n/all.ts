@@ -30,6 +30,7 @@ import { common } from "./groups/common.js";
 import { copyButton } from "./groups/copyButton.js";
 import { copyField } from "./groups/copyField.js";
 import { dataTable } from "./groups/dataTable.js";
+import { dateRangePicker } from "./groups/dateRangePicker.js";
 import { dialog } from "./groups/dialog.js";
 import { docs } from "./groups/docs.js";
 import { drawer } from "./groups/drawer.js";
@@ -97,6 +98,7 @@ export const groups = {
 	badge,
 	breadcrumb,
 	calendar,
+	dateRangePicker,
 	timePicker,
 	monthPicker,
 	chip,

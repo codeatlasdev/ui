@@ -8,18 +8,76 @@ import {
 	CalendarDateTime,
 	DateFormatter,
 	type DateValue,
+	endOfMonth,
+	endOfYear,
 	getDayOfWeek,
 	getLocalTimeZone,
 	parseDate,
 	parseDateTime,
 	parseZonedDateTime,
 	startOfMonth,
+	startOfYear,
 	Time,
 	toCalendar,
+	toCalendarDate,
 	ZonedDateTime,
 } from "@internationalized/date";
+import type { DateRangePresetId } from "./types.js";
 
 export type WeekStart = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+/** A range with both ends set. */
+export interface FullRange {
+	start: DateValue;
+	end: DateValue;
+}
+
+/* ── range presets (#1139) ─────────────────────────────────────── */
+
+const lastDays = (t: CalendarDate, n: number): FullRange => ({
+	start: t.subtract({ days: n - 1 }),
+	end: t,
+});
+
+/** Built-in DateRangePicker presets, each a function of today. "Last N days" includes today. */
+export const PRESET_RANGES: Record<DateRangePresetId, (today: CalendarDate) => FullRange> = {
+	today: (t) => ({ start: t, end: t }),
+	yesterday: (t) => lastDays(t.subtract({ days: 1 }), 1),
+	last7Days: (t) => lastDays(t, 7),
+	last30Days: (t) => lastDays(t, 30),
+	last90Days: (t) => lastDays(t, 90),
+	thisMonth: (t) => ({ start: startOfMonth(t), end: endOfMonth(t) }),
+	lastMonth: (t) => {
+		const m = t.subtract({ months: 1 });
+		return { start: startOfMonth(m), end: endOfMonth(m) };
+	},
+	thisYear: (t) => ({ start: startOfYear(t), end: endOfYear(t) }),
+};
+
+/** The ids `presets={true}` lists, in order. */
+export const DEFAULT_PRESETS: readonly DateRangePresetId[] = [
+	"today",
+	"last7Days",
+	"last30Days",
+	"thisMonth",
+	"lastMonth",
+];
+
+/** A bound in the kind of `like`: a date-only end stays a `CalendarDate`. */
+const boundLike = (bound: DateValue, like: DateValue) =>
+	hasTime(like) ? bound : toCalendarDate(bound);
+
+/**
+ * `r` ordered and with both ends moved into [min, max]; `undefined` when it lies wholly outside
+ * (the preset is then disabled).
+ */
+export function clampRange(r: FullRange, min?: DateValue, max?: DateValue): FullRange | undefined {
+	let [start, end] = r.end.compare(r.start) < 0 ? [r.end, r.start] : [r.start, r.end];
+	if ((min && end.compare(min) < 0) || (max && start.compare(max) > 0)) return undefined;
+	if (min && start.compare(min) < 0) start = boundLike(min, start);
+	if (max && end.compare(max) > 0) end = boundLike(max, end);
+	return { start, end };
+}
 
 /* ── value helpers ─────────────────────────────────────────────── */
 

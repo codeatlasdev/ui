@@ -1,8 +1,14 @@
 <script lang="ts">
   import { useMessages } from '../../i18n/state.svelte.js';
   import { calendar } from '../../i18n/groups/calendar.js';
+  import { dateRangePicker } from '../../i18n/groups/dateRangePicker.js';
   import { CalendarRange } from '@lucide/svelte';
-  import type { DateValue } from '@internationalized/date';
+  import {
+    getLocalTimeZone,
+    toCalendarDate,
+    today as todayIn,
+    type DateValue,
+  } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
   import CalendarFrame from './CalendarFrame.svelte';
@@ -11,12 +17,22 @@
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import type { FieldVariant } from '../../theme/components.js';
   import DateFieldShell from './DateFieldShell.svelte';
-  import { defaultDate, focusOwnDay, type WeekStart } from './date-utils.js';
+  import {
+    clampRange,
+    DEFAULT_PRESETS,
+    defaultDate,
+    focusOwnDay,
+    type FullRange,
+    longDate,
+    PRESET_RANGES,
+    sameDay,
+    type WeekStart,
+  } from './date-utils.js';
   import { FieldState } from './field-state.svelte.js';
   import PickerPopover from './PickerPopover.svelte';
-  import type { DateRange } from './types.js';
+  import type { DateRange, DateRangePreset, DateRangePresetId } from './types.js';
   import './date.css';
-  const t = useMessages(calendar);
+  const t = useMessages(calendar, dateRangePicker);
 
   interface Props {
     label?:        string;
@@ -51,6 +67,18 @@
     triggerLabel?: string;
     /** A "Clear dates" button while either end is set: both ends go back to empty (#1210). */
     clearable?:    boolean;
+    /**
+     * Shortcut ranges listed beside the calendar (#1139). `true`: today, last 7 days, last 30 days, this month and
+     * last month, labelled from the catalog. An array mixes built-in ids (`'yesterday'`, `'last90Days'`,
+     * `'thisYear'`, …) with `{ label, range }`, `range` being a `{ start, end }` or a function of today. Ranges are
+     * clamped to `minValue` / `maxValue` (one wholly outside is disabled). Picking one sets both ends, calls
+     * `onchange` once and closes like a completed range; the one equal to the value is `aria-pressed`.
+     */
+    presets?:      boolean | readonly (DateRangePresetId | DateRangePreset)[];
+    /** The day presets count from. Default: today in `timeZone`. */
+    today?:        DateValue;
+    /** IANA time zone of "today" for presets (`'America/Sao_Paulo'`). Default: the browser's. */
+    timeZone?:     string;
     onchange?:     (value: DateRange) => void;
     class?:        string;
   }
@@ -79,6 +107,9 @@
     variant,
     triggerLabel,
     clearable    = false,
+    presets      = false,
+    today,
+    timeZone,
     onchange,
     class: className = '',
   }: Props = $props();
@@ -168,6 +199,33 @@
     open = false;
     if (restoreFocus) triggerEl?.focus();
   }
+
+  /** Presets with their label and clamped range, counted from today; recomputed on every open. */
+  const presetItems = $derived.by(() => {
+    if (!presets) return [];
+    open; // read so "today" is fresh each time the popover opens
+    const ref = toCalendarDate(today ?? todayIn(timeZone ?? getLocalTimeZone()));
+    const list: readonly (DateRangePresetId | DateRangePreset)[] =
+      presets === true ? DEFAULT_PRESETS : presets;
+    return list.map((p) =>
+      typeof p === 'string'
+        ? { label: t().dateRangePicker[p], range: clampRange(PRESET_RANGES[p](ref), minValue, maxValue) }
+        : {
+            label: p.label,
+            range: clampRange(typeof p.range === 'function' ? p.range(ref) : p.range, minValue, maxValue),
+          },
+    );
+  });
+
+  const isCurrent = (r: FullRange | undefined) =>
+    !!(r && value.start && value.end && sameDay(r.start, value.start) && sameDay(r.end, value.end));
+
+  /** A preset completes the range at once: one onchange, then closes like a picked end does. */
+  function pickPreset(label: string, r: FullRange) {
+    commit({ start: r.start, end: r.end });
+    announce(`${label}: ${longDate(r.start, locale)} – ${longDate(r.end, locale)}`);
+    if (closeOnRangeSelect) close(true);
+  }
 </script>
 
 <DateFieldShell
@@ -229,5 +287,18 @@
   onclose={() => close()}
   onopen={focusOwnDay}
 >
+  {#if presetItems.length}
+    <div class="ca-date__presets" role="group" aria-label={t().dateRangePicker.presets}>
+      {#each presetItems as p, i (i)}
+        <button
+          type="button"
+          class="ca-date__preset"
+          aria-pressed={isCurrent(p.range)}
+          disabled={disabled || readonly || !p.range}
+          onclick={() => p.range && pickPreset(p.label, p.range)}
+        >{p.label}</button>
+      {/each}
+    </div>
+  {/if}
   <CalendarFrame state={cal} {disabled} {readonly} range />
 </PickerPopover>

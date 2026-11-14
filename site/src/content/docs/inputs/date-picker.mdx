@@ -33,6 +33,17 @@ The default `locale` is `pt-BR` with Monday-first weeks. The demos below pass `l
 
 An `error` is rendered with `role="alert"` and sets `aria-invalid` and `aria-describedby`. Clicking a field `label` focuses its first segment.
 
+**Range presets.** `DateRangePicker presets` lists shortcut ranges beside the calendar (a row above it that scrolls sideways under 600px): today, last 7 days, last 30 days, this month and last month, labelled in the active language. Pass an array to choose them: built-in ids (`"today"`, `"yesterday"`, `"last7Days"`, `"last30Days"`, `"last90Days"`, `"thisMonth"`, `"lastMonth"`, `"thisYear"`) and your own `{ label, range }`, where `range` is a `{ start, end }` or a function of today. "Last N days" ends today, "this month" runs from the 1st to the last day. Ranges are counted from today in `timeZone` (default: the browser's) or from the `today` prop, and clamped to `minValue` / `maxValue`; a preset wholly outside them is disabled. Picking one sets both ends, calls `onchange` once and closes like a completed range; the preset equal to the value is marked (`aria-pressed`).
+
+```svelte
+<DateRangePicker
+  label="Period"
+  bind:value={range}
+  timeZone="America/Sao_Paulo"
+  presets={["last7Days", "last30Days", "last90Days", { label: "Year to date", range: (today) => ({ start: today.set({ month: 1, day: 1 }), end: today }) }]}
+/>
+```
+
 Spacing, label and hint typography and the typed text come from the shared field tokens (`--ca-field-gap`, `--ca-field-label-leading`, `--ca-field-label-tracking`, `--ca-field-hint-leading`, `--ca-field-hint-tracking`, `--ca-input-letter-spacing`, `--ca-input-line-height`); `--ca-date-*` set the date fields only and win. See [Field tokens](/docs/getting-started/theming/#field-tokens).
 
 <Demo title="DatePicker and DateRangePicker" description="Editable segments plus a calendar popover. The range picker shows two months." src={PickersSrc}><Pickers client:visible /></Demo>
@@ -69,6 +80,9 @@ Spacing, label and hint typography and the typed text come from the shared field
   { name: "name", type: "string", description: "Name of the hidden input (ISO string) for native forms. DatePicker, DateField and TimeField." },
   { name: "triggerLabel", type: "string", default: "'Open calendar' (localized)", description: "aria-label of the calendar button. Pickers." },
   { name: "clearable", type: "boolean", default: "false", description: "DatePicker and DateRangePicker: a \"Clear date\" / \"Clear dates\" button (localized) before the calendar button while there is a value. It empties the value, calls onchange (undefined, or both ends undefined) and moves focus to the calendar button. 44px hit area under a coarse pointer." },
+  { name: "presets", type: "boolean | (DateRangePresetId | DateRangePreset)[]", default: "false", description: "DateRangePicker: shortcut ranges in the popover (`.ca-date__presets`, buttons `.ca-date__preset`). `true` lists today, last 7 days, last 30 days, this month and last month (localized); an array mixes built-in ids with `{ label, range }`, `range` being a `{ start, end }` or `(today: CalendarDate) => { start, end }`. Clamped to minValue / maxValue. Picking one sets both ends, calls onchange once and closes (per closeOnRangeSelect); the matching preset has aria-pressed=\"true\". 44px targets under a coarse pointer." },
+  { name: "today", type: "DateValue", description: "DateRangePicker: the day presets count from. Default: today in timeZone." },
+  { name: "timeZone", type: "string", default: "the browser's", description: "DateRangePicker: IANA time zone of \"today\" for presets, e.g. \"America/Sao_Paulo\"." },
   { name: "native", type: "boolean", default: "false", description: "DateField only: the system date picker (<input type=\"date\">, a wheel on a phone) instead of typed segments, with min and max from minValue / maxValue. value stays a DateValue (a CalendarDate). Day granularity only; the field is a 44px target under a coarse pointer." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(value) => void", description: "Called when the value changes. Receives DateValue | undefined, DateRange or Time | undefined depending on the component." },
