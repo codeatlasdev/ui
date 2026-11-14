@@ -5551,6 +5551,16 @@ const semanticLight: {
 }
 ```
 
+### setAppBadge
+
+`import { setAppBadge } from "@codeatlasdev/ui"`
+
+Shows `count` on the installed app's icon with the Badging API, from a page or a service worker. `0`, a negative number, `null`, `undefined` or anything that is not a number clears the badge. A fraction is rounded down, a numeric string (an untyped push payload) is read as its number and the value is capped at `Number.MAX_SAFE_INTEGER`, so a push handler and a page that hold the same total make the same call. Never throws: resolves `false` when the browser has no Badging API or refuses the call (app not installed, no permission), `true` once the browser accepted it.
+
+```ts
+function setAppBadge(count: number | string | null | undefined): Promise<boolean>
+```
+
 ### setLocale
 
 `import { setLocale } from "@codeatlasdev/ui"`
@@ -8909,6 +8919,18 @@ Types:
 | `ramp` | `NeutralRamp` |  |
 | `semanticLight` | `SemanticColors` |  |
 | `semanticDark` | `SemanticColors` |  |
+
+## @codeatlasdev/ui/utils/app-badge
+
+### setAppBadge
+
+`import { setAppBadge } from "@codeatlasdev/ui/utils/app-badge"`
+
+Shows `count` on the installed app's icon with the Badging API, from a page or a service worker. `0`, a negative number, `null`, `undefined` or anything that is not a number clears the badge. A fraction is rounded down, a numeric string (an untyped push payload) is read as its number and the value is capped at `Number.MAX_SAFE_INTEGER`, so a push handler and a page that hold the same total make the same call. Never throws: resolves `false` when the browser has no Badging API or refuses the call (app not installed, no permission), `true` once the browser accepted it.
+
+```ts
+function setAppBadge(count: number | string | null | undefined): Promise<boolean>
+```
 
 ## @codeatlasdev/ui/utils/color
 
