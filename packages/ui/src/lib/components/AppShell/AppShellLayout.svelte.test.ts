@@ -5,6 +5,7 @@ import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import { reducedMotion } from "../../stores/reduced-motion.svelte";
+import Toaster from "../Toast/Toaster.svelte";
 import Harness from "./AppShellHarness.test.svelte";
 
 const visible = (el: Element | null) => !!el?.checkVisibility();
@@ -306,6 +307,96 @@ describe("AppShellLayout: breakpoint", () => {
 		await render(Harness);
 		expect(visible(q(".ca-rail"))).toBe(true);
 		expect(visible(q(".ca-bottom-nav"))).toBe(false);
+	});
+});
+
+// #1172: the switch width is a prop. Default (no prop): the static 900px query, unchanged.
+describe("AppShell: mobileBreakpoint", () => {
+	const desktopLayout = () =>
+		visible(q(".ca-rail")) && !visible(q(".ca-bottom-nav")) && !visible(q(".ca-mobile-header"));
+	const mobileLayout = () =>
+		visible(q(".ca-bottom-nav")) && visible(q(".ca-mobile-header")) && !visible(q(".ca-rail"));
+	const mainLeft = () => (q(".ca-main") as HTMLElement).getBoundingClientRect().left;
+	const mode = () => q(".ca-shell")?.getAttribute("data-ca-shell");
+	const inset = (side: string) =>
+		getComputedStyle(q(".ca-shell") as Element).getPropertyValue(`--ca-shell-inset-${side}`);
+
+	it("768px with 768: rail, no bottom nav", async () => {
+		await page.viewport(768, 1024);
+		await render(Harness, { mobileBreakpoint: 768 });
+		await expect.poll(mode).toBe("desktop");
+		expect(desktopLayout()).toBe(true);
+		await expect.poll(mainLeft).toBe(52 + 200);
+	});
+
+	it("767px with 768: bottom nav, no rail", async () => {
+		await page.viewport(767, 1024);
+		await render(Harness, { mobileBreakpoint: 768 });
+		await expect.poll(mode).toBe("mobile");
+		expect(mobileLayout()).toBe(true);
+		expect(mainLeft()).toBe(0);
+		expect(inset("left")).toBe("0px");
+	});
+
+	it("899px without it: mobile, as before", async () => {
+		await page.viewport(899, 1024);
+		await render(Harness);
+		expect(mobileLayout()).toBe(true);
+		expect(q(".ca-shell")?.hasAttribute("data-ca-shell")).toBe(false);
+	});
+
+	it("1000px with 1024: mobile", async () => {
+		await page.viewport(1000, 1024);
+		await render(Harness, { mobileBreakpoint: 1024 });
+		await expect.poll(mobileLayout).toBe(true);
+		expect(mainLeft()).toBe(0);
+		expect(inset("left")).toBe("0px");
+		expect(inset("bottom")).not.toBe("0px");
+	});
+
+	it("follows a resize across the width", async () => {
+		await page.viewport(800, 1024);
+		await render(Harness, { mobileBreakpoint: 768 });
+		await expect.poll(desktopLayout).toBe(true);
+		await page.viewport(700, 1024);
+		await expect.poll(mobileLayout).toBe(true);
+		await page.viewport(800, 1024);
+		await expect.poll(desktopLayout).toBe(true);
+	});
+
+	it("lifts the Toaster above its bottom nav", async () => {
+		await page.viewport(1000, 1024);
+		await render(Harness, { mobileBreakpoint: 1024 });
+		await render(Toaster, {});
+		await expect.poll(mobileLayout).toBe(true);
+		const navTop = (q(".ca-bottom-nav") as HTMLElement).getBoundingClientRect().top;
+		expect((q(".ca-toaster") as HTMLElement).getBoundingClientRect().bottom).toBeLessThan(navTop);
+	});
+
+	it("keeps the Toaster low beside the rail", async () => {
+		await page.viewport(800, 1024);
+		await render(Harness, { mobileBreakpoint: 768 });
+		await render(Toaster, {});
+		await expect.poll(desktopLayout).toBe(true);
+		const gap =
+			window.innerHeight - (q(".ca-toaster") as HTMLElement).getBoundingClientRect().bottom;
+		expect(gap).toBe(24);
+	});
+
+	it("has no axe violations in either layout", async () => {
+		await page.viewport(768, 1024);
+		const screen = await render(Harness, { full: true, mobileBreakpoint: 768 });
+		await expect.poll(desktopLayout).toBe(true);
+		await expect
+			.poll(() => (q(".ca-panel") as HTMLElement | null)?.getBoundingClientRect().width)
+			.toBe(200);
+		await settled();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+
+		await page.viewport(767, 1024);
+		await expect.poll(mobileLayout).toBe(true);
+		await settled();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });
 

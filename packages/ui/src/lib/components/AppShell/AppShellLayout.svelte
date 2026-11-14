@@ -103,7 +103,15 @@
      */
     railSeparators?: boolean;
     /**
-     * Renders the header (brand, page title, `mobileHeaderActions`) below 900px. `false` renders
+     * Width in px from which the rail and panel show; below it the mobile header and the bottom
+     * navigation take over. Unset, the switch is the static 900px media query, painted before any
+     * JS. Set, the shell follows a `matchMedia` at this width and marks its root
+     * `data-ca-shell="mobile|desktop"` (a media query cannot read a prop); a server-rendered page
+     * shows the 900px layout until it hydrates.
+     */
+    mobileBreakpoint?: number;
+    /**
+     * Renders the header (brand, page title, `mobileHeaderActions`) in the mobile layout. `false` renders
      * none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the
      * page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile,
      * so keep an account entry point elsewhere (`bottomNavOverflow`).
@@ -124,7 +132,7 @@
     bottomNavOverflow?: Snippet;
     /**
      * Compact controls rendered at the trailing edge of the single mobile header
-     * (session/workspace switcher, account menu…). Below 900px the desktop `header`
+     * (session/workspace switcher, account menu…). In the mobile layout the desktop `header`
      * snippet is hidden, so put anything that must stay reachable here.
      */
     mobileHeaderActions?: Snippet;
@@ -171,6 +179,7 @@
     railLabels = false,
     railWidth,
     railSeparators = true,
+    mobileBreakpoint,
     mobileHeader = true,
     bottomNavPrimary,
     moreSheet,
@@ -282,8 +291,23 @@
     if (persistPanel && id) writeShellState({ module: id });
   });
 
+  // `mobileBreakpoint` (#1172): a media query cannot read a prop, so the shell matches the width
+  // itself and the CSS keys on `data-ca-shell`. Unset, or before the first measure (the server render),
+  // there is no attribute and the static 900px query decides, exactly as before.
+  let shellMode = $state<'mobile' | 'desktop'>();
+  $effect(() => {
+    shellMode = undefined;
+    if (mobileBreakpoint === undefined) return;
+    // The same `- 0.02` as the 899.98px query: the breakpoint itself is desktop.
+    const mq = matchMedia(`(max-width: ${mobileBreakpoint - 0.02}px)`);
+    const sync = () => (shellMode = mq.matches ? 'mobile' : 'desktop');
+    sync();
+    mq.onchange = sync;
+    return () => (mq.onchange = null);
+  });
+
   // What the shell chrome covers, for anything laid out over or behind the content (a map's padding,
-  // a floating panel): rail + panel on desktop; 0 below 900px, where the CSS takes over top/bottom.
+  // a floating panel): rail + panel on desktop; 0 in the mobile layout, where the CSS takes over top/bottom.
   // The rail part is the CSS token, not a JS number, so it follows `railWidth` and any override of
   // `--ca-rail-width` (also one set after mount) without a measurement.
   let insetLeft = $derived(`calc(var(--ca-rail-width) + ${panelW.current}px)`);
@@ -337,6 +361,7 @@
   class="ca-shell"
   class:ca-shell--stage={!!stage}
   class:ca-shell--no-mobile-header={!mobileHeader}
+  data-ca-shell={shellMode}
   style="--ca-shell-inset-left: {insetLeft}{railWidth !== undefined ? `; --ca-rail-width: ${railWidth}px` : ''}"
 >
   <!-- Desktop only sidebar -->
@@ -539,34 +564,69 @@
     .ca-shell__content:has(> :global(.ca-page-shell)) { overflow-y: auto; }
     .ca-shell__content > :global(.ca-page-shell) { flex: 1 0 auto; overflow: visible; }
 
+    /*
+     * The mobile layout: no sidebar, the mobile header and the bottom nav, the insets on top and
+     * bottom. Without `mobileBreakpoint` the static 900px query decides, so the server markup paints
+     * it with no JS. With it the shell sets data-ca-shell from its own matchMedia (a media query
+     * cannot read a prop): the query steps aside and the attribute block below repeats it. Keep the
+     * two blocks in step. `:where()` adds no specificity, so the default rules compete as before.
+     */
     @media (max-width: 899.98px) {
-      .ca-shell {
+      .ca-shell:where(:not([data-ca-shell])) {
         --ca-shell-inset-left: 0px !important;
         --ca-shell-inset-top: calc(var(--ca-space-12) + var(--ca-safe-top));
         --ca-shell-inset-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
       }
 
-      .ca-shell--no-mobile-header {
+      .ca-shell--no-mobile-header:where(:not([data-ca-shell])) {
         --ca-shell-inset-top: 0px;
       }
 
-      .ca-sidebar {
+      .ca-shell:where(:not([data-ca-shell])) .ca-sidebar {
         display: none;
       }
 
-      .ca-main {
+      .ca-shell:where(:not([data-ca-shell])) .ca-main {
         margin-left: 0 !important;
         /* Bottom nav is fixed: reserve its height plus the home-indicator inset. */
         padding-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
       }
 
-      .ca-shell__desktop-header {
+      .ca-shell:where(:not([data-ca-shell])) .ca-shell__desktop-header {
         display: none !important;
       }
 
-      .ca-shell__mobile-header {
+      .ca-shell:where(:not([data-ca-shell])) .ca-shell__mobile-header {
         display: flex !important;
       }
+    }
+
+    /* `mobileBreakpoint` set: the same layout, keyed on the width the shell measured (#1172). */
+    .ca-shell[data-ca-shell='mobile'] {
+      --ca-shell-inset-left: 0px !important;
+      --ca-shell-inset-top: calc(var(--ca-space-12) + var(--ca-safe-top));
+      --ca-shell-inset-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
+    }
+
+    .ca-shell--no-mobile-header[data-ca-shell='mobile'] {
+      --ca-shell-inset-top: 0px;
+    }
+
+    .ca-shell[data-ca-shell='mobile'] .ca-sidebar {
+      display: none;
+    }
+
+    .ca-shell[data-ca-shell='mobile'] .ca-main {
+      margin-left: 0 !important;
+      padding-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
+    }
+
+    .ca-shell[data-ca-shell='mobile'] .ca-shell__desktop-header {
+      display: none !important;
+    }
+
+    .ca-shell[data-ca-shell='mobile'] .ca-shell__mobile-header {
+      display: flex !important;
     }
 }
 </style>

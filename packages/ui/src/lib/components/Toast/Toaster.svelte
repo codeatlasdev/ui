@@ -41,9 +41,13 @@
       width: calc(100vw - 2 * var(--ca-space-6));
     }
     @media (max-width: 899.98px) {
-      :global(body:has(.ca-bottom-nav)) .ca-toaster {
+      :global(body:has(.ca-bottom-nav):where(:not(:has([data-ca-shell])))) .ca-toaster {
         bottom: var(--ca-toaster-bottom, calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom) + var(--ca-space-3)));
       }
+    }
+    /* A shell with `mobileBreakpoint` says which layout it shows, at any width (#1172). */
+    :global(body:has([data-ca-shell='mobile'])) .ca-toaster {
+      bottom: var(--ca-toaster-bottom, calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom) + var(--ca-space-3)));
     }
     .ca-toaster.ca-toaster--inline {
       position: absolute;
