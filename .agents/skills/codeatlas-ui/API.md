@@ -530,7 +530,7 @@ Data attributes: `data-orientation` (`vertical`)
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1221,10 +1221,11 @@ Internal (may change in any release): `ca-spin`
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `name?` | `string` |  | Name for the hidden input (ISO string) in native forms. |
+| `native?` | `boolean` | `false` | The system date picker (`<input type="date">`, a wheel on a phone) instead of typed segments, with `min` and `max` from `minValue` / `maxValue`; `value` stays a `DateValue` (a `CalendarDate`). Day granularity only (#1216). |
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1268,7 +1269,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1310,7 +1311,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -2631,7 +2632,7 @@ Variables: `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 | `onchange?` | `(value: CalendarDate \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -3166,7 +3167,7 @@ Tokens: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -4232,7 +4233,7 @@ Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__i
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -4283,7 +4284,7 @@ Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timelin
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
