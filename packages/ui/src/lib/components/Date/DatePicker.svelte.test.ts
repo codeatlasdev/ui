@@ -4,6 +4,7 @@ import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import { touchTarget } from "../../../../tests/touch-target";
 import { setLocale } from "../../i18n/index.js";
 import DateHarness from "./DateHarness.test.svelte";
 import DatePickerScrollHarness from "./DatePickerScrollHarness.test.svelte";
@@ -208,7 +209,7 @@ describe("DatePicker next to other calendars on the page", () => {
 				const a = getComputedStyle(clear, "::after");
 				const w = Math.max(r.width, Number.parseFloat(a.width) || 0);
 				const h = Math.max(r.height, Number.parseFloat(a.height) || 0);
-				expect(Math.min(w, h)).toBeGreaterThanOrEqual(44);
+				expect(Math.min(w, h)).toBeGreaterThanOrEqual(touchTarget());
 			} finally {
 				await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
 			}
