@@ -407,6 +407,8 @@ Header: `.ca-page-shell__icon` is the decorative tile (`icon`), `.ca-page-shell_
 
 `.ca-radio-group` `.ca-radio-group--horizontal` `.ca-radio-group--vertical` `.ca-radio-indicator` `.ca-radio-input` `.ca-radio-item` `.ca-radio-label` `.ca-radio-label--disabled`
 
+`variant="cards"`: `.ca-radio-group--cards` holds `.ca-radio-card` items; `data-columns="1|2|3"` (the `columns` prop) caps the cards per row. Scoped variable: `--ca-radio-card-min` (default `min(100%, 168px)`), the narrowest a card gets before the grid drops a column.
+
 ## RecordList
 
 `.ca-record-cell` `.ca-record-list` `.ca-record-list__body` `.ca-record-list__head` `.ca-record-row` `.ca-record-row__actions` `.ca-record-row__cells` `.ca-record-row__identity`

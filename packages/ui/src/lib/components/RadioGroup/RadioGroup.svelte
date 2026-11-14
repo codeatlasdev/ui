@@ -226,10 +226,10 @@
   	/* ── Cards ─────────────────────────────────────────────────────────── */
   	/* `auto-fit`, not `auto-fill`: empty tracks collapse, so two cards in a wide dialog share the row instead
   	   of leaving it dead (#1062). `data-columns` caps the count: a track is never narrower than 1/N of the
-  	   row, and below the cards' minimum width the grid still drops to fewer columns. */
+  	   row, and below the cards' minimum width (`--ca-radio-card-min`) the grid still drops to fewer columns. */
   	:global(.ca-radio-group--cards) {
   		--ca-radio-card-min: min(100%, calc(var(--ca-space-24) * 1.75));
-  		--ca-radio-card-cols: 1;
+  		--rg-cols: 1;
   		display: grid;
   		grid-template-columns: repeat(auto-fit, minmax(var(--ca-radio-card-min), 1fr));
   		gap: var(--ca-space-2);
@@ -240,14 +240,14 @@
   			minmax(
   				max(
   					var(--ca-radio-card-min),
-  					calc((100% - (var(--ca-radio-card-cols) - 1) * var(--ca-space-2)) / var(--ca-radio-card-cols))
+  					calc((100% - (var(--rg-cols) - 1) * var(--ca-space-2)) / var(--rg-cols))
   				),
   				1fr
   			)
   		);
   	}
-  	:global(.ca-radio-group--cards[data-columns='2']) { --ca-radio-card-cols: 2; }
-  	:global(.ca-radio-group--cards[data-columns='3']) { --ca-radio-card-cols: 3; }
+  	:global(.ca-radio-group--cards[data-columns='2']) { --rg-cols: 2; }
+  	:global(.ca-radio-group--cards[data-columns='3']) { --rg-cols: 3; }
 
   	:global(.ca-radio-card) {
   		position: relative;

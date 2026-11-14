@@ -282,8 +282,8 @@
       transform-origin: top left;
     }
 
-    /* Doubled to outrank `.ca-floating { overflow: visible }` (same layer, either stylesheet may load last). */
-    :global(.ca-dropdown-content.ca-floating) {
+    /* The class doubled to outrank `.ca-floating { overflow: visible }` (same layer, either stylesheet may load last). */
+    :global(.ca-dropdown-content.ca-dropdown-content) {
       overflow-y: auto;
     }
 
