@@ -47,6 +47,7 @@ import {
 	widenedBecause,
 } from "./test-graph.ts";
 import { BUDGETS } from "./test-run.ts";
+import { unitTestArgs, unitTestEnv } from "./unit-tests.ts";
 
 if (!import.meta.main) throw new Error("scripts/test-changed.ts is a command, not a module");
 
@@ -195,7 +196,7 @@ const pkgDir = join(ROOT, "packages/ui");
 const packageTests = async () => {
 	await step("unit", () => {
 		// `bun test` exits 1 when nothing matched, which is not a failure here.
-		const unit = run(["bun", "test", `--changed=${base}`]);
+		const unit = run(["bun", "test", ...unitTestArgs(), `--changed=${base}`], unitTestEnv());
 		return unit === 1 && !changed.some((f) => /\.(ts|js|svelte)$/.test(f)) ? 0 : unit;
 	});
 	// CPU-throttled specs run after the others with one worker, like CI's throttled job (#1259); on Windows

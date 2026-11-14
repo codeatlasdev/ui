@@ -1,4 +1,5 @@
 import { isClean, markGated, treeOf } from "./gated.ts";
+import { unitTestArgs, unitTestEnv } from "./unit-tests.ts";
 
 // `bun run validate`: every gate CI's validate job runs, in parallel where they don't depend
 // on each other. Output of each step is buffered and printed only if it fails.
@@ -19,8 +20,14 @@ const phase0: Step[] = [
 const phase1: Step[] = [
 	{ name: "unit tests", cmd: ["bun", "run", "test:unit"] },
 	// The two slowest unit files (16 s and 14 s, #821) run beside the rest instead of inside it.
-	{ name: "build cache guard", cmd: ["bun", "test", "./packages/ui/tests/build-cache.slow.ts"] },
-	{ name: "docs samples", cmd: ["bun", "test", "./packages/ui/tests/docs-samples.slow.ts"] },
+	{
+		name: "build cache guard",
+		cmd: ["bun", "test", ...unitTestArgs(), "./packages/ui/tests/build-cache.slow.ts"],
+	},
+	{
+		name: "docs samples",
+		cmd: ["bun", "test", ...unitTestArgs(), "./packages/ui/tests/docs-samples.slow.ts"],
+	},
 	{ name: "types (package)", cmd: ["bun", "run", "check"], cwd: "packages/ui" },
 	{ name: "types (site)", cmd: ["bun", "run", "check"], cwd: "site" },
 	{ name: "themes up to date", cmd: ["bun", "run", "themes:check"], cwd: "packages/ui" },
@@ -36,7 +43,7 @@ async function run(step: Step): Promise<boolean> {
 		cwd: step.cwd,
 		stdout: "pipe",
 		stderr: "pipe",
-		env: { ...process.env, FORCE_COLOR: "1" },
+		env: { ...process.env, ...unitTestEnv(), FORCE_COLOR: "1" },
 	});
 	const [out, err, code] = await Promise.all([
 		new Response(proc.stdout).text(),
