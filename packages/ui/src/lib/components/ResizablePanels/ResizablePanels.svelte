@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { setContext } from 'svelte';
+  import { setContext, untrack } from 'svelte';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { storageGet, storageSet } from '../../utils/local-storage.js';
-  import { moveBoundary, normalize, SPLITTER_KEY, type PanelSpec, type SplitterContext } from './splitter.js';
+  import { fit, moveBoundary, normalize, resolveSpecs, SPLITTER_KEY, type PanelSpec, type SplitterContext } from './splitter.js';
 
   /**
    * ResizablePanels — a group of panels split by draggable, keyboard-operable window splitters.
@@ -27,6 +27,11 @@
     persist?: string;
     /** Called with the sizes (percent, in panel order) when a drag or key press settles. */
     onlayout?: (sizes: number[]) => void;
+    /**
+     * Called when the panels' minimums stop (or start again) fitting the group, which then also carries
+     * `data-overflow`: the cue to switch to a drawer or master/detail, decided by the group's own size (#996).
+     */
+    onoverflow?: (overflow: boolean) => void;
     class?: string;
     children?: Snippet;
   }
@@ -36,6 +41,7 @@
     label,
     persist,
     onlayout,
+    onoverflow,
     class: className = '',
     children,
     ...rest
@@ -47,6 +53,42 @@
   // Where each panel starts; stored layouts override it on first registration pass.
   const initial = new Map<string, number>();
   let dragging = $state(false);
+
+  // The px the panels share on the main axis (the group minus its handles): px limits are resolved against it.
+  let extent = $state(0);
+  function measure() {
+    if (!root) return;
+    const box = (el: Element) => {
+      const r = el.getBoundingClientRect();
+      return direction === 'horizontal' ? r.width : r.height;
+    };
+    const handles = [...root.querySelectorAll('[role="separator"]')].reduce((sum, h) => sum + box(h), 0);
+    extent = Math.max(0, box(root) - handles);
+  }
+  $effect(() => {
+    if (!root) return;
+    void direction;
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(root);
+    return () => ro.disconnect();
+  });
+
+  const limits = $derived(resolveSpecs(specs, extent));
+  const overflow = $derived(extent > 0 && limits.reduce((sum, s) => sum + s.min, 0) > 100 + 1e-6);
+
+  // A size change of the group (or a new panel) can leave a panel under its px minimum: fit the sizes again.
+  $effect(() => {
+    const next = fit(untrack(() => sizes), limits);
+    if (next.some((n, i) => Math.abs(n - (untrack(() => sizes)[i] ?? 0)) > 1e-6)) sizes = next;
+  });
+
+  let reported = false;
+  $effect(() => {
+    if (overflow === reported) return;
+    reported = overflow;
+    untrack(() => onoverflow?.(overflow));
+  });
 
   const stored = $derived.by<Record<string, number> | null>(() => {
     if (!persist) return null;
@@ -102,12 +144,14 @@
       const a = specs[i];
       const b = specs[i + 1];
       if (!a || !b) return { min: 0, max: 100 };
+      const la = limits[i] ?? a;
+      const lb = limits[i + 1] ?? b;
       const pair = (sizes[i] ?? 0) + (sizes[i + 1] ?? 0);
-      return { min: Math.max(a.min, pair - b.max), max: Math.min(a.max, pair - b.min) };
+      return { min: Math.max(la.min, pair - lb.max), max: Math.min(la.max, pair - lb.min) };
     },
     value: (i) => sizes[i] ?? 0,
     resizeTo(i, percent, settle) {
-      sizes = moveBoundary(sizes, specs, i, percent);
+      sizes = moveBoundary(sizes, limits, i, percent);
       if (settle) emit();
     },
     commit: emit,
@@ -136,6 +180,7 @@
   class="ca-resizable {className}"
   data-direction={direction}
   data-dragging={dragging ? '' : undefined}
+  data-overflow={overflow ? '' : undefined}
 >
   {@render children?.()}
 </div>

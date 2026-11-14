@@ -11,10 +11,10 @@
     id: string;
     /** Starting size in percent. Unset panels share what the others leave. */
     defaultSize?: number;
-    /** Smallest size in percent. @default 10 */
-    minSize?: number;
-    /** Largest size in percent. @default 100 */
-    maxSize?: number;
+    /** Smallest size: percent of the group, or px (`"280px"`) that holds at any group size (#996). @default 10 */
+    minSize?: number | `${number}px`;
+    /** Largest size: percent of the group, or px (`"480px"`). @default 100 */
+    maxSize?: number | `${number}px`;
     class?: string;
     children?: Snippet;
   }
@@ -33,7 +33,19 @@
   const domId = $props.id();
   const size = $derived(ctx.size(id));
 
-  onMount(() => ctx.register({ id, min: minSize, max: maxSize }, defaultSize ?? NaN));
+  const px = (v: number | string) => (typeof v === 'string' ? Number.parseFloat(v) : undefined);
+  onMount(() =>
+    ctx.register(
+      {
+        id,
+        min: typeof minSize === 'number' ? minSize : 0,
+        max: typeof maxSize === 'number' ? maxSize : 100,
+        minPx: px(minSize),
+        maxPx: px(maxSize),
+      },
+      defaultSize ?? NaN
+    )
+  );
 </script>
 
 <div
