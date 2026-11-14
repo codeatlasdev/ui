@@ -29,7 +29,7 @@ These layouts fill the content area of the [app shell](/docs/layout/app-shell/) 
   { name: "title", type: "string", description: "Page title." },
   { name: "description", type: "string", description: "Subtitle. Derived from the list count when omitted in data mode." },
   { name: "data", type: "T[]", description: "Full dataset. When set, AppList manages search, filters and pagination." },
-  { name: "searchKeys", type: "(keyof T)[]", description: "Fields included in text search. Defaults to all string fields." },
+  { name: "searchKeys", type: "(keyof T)[]", description: "Fields included in text search, which ignores case and accents: \"joao\" finds \"João\" and \"ação\" finds \"Acao\". Defaults to all string fields." },
   { name: "perPage", type: "number", default: "20", description: "Rows per page." },
   { name: "idKey", type: "keyof T", default: "'id'", description: "Row identifier field." },
   { name: "searchPlaceholder", type: "string", description: "Placeholder of the search input." },

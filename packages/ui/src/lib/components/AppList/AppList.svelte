@@ -54,7 +54,7 @@
     // ── Data-driven mode ──────────────────────────────────────────
     /** Full dataset. When provided, AppList manages search/filter/pagination internally. */
     data?:        T[];
-    /** Fields to include in text search. Default: all string fields. */
+    /** Fields to include in text search, which ignores case and accents ("joao" finds "João"). Default: all string fields. */
     searchKeys?:  NoInfer<keyof T>[];
     /** Rows per page. Default: 20. */
     perPage?:     number;
