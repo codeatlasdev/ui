@@ -6,6 +6,7 @@
    * from the package.
    */
   import type { Component, Snippet } from 'svelte';
+  import { X } from '@lucide/svelte';
   import DateSegments from './DateSegments.svelte';
   import type { FieldVariant } from '../../theme/components.js';
   import '../field-variant.css';
@@ -39,6 +40,10 @@
     /** Bound to the calendar button (the popover anchors to it and focus returns to it). */
     triggerEl?: HTMLElement | null;
     onToggle?: () => void;
+    /** A clear button before the trigger while `hasValue` (`clearable` pickers, #1210). */
+    onClear?: () => void;
+    clearLabel?: string;
+    hasValue?: boolean;
     /**
      * A range wraps everything in `<div role="group" id>`, labels with a `<span>` and names the
      * group with `aria-label` (it holds two fields, each with its own segments).
@@ -73,6 +78,9 @@
     triggerPopup = 'dialog',
     triggerEl = $bindable(),
     onToggle,
+    onClear,
+    clearLabel,
+    hasValue = false,
     range = false,
     name,
     formValue,
@@ -116,6 +124,11 @@
           {readonly}
           invalid={!!error || field.invalid}
         />
+      {/if}
+      {#if onClear && hasValue && !disabled && !readonly}
+        <button type="button" class="ca-date__clear" aria-label={clearLabel} onclick={onClear}>
+          <X size={14} strokeWidth={2} aria-hidden="true" />
+        </button>
       {/if}
       {#if TriggerIcon}
         <button

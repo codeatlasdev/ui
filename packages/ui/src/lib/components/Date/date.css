@@ -145,6 +145,38 @@
   .ca-date__trigger:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
   .ca-date__trigger:disabled { cursor: not-allowed; }
 
+  /* Clear button of a `clearable` picker: before the trigger, the same box, a 44px hit area under a coarse
+     pointer (#1210). The trigger keeps `margin-inline-start: auto`, so the pair sits at the end. */
+  .ca-date__clear {
+    margin-inline-start: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ca-space-6);
+    height: var(--ca-space-6);
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--ca-radius-sm);
+    background: transparent;
+    color: var(--ca-text-secondary);
+  }
+  .ca-date__clear + .ca-date__trigger { margin-inline-start: 0; }
+  .ca-date__clear:hover { background: var(--ca-action-hover); color: var(--ca-text-primary); }
+  .ca-date__clear:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
+  @media (pointer: coarse) {
+    .ca-date__clear { position: relative; }
+    .ca-date__clear::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, var(--ca-touch-target));
+      height: max(100%, var(--ca-touch-target));
+      translate: -50% -50%;
+    }
+  }
+
   .ca-date__range-sep { color: var(--ca-text-hint); user-select: none; }
   .ca-date__wrap:has(.ca-date__range-sep) .ca-date__input { flex: 0 0 auto; flex-wrap: nowrap; min-width: max-content; }
   .ca-date__wrap:has(.ca-date__range-sep) { column-gap: var(--ca-space-2); }

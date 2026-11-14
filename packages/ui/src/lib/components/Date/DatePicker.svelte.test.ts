@@ -1,6 +1,6 @@
 import { CalendarDate } from "@internationalized/date";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
@@ -141,5 +141,77 @@ describe("DatePicker next to other calendars on the page", () => {
 		await userEvent.keyboard("{ArrowRight}{Enter}");
 		await expect.element(screen.getByTestId("picker")).toHaveTextContent("2026-03-11");
 		await expect.element(screen.getByTestId("cal")).toHaveTextContent("2026-10-10");
+	});
+	// #1210: an optional date filter ("all dates") needs a way back to no date after one was picked.
+	describe("clearable (#1210)", () => {
+		it("clears the value", async () => {
+			const changes: unknown[] = [];
+			const screen = await render(DateHarness, {
+				kind: "picker",
+				date: new CalendarDate(2026, 3, 12),
+				clearable: true,
+				onchange: (v: unknown) => changes.push(v),
+			});
+			const clear = screen.getByRole("button", { name: "Limpar data" });
+			await clear.click();
+			await expect.element(screen.getByTestId("date")).toHaveTextContent("");
+			expect(changes).toEqual([undefined]);
+			const texts = screen
+				.getByRole("spinbutton")
+				.elements()
+				.map((el) => el.textContent);
+			expect(texts).toEqual(["dd", "mm", "aaaa"]);
+			expect(screen.container.querySelector(".ca-date__clear")).toBeNull();
+			await expect.element(screen.getByRole("button", { name: "Abrir calendário" })).toHaveFocus();
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+
+		it("no button off or empty", async () => {
+			const off = await render(DateHarness, {
+				kind: "picker",
+				date: new CalendarDate(2026, 3, 12),
+			});
+			expect(off.container.querySelector(".ca-date__clear")).toBeNull();
+			off.unmount();
+			const empty = await render(DateHarness, { kind: "picker", clearable: true });
+			expect(empty.container.querySelector(".ca-date__clear")).toBeNull();
+		});
+
+		it("range clears both", async () => {
+			const changes: unknown[] = [];
+			const screen = await render(DateHarness, {
+				kind: "rangepicker",
+				range: { start: new CalendarDate(2026, 3, 2), end: new CalendarDate(2026, 3, 9) },
+				clearable: true,
+				onchange: (v: unknown) => changes.push(v),
+			});
+			await screen.getByRole("button", { name: "Limpar datas" }).click();
+			await expect.element(screen.getByTestId("start")).toHaveTextContent("");
+			expect(changes).toEqual([{ start: undefined, end: undefined }]);
+		});
+
+		it("phone: name, 44px", async () => {
+			await page.viewport(390, 844);
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+			try {
+				const screen = await render(DateHarness, {
+					kind: "picker",
+					date: new CalendarDate(2026, 3, 12),
+					clearable: true,
+					triggerLabel: "Escolher a data do filtro",
+				});
+				await expect
+					.element(screen.getByRole("button", { name: "Escolher a data do filtro" }))
+					.toBeVisible();
+				const clear = screen.getByRole("button", { name: "Limpar data" }).element();
+				const r = clear.getBoundingClientRect();
+				const a = getComputedStyle(clear, "::after");
+				const w = Math.max(r.width, Number.parseFloat(a.width) || 0);
+				const h = Math.max(r.height, Number.parseFloat(a.height) || 0);
+				expect(Math.min(w, h)).toBeGreaterThanOrEqual(44);
+			} finally {
+				await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+			}
+		});
 	});
 });

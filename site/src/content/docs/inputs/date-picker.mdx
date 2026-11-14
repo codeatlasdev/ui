@@ -68,6 +68,7 @@ Spacing, label and hint typography and the typed text come from the shared field
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height. Pickers and fields." },
   { name: "name", type: "string", description: "Name of the hidden input (ISO string) for native forms. DatePicker, DateField and TimeField." },
   { name: "triggerLabel", type: "string", default: "'Open calendar' (localized)", description: "aria-label of the calendar button. Pickers." },
+  { name: "clearable", type: "boolean", default: "false", description: "DatePicker and DateRangePicker: a \"Clear date\" / \"Clear dates\" button (localized) before the calendar button while there is a value. It empties the value, calls onchange (undefined, or both ends undefined) and moves focus to the calendar button. 44px hit area under a coarse pointer." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(value) => void", description: "Called when the value changes. Receives DateValue | undefined, DateRange or Time | undefined depending on the component." },
 ]} />

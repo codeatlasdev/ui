@@ -51,6 +51,8 @@
     name?:         string;
     /** aria-label of the calendar button. */
     triggerLabel?: string;
+    /** A "Clear date" button while there is a value: back to no date, `onchange(undefined)` (#1210). */
+    clearable?:    boolean;
     onchange?:     (value: DateValue | undefined) => void;
     class?:        string;
   }
@@ -80,6 +82,7 @@
     variant,
     name,
     triggerLabel,
+    clearable    = false,
     onchange,
     class: className = '',
   }: Props = $props();
@@ -140,6 +143,12 @@
     announce,
   });
 
+  /** The clear button leaves the DOM with the value: focus moves to the calendar trigger. */
+  function clear() {
+    commit(undefined);
+    triggerEl?.focus();
+  }
+
   function close(restoreFocus = false) {
     open = false;
     if (restoreFocus) triggerEl?.focus();
@@ -165,6 +174,9 @@
   triggerLabel={triggerLabel ?? t().calendar.openCalendar}
   bind:triggerEl
   onToggle={() => (open = !open)}
+  onClear={clearable ? clear : undefined}
+  clearLabel={t().calendar.clearDate}
+  hasValue={!!value}
   {name}
   formValue={value?.toString()}
   bind:wrap
