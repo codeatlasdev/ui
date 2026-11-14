@@ -117,7 +117,7 @@ Most UI motion needs neither GSAP nor a smooth-scroll library, and both cost mor
 | Sequenced or interrupted animation | The Web Animations API (`element.animate()`) | Native, cancellable, promise-based. |
 | Reveal on scroll | `IntersectionObserver` (or CSS `animation-timeline: view()` where supported) | No scroll listeners, no layout reads. |
 | Smooth scrolling | Native scrolling plus `scroll-behavior: smooth` for in-page anchors | A scroll-hijacking library fights the browser, adds input latency, and breaks `prefers-reduced-motion` and find-in-page. |
-| Route transitions | View Transitions (`document.startViewTransition`, SvelteKit `onNavigate`) | The browser cross-fades screenshots; no per-element code. |
+| Route transitions | View Transitions (`document.startViewTransition`, SvelteKit `onNavigate`) | The browser cross-fades screenshots; no per-element code. Only between frames (a full-screen detail outside the shell): over an app shell it cross-fades two frozen images of each persistent bar, so never start one there and never give a bar a `view-transition-name` ([App navigation](/docs/navigation/app-navigation/#view-transitions)). |
 
 ```ts
 // Reveal once, no library

@@ -137,15 +137,21 @@ Use it on links you render yourself (a list of records, a card, a custom tab). I
 
 ## View transitions
 
-For a cross-fade between routes, SvelteKit's `onNavigate` hook starts a browser view transition and waits for the new page. Add it once in the root layout. Skip it when the user prefers reduced motion.
+A view transition is for a change of frame, such as a list opening a full-screen detail that leaves the app shell. Inside the shell, where the top bar, rail and bottom navigation stay, do not start one: the browser cross-fades two frozen images of every persistent bar, about 30 frames per navigation on a phone, and the bars look recreated each time. For the same reason never give a persistent bar a `view-transition-name`; the shell's own components set none.
+
+SvelteKit's `onNavigate` hook starts the transition and waits for the new page. Add it once in the root layout, skip it under reduced motion, and only when the route group (the shell) changes:
 
 ```svelte
 <script lang="ts">
   import { onNavigate } from "$app/navigation";
 
+  // `/(app)/contacts/[id]` → "(app)": routes in the same group share the shell and its persistent bars.
+  const frame = (id: string | null | undefined) => id?.split("/")[1];
+
   onNavigate((navigation) => {
     if (!document.startViewTransition) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (frame(navigation.from?.route.id) === frame(navigation.to?.route.id)) return;
 
     return new Promise((resolve) => {
       document.startViewTransition(async () => {
@@ -157,7 +163,7 @@ For a cross-fade between routes, SvelteKit's `onNavigate` hook starts a browser 
 </script>
 ```
 
-The browser cross-fades screenshots, so there is no per-element code. It does not replace the progress bar: for a navigation that takes time, `NavigationProgress` is what tells the user something is happening, and the transition runs once the page is ready.
+The browser cross-fades screenshots, so there is no per-element code. To animate only the content inside the shell, name the content region (`view-transition-name` on the page's main column) and leave the bars unnamed, or skip the transition: a changed list is not worth a flicker of the chrome. It does not replace the progress bar: for a navigation that takes time, `NavigationProgress` is what tells the user something is happening, and the transition runs once the page is ready.
 
 ## Putting it together
 
@@ -168,4 +174,4 @@ The browser cross-fades screenshots, so there is no per-element code. It does no
 | Tapped link | Feedback where the finger is | `pendingLink()` on the link |
 | Data inside a page | A region that awaits | `LoadingBoundary` around it |
 | Screen reader | The page changed | `RouteAnnouncer` in the root layout |
-| Between routes | A smooth change | `onNavigate` with `document.startViewTransition` |
+| Between frames | Opening a full-screen detail outside the shell | `onNavigate` with `document.startViewTransition`, only when the route group changes; never over persistent bars |
