@@ -926,6 +926,7 @@ Tokens: `--ca-color-picker-gap` `--ca-color-picker-pos` `--ca-color-picker-radiu
 | `error?` | `string` |  |  |
 | `description?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
+| `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `emptyText?` | `string` |  |  |
@@ -934,7 +935,7 @@ Tokens: `--ca-color-picker-gap` `--ca-color-picker-pos` `--ca-color-picker-radiu
 | `creatable?` | `boolean` | `false` | Show a "Create …" option when the query doesn't match any existing option exactly. |
 | `showCount?` | `boolean` | `false` | Multiple mode: show "N selected" in the trigger instead of the placeholder. Default `false` (the chips already list the selection). |
 
-Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__group-label` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
+Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__group-label` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-date` `ca-date__wrap` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
 Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-surface-floating`
 
@@ -2226,6 +2227,7 @@ Parts: `ca-kpi-grid` `ca-kpi-grid--dense` `ca-kpi-grid__grid`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `required?` | `boolean` | `false` | Adds the required marker (decorative: the control carries `required` / `aria-required`). |
+| `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `hidden?` | `boolean` | `false` | Keeps the label for assistive tech only. |
 | `class?` | `string` | `''` |  |
 
@@ -2233,7 +2235,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLLabelAttributes, 'class' \| 'children' \| 'hidden'>`
 
-Parts: `ca-label` `ca-label__req`
+Parts: `ca-field-optional` `ca-label` `ca-label__req`
 
 Variables: `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color`
 
@@ -2798,6 +2800,7 @@ Variables: `--ca-available-height` `--ca-notif-body-lines` `--ca-notif-width` `-
 | `error?` | `string` |  |  |
 | `description?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
+| `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `name?` | `string` |  |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
@@ -2806,7 +2809,7 @@ Variables: `--ca-available-height` `--ca-notif-body-lines` `--ca-notif-width` `-
 
 Snippets: `suffix`: A companion control after the number, usually its unit (a `Select` of units). Rendered in the same row; the field becomes a `role="group"` named by `label`, so the pair reads as one control. Give the companion its own accessible name (`hideLabel` + `label`).
 
-Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__row` `ca-nf__suffix` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-optional` `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__row` `ca-nf__suffix` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap`
 
 Variables: `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-label-line-height` `--ca-nf-label-tracking` `--ca-nf-letter-spacing` `--ca-nf-line-height`
 
@@ -3453,6 +3456,7 @@ Tokens: `--ca-seg-gap` `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
+| `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `name?` | `string` |  | Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
@@ -3461,7 +3465,7 @@ Tokens: `--ca-seg-gap` `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__group-label` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__group-label` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
 Variables: `--ca-anchor-width` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height` `--ca-surface-floating`
 
@@ -4102,6 +4106,7 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 | `helperText?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `required?` | `boolean` | `false` |  |
+| `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `readonly?` | `boolean` | `false` |  |
 | `resize?` | `'none' \| 'vertical' \| 'horizontal' \| 'both'` | `'vertical'` |  |
 | `class?` | `string` | `''` |  |
@@ -4114,7 +4119,7 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 
 Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 'rows' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
+Parts: `ca-field-optional` `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
 Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-radius-control-multiline` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
@@ -4136,6 +4141,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `helperText?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `required?` | `boolean` | `false` |  |
+| `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `requiredIndicator?` | `boolean` | `true` | `false` hides the asterisk of a `required` field (the input stays `required`), for forms where nothing is optional. |
 | `readonly?` | `boolean` | `false` |  |
 | `autocomplete?` | `HTMLInputAttributes["autocomplete"]` |  |  |
@@ -4158,7 +4164,7 @@ Snippets: `leading`; `trailing`; `below`: Content under the field and its hint, 
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'prefix' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
 Variables: `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
