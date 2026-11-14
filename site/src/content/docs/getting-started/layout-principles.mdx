@@ -44,6 +44,7 @@ These are working rules, not findings about users: they keep screens built by di
 | `inline-style` | `style=""` setting anything but a custom property | a class with tokens |
 | `global-ca` | `:global(.ca-*)` outside `ui-guard.config.json`'s `allow` | a documented part, token or data attribute |
 | `i18n-literal` | visible text in a template | read it from your messages ([App copy](/docs/getting-started/app-copy/)) |
+| `forbidden-term` | a word from `ui-guard.config.json`'s `forbiddenTerms` in the visible text of a template (whole word, any case) | the word the entry's `use` names ([App copy](/docs/getting-started/app-copy/#banned-words-forbidden-term)) |
 | `layout-css` | `padding`, `margin` or `gap` (and their `-top`, `-inline` forms) in rem/em; custom properties and `scroll-margin` are not spacing | `--ca-space-*` |
 | `breakpoint` | any `min-width` / `max-width` condition of a `@media` query off 600 / 900 / 1200 / 1536 (`max-width` is the step minus 0.02px) | the scale, or `@container` for a component |
 | `vh-offset` | `calc(var(--ca-vh) - 17rem)` | the shell inset tokens (`--ca-shell-inset-*`) or a flex column |

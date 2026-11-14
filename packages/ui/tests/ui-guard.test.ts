@@ -89,6 +89,72 @@ describe("ui guard: strings in markup", () => {
 	});
 });
 
+describe("ui guard: forbidden terms (#1156)", () => {
+	const terms = [{ term: "Cliente", use: "Contato" }, "Usuário", "Fale conosco"];
+	const found = (src: string, forbiddenTerms: unknown[] = terms) =>
+		guardSource("A.svelte", src, {
+			forbiddenTerms,
+			rules: ["forbidden-term"],
+		} as Parameters<typeof guardSource>[2]).map((v) => `${v.rule}:${v.line} ${v.message}`);
+
+	it("flags a configured term in template text and text attributes, with the line", () => {
+		const src =
+			'<script>\n  import { TextField } from "@codeatlasdev/ui";\n</script>\n<h1>Novo cliente</h1>\n<TextField label="Nome do usuário" />';
+		const out = found(src);
+		expect(out.map((o) => o.split(" ")[0])).toEqual(["forbidden-term:4", "forbidden-term:5"]);
+		expect(out[0]).toContain('"cliente"');
+		expect(out[0]).toContain('"Contato"');
+		expect(out[1]).toContain('"usuário"');
+	});
+
+	it("matches whole words in any case, a phrase across a line break", () => {
+		expect(found("<p>Clientela e clientes</p>")).toEqual([]);
+		expect(found("<p>CLIENTE</p>").map((o) => o.split(" ")[0])).toEqual(["forbidden-term:1"]);
+		expect(found("<p>\n  Bem-vindo,\n  cliente\n</p>").map((o) => o.split(" ")[0])).toEqual([
+			"forbidden-term:3",
+		]);
+		expect(found("<p>Fale\n  conosco</p>").map((o) => o.split(" ")[0])).toEqual([
+			"forbidden-term:1",
+		]);
+	});
+
+	it("caseSensitive matches only the case written in the config", () => {
+		const exact = [{ term: "Cliente", caseSensitive: true }];
+		expect(found("<p>cliente</p>", exact)).toEqual([]);
+		expect(found("<p>Cliente</p>", exact).length).toBe(1);
+	});
+
+	it("comments, script, style, expressions and non-text attributes are not copy", () => {
+		const src = [
+			"<script>",
+			"  // Cliente",
+			'  const cliente = { nome: "Cliente" };',
+			"</script>",
+			"<!-- Cliente -->",
+			'<div class="cliente" data-role="Cliente" title={cliente.nome}>{cliente.nome}</div>',
+			"<style>",
+			"  /* Cliente */",
+			"  .cliente { color: var(--ca-text-primary); }",
+			"</style>",
+		].join("\n");
+		expect(found(src)).toEqual([]);
+	});
+
+	it("a ca-ui-workaround marker on the line or above excuses it", () => {
+		expect(found("<!-- ca-ui-workaround(pending: legal name) -->\n<p>Cliente</p>")).toEqual([]);
+	});
+
+	it("runGuard prints file:line for a term from the options", () => {
+		const dir = tmpDir("ca-guard-terms-");
+		mkdirSync(join(dir, "src/routes"), { recursive: true });
+		writeFileSync(join(dir, "src/routes/+page.svelte"), "<h1>Lista</h1>\n<p>Cliente novo</p>\n");
+		const lines: string[] = [];
+		const options = { cwd: dir, forbiddenTerms: terms, log: (l: string) => lines.push(l) };
+		expect(runGuard(["src"], options as Parameters<typeof runGuard>[1])).toBe(1);
+		expect(lines.join("\n")).toContain("src/routes/+page.svelte:2 forbidden-term");
+	});
+});
+
 describe("runGuard", () => {
 	const setup = (files: Record<string, string>) => {
 		const dir = tmpDir("ca-guard-");
@@ -243,8 +309,9 @@ describe("ui guard: breakpoint convention (#916)", () => {
 	});
 });
 
+const bin = join(import.meta.dir, "../bin/codeatlas-ui.ts");
+
 describe("codeatlas-ui lint --rules (#920)", () => {
-	const bin = join(import.meta.dir, "../bin/codeatlas-ui.ts");
 	const lint = (...args: string[]) => {
 		const r = Bun.spawnSync(["bun", bin, "lint", ...args], { cwd: tmpDir("ca-guard-cli-") });
 		return { code: r.exitCode, out: r.stdout.toString(), err: r.stderr.toString() };
@@ -260,5 +327,47 @@ describe("codeatlas-ui lint --rules (#920)", () => {
 		const r = lint("--rules", "hex,nope");
 		expect(r.code).toBe(2);
 		expect(r.err).toContain("unknown rule: nope");
+	});
+
+	it("lists forbidden-term (#1156)", () => {
+		expect(lint("--rules").out).toContain("forbidden-term");
+	});
+});
+
+describe("codeatlas-ui lint: forbiddenTerms config (#1156)", () => {
+	const lintIn = (files: Record<string, string>, ...args: string[]) => {
+		const dir = tmpDir("ca-guard-cli-");
+		for (const [p, c] of Object.entries(files)) {
+			mkdirSync(dirname(join(dir, p)), { recursive: true });
+			writeFileSync(join(dir, p), c);
+		}
+		const r = Bun.spawnSync(["bun", bin, "lint", ...args], { cwd: dir });
+		return { code: r.exitCode, out: r.stdout.toString(), err: r.stderr.toString() };
+	};
+
+	it("reads the terms from ui-guard.config.json", () => {
+		const r = lintIn(
+			{
+				"ui-guard.config.json": JSON.stringify({
+					allow: [],
+					forbiddenTerms: [{ term: "Cliente", use: "Contato" }],
+				}),
+				"src/a.svelte": "<h1>Lista</h1>\n<p>Novo cliente</p>\n",
+			},
+			"--rules",
+			"forbidden-term"
+		);
+		expect(r.code).toBe(1);
+		expect(r.out).toContain("src/a.svelte:2 forbidden-term");
+		expect(r.out).toContain('"Contato"');
+	});
+
+	it("a malformed forbiddenTerms entry exits 2 and names it", () => {
+		const r = lintIn({
+			"ui-guard.config.json": JSON.stringify({ forbiddenTerms: ["Cliente", { word: "x" }] }),
+			"src/a.svelte": "<p>{m.x}</p>\n",
+		});
+		expect(r.code).toBe(2);
+		expect(r.err).toContain("forbiddenTerms[1]");
 	});
 });
