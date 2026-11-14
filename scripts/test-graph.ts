@@ -266,3 +266,17 @@ export function componentRuns(
 		]);
 	return runs;
 }
+
+/**
+ * The `vitest run` arguments of the selected component screenshots, or `null` when there is nothing to run: no
+ * selected file, or a platform without baselines, where the vrt project excludes every file (vite.config.ts) and
+ * Vitest would exit 1 with "No test files found" (#1263). `shared`: every screenshot, so files are not listed.
+ */
+export function vrtRun(
+	vrt: string[],
+	shared: boolean,
+	platform: NodeJS.Platform = process.platform
+): string[] | null {
+	if (!vrt.length || !["darwin", "linux"].includes(platform)) return null;
+	return ["--project", "vrt", ...(shared ? [] : inPackage(vrt))];
+}

@@ -43,6 +43,7 @@ import {
 	componentRuns,
 	isSharedComponent,
 	resolveBudget,
+	vrtRun,
 	widenedBecause,
 } from "./test-graph.ts";
 import { BUDGETS } from "./test-run.ts";
@@ -188,7 +189,6 @@ const step = async (name: string, work: () => number | Promise<number>, note = "
 };
 
 const vitestExtra = process.argv.slice(2).filter((a) => a !== "--" && a !== "--land");
-const inPkg = (files: string[]) => files.map((f) => f.replace("packages/ui/", ""));
 const pkgDir = join(ROOT, "packages/ui");
 
 /** Unit tests (only the files the diff reaches), then the component tests. */
@@ -265,10 +265,13 @@ const building =
 await packageTests();
 await building;
 
-if (!shared && vrtTests.length)
-	await step("visual (components)", () =>
-		run(["vitest", "run", "--project", "vrt", ...(sharedFile ? [] : inPkg(vrtTests))], {}, pkgDir)
+const vrtArgs = shared ? null : vrtRun(vrtTests, Boolean(sharedFile));
+if (!shared && vrtTests.length && !vrtArgs)
+	console.log(
+		`test:changed: visual (components) skipped: no baselines for ${process.platform} (they are darwin and linux, #1263)`
 	);
+if (vrtArgs)
+	await step("visual (components)", () => run(["vitest", "run", ...vrtArgs], {}, pkgDir));
 
 if (!land && (pkgStale || siteStale)) {
 	console.log(

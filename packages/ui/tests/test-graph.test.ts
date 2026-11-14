@@ -5,6 +5,7 @@ import {
 	componentRuns,
 	isSharedComponent,
 	resolveBudget,
+	vrtRun,
 	widenedBecause,
 } from "../../../scripts/test-graph";
 
@@ -190,5 +191,25 @@ describe("componentRuns on win32", () => {
 			["--project", "browser", "--exclude", "**/*.throttled.svelte.test.ts"],
 		]);
 		expect(componentRuns(comp, [], false, "linux")).toHaveLength(2);
+	});
+});
+
+// #1263: the vrt project excludes every file on a platform without baselines (vite.config.ts), so the land gate's
+// `vitest run --project vrt <file>` exited 1 with "No test files found" on Windows for any component with screenshots.
+describe("vrtRun", () => {
+	const vrt = ["packages/ui/src/lib/components/ToggleGroup/SegmentedControl.vrt.test.ts"];
+
+	it("lists the selected screenshot files on darwin and linux", () => {
+		expect(vrtRun(vrt, false, "darwin")).toEqual([
+			"--project",
+			"vrt",
+			"src/lib/components/ToggleGroup/SegmentedControl.vrt.test.ts",
+		]);
+		expect(vrtRun(vrt, true, "linux")).toEqual(["--project", "vrt"]);
+	});
+
+	it("is no run where there are no baselines, nor without a selected file", () => {
+		expect(vrtRun(vrt, false, "win32")).toBeNull();
+		expect(vrtRun([], false, "darwin")).toBeNull();
 	});
 });
