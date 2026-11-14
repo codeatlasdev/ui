@@ -17,7 +17,12 @@ export {
 	maskRG,
 } from "./masks.js";
 export type { MoneyOptions } from "./money.js";
-export { centsToDisplay, currencyDecimals, parseInputToCents } from "./money.js";
+export {
+	centsToDisplay,
+	currencyDecimals,
+	parseAmountToCents,
+	parseInputToCents,
+} from "./money.js";
 export { default as PhoneField } from "./PhoneField.svelte";
 export type { TurnstileHandle } from "./Turnstile.svelte";
 export { default as Turnstile } from "./Turnstile.svelte";

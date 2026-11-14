@@ -25,6 +25,12 @@ import HelpersSrc from "~/demos/inputs/money-input/Helpers.svelte?raw";
 
 Import from the `@codeatlasdev/ui/forms` subpath. The value is always an integer in the currency's minor unit (cents for BRL and USD, whole yen for JPY), so there is no floating-point rounding. Digits shift in from the right: typing `123456` gives `R$ 1.234,56`. `min` and `max` clamp the value, and an out-of-range value set from outside is clamped back into `value`.
 
+`entry="typed"` reads the text the way people write an amount instead: the locale's decimal separator starts the cents (`12,5` is R$ 12,50) and its thousands separator is ignored (`1.234` is R$ 1.234,00, `1.234,56` is R$ 1.234,56). The text stays as typed while the field has focus and is formatted on blur; `min` and `max` apply to the bound value at once and to the text on blur. A typed field opens the decimal keypad (`inputmode="decimal"`, which shows the comma in pt-BR), a fill field the numeric one.
+
+A paste is always read as an amount, in both modes, so pasting `12,5` gives R$ 12,50 and not R$ 1,25; a paste without any digit is ignored and the value does not change. `parseAmountToCents(text, { currency, locale })` is the same parser, for amounts you read outside the field (a CSV import, a query string).
+
+With `allowNegative`, a sign button follows the input (`aria-pressed` while the amount is negative), because a phone's numeric keypad has no minus key. It is reached with Tab and named "Negative" ("Negativo" in pt-BR). Pass `signToggle={false}` to hide it and keep the typed `-` only.
+
 `centsToDisplay(cents, { currency, locale })` formats a stored amount outside the field with the same rules: `currency` is an ISO 4217 code (default `"BRL"`) and `locale` a BCP 47 tag (default `"pt-BR"`), so `centsToDisplay(123456, { currency: "USD", locale: "en-US" })` is `$1,234.56`. The helper does not read the app's i18n locale: pass the same `currency` and `locale` you give `MoneyInput`, or the list shows a different format than the field.
 
 `centsToDisplay` returns the text exactly as `Intl` formats it, including the no-break space (U+00A0) between the symbol and the number, so a price in a narrow slot never wraps between `R$` and the amount. The input's own text uses a plain space instead, which is what `parseInputToCents` and the user type, so compare with `centsToDisplay(v).replace(/\u00a0/g, " ")` when you need that form.
@@ -40,7 +46,9 @@ Import from the `@codeatlasdev/ui/forms` subpath. The value is always an integer
   { name: "locale", type: "string", description: "BCP 47 tag for separators and symbol placement. Defaults to the active i18n locale when currency is set, and to 'pt-BR' when it is not, so the BRL default keeps its format. `centsToDisplay` takes the same option but defaults to 'pt-BR' and ignores the i18n locale." },
   { name: "min", type: "number", description: "Minimum value in cents." },
   { name: "max", type: "number", description: "Maximum value in cents." },
-  { name: "allowNegative", type: "boolean", default: "false", description: "Accepts negative amounts. Type a minus sign to toggle." },
+  { name: "allowNegative", type: "boolean", default: "false", description: "Accepts negative amounts. Type a minus sign or use the sign button to toggle." },
+  { name: "signToggle", type: "boolean", default: "allowNegative", description: "Shows the sign button after the input (`.ca-money__sign`, `aria-pressed` while negative). Only with `allowNegative`." },
+  { name: "entry", type: "'fill' | 'typed'", default: "'fill'", description: "'fill': digits shift in from the right (123456 → R$ 1.234,56). 'typed': the text is read with the locale's separators (12,5 → R$ 12,50, 1.234 → R$ 1.234,00) and formatted on blur." },
   { name: "label", type: "string", description: "Label text." },
   { name: "placeholder", type: "string", default: "the formatted zero amount", description: "Input placeholder." },
   { name: "error", type: "string", description: "Error message. Puts the field in the error state." },

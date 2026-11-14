@@ -11,7 +11,12 @@ import {
 	maskPhoneBR,
 	maskRG,
 } from "../src/lib/forms/masks.js";
-import { centsToDisplay, currencyDecimals, parseInputToCents } from "../src/lib/forms/money.js";
+import {
+	centsToDisplay,
+	currencyDecimals,
+	parseAmountToCents,
+	parseInputToCents,
+} from "../src/lib/forms/money.js";
 
 describe("masks", () => {
 	test("maskCPF", () => {
@@ -120,5 +125,22 @@ describe("money", () => {
 			"BHD\u00a01,234.567"
 		);
 		expect(parseInputToCents("1.234,5", { currency: "EUR", locale: "de-DE" })).toBe(123450);
+	});
+
+	test("parseAmountToCents reads a typed amount, not a digit stream (#1208)", () => {
+		expect(parseAmountToCents("12,5")).toBe(1250);
+		expect(parseAmountToCents("1.234")).toBe(123400);
+		expect(parseAmountToCents("1.234,56")).toBe(123456);
+		expect(parseAmountToCents("R$ 1.234,56")).toBe(123456);
+		expect(parseAmountToCents("12")).toBe(1200);
+		expect(parseAmountToCents("12.5")).toBe(1250);
+		expect(parseAmountToCents("-12,5")).toBe(-1250);
+		expect(parseAmountToCents("1,999")).toBe(199);
+		expect(parseAmountToCents("")).toBe(0);
+		expect(parseAmountToCents("abc")).toBe(0);
+		const us = { currency: "USD", locale: "en-US" };
+		expect(parseAmountToCents("1,234", us)).toBe(123400);
+		expect(parseAmountToCents("$1,234.5", us)).toBe(123450);
+		expect(parseAmountToCents("1,234", { currency: "JPY", locale: "en-US" })).toBe(1234);
 	});
 });

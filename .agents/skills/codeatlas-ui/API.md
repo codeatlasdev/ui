@@ -2574,6 +2574,8 @@ Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | `min?` | `number` |  |  |
 | `max?` | `number` |  |  |
 | `allowNegative?` | `boolean` | `false` |  |
+| `signToggle?` | `boolean` |  | A sign button after the input (`aria-pressed` while the amount is negative), for keypads without a minus key. Default: on when `allowNegative` is set. |
+| `entry?` | `'fill' \| 'typed'` | `'fill'` | `"fill"` (default): digits shift in from the right, `123456` → R$ 1.234,56. `"typed"`: the text is free while focused and read as an amount with the locale's separators (`12,5` → R$ 12,50, `1.234` → R$ 1.234,00); formatted on blur. |
 | `error?` | `string` |  |  |
 | `description?` | `string` |  |  |
 | `disabled?` | `boolean` |  |  |
@@ -2586,6 +2588,10 @@ Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 Snippets: `leading`; `trailing`
+
+Parts: `ca-money__sign`
+
+Variables: `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
 ## MonthPicker
 
@@ -7019,6 +7025,16 @@ RG has no national format; most states use `12.345.678-9` (8 digits + check digi
 
 ```ts
 function maskRG(raw: string): string
+```
+
+### parseAmountToCents
+
+`import { parseAmountToCents } from "@codeatlasdev/ui/forms"`
+
+Parse an amount the way a person types or pastes it, into integer minor units. Unlike `parseInputToCents`, digits without a decimal separator are whole units, not a digit stream: - The locale's decimal separator starts the fraction (`"12,5"` → 1250, `"1.234,56"` → 123456 in pt-BR); extra fraction digits are truncated, a 0-decimal currency drops them. - The locale's group separator is ignored (`"1.234"` → 123400 in pt-BR, `"1,234"` → 123400 in en-US), and so are the currency symbol, spaces and letters. - Without the locale's decimal separator, a single `.` or `,` followed by 1 to `decimals` digits other than exactly 3 is read as the decimal point of a keypad from another locale (`"12.5"` → 1250 in pt-BR). Three digits after it are always a thousands group. A `-` (or U+2212) anywhere yields a negative value.
+
+```ts
+function parseAmountToCents(text: string, options?: MoneyOptions): number
 ```
 
 ### parseInputToCents

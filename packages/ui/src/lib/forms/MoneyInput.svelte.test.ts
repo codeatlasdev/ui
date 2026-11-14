@@ -161,4 +161,95 @@ describe("MoneyInput", () => {
 			await expect.element(screen.getByLabelText("Amount")).toHaveValue("1.234,56 €");
 		});
 	});
+	describe("typed entry, paste and sign (#1208)", () => {
+		/** Put `text` on the real clipboard through the scratch input. */
+		async function clip(screen: Awaited<ReturnType<typeof render>>, text: string) {
+			const scratch = screen.getByLabelText("Scratch");
+			await scratch.fill(text);
+			(scratch.element() as HTMLInputElement).select();
+			await userEvent.copy();
+		}
+
+		it("pt-BR typed amounts: 12,5 / 1.234 / 1.234,56", async () => {
+			const screen = await render(Harness, { entry: "typed" });
+			const input = screen.getByLabelText("Amount");
+			const bound = screen.getByTestId("bound");
+			await typeOver(input, "12,5");
+			await expect.element(bound).toHaveTextContent("1250");
+			await expect.element(input).toHaveValue("12,5");
+			await typeOver(input, "1.234");
+			await expect.element(bound).toHaveTextContent("123400");
+			await typeOver(input, "1.234,56");
+			await expect.element(bound).toHaveTextContent("123456");
+			await userEvent.tab();
+			await expect.element(input).toHaveValue("R$ 1.234,56");
+		});
+
+		it("typed entry asks for a decimal keypad, fill for a numeric one", async () => {
+			const typed = await render(Harness, { entry: "typed" });
+			await expect.element(typed.getByLabelText("Amount")).toHaveAttribute("inputmode", "decimal");
+			typed.unmount();
+			const fill = await render(Harness);
+			await expect.element(fill.getByLabelText("Amount")).toHaveAttribute("inputmode", "numeric");
+		});
+
+		it("typed entry: max clamps the amount and the field on blur", async () => {
+			const screen = await render(Harness, { entry: "typed", max: 10000 });
+			const input = screen.getByLabelText("Amount");
+			await typeOver(input, "20000");
+			await userEvent.tab();
+			await expect.element(input).toHaveValue("R$ 100,00");
+			await expect.element(screen.getByTestId("bound")).toHaveTextContent("10000");
+		});
+
+		it("pasting an amount into a fill field reads its decimal comma", async () => {
+			const screen = await render(Harness);
+			await clip(screen, "12,5");
+			const input = screen.getByLabelText("Amount");
+			(input.element() as HTMLInputElement).focus();
+			(input.element() as HTMLInputElement).select();
+			await userEvent.paste();
+			await expect.element(screen.getByTestId("bound")).toHaveTextContent("1250");
+			await expect.element(input).toHaveValue("R$ 12,50");
+		});
+
+		it("pasting text with no digits keeps the value", async () => {
+			for (const entry of ["fill", "typed"] as const) {
+				const screen = await render(Harness, { entry, initial: 123456 });
+				await clip(screen, "abc");
+				const input = screen.getByLabelText("Amount");
+				(input.element() as HTMLInputElement).focus();
+				(input.element() as HTMLInputElement).select();
+				await userEvent.paste();
+				await expect.element(screen.getByTestId("bound")).toHaveTextContent("123456");
+				await expect.element(input).toHaveValue("R$ 1.234,56");
+				screen.unmount();
+			}
+		});
+
+		it("allowNegative: a named sign toggle, reachable by Tab, flips the value", async () => {
+			const screen = await render(Harness, { allowNegative: true, initial: 500 });
+			const input = screen.getByLabelText("Amount");
+			const sign = screen.getByRole("button", { name: "Negative" });
+			await expect.element(sign).toHaveAttribute("aria-pressed", "false");
+			(input.element() as HTMLInputElement).focus();
+			await userEvent.tab();
+			await expect.element(sign).toHaveFocus();
+			await userEvent.keyboard("{Enter}");
+			await expect.element(screen.getByTestId("bound")).toHaveTextContent("-500");
+			await expect.element(input).toHaveValue("-R$ 5,00");
+			await expect.element(sign).toHaveAttribute("aria-pressed", "true");
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+			await sign.click();
+			await expect.element(screen.getByTestId("bound")).toHaveTextContent("500");
+		});
+
+		it("signToggle={false} hides the button; no button without allowNegative", async () => {
+			const off = await render(Harness, { allowNegative: true, signToggle: false });
+			expect(off.container.querySelector("button[aria-pressed]")).toBeNull();
+			off.unmount();
+			const plain = await render(Harness);
+			expect(plain.container.querySelector("button[aria-pressed]")).toBeNull();
+		});
+	});
 });

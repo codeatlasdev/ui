@@ -341,6 +341,10 @@ Token: `--ca-md-list` (master column width, set from `listWidth`). The detail is
 
 `.ca-mobile-pane` `.ca-mobile-pane__body` `.ca-mobile-pane__body--fixed` `.ca-mobile-pane__header`
 
+## MoneyInput
+
+`.ca-money__sign` (the sign toggle after the input, `aria-pressed="true"` while the amount is negative; rendered with `allowNegative` unless `signToggle={false}`). The field itself is a TextField (`.ca-tf`).
+
 ## MotionStage
 
 `.ca-motion-stage` `.ca-motion-stage__bar` `.ca-motion-stage__canvas`
