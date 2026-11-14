@@ -8,7 +8,7 @@
 
 {#snippet copyBtn()}
   <IconButton
-    variant="text"
+    variant="ghost"
     size="sm"
     aria-label={copied ? 'Link copied' : 'Copy link'}
     onclick={() => { copied = true; }}

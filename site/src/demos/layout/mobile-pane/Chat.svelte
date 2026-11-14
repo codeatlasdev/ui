@@ -10,7 +10,7 @@
 
 <MobilePane bind:open title="Maria Souza">
   {#snippet actions()}
-    <IconButton variant="text" aria-label="More options"><MoreVertical size={20} aria-hidden="true" /></IconButton>
+    <IconButton variant="ghost" aria-label="More options"><MoreVertical size={20} aria-hidden="true" /></IconButton>
   {/snippet}
   <ul class="msgs">
     {#each messages as m}<li>{m}</li>{/each}

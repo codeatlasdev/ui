@@ -67,6 +67,7 @@ export { default as Breadcrumb } from "./components/Breadcrumb/Breadcrumb.svelte
 // ── INPUTS ────────────────────────────────────────────────────────────────────
 export { default as Button } from "./components/Button/Button.svelte";
 export { default as IconButton } from "./components/Button/IconButton.svelte";
+export type { ButtonVariant } from "./components/Button/variants.js";
 export { default as ButtonGroup } from "./components/ButtonGroup/ButtonGroup.svelte";
 export { default as Card } from "./components/Card/Card.svelte";
 export { default as Carousel } from "./components/Carousel/Carousel.svelte";

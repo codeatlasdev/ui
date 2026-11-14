@@ -81,7 +81,7 @@
   {#if current}
     <div class="ca-tour__head">
       <h2 id="{uid}-title" class="ca-tour__title">{current.title}</h2>
-      <IconButton variant="text" size="sm" aria-label={t().tour.skip} onclick={() => close('skip')}><X size={16} /></IconButton>
+      <IconButton variant="ghost" size="sm" aria-label={t().tour.skip} onclick={() => close('skip')}><X size={16} /></IconButton>
     </div>
     <p class="ca-tour__body">{current.body}</p>
     <div class="ca-tour__foot">

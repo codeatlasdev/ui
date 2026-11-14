@@ -49,7 +49,7 @@ describe("IconButton", () => {
 		expect(onclick).not.toHaveBeenCalled();
 	});
 
-	it.each(["glass", "filled", "text"] as const)(
+	it.each(["glass", "filled", "ghost"] as const)(
 		"variant %s keeps the button accessible",
 		async (variant) => {
 			const screen = await render(IconButton, {
@@ -197,5 +197,33 @@ describe("IconButton link form (#686)", () => {
 		link.dispatchEvent(event);
 		expect(event.defaultPrevented).toBe(true);
 		expect(onclick).not.toHaveBeenCalled();
+	});
+});
+
+// #1233: the background-less variant was `ghost` on Button and `text` on IconButton, so code written for
+// one failed the type check on the other. `ghost` is the name on both; `text` stays as a deprecated alias.
+describe("IconButton ghost variant", () => {
+	it("ghost is the background-less look and text its deprecated alias", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		try {
+			const a = await render(IconButton, {
+				"aria-label": "Ghost",
+				children: icon,
+				variant: "ghost",
+			});
+			const ghost = a.getByRole("button", { name: "Ghost" }).element();
+			expect(warn).not.toHaveBeenCalled();
+			const b = await render(IconButton, { "aria-label": "Text", children: icon, variant: "text" });
+			const legacy = b.getByRole("button", { name: "Text" }).element();
+			for (const el of [ghost, legacy]) {
+				expect(el.classList.contains("ca-icon-btn--ghost")).toBe(true);
+				expect(el.classList.contains("ca-icon-btn--text")).toBe(true);
+			}
+			expect(getComputedStyle(ghost).color).toBe(getComputedStyle(legacy).color);
+			expect(getComputedStyle(ghost).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+			expect(warn).toHaveBeenCalledWith(expect.stringContaining('variant="text"'));
+		} finally {
+			warn.mockRestore();
+		}
 	});
 });

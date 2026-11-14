@@ -8,7 +8,7 @@
   <Button variant="outlined" tone="neutral" size="sm">Snooze</Button>
   <Button variant="ghost" tone="neutral" size="sm">Skip</Button>
   <Button variant="outlined" tone="neutral" size="sm" disabled>Reassign</Button>
-  <IconButton variant="text" size="sm" aria-label="Close focus mode"><X size={16} /></IconButton>
+  <IconButton variant="ghost" size="sm" aria-label="Close focus mode"><X size={16} /></IconButton>
   <span class="hint">Next lead <Kbd>N</Kbd></span>
 </div>
 

@@ -19,11 +19,11 @@ Live demo: https://ui.codeatlas.com.br/docs/inputs/toolbar#composer-bar-overflow
 </script>
 
 <Toolbar aria-label="Message actions" overflow="menu">
-  <IconButton variant="text" size="sm" aria-label="Attach"><Paperclip size={16} /></IconButton>
-  <IconButton variant="text" size="sm" aria-label="Templates"><Sparkles size={16} /></IconButton>
-  <IconButton variant="text" size="sm" aria-label="Emoji"><Smile size={16} /></IconButton>
-  <IconButton variant="text" size="sm" aria-label="Bold"><Bold size={16} /></IconButton>
-  <IconButton variant="text" size="sm" aria-label="Italic"><Italic size={16} /></IconButton>
+  <IconButton variant="ghost" size="sm" aria-label="Attach"><Paperclip size={16} /></IconButton>
+  <IconButton variant="ghost" size="sm" aria-label="Templates"><Sparkles size={16} /></IconButton>
+  <IconButton variant="ghost" size="sm" aria-label="Emoji"><Smile size={16} /></IconButton>
+  <IconButton variant="ghost" size="sm" aria-label="Bold"><Bold size={16} /></IconButton>
+  <IconButton variant="ghost" size="sm" aria-label="Italic"><Italic size={16} /></IconButton>
   <span class="ca-toolbar-spacer"></span>
   <Button data-priority="primary" onclick={() => sent++}>Send{sent ? ` (${sent})` : ''}</Button>
 </Toolbar>

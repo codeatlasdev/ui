@@ -8,15 +8,17 @@
   import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
   const t = useMessages(button);
 
-  type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
+  import { devWarn } from '../../utils/dev-warn.js';
+  import { textVariantWarning, type ButtonVariant } from './variants.js';
+
   type Size = 'sm' | 'md' | 'lg';
   type Tone = 'brand' | 'neutral' | 'danger';
   type Align = 'center' | 'between' | 'start';
 
   /** Own props, shared by both renderings. */
   interface Own {
-    /** `filled` (default) is the primary action; `glass` is a tinted surface button (blur only under the glass and frosted styles). */
-    variant?: Variant;
+    /** `filled` (default) is the primary action; `glass` is a tinted surface button (blur only under the glass and frosted styles). `ghost` has no background; `text` is its deprecated alias (#1233). */
+    variant?: ButtonVariant | 'destructive' | 'text';
     /**
      * `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a
      * secondary action beside a brand `filled` one. `'danger'` draws them in the error colour, for a quiet
@@ -116,9 +118,14 @@
   // `rest` is a union (anchor | button attributes); each element receives only its own half.
   const rest = $derived(restProps as AnchorAttributes & ButtonAttributes);
 
+  const look = $derived(variant === 'text' ? 'ghost' : variant);
+  $effect(() => {
+    if (variant === 'text') devWarn('button-variant-text', textVariantWarning('Button'));
+  });
+
   const isDisabled = $derived(disabled || loading);
-  const neutral = $derived(tone === 'neutral' && (variant === 'outlined' || variant === 'ghost'));
-  const danger = $derived(tone === 'danger' && (variant === 'outlined' || variant === 'ghost'));
+  const neutral = $derived(tone === 'neutral' && (look === 'outlined' || look === 'ghost'));
+  const danger = $derived(tone === 'danger' && (look === 'outlined' || look === 'ghost'));
 
   // A new tab must not reach `window.opener`: add the tokens to whatever `rel` the caller passed (#290).
   const rel = $derived(
@@ -161,7 +168,7 @@
     {target}
     {type}
     {rel}
-    class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
+    class="ca-btn ca-btn--{look} ca-btn--{size} {className}"
     class:ca-btn--neutral={neutral}
     class:ca-btn--danger={danger}
     class:ca-btn--between={align === 'between'}
@@ -187,7 +194,7 @@
     {...rest}
     type={(type as 'button' | 'submit' | 'reset' | undefined) ?? 'button'}
     disabled={isDisabled}
-    class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
+    class="ca-btn ca-btn--{look} ca-btn--{size} {className}"
     class:ca-btn--neutral={neutral}
     class:ca-btn--danger={danger}
     class:ca-btn--between={align === 'between'}
