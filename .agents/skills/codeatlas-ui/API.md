@@ -4907,6 +4907,16 @@ First navigable path inside a module (used by Rail/BottomNav on tap).
 function firstModulePath(mod: NavModule): string
 ```
 
+### foldText
+
+`import { foldText } from "@codeatlasdev/ui"`
+
+Lowercases and strips diacritics so "São", "SAO" and "sao" compare equal: `foldText("Açúcar")` is `"acucar"`.
+
+```ts
+const foldText: (text: string) => string
+```
+
 ### fontFamily
 
 `import { fontFamily } from "@codeatlasdev/ui"`
@@ -5383,6 +5393,26 @@ Every term must match. Title hits rank above heading hits above body hits. Retur
 function searchDocs(index: DocsSearchEntry[], query: string, limit?: number): DocsSearchResult[]
 ```
 
+### searchItems
+
+`import { searchItems } from "@codeatlasdev/ui"`
+
+Filters `items` by `query` ignoring accents and case ("acucar" finds "Açúcar") and sorts them by relevance: a field equal to the query, then one starting with it, then the query at the start of a word, then inside a word, then the words of the query found apart (any order, any field). Ties go to the earlier key, then to source order. An empty query returns every item. `searchItems(users, q, { keys: ["name", "email"] })`.
+
+```ts
+function searchItems<T>(items: readonly T[], query: string, options?: SearchItemsOptions<NoInfer<T>>): T[]
+```
+
+### searchScore
+
+`import { searchScore } from "@codeatlasdev/ui"`
+
+Relevance of `query` in `text` (one field, or several, most important first), ignoring accents and case; 0 when it does not match. Every word of the query must appear in some field. A higher score is a better match: compare scores, never rely on their values. `searchScore("Pão de açúcar", "acucar") > 0`.
+
+```ts
+function searchScore(text: string | readonly (string | null | undefined)[], query: string): number
+```
+
 ### semanticDark
 
 `import { semanticDark } from "@codeatlasdev/ui"`
@@ -5440,6 +5470,16 @@ const shadows: {
   thick: "0 6px 24px oklch(0.25 0.008 70 / 0.14)";
   chrome: "0 12px 40px oklch(0.25 0.008 70 / 0.19)";
 }
+```
+
+### slugify
+
+`import { slugify } from "@codeatlasdev/ui"`
+
+A lowercase ASCII slug for a URL or an id: accents dropped, letters that do not decompose spelled out (`ß` → `ss`, `×` → `x`), apostrophes removed, every other run of characters a single `-`. `slugify("Etiqueta Térmica 10×5")` is `"etiqueta-termica-10x5"`. Text outside the Latin script is dropped.
+
+```ts
+function slugify(text: string): string
 ```
 
 ### soundBus
@@ -5790,6 +5830,8 @@ Types:
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; successMuted?: ColorValue; successFg?: ColorValue; warningMuted?: ColorValue; warningFg?: ColorValue; infoMuted?: ColorValue; infoFg?: ColorValue; errorMuted?: ColorValue; errorFg?: ColorValue; neutralMuted?: ColorValue; neutralFg?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SearchItemsOptions` | `interface SearchItemsOptions<T> { keys?: readonly SearchKey<T>[]; limit?: number; }` | Options of `searchItems`: which fields to read and how many results to keep. |
+| `SearchKey` | `type SearchKey<T> = keyof T \| ((item: T) => unknown);` | A field `searchItems` reads: a property name or a getter. |
 | `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
@@ -6415,6 +6457,13 @@ Types:
 | `errorFg?` | `ColorValue` | Text on `errorMuted` (--ca-semantic-error-fg). |
 | `neutralMuted?` | `ColorValue` | Muted background of the neutral Badge (--ca-semantic-neutral-muted); see `successMuted`. |
 | `neutralFg?` | `ColorValue` | Text on `neutralMuted` (--ca-semantic-neutral-fg). |
+
+#### SearchItemsOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `keys?` | `readonly SearchKey<T>[]` | Fields to search, most important first (an earlier key wins a tie). Default: the item itself, for a list of strings. |
+| `limit?` | `number` | At most this many results. |
 
 #### SegmentedTokens
 

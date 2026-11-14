@@ -76,3 +76,21 @@ Give options a `group` to render section headers. Options sharing a `group` are 
   { value: "company", label: "Company", group: "Account" },
 ]} />
 ```
+
+## Searching your own data
+
+`Combobox` folds accents and case for you. For a list it does not own (a filtered table, a search page, a server route), the package exports the folding, a ranked search and a slug helper. They are plain functions with no Svelte runtime.
+
+```ts
+import { foldText, searchItems, searchScore, slugify } from "@codeatlasdev/ui";
+
+searchItems(products, "acucar", { keys: ["name", (p) => p.brand.name] }); // finds "Açúcar mascavo"
+searchItems(cities, "sao", { limit: 10 }); // a string[] needs no keys
+searchScore([row.name, row.email], query) > 0; // does this one row match?
+foldText("Açúcar"); // "acucar"
+slugify("Etiqueta Térmica 10×5"); // "etiqueta-termica-10x5"
+```
+
+`searchItems(items, query, { keys?, limit? })` keeps the items that contain every word of the query, in any order and in any of the `keys` (property names or getters; without `keys` each item is read as text), and sorts them best first: a field equal to the query, then a field starting with it, then the query at the start of a word, then inside a word, then the words found apart. A tie goes to the earlier key, then to the original order, and an empty query returns every item. It matches text, not typos: `acuar` finds nothing.
+
+`searchScore(text, query)` is that score for one string or an array of fields, most important first: 0 when it does not match, higher for a better match (compare scores, do not rely on their values). `foldText` lowercases and drops accents for your own comparisons. `slugify` returns a lowercase ASCII slug for a URL or an id: accents dropped, `ß`, `æ`, `ø`, `ł` and `×` spelled out, apostrophes removed (`Joana's` gives `joanas`), every other run of characters a single `-`. Text in a non-Latin script is dropped, so an all-Cyrillic title gives `""`: check for an empty slug.
