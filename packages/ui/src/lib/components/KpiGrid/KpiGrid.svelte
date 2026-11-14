@@ -19,24 +19,28 @@
    *   </KpiGrid>
    *
    * Props:
-   *   gap — number (px) | CSS gap string (default var(--ca-space-3))
+   *   gap   — number (px) | CSS gap string (default var(--ca-space-3))
+   *   dense — an odd count (3, 5, 7…) keeps 2 columns from 21.5rem instead of 1, and its last tile takes
+   *           the whole last row (2 + 1, 2 + 2 + 1); a width where the count divides evenly still wins (#1240)
    */
   import type { Snippet } from 'svelte';
 
   interface Props {
     gap?:      number | string;
+    /** Odd counts keep 2 columns on a narrow container; the last tile spans the last row (#1240). */
+    dense?:    boolean;
     class?:    string;
     children?: Snippet;
   }
 
-  let { gap, class: className = '', children }: Props = $props();
+  let { gap, dense = false, class: className = '', children }: Props = $props();
 
   const style = $derived(
     gap === undefined ? undefined : `--kpi-gap:${typeof gap === 'number' ? `${gap}px` : gap}`
   );
 </script>
 
-<div class="ca-kpi-grid {className}" {style}>
+<div class="ca-kpi-grid {className}" class:ca-kpi-grid--dense={dense} {style}>
   <div class="ca-kpi-grid__grid">
     {@render children?.()}
   </div>
@@ -82,7 +86,23 @@
       }
     }
 
+    /* Dense: an odd count up to 11 keeps 2 columns, its last tile across the last row. A tier below whose
+       column count divides the count (3 and 9 at 33rem, 5 at 56rem, 7 at 79rem) puts that tile back. */
+    /* `:where()` keeps these at the specificity of the count tiers, so a later tier that divides wins by order. */
+    @container (min-width: 21.5rem) {
+      :global(:where(.ca-kpi-grid--dense)) .ca-kpi-grid__grid:where(:not(:has(> :global(:nth-child(13))))):has(> :global(:nth-child(odd):last-child)) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      :global(:where(.ca-kpi-grid--dense)) .ca-kpi-grid__grid:where(:not(:has(> :global(:nth-child(13))))) > :global(:nth-child(odd):last-child) {
+        grid-column: 1 / -1;
+      }
+    }
+
     @container (min-width: 33rem) {
+      .ca-kpi-grid--dense .ca-kpi-grid__grid > :global(:nth-child(3):last-child),
+      .ca-kpi-grid--dense .ca-kpi-grid__grid > :global(:nth-child(9):last-child) {
+        grid-column: auto;
+      }
       .ca-kpi-grid__grid:has(> :global(:nth-child(3):last-child)),
       .ca-kpi-grid__grid:has(> :global(:nth-child(6):last-child)),
       .ca-kpi-grid__grid:has(> :global(:nth-child(9):last-child)),
@@ -100,6 +120,9 @@
     }
 
     @container (min-width: 56rem) {
+      .ca-kpi-grid--dense .ca-kpi-grid__grid > :global(:nth-child(5):last-child) {
+        grid-column: auto;
+      }
       .ca-kpi-grid__grid:has(> :global(:nth-child(5):last-child)),
       .ca-kpi-grid__grid:has(> :global(:nth-child(10):last-child)) {
         grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -114,6 +137,9 @@
     }
 
     @container (min-width: 79rem) {
+      .ca-kpi-grid--dense .ca-kpi-grid__grid > :global(:nth-child(7):last-child) {
+        grid-column: auto;
+      }
       .ca-kpi-grid__grid:has(> :global(:nth-child(7):last-child)) {
         grid-template-columns: repeat(7, minmax(0, 1fr));
       }

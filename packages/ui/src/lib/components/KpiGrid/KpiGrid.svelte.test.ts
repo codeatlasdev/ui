@@ -152,4 +152,25 @@ describe("KpiGrid", () => {
 		await expect.element(screen.getByText("Metric 1")).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
+	// #1240: 3 or 5 KPIs on a phone stacked one per row, each the full width. `dense` keeps 2 columns and
+	// lets the odd last card take the whole last row; where the count divides evenly the normal rows win.
+	it.each([
+		[3, 360, [2, 1]],
+		[5, 360, [2, 2, 1]],
+		[5, 600, [2, 2, 1]],
+		[3, 600, [3]],
+		[5, 1000, [5]],
+		[4, 360, [2, 2]],
+		[11, 360, [2, 2, 2, 2, 2, 1]],
+	])("dense: %i cards at %ipx", async (count, px, rows) => {
+		await page.viewport(1600, 900);
+		const screen = await render(Harness, { count, width: `${px}px`, dense: true });
+		await expect.element(screen.getByText("Metric 1")).toBeVisible();
+		const grid = q(screen.container, ".ca-kpi-grid__grid");
+		expect(measure(screen.container, ".ca-kpi-grid__grid").rows).toEqual(rows);
+		const last = grid.lastElementChild as HTMLElement;
+		const full = rows.length > 1 && rows[rows.length - 1] === 1;
+		const ratio = last.getBoundingClientRect().width / grid.getBoundingClientRect().width;
+		expect(ratio > 0.99, `last card ${full ? "spans" : "keeps its column"}`).toBe(full);
+	});
 });

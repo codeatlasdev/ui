@@ -4,8 +4,12 @@
 	import KpiGrid from "./KpiGrid.svelte";
 
 	/** `recipe` renders the layout the docs used before KpiGrid existed. */
-	let { count, recipe = false, width }: { count: number; recipe?: boolean; width?: string } =
-		$props();
+	let {
+		count,
+		recipe = false,
+		width,
+		dense = false,
+	}: { count: number; recipe?: boolean; width?: string; dense?: boolean } = $props();
 	const cards = $derived(Array.from({ length: count }, (_, i) => i));
 </script>
 
@@ -15,7 +19,7 @@
 			{#each cards as i (i)}<KpiCard title={`Metric ${i + 1}`} value={i + 1} />{/each}
 		</Grid>
 	{:else}
-		<KpiGrid>
+		<KpiGrid {dense}>
 			{#each cards as i (i)}<KpiCard title={`Metric ${i + 1}`} value={i + 1} />{/each}
 		</KpiGrid>
 	{/if}
