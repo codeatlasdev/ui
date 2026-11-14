@@ -92,7 +92,18 @@
       cursor: pointer;
     }
 
-    /* Touch: invisible 44px hit area without growing the chip. */
+    /* Invisible hit area without growing the chip: 24px on a fine pointer (WCAG 2.5.8; a sm chip is
+       drawn 20px, #1056), 44px on touch. */
+    .ca-chip--interactive.ca-chip--sm { position: relative; }
+    .ca-chip--interactive.ca-chip--sm::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, var(--ca-space-6));
+      height: max(100%, var(--ca-space-6));
+      translate: -50% -50%;
+    }
     @media (pointer: coarse) {
       .ca-chip--interactive { position: relative; }
       .ca-chip--interactive::after {
@@ -151,7 +162,8 @@
     }
 
     /* The circle stays 16px; its hit area is 24px (WCAG 2.5.8) and the touch target under a coarse pointer (#1086). */
-    .ca-chip__delete { position: relative; }
+    /* Above the chip's own hit area (`::after`), so a press on the X removes instead of selecting. */
+    .ca-chip__delete { position: relative; z-index: 1; }
     .ca-chip__delete::after {
       content: "";
       position: absolute;

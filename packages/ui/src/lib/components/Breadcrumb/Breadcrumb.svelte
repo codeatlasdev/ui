@@ -69,9 +69,29 @@
 
   	.ca-breadcrumb__link,
   	.ca-breadcrumb__item > :global(a) {
+  		position: relative;
   		color: var(--ca-text-secondary);
   		text-decoration: none;
   		border-radius: var(--ca-breadcrumb-link-radius, 0);
+  	}
+
+  	/* A link is one line of small text (~17px): an invisible hit area brings it to 24px on a fine pointer
+  	   (WCAG 2.5.8) and 44px on touch, without changing the line (#1056). */
+  	.ca-breadcrumb__link::after,
+  	.ca-breadcrumb__item > :global(a)::after {
+  		content: "";
+  		position: absolute;
+  		top: 50%;
+  		left: 50%;
+  		width: max(100%, var(--ca-space-6));
+  		height: max(100%, var(--ca-space-6));
+  		translate: -50% -50%;
+  	}
+  	@media (pointer: coarse) {
+  		.ca-breadcrumb__link::after,
+  		.ca-breadcrumb__item > :global(a)::after {
+  			height: max(100%, var(--ca-touch-target));
+  		}
   	}
 
   	.ca-breadcrumb__link:hover,

@@ -137,7 +137,9 @@
     </label>
   {/if}
 
-  <div class="ca-tf__wrap" class:ca-tf__wrap--focused={focused} class:ca-tf__wrap--error={!!error} class:ca-tf__wrap--addons={!!prefix || !!suffix}>
+  <!-- A click on the frame's padding (the input is one line inside it) focuses the input, like its label (#1056). -->
+  <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+  <div class="ca-tf__wrap" onclick={focusInput} class:ca-tf__wrap--focused={focused} class:ca-tf__wrap--error={!!error} class:ca-tf__wrap--addons={!!prefix || !!suffix}>
     {#if prefix}
       {#if typeof prefix === 'string'}
         <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
