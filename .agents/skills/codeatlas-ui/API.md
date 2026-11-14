@@ -3628,7 +3628,7 @@ Slider — single or range value input.
 | `class?` | `string` | `''` |  |
 | `label?` | `string` |  | Accessible name of the thumb(s). Without it a thumb is announced as "Value 40". A range appends "minimum"/"maximum". |
 | `onchange?` | `(value: number[]) => void` |  | Called on change. Always receives array regardless of single/range mode. |
-| `sound?` | `SoundProp` |  | Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. |
+| `sound?` | `SoundProp` |  | Plays `tick` for each step the user crosses (a cue name replaces it). Needs `@codeatlasdev/ui/sound`. |
 
 Parts: `ca-slider` `ca-slider--sm` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
 
@@ -5076,6 +5076,16 @@ const GLASS_OPTICS: {
 }
 ```
 
+### haptic
+
+`import { haptic } from "@codeatlasdev/ui"`
+
+Vibrates a short pattern: `haptic("tap")`, `haptic("success")`, `haptic("error")`. Returns whether the device accepted it; `false` without `navigator.vibrate` or when the user turned haptics off (`haptic.enable(false)`). Ignores the sound toggle and `prefers-reduced-motion`.
+
+```ts
+const haptic: ((kind?: HapticKind) => boolean) & { readonly supported: boolean; readonly enabled: boolean; enable(on?: boolean): void; }
+```
+
 ### isItemActive
 
 `import { isItemActive } from "@codeatlasdev/ui"`
@@ -5794,6 +5804,7 @@ Types:
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
+| `HapticKind` | `type HapticKind = "tap" \| "success" \| "error";` | What happened: a light tap, a completed action, a failed one. |
 | `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
 | `IconButtonTokens` | `interface IconButtonTokens { weight?: CssValue; size?: { sm?: CssValue; md?: CssValue; lg?: CssValue }; touchSize?: CssValue; tracking?: CssValue; }` |  |
 | `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
@@ -8061,6 +8072,16 @@ const brutal: SoundProfile
 const glass: SoundProfile
 ```
 
+### haptic
+
+`import { haptic } from "@codeatlasdev/ui/sound"`
+
+Vibrates a short pattern: `haptic("tap")`, `haptic("success")`, `haptic("error")`. Returns whether the device accepted it; `false` without `navigator.vibrate` or when the user turned haptics off (`haptic.enable(false)`). Ignores the sound toggle and `prefers-reduced-motion`.
+
+```ts
+const haptic: ((kind?: HapticKind) => boolean) & { readonly supported: boolean; readonly enabled: boolean; enable(on?: boolean): void; }
+```
+
 ### profileFor
 
 `import { profileFor } from "@codeatlasdev/ui/sound"`
@@ -8118,6 +8139,7 @@ Types:
 | Type | Declaration | Notes |
 |---|---|---|
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
+| `HapticKind` | `type HapticKind = "tap" \| "success" \| "error";` | What happened: a light tap, a completed action, a failed one. |
 | `SoundOptions` | `interface SoundOptions { on?: keyof HTMLElementEventMap; cue?: CueName; }` | What `use:sound` accepts. |
 | `SoundProfile` | `interface SoundProfile { id: string; wave: Wave; root: number; len: number; tone: number; grit: number; gain: number; detune: number; hover: boolean; }` |  |
 | `SoundProp` | `type SoundProp = boolean \| CueName;` | What a component's `sound` prop accepts: `true` plays the component's own cue, a name overrides it. |
@@ -8141,7 +8163,7 @@ Types:
 | `grit` | `number` | Noise share of a press (0 = pure pitch, 1 = pure noise click). |
 | `gain` | `number` | Peak gain of the profile, 0-1, before the master volume. |
 | `detune` | `number` | Cent offset between the two oscillators of a cue (0 = clean, more = chorused or detuned). |
-| `hover` | `boolean` | Whether hover cues are part of the character. Hover is always off under reduced motion. |
+| `hover` | `boolean` | Whether hover cues are part of the character. |
 
 ## @codeatlasdev/ui/table
 
