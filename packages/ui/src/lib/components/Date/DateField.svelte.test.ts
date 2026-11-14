@@ -1,8 +1,9 @@
 import { CalendarDate } from "@internationalized/date";
 import { describe, expect, it } from "vitest";
-import { userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import DateHarness from "./DateHarness.test.svelte";
 
 describe("DateField", () => {
@@ -71,5 +72,51 @@ describe("DateField", () => {
 		const screen = await render(DateHarness, { kind: "field", required: true });
 		const star = screen.container.querySelector(".ca-date__req");
 		expect(star?.getAttribute("aria-hidden")).toBe("true");
+	});
+});
+
+// #1216: on a phone the system date wheel is faster than typing segments; `native` renders <input type="date">.
+describe("DateField native (#1216)", () => {
+	it("is an input type=date with ISO min, max and value", async () => {
+		const screen = await render(DateHarness, {
+			kind: "field",
+			native: true,
+			date: new CalendarDate(2026, 3, 12),
+			minValue: new CalendarDate(2026, 1, 1),
+			maxValue: new CalendarDate(2026, 12, 31),
+		});
+		const input = screen.getByLabelText("Birth date");
+		await expect.element(input).toHaveAttribute("type", "date");
+		await expect.element(input).toHaveAttribute("min", "2026-01-01");
+		await expect.element(input).toHaveAttribute("max", "2026-12-31");
+		await expect.element(input).toHaveValue("2026-03-12");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("a picked date is a DateValue; clearing is undefined", async () => {
+		const changes: unknown[] = [];
+		const screen = await render(DateHarness, {
+			kind: "field",
+			native: true,
+			onchange: (v: unknown) => changes.push(v?.toString()),
+		});
+		const input = screen.getByLabelText("Birth date");
+		await input.fill("2026-03-15");
+		await expect.element(screen.getByTestId("date")).toHaveTextContent("2026-03-15");
+		await input.fill("");
+		await expect.poll(() => screen.getByTestId("date").element().textContent).toBe("");
+		expect(changes).toEqual(["2026-03-15", undefined]);
+	});
+
+	it("phone: the input is a full touch target", async () => {
+		await page.viewport(390, 844);
+		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+		try {
+			const screen = await render(DateHarness, { kind: "field", native: true });
+			const r = screen.getByLabelText("Birth date").element().getBoundingClientRect();
+			expect(Math.min(r.width, r.height)).toBeGreaterThanOrEqual(touchTarget());
+		} finally {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+		}
 	});
 });
