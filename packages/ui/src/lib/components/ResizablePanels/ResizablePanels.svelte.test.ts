@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
 import Harness from "./ResizablePanelsHarness.test.svelte";
+import PxHarness from "./ResizablePanelsPx.test.svelte";
 
 const handles = (c: HTMLElement) => [...c.querySelectorAll<HTMLElement>('[role="separator"]')];
 const widths = (c: HTMLElement) =>
@@ -202,5 +203,36 @@ describe("ResizablePanels persist", () => {
 		handles(screen.container)[0].focus();
 		await userEvent.keyboard("{ArrowRight}");
 		expect(localStorage.length).toBe(0);
+	});
+});
+
+// #996: a minimum in px holds at every container width; when the minimums cannot fit, the group says so.
+describe("ResizablePanels px minimums (#996)", () => {
+	const widths = (root: HTMLElement) =>
+		[...root.querySelectorAll<HTMLElement>(".ca-resizable__panel")].map(
+			(p) => p.getBoundingClientRect().width
+		);
+	const mins = [280, 360, 280];
+	const holds = (root: HTMLElement) => widths(root).every((w, i) => w >= mins[i] - 0.5);
+
+	it("no panel under its px minimum at 1100 and 960px", async () => {
+		const screen = await render(PxHarness, { width: 1100 });
+		const root = screen.container.querySelector(".ca-resizable") as HTMLElement;
+		await expect.poll(() => holds(root)).toBe(true);
+		await screen.rerender({ width: 960 });
+		await expect.poll(() => holds(root)).toBe(true);
+		expect(root.hasAttribute("data-overflow")).toBe(false);
+	});
+
+	it("minimums that do not fit mark the group and call onoverflow", async () => {
+		const onoverflow = vi.fn();
+		const screen = await render(PxHarness, { width: 1100, onoverflow });
+		const root = screen.container.querySelector(".ca-resizable") as HTMLElement;
+		await screen.rerender({ width: 800 });
+		await expect.poll(() => root.hasAttribute("data-overflow")).toBe(true);
+		expect(onoverflow).toHaveBeenLastCalledWith(true);
+		await screen.rerender({ width: 1100 });
+		await expect.poll(() => root.hasAttribute("data-overflow")).toBe(false);
+		expect(onoverflow).toHaveBeenLastCalledWith(false);
 	});
 });

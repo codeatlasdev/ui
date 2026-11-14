@@ -41,14 +41,15 @@ A handle is a WAI-ARIA window splitter: `role="separator"`, focusable, with `ari
   { name: "label", type: "string", default: "undefined", description: "Accessible name of the group." },
   { name: "persist", type: "string", default: "undefined", description: "localStorage key for the layout." },
   { name: "onlayout", type: "(sizes: number[]) => void", default: "undefined", description: "Sizes in percent, in panel order, when a drag or key press settles." },
+  { name: "onoverflow", type: "(overflow: boolean) => void", default: "undefined", description: "Called when the panels' minimums stop (true) or start again (false) fitting the group, which then carries data-overflow: the cue to switch to a drawer or master/detail, by the group's own size." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
 
 <Props for="ResizablePanel" rows={[
   { name: "id", type: "string", description: "Stable key of the panel, unique in the group. Required." },
   { name: "defaultSize", type: "number", default: "undefined", description: "Starting size in percent. Unset panels share what is left." },
-  { name: "minSize", type: "number", default: "10", description: "Smallest size in percent." },
-  { name: "maxSize", type: "number", default: "100", description: "Largest size in percent." },
+  { name: "minSize", type: "number | `${number}px`", default: "10", description: "Smallest size: percent of the group, or px (\"280px\") that holds at any group size; the other panels give way when the group shrinks." },
+  { name: "maxSize", type: "number | `${number}px`", default: "100", description: "Largest size: percent of the group, or px (\"480px\")." },
 ]} />
 
 <Props for="ResizableHandle" rows={[
