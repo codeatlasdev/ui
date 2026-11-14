@@ -24,9 +24,9 @@ The master volume defaults to `0.25`. Every cue is short (most are under 150 ms)
 
 Every cue duplicates something visible or announced: the pressed state, the toast text, the live region, the focus ring. Never use sound to carry the only copy of an error, a result or a status. Someone who is deaf, on mute, in a meeting or using a screen reader must lose nothing. `SoundToggle` itself exposes its state with `aria-pressed` and has an accessible name.
 
-## 5. Respect reduced motion and context
+## 5. Follow the user's own choice and the context
 
-Under `prefers-reduced-motion: reduce`, hover and slider `tick` cues are off; feedback cues still play if the user enabled sound. Sound is suspended while the tab is hidden, cut off when the page unloads, and skipped while a `<video>` or `<audio>` element is playing.
+Only `SoundToggle` silences sound. `prefers-reduced-motion: reduce` is about what moves on screen, so it does not turn sound off: a user who reduced motion and turned sound on still hears their message arrive. Vibration (`haptic`) is a third, separate choice, persisted under `ca-haptic`. Sound is suspended while the tab is hidden, cut off when the page unloads, and skipped while a `<video>` or `<audio>` element is playing.
 
 ## 6. Throttle and dedupe
 
