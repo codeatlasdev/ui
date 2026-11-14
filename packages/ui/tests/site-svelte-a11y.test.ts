@@ -1,13 +1,14 @@
 import { describe, expect, it } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { compile } from "svelte/compiler";
 
 // The site build turns every `a11y_*` Svelte warning into an error (site/svelte.config.js onwarn),
 // but `astro check` does not, so a demo with an a11y warning passed `validate` and then broke the
 // build on main (#438, StatusTokens `<canvas role="img">`). Compile every site .svelte here with the
 // same rule, so the same warning fails `validate` instead.
-const SITE = new URL("../../../site/src/", import.meta.url).pathname;
+const SITE = fileURLToPath(new URL("../../../site/src/", import.meta.url));
 
 function svelteFiles(dir: string): string[] {
 	return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {

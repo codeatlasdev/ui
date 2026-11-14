@@ -265,7 +265,9 @@ export function slowest(file: string, n = 10): { name: string; ms: number }[] {
  * A budget is wall time, so on a loaded machine (other suites, builds, other projects) a correct run takes several
  * times longer for no reason in the code, and failing it would make the gate a lottery (#793). When the 1-minute load
  * at the start or the end of the run is above 3/4 of the cores, the verdict is printed, with the slowest tests, but
- * does not fail the run. `load`/`startLoad` are injectable for the unit test.
+ * does not fail the run. Windows has no load average (`os.loadavg()` is always 0 there), so whether the machine was
+ * loaded is unknown and the verdict is never enforced on it (#1243). `load`/`startLoad`/`platform` are injectable for
+ * the unit test.
  */
 export function report(
 	budget: BudgetName | undefined,
@@ -273,7 +275,8 @@ export function report(
 	timings: string | undefined,
 	load = loadavg()[0],
 	cores = availableParallelism(),
-	startLoad = load
+	startLoad = load,
+	platform: NodeJS.Platform = process.platform
 ): number {
 	const top = timings ? slowest(timings) : [];
 	const over = budget !== undefined && seconds > BUDGETS[budget];
@@ -283,9 +286,16 @@ export function report(
 	}
 	if (budget === undefined) return 0;
 	const peak = Math.max(load, startLoad);
-	const line = `${budget} ${seconds.toFixed(1)}s of ${BUDGETS[budget]}s (load average ${peak.toFixed(1)} on ${cores} cores)`;
+	const noLoad = platform === "win32";
+	const line = `${budget} ${seconds.toFixed(1)}s of ${BUDGETS[budget]}s (${noLoad ? "load average unavailable on this platform" : `load average ${peak.toFixed(1)} on ${cores} cores`})`;
 	if (!over) {
 		console.error(`test-run: within budget: ${line}`);
+		return 0;
+	}
+	if (noLoad) {
+		console.error(
+			`test-run: OVER BUDGET, NOT ENFORCED: ${line}. A loaded machine cannot be told from a slow run here: time it on macOS or Linux.`
+		);
 		return 0;
 	}
 	if (peak > cores * 0.75) {

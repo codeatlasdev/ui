@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join, relative } from "node:path";
+import { join } from "node:path";
 import {
 	buildLlmsIndex,
 	buildRepoLlms,
@@ -15,6 +15,7 @@ import {
 import { buildGuides, buildRecipes } from "../scripts/build-manifest.ts";
 import { CHANGELOG_INDEX_PATH } from "../scripts/changelog-markdown.ts";
 import { STYLES_INDEX_PATH } from "../scripts/styles-markdown.ts";
+import { relPosix } from "../src/cli/paths.ts";
 
 const REPO = join(import.meta.dir, "../../..");
 const DOCS = join(REPO, "site/src/content/docs");
@@ -227,7 +228,7 @@ describe("llms.txt links the agent-readable .txt form of every page and recipe (
 			if (e.isDirectory()) walk(join(dir, e.name));
 			else if (e.name.endsWith(".mdx"))
 				slugs.push(
-					relative(DOCS, join(dir, e.name))
+					relPosix(DOCS, join(dir, e.name))
 						.replace(/\.mdx$/, "")
 						.replace(/\/index$/, "")
 				);

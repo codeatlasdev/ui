@@ -1,9 +1,10 @@
 import { describe, expect, it } from "bun:test";
 import { join } from "node:path";
-import { createServer, type InlineConfig } from "vite";
+import { createServer, type InlineConfig, normalizePath } from "vite";
 import config from "../vite.config.ts";
 
-const SRC_INDEX = join(import.meta.dir, "../src/lib/index.ts");
+// Vite ids use `/` on every OS (`normalizePath`), a drive letter included on Windows (#1243).
+const SRC_INDEX = normalizePath(join(import.meta.dir, "../src/lib/index.ts"));
 
 /**
  * #407: a site demo rendered by a browser test imports the package by name. When that import did not

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
-import { join, relative } from "node:path";
+import { join } from "node:path";
+import { relPosix } from "../src/cli/paths.ts";
 import { BUILTIN_PRESETS } from "../src/lib/theme/builtins.ts";
 
 /**
@@ -35,11 +36,11 @@ describe("built-in preset ids are named once (#654)", () => {
 		for (const root of ["packages/ui/src", "packages/ui/scripts", "site/src"])
 			for (const f of sources(join(ROOT, root)))
 				if (
-					relative(ROOT, f) !== OWNER &&
-					!CURATED.has(relative(ROOT, f)) &&
+					relPosix(ROOT, f) !== OWNER &&
+					!CURATED.has(relPosix(ROOT, f)) &&
 					quoted.test(readFileSync(f, "utf8"))
 				)
-					hits.push(relative(ROOT, f));
+					hits.push(relPosix(ROOT, f));
 		expect(hits.sort()).toEqual([]);
 	});
 });

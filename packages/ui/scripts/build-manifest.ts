@@ -23,8 +23,9 @@
  * `Program` over the entry files and reported with its signature and JSDoc summary.
  */
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { loadMigrations, migrationMarkdown } from "../src/cli/migrations.ts";
+import { relPosix } from "../src/cli/paths.ts";
 import { buildAtlasFile } from "./atlas-markdown.ts";
 import { buildReleaseFile } from "./changelog-markdown.ts";
 import { buildIndexFiles } from "./index-build.ts";
@@ -67,9 +68,9 @@ const SKILL_DEMOS = resolve(ROOT, "../../.agents/skills/codeatlas-ui/DEMOS.md");
  * would take a side of a file the manifest rebuilds; `tests/issue-workflow.test.ts` checks it (#653).
  */
 export const TREE_OUTPUTS = [
-	relative(resolve(ROOT, "../.."), SKILL_API),
-	relative(resolve(ROOT, "../.."), SKILL_DEMOS),
-	relative(resolve(ROOT, "../.."), MIGRATION_MD),
+	relPosix(resolve(ROOT, "../.."), SKILL_API),
+	relPosix(resolve(ROOT, "../.."), SKILL_DEMOS),
+	relPosix(resolve(ROOT, "../.."), MIGRATION_MD),
 	`site/public/${API_DIR}/`,
 	"site/public/gallery/",
 ];

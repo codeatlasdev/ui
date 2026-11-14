@@ -17,9 +17,10 @@
  * A `ca-ui-workaround(#n)` marker on the line or the one above excuses it. Exit 1 on any finding.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import { parse } from "svelte/compiler";
 import { BREAKPOINTS } from "../lib/components/Layout/layout.ts";
+import { relPosix } from "./paths.ts";
 
 export const GUARD_RULES = [
 	"hex",
@@ -319,7 +320,7 @@ export function runGuard(
 	const files = [...new Set(targets.flatMap((t) => collect(resolve(cwd, t))))];
 	let count = 0;
 	for (const file of files) {
-		const rel = relative(cwd, file);
+		const rel = relPosix(cwd, file);
 		for (const v of guardSource(rel, readFileSync(file, "utf8"), { allow, rules })) {
 			log(`${v.file}:${v.line} ${v.rule} ${v.message}`);
 			count++;
