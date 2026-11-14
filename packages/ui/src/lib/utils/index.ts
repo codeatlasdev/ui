@@ -8,6 +8,8 @@ export { formatCurrency, formatDate, formatNumber, formatRelativeTime } from "./
 export { storageGet, storageRemove, storageSet } from "./local-storage.js";
 export type { PresetTokens } from "./palette-generator.js";
 export { generatePreset, tokensToCSS } from "./palette-generator.js";
+export type { SearchItemsOptions, SearchKey } from "./search.js";
+export { foldText, searchItems, searchScore, slugify } from "./search.js";
 export { throttle } from "./throttle.js";
 export { uid } from "./uid.js";
 export type { FieldState, FormState, ValidationSchema } from "./use-form.svelte.js";

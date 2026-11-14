@@ -1,9 +1,7 @@
+import { foldText } from "../../utils/search.js";
+
 /** Lowercase and strip diacritics: "São" and "SAO" fold to the same string. */
-export const fold = (s: string) =>
-	s
-		.normalize("NFD")
-		.replace(/\p{Diacritic}/gu, "")
-		.toLowerCase();
+export const fold = foldText;
 
 /**
  * Filters `items` by an accent- and case-insensitive substring match and ranks word-start
