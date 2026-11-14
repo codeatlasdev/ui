@@ -4971,6 +4971,16 @@ Font weights: light 300, regular 400, medium 500, bold 600.
 const fontWeight: { readonly light: 300; readonly regular: 400; readonly medium: 500; readonly bold: 600; }
 ```
 
+### formatBytes
+
+`import { formatBytes } from "@codeatlasdev/ui"`
+
+A size in bytes in steps of 1024, with the locale's decimal separator: `formatBytes(1536)` is `"1,5 KB"`, `1048576` is `"1 MB"`. A value that would round to 1024 moves up a unit.
+
+```ts
+function formatBytes(bytes: number | null | undefined, options?: BytesOptions): string
+```
+
 ### formatColor
 
 `import { formatColor } from "@codeatlasdev/ui"`
@@ -5001,6 +5011,56 @@ Format a Date or timestamp as a localized date string.
 function formatDate(value: Date | number | string, locale?: string, options?: Intl.DateTimeFormatOptions): string
 ```
 
+### formatDateInZone
+
+`import { formatDateInZone } from "@codeatlasdev/ui"`
+
+The calendar day of an instant in a fixed zone, so the server render and every viewer show the same day: `formatDateInZone("2026-03-15T02:00:00Z")` is `"14/03/2026"` (23:00 the day before in São Paulo). A `YYYY-MM-DD` string is already a calendar day and is never shifted.
+
+```ts
+function formatDateInZone(value: Date | number | string | null | undefined, options?: DateInZoneOptions): string
+```
+
+### formatDateTimeInZone
+
+`import { formatDateTimeInZone } from "@codeatlasdev/ui"`
+
+`formatDateInZone` with the hour: `"2026-03-15T02:00:00Z"` is `"14/03/2026, 23:00"`.
+
+```ts
+function formatDateTimeInZone(value: Date | number | string | null | undefined, options?: DateTimeInZoneOptions): string
+```
+
+### formatMoneyAxis
+
+`import { formatMoneyAxis } from "@codeatlasdev/ui"`
+
+An amount in minor units as a chart axis tick: abbreviated at every size, no cents, up to two decimals without trailing zeros, so round ticks stay exact and short: `0` is `"R$ 0"`, `50000` is `"R$ 500"`, `125000` is `"R$ 1,25 mil"`.
+
+```ts
+function formatMoneyAxis(cents: number | null | undefined, options?: CompactMoneyOptions): string
+```
+
+### formatMoneyCompact
+
+`import { formatMoneyCompact } from "@codeatlasdev/ui"`
+
+An amount in minor units, abbreviated for a figure people read (a KPI, a card): `formatMoneyCompact(150000)` is `"R$ 1,5 mil"`, `123456789` is `"R$ 1,2 mi"`. One decimal at most. Below the locale's first abbreviation (a thousand in pt-BR, a million in de-DE) it is the exact amount, as `centsToDisplay` writes it: `95000` is `"R$ 950,00"`. The no-break spaces `Intl` puts around the number are kept, so the figure never wraps.
+
+```ts
+function formatMoneyCompact(cents: number | null | undefined, options?: CompactMoneyOptions): string
+```
+
+### formatName
+
+`import { formatName } from "@codeatlasdev/ui"`
+
+A person's name in title case with single spaces: `"  maria DA silva"` is `"Maria da Silva"`. Particles stay lowercase after the first word; a letter after `-` or `'` is capitalised (`"Ana-Luíza D'Ávila"`); a word typed in mixed case is kept as typed (`"DiCaprio"`). Case follows the locale (`"IŞIK"` is `"Işık"` in `tr`).
+
+```ts
+function formatName(name: string | null | undefined, options?: NameOptions): string
+```
+
 ### formatNumber
 
 `import { formatNumber } from "@codeatlasdev/ui"`
@@ -5021,6 +5081,16 @@ function formatNumber(value: number, locale?: string, options?: Intl.NumberForma
 function formatOklch(options: Oklch): string
 ```
 
+### formatPercent
+
+`import { formatPercent } from "@codeatlasdev/ui"`
+
+A ratio as a percentage, like `Intl`: `formatPercent(0.125)` is `"12,5%"`, `-0.05` is `"-5%"`.
+
+```ts
+function formatPercent(ratio: number | null | undefined, options?: PercentOptions): string
+```
+
 ### formatRelativeTime
 
 `import { formatRelativeTime } from "@codeatlasdev/ui"`
@@ -5029,6 +5099,26 @@ Format a Date or timestamp as a relative time string.
 
 ```ts
 function formatRelativeTime(value: Date | number | string, locale?: string): string
+```
+
+### formatRelativeTimeShort
+
+`import { formatRelativeTimeShort } from "@codeatlasdev/ui"`
+
+How long ago or ahead, in the abbreviated words of `Intl.RelativeTimeFormat`, with the units of `formatRelativeTime`: `"há 5 min."`, `"em 2 h"`, `"ontem"`, `"agora"`.
+
+```ts
+function formatRelativeTimeShort(value: Date | number | string | null | undefined, options?: RelativeTimeShortOptions): string
+```
+
+### getInitials
+
+`import { getInitials } from "@codeatlasdev/ui"`
+
+The capital initials of the first and last words, particles skipped: `"Maria da Silva"` is `"MS"`, a single word gives one letter (`"maria"` is `"M"`).
+
+```ts
+function getInitials(name: string | null | undefined, options?: NameOptions): string
 ```
 
 ### getLocales
@@ -5763,18 +5853,22 @@ Types:
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; gap?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
 | `ButtonVariant` | `type ButtonVariant = "filled" \| "glass" \| "outlined" \| "ghost";` | The variants Button and IconButton share (#1233). `ghost` is the background-less one on both; `Button` adds `destructive`. Each also accepts `text` until the next major, as a deprecated alias of `ghost` (it was IconButton's name for it): the component renders `ghost` (IconButton also warns once in dev). |
+| `BytesOptions` | `interface BytesOptions extends FormatOptions { maximumFractionDigits?: number; }` | Options of `formatBytes`. |
 | `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
 | `CaTokenName` | `type CaTokenName = keyof CaTokenRegistry extends never ? never : keyof CaTokenRegistry & string;` | Names declared through `CaTokenRegistry`, else any `group.name` string. |
 | `CaTokenRegistry` | `interface CaTokenRegistry {}` | Registry of domain tokens an app declares, for typed names. Augment it to get autocomplete in `tokenRgba("status.new")`: |
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
+| `CompactMoneyOptions` | `interface CompactMoneyOptions extends FormatOptions { currency?: string; }` | Options of `formatMoneyCompact` and `formatMoneyAxis`. |
 | `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; localeSwitcher?: LocaleSwitcherTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CsvOptions` | `interface CsvOptions { locale?: string; delimiter?: "," \| ";" \| "\t"; bom?: boolean; }` |  |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
+| `DateInZoneOptions` | `interface DateInZoneOptions extends FormatOptions { timeZone?: string; dateStyle?: Intl.DateTimeFormatOptions["dateStyle"]; }` | Options of `formatDateInZone`. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DateRangePreset` | `interface DateRangePreset { label: string; range: \| { start: DateValue; end: DateValue } \| ((today: CalendarDate) => { start: DateValue; end: DateValue }); }` | A custom DateRangePicker preset: its label and its range, or a function of today that returns one. |
 | `DateRangePresetId` | `type DateRangePresetId = \| "today" \| "yesterday" \| "last7Days" \| "last30Days" \| "last90Days" \| "thisMonth" \| "lastMonth" \| "thisYear";` | A built-in DateRangePicker preset, labelled from the i18n catalog. "Last N days" ends today; `thisMonth` / `lastMonth` / `thisYear` run from the first to the last day. |
+| `DateTimeInZoneOptions` | `interface DateTimeInZoneOptions extends DateInZoneOptions { timeStyle?: Intl.DateTimeFormatOptions["timeStyle"]; }` | Options of `formatDateTimeInZone`. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| "auto" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. `"auto"` is comfortable under a coarse pointer (touch targets stay 44px) and compact under a fine one (mouse, trackpad), where spacing, control heights and body text shrink together (#999). |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
@@ -5804,6 +5898,7 @@ Types:
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
+| `FormatOptions` | `interface FormatOptions { locale?: string; empty?: string; }` | Options every formatter below takes. |
 | `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
 | `HapticKind` | `type HapticKind = "tap" \| "success" \| "error";` | What happened: a light tap, a completed action, a failed one. |
 | `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
@@ -5821,6 +5916,7 @@ Types:
 | `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
 | `MotionCtx` | `interface MotionCtx { playing: boolean; reduced: boolean; takeover(): void; play(): void; pause(): void; cycle: number; }` | What a motion demo receives from `MotionStage`. Demos render from this and never run their own timers. |
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
+| `NameOptions` | `interface NameOptions extends FormatOptions { particles?: readonly string[]; }` | Options of `formatName` and `getInitials`. |
 | `NavBadgeTone` | `type NavBadgeTone = "brand" \| "error" \| "warning" \| "neutral";` | Colour of a nav badge (`NavItem.badgeTone`, `NavModule.badgeTone`): `'brand'` (default) for something new or pending, `'error'` for something overdue or failed, `'warning'` for something that needs attention soon, `'neutral'` for a plain total. Each is a fill and label token pair. A tone other than `'brand'` needs a `badgeLabel`: colour is not the only signal. |
 | `NavExtras` | `interface NavExtras { reorder?: Component<NavReorderProps>; itemMenu?: Component<{ label: string; actions: Snippet }>; }` | Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; badgeLabel?: string; badgeTone?: NavBadgeTone; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
@@ -5837,6 +5933,7 @@ Types:
 | `PaletteColor` | `interface PaletteColor { hex: string; oklch: Oklch; share: number; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PasswordScore` | `type PasswordScore = 0 \| 1 \| 2 \| 3;` | 0 = empty, 1 = weak, 2 = fair, 3 = strong. |
+| `PercentOptions` | `interface PercentOptions extends FormatOptions { maximumFractionDigits?: number; signDisplay?: Intl.NumberFormatOptions["signDisplay"]; }` | Options of `formatPercent`. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
 | `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |
@@ -5846,6 +5943,7 @@ Types:
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
 | `PresetTokenGroups` | `type PresetTokenGroups = Record<string, Record<string, TokenValue>>;` | `group → name → value`. Group and name are CSS identifier fragments (`[a-z][a-z0-9-]*`). |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
+| `RelativeTimeShortOptions` | `interface RelativeTimeShortOptions extends FormatOptions { now?: Date \| number; style?: "short" \| "narrow"; }` | Options of `formatRelativeTimeShort`. |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
@@ -5939,6 +6037,12 @@ Types:
 | `md?` | `ButtonSizeTokens` |  |
 | `lg?` | `ButtonSizeTokens` |  |
 
+#### BytesOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `maximumFractionDigits?` | `number` | Most decimals shown; trailing zeros are dropped. Default `1`. |
+
 #### CardTokens
 
 | Field | Type | Notes |
@@ -5947,6 +6051,12 @@ Types:
 | `radius?` | `CssValue` | `--ca-card-radius`. @default the surface radius |
 | `border?` | `CssValue` | `--ca-card-border`: a full border shorthand, e.g. `1px solid var(--ca-outline-subtle)`. @default none |
 | `shadow?` | `CssValue` | `--ca-card-shadow`: a `box-shadow`, `none` for flat. @default the material shadow |
+
+#### CompactMoneyOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `currency?` | `string` | ISO 4217 code; its decimals (from `Intl`) turn minor units into the amount. Default `"BRL"`. |
 
 #### ComponentTokens
 
@@ -5979,6 +6089,13 @@ Types:
 | `delimiter?` | `"," \| ";" \| "\t"` | Field separator. Default `,`, or `;` for a `locale` whose decimal mark is a comma. |
 | `bom?` | `boolean` | Prepend a UTF-8 byte order mark so Excel picks the encoding. Default `false`. |
 
+#### DateInZoneOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `timeZone?` | `string` | IANA zone the day is read in, whatever the zone of the server or the viewer. Default `"America/Sao_Paulo"`. |
+| `dateStyle?` | `Intl.DateTimeFormatOptions["dateStyle"]` | `Intl.DateTimeFormat`'s `dateStyle`. Default `"short"` (`14/03/2026` in pt-BR). |
+
 #### DateRange
 
 | Field | Type | Notes |
@@ -5992,6 +6109,12 @@ Types:
 |---|---|---|
 | `label` | `string` |  |
 | `range` | `\| { start: DateValue; end: DateValue } \| ((today: CalendarDate) => { start: DateValue; end: DateValue })` |  |
+
+#### DateTimeInZoneOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `timeStyle?` | `Intl.DateTimeFormatOptions["timeStyle"]` | `Intl.DateTimeFormat`'s `timeStyle`. Default `"short"` (`23:00` in pt-BR). |
 
 #### DesignStyle
 
@@ -6193,6 +6316,13 @@ Types:
 | `descent?` | `string` | `descent-override`, e.g. `"24%"`. |
 | `lineGap?` | `string` | `line-gap-override`, e.g. `"0%"`. |
 
+#### FormatOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `locale?` | `string` | BCP 47 tag for separators, words and letter case. Default `"pt-BR"`. |
+| `empty?` | `string` | Text for a missing value: `null`, `undefined`, `NaN`, an invalid date, a blank name. Default `"—"`. |
+
 #### FormState
 
 | Field | Type | Notes |
@@ -6280,6 +6410,12 @@ Types:
 | `scale?` | `number` | Multiplier on every duration (0 = instant, 1.5 = slower). @default 1 |
 | `easing?` | `"standard" \| "emphasized" \| "spring" \| "linear" \| "steps"` | Default easing personality for --ca-ease-standard. |
 | `enter?` | `"default" \| "none"` | `"none"`: dialogs, drawers, sheets, menus, popovers, tooltips and toasts appear and leave in place (no fade, slide or zoom), while hover/focus color transitions keep `scale`. Sets `--ca-enter-scale: 0`. @default "default" |
+
+#### NameOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `particles?` | `readonly string[]` | Words kept in lowercase after the first word, in any case. Default: the Portuguese `da`, `das`, `de`, `do`, `dos` and `e`. |
 
 #### NavExtras
 
@@ -6411,6 +6547,13 @@ Types:
 | `oklch` | `Oklch` |  |
 | `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
 
+#### PercentOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `maximumFractionDigits?` | `number` | Most decimals shown; trailing zeros are dropped. Default `1`. |
+| `signDisplay?` | `Intl.NumberFormatOptions["signDisplay"]` | `Intl.NumberFormat`'s `signDisplay`: `"exceptZero"` writes `+12,5%` for a change. Default `"auto"`. |
+
 #### PresetContrastIssue
 
 | Field | Type | Notes |
@@ -6437,6 +6580,13 @@ Types:
 | Field | Type | Notes |
 |---|---|---|
 | `inputFontSize?` | `string` | Text-entry font size (--ca-input-font-size), e.g. `"0.875rem"`. Touch and narrow screens still get `max(16px, …)` so iOS Safari does not zoom into focused fields. |
+
+#### RelativeTimeShortOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `now?` | `Date \| number` | The moment the value is measured from. Default `Date.now()`; pass it to render the same text on the server and the client. |
+| `style?` | `"short" \| "narrow"` | `"short"` (`há 5 min.`) or `"narrow"` (the shortest the locale has: `5m ago` in English). Default `"short"`. |
 
 #### ResolvedTheme
 
@@ -8915,6 +9065,203 @@ Types:
 | `hex` | `string` |  |
 | `oklch` | `Oklch` |  |
 | `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
+
+## @codeatlasdev/ui/utils/format
+
+### formatBytes
+
+`import { formatBytes } from "@codeatlasdev/ui/utils/format"`
+
+A size in bytes in steps of 1024, with the locale's decimal separator: `formatBytes(1536)` is `"1,5 KB"`, `1048576` is `"1 MB"`. A value that would round to 1024 moves up a unit.
+
+```ts
+function formatBytes(bytes: number | null | undefined, options?: BytesOptions): string
+```
+
+### formatCurrency
+
+`import { formatCurrency } from "@codeatlasdev/ui/utils/format"`
+
+Format a number as currency.
+
+```ts
+function formatCurrency(value: number, currency?: string, locale?: string, options?: Omit<Intl.NumberFormatOptions, "style" | "currency">): string
+```
+
+### formatDate
+
+`import { formatDate } from "@codeatlasdev/ui/utils/format"`
+
+Format a Date or timestamp as a localized date string.
+
+```ts
+function formatDate(value: Date | number | string, locale?: string, options?: Intl.DateTimeFormatOptions): string
+```
+
+### formatDateInZone
+
+`import { formatDateInZone } from "@codeatlasdev/ui/utils/format"`
+
+The calendar day of an instant in a fixed zone, so the server render and every viewer show the same day: `formatDateInZone("2026-03-15T02:00:00Z")` is `"14/03/2026"` (23:00 the day before in São Paulo). A `YYYY-MM-DD` string is already a calendar day and is never shifted.
+
+```ts
+function formatDateInZone(value: Date | number | string | null | undefined, options?: DateInZoneOptions): string
+```
+
+### formatDateTimeInZone
+
+`import { formatDateTimeInZone } from "@codeatlasdev/ui/utils/format"`
+
+`formatDateInZone` with the hour: `"2026-03-15T02:00:00Z"` is `"14/03/2026, 23:00"`.
+
+```ts
+function formatDateTimeInZone(value: Date | number | string | null | undefined, options?: DateTimeInZoneOptions): string
+```
+
+### formatMoneyAxis
+
+`import { formatMoneyAxis } from "@codeatlasdev/ui/utils/format"`
+
+An amount in minor units as a chart axis tick: abbreviated at every size, no cents, up to two decimals without trailing zeros, so round ticks stay exact and short: `0` is `"R$ 0"`, `50000` is `"R$ 500"`, `125000` is `"R$ 1,25 mil"`.
+
+```ts
+function formatMoneyAxis(cents: number | null | undefined, options?: CompactMoneyOptions): string
+```
+
+### formatMoneyCompact
+
+`import { formatMoneyCompact } from "@codeatlasdev/ui/utils/format"`
+
+An amount in minor units, abbreviated for a figure people read (a KPI, a card): `formatMoneyCompact(150000)` is `"R$ 1,5 mil"`, `123456789` is `"R$ 1,2 mi"`. One decimal at most. Below the locale's first abbreviation (a thousand in pt-BR, a million in de-DE) it is the exact amount, as `centsToDisplay` writes it: `95000` is `"R$ 950,00"`. The no-break spaces `Intl` puts around the number are kept, so the figure never wraps.
+
+```ts
+function formatMoneyCompact(cents: number | null | undefined, options?: CompactMoneyOptions): string
+```
+
+### formatName
+
+`import { formatName } from "@codeatlasdev/ui/utils/format"`
+
+A person's name in title case with single spaces: `"  maria DA silva"` is `"Maria da Silva"`. Particles stay lowercase after the first word; a letter after `-` or `'` is capitalised (`"Ana-Luíza D'Ávila"`); a word typed in mixed case is kept as typed (`"DiCaprio"`). Case follows the locale (`"IŞIK"` is `"Işık"` in `tr`).
+
+```ts
+function formatName(name: string | null | undefined, options?: NameOptions): string
+```
+
+### formatNumber
+
+`import { formatNumber } from "@codeatlasdev/ui/utils/format"`
+
+Format a number with locale-aware thousands separator.
+
+```ts
+function formatNumber(value: number, locale?: string, options?: Intl.NumberFormatOptions): string
+```
+
+### formatPercent
+
+`import { formatPercent } from "@codeatlasdev/ui/utils/format"`
+
+A ratio as a percentage, like `Intl`: `formatPercent(0.125)` is `"12,5%"`, `-0.05` is `"-5%"`.
+
+```ts
+function formatPercent(ratio: number | null | undefined, options?: PercentOptions): string
+```
+
+### formatRelativeTime
+
+`import { formatRelativeTime } from "@codeatlasdev/ui/utils/format"`
+
+Format a Date or timestamp as a relative time string.
+
+```ts
+function formatRelativeTime(value: Date | number | string, locale?: string): string
+```
+
+### formatRelativeTimeShort
+
+`import { formatRelativeTimeShort } from "@codeatlasdev/ui/utils/format"`
+
+How long ago or ahead, in the abbreviated words of `Intl.RelativeTimeFormat`, with the units of `formatRelativeTime`: `"há 5 min."`, `"em 2 h"`, `"ontem"`, `"agora"`.
+
+```ts
+function formatRelativeTimeShort(value: Date | number | string | null | undefined, options?: RelativeTimeShortOptions): string
+```
+
+### getInitials
+
+`import { getInitials } from "@codeatlasdev/ui/utils/format"`
+
+The capital initials of the first and last words, particles skipped: `"Maria da Silva"` is `"MS"`, a single word gives one letter (`"maria"` is `"M"`).
+
+```ts
+function getInitials(name: string | null | undefined, options?: NameOptions): string
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `BytesOptions` | `interface BytesOptions extends FormatOptions { maximumFractionDigits?: number; }` | Options of `formatBytes`. |
+| `CompactMoneyOptions` | `interface CompactMoneyOptions extends FormatOptions { currency?: string; }` | Options of `formatMoneyCompact` and `formatMoneyAxis`. |
+| `DateInZoneOptions` | `interface DateInZoneOptions extends FormatOptions { timeZone?: string; dateStyle?: Intl.DateTimeFormatOptions["dateStyle"]; }` | Options of `formatDateInZone`. |
+| `DateTimeInZoneOptions` | `interface DateTimeInZoneOptions extends DateInZoneOptions { timeStyle?: Intl.DateTimeFormatOptions["timeStyle"]; }` | Options of `formatDateTimeInZone`. |
+| `FormatOptions` | `interface FormatOptions { locale?: string; empty?: string; }` | Options every formatter below takes. |
+| `NameOptions` | `interface NameOptions extends FormatOptions { particles?: readonly string[]; }` | Options of `formatName` and `getInitials`. |
+| `PercentOptions` | `interface PercentOptions extends FormatOptions { maximumFractionDigits?: number; signDisplay?: Intl.NumberFormatOptions["signDisplay"]; }` | Options of `formatPercent`. |
+| `RelativeTimeShortOptions` | `interface RelativeTimeShortOptions extends FormatOptions { now?: Date \| number; style?: "short" \| "narrow"; }` | Options of `formatRelativeTimeShort`. |
+
+#### BytesOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `maximumFractionDigits?` | `number` | Most decimals shown; trailing zeros are dropped. Default `1`. |
+
+#### CompactMoneyOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `currency?` | `string` | ISO 4217 code; its decimals (from `Intl`) turn minor units into the amount. Default `"BRL"`. |
+
+#### DateInZoneOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `timeZone?` | `string` | IANA zone the day is read in, whatever the zone of the server or the viewer. Default `"America/Sao_Paulo"`. |
+| `dateStyle?` | `Intl.DateTimeFormatOptions["dateStyle"]` | `Intl.DateTimeFormat`'s `dateStyle`. Default `"short"` (`14/03/2026` in pt-BR). |
+
+#### DateTimeInZoneOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `timeStyle?` | `Intl.DateTimeFormatOptions["timeStyle"]` | `Intl.DateTimeFormat`'s `timeStyle`. Default `"short"` (`23:00` in pt-BR). |
+
+#### FormatOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `locale?` | `string` | BCP 47 tag for separators, words and letter case. Default `"pt-BR"`. |
+| `empty?` | `string` | Text for a missing value: `null`, `undefined`, `NaN`, an invalid date, a blank name. Default `"—"`. |
+
+#### NameOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `particles?` | `readonly string[]` | Words kept in lowercase after the first word, in any case. Default: the Portuguese `da`, `das`, `de`, `do`, `dos` and `e`. |
+
+#### PercentOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `maximumFractionDigits?` | `number` | Most decimals shown; trailing zeros are dropped. Default `1`. |
+| `signDisplay?` | `Intl.NumberFormatOptions["signDisplay"]` | `Intl.NumberFormat`'s `signDisplay`: `"exceptZero"` writes `+12,5%` for a change. Default `"auto"`. |
+
+#### RelativeTimeShortOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `now?` | `Date \| number` | The moment the value is measured from. Default `Date.now()`; pass it to render the same text on the server and the client. |
+| `style?` | `"short" \| "narrow"` | `"short"` (`há 5 min.`) or `"narrow"` (the shortest the locale has: `5m ago` in English). Default `"short"`. |
 
 ## @codeatlasdev/ui/utils/money
 

@@ -47,6 +47,8 @@ const ENTRIES: Entry[] = [
 	},
 	// Pure bigint arithmetic, no Svelte: a server or a worker imports it alone.
 	{ name: "./utils/money", js: `export * from "./utils/money.js";`, requires: "utils/money.js" },
+	// Intl formatters with pt-BR / America/Sao_Paulo defaults, no Svelte: a server imports them alone.
+	{ name: "./utils/format", js: `export * from "./utils/format.js";`, requires: "utils/format.js" },
 	{ name: "styles/core.css", css: "styles/core.css" },
 	{ name: "styles/global.css", css: "styles/global.css" },
 ];

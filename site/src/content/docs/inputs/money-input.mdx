@@ -94,3 +94,7 @@ assertCents(1.5); // throws a RangeError
 - `assertCents(value)` throws unless the value is a safe-integer `number` or a `bigint`: a `RangeError` for `1.5`, `NaN` or `2 ** 53`, a `TypeError` for a string.
 
 Formatting and parsing stay in `@codeatlasdev/ui/forms` (`centsToDisplay`, `parseAmountToCents`).
+
+## Compact amounts
+
+`@codeatlasdev/ui/utils/format` abbreviates an amount in the same minor unit, with the same `currency` and `locale` options: `formatMoneyCompact(150000)` is `R$ 1,5 mil` (with the no-break spaces of `Intl`) for a KPI or a card, exact below a thousand (`R$ 950,00`), and `formatMoneyAxis(125000)` is `R$ 1,25 mil` for a chart tick. Both return `"—"` for `null`, `undefined` or `NaN`. The other formatters of that subpath (percent, dates in a fixed time zone, relative time, bytes, names) are listed under [Internationalization](/docs/getting-started/i18n/#formatters-for-pt-br).

@@ -141,6 +141,45 @@ The UI language does not change date or number formatting. Pass `locale` to the 
 
 Formatting helpers such as `formatCurrency`, `formatDate` and `formatNumber` take their own locale too.
 
+### Formatters for pt-BR
+
+`@codeatlasdev/ui/utils/format` (also exported from the package root) formats the values a Brazilian app shows most. Each function takes the locale as an option, defaults to `pt-BR`, and returns `"—"` for a missing value (`null`, `undefined`, `NaN`, an invalid date, a blank name); pass `empty` to write something else. The subpath has no Svelte code, so a server route, a worker or an email template can import it alone.
+
+```ts
+import {
+  formatBytes,
+  formatDateInZone,
+  formatDateTimeInZone,
+  formatMoneyAxis,
+  formatMoneyCompact,
+  formatName,
+  formatPercent,
+  formatRelativeTimeShort,
+  getInitials,
+} from "@codeatlasdev/ui/utils/format";
+
+formatMoneyCompact(150000); // "R$ 1,5 mil" (cents in, no-break spaces kept)
+formatMoneyCompact(95000); // "R$ 950,00": exact below a thousand
+formatMoneyAxis(125000); // "R$ 1,25 mil": a chart tick, never ",00"
+formatPercent(0.125); // "12,5%"
+formatPercent(0.125, { signDisplay: "exceptZero" }); // "+12,5%"
+formatDateInZone("2026-03-15T02:00:00Z"); // "14/03/2026": 23:00 the day before in São Paulo
+formatDateTimeInZone("2026-03-15T02:00:00Z"); // "14/03/2026, 23:00"
+const now = Date.parse("2026-01-01T12:00:00Z");
+formatRelativeTimeShort("2026-01-01T11:55:00Z", { now }); // "há 5 min." ("ontem", "em 2 h")
+formatBytes(1536); // "1,5 KB"
+formatName("  maria DA silva"); // "Maria da Silva"
+getInitials("Maria da Silva"); // "MS"
+formatMoneyCompact(null); // "—"
+```
+
+- **Money** takes an integer in the currency's minor unit, like `MoneyInput` and `centsToDisplay`, with `currency` (default `"BRL"`) and `locale`. `formatMoneyCompact` is for a figure people read: one decimal at most, and below the locale's first abbreviation (a thousand in pt-BR, a million in de-DE) the exact amount with cents. `formatMoneyAxis` is for chart ticks: abbreviated at every size, up to two decimals, no trailing zeros.
+- **Percent** takes a ratio, as `Intl` does (`0.125` is 12,5%), with `maximumFractionDigits` (default 1) and `signDisplay`.
+- **Dates** are read in a fixed zone, `timeZone` (default `"America/Sao_Paulo"`), not in the zone of the server or the viewer, so the server render and every browser show the same day. A `YYYY-MM-DD` string is already a calendar day (a due date) and is never shifted. `dateStyle` and `timeStyle` take the `Intl.DateTimeFormat` values.
+- **Relative time** uses the abbreviated words of `Intl.RelativeTimeFormat` (`style: "short"`, or `"narrow"`). Pass `now` when the text is rendered on the server, so the client hydrates the same string.
+- **Bytes** step by 1024 with the units B, KB, MB, GB, TB and PB; `maximumFractionDigits` defaults to 1, and a value that would round to 1024 moves up a unit.
+- **Names**: `formatName` writes a name in title case with single spaces, keeps `da`, `das`, `de`, `do`, `dos` and `e` in lowercase after the first word (`particles` replaces the list) and keeps a word typed in mixed case (`DiCaprio`) as typed. `getInitials` takes the first and last words that are not particles; `Avatar` derives its own initials from `alt`.
+
 ## In tests
 
 The default is English. In browser tests, call `setLocale("pt-BR")` where a test asserts Portuguese text and reset with `setLocale("en")` in `afterEach`, so the module state does not leak between tests. In server-render tests, wrap the component in `I18nProvider` instead.
