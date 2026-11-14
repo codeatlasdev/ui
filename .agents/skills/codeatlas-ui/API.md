@@ -4008,6 +4008,8 @@ Snippets: `children`: Column label.
 |---|---|---|---|
 | `value?` | `string` |  | `bind:` |
 | `onchange?` | `(v: string) => void` |  |  |
+| `onbeforechange?` | `(next: string) => boolean \| Promise<boolean>` |  | Called before another tab is selected; `false` (or a promise of `false`) keeps the current tab and skips `onchange`, e.g. to ask before a panel with unsaved changes unmounts. While a promise is pending, other selections are ignored (#1075). |
+| `activation?` | `'automatic' \| 'manual'` | `'automatic'` | `automatic` (default): focusing a tab selects it. `manual`: arrows move focus and Enter, Space or a click selects, so a focus a dialog gives back to a tab does not select it again (#1075). |
 | `variant?` | `"pill" \| "line"` | `'pill'` | `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). |
 | `fill?` | `boolean` | `false` | The list stretches across its container and its hairline spans it (default: it hugs its tabs). |
 | `class?` | `string` | `''` |  |
