@@ -37,9 +37,41 @@ import DenseCrmSrc from "~/demos/layout/empty-state/DenseCrm.svelte?raw";
 <Demo title="No icon" description="A minimal version without an icon." src={NoIconSrc}><NoIcon /></Demo>
 <Demo title="Dense CRM with component tokens" description="Six components restyled by tokens on one wrapper." src={DenseCrmSrc}><DenseCrm client:visible /></Demo>
 
+## In a list or a grid of cards
+
+`size="row"` draws the empty state as one line: a 16 px icon, the text and an optional action, about one control high. Use it for an empty slot inside a list, a card or a grid, where the stacked block would push the content that does exist out of view. A row's title is text, not a heading (five empty rows would add five headings to the page outline), and it stays a `role="status"` named by its title. `variant`, `display`, `actionsFill` and `headingLevel` only apply to the stacked layout.
+
+```svelte
+<Card title="Support queue">
+  <EmptyState size="row" bare icon={Inbox} title="No one in this queue" description="New tickets land here.">
+    {#snippet actions()}<Button size="sm" variant="ghost">Add ticket</Button>{/snippet}
+  </EmptyState>
+</Card>
+```
+
+**Repeated empties are grouped; an empty never takes a whole card in a grid of siblings.** When several collections sit side by side (queues, lists, segments) and most are empty, render a card only for the ones with items and gather the empty ones into a single row that names them. Five cards saying "nobody here" fill the screen and push the one queue with people below the fold.
+
+```svelte
+<script>
+  import { Card, EmptyState } from "@codeatlasdev/ui";
+  import { CircleCheck } from "@lucide/svelte";
+  let { queues } = $props();
+  const full = $derived(queues.filter((q) => q.items.length > 0));
+  const empty = $derived(queues.filter((q) => q.items.length === 0));
+  const names = $derived(new Intl.ListFormat("en", { type: "conjunction" }).format(empty.map((q) => q.name)));
+</script>
+
+{#each full as q (q.id)}
+  <Card title={q.name}><QueueList items={q.items} /></Card>
+{/each}
+{#if empty.length > 0}
+  <EmptyState size="row" icon={CircleCheck} title="Nothing pending in {names}" />
+{/if}
+```
+
 ## Tokens
 
-`--ca-empty-padding` (default `--ca-space-12 --ca-space-6`; `bare` wins), `--ca-empty-title-size` and `--ca-empty-title-weight`.
+`--ca-empty-padding` (default `--ca-space-12 --ca-space-6`; `bare` wins), `--ca-empty-title-size` and `--ca-empty-title-weight`. A row reads only `--ca-empty-row-padding` (default `--ca-space-2 --ca-space-3`; `bare` wins): the stacked tokens size a heading and a tile it does not have.
 
 <Props rows={[
   { name: "bare", type: "boolean", default: "false", description: "No padding: an empty state inside a Card, a table or a pane that already insets its content." },
@@ -48,6 +80,7 @@ import DenseCrmSrc from "~/demos/layout/empty-state/DenseCrm.svelte?raw";
   { name: "title", type: "string", description: "Main title." },
   { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "2 inside PageShell/AppSettings/AppForm, 5 elsewhere", description: "Heading level of the title. Only the tag changes; the look stays on `.ca-empty__title`. Keeps the outline valid under the page's `<h1>`." },
   { name: "variant", type: "'default' | 'hero'", default: "'default'", description: "'default' is a compact inline state. 'hero' adds a larger brand-tinted icon tile with a glow and bigger title." },
+  { name: "size", type: "'default' | 'row'", default: "'default'", description: "'row' puts a 16 px icon, the text and the actions on one line for an empty slot in a list or a grid; the title is text, not a heading, and `variant`, `display`, `actionsFill` and `headingLevel` are ignored. Class `ca-empty--row`." },
   { name: "description", type: "string", description: "Supporting text." },
   { name: "actions", type: "Snippet", description: "Call-to-action buttons." },
   { name: "children", type: "Snippet", description: "Extra content below the description." },

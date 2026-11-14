@@ -170,6 +170,70 @@ describe("EmptyState tokens (#707)", () => {
 	});
 });
 
+// #992: an empty slot inside a list or a grid of sibling cards is one line, not a whole card.
+describe('EmptyState size="row" (#992)', () => {
+	const row = {
+		size: "row" as const,
+		icon: Inbox,
+		title: "No one in this queue",
+		description: "New tickets land here.",
+		// A control-height action, like a Button in the slot.
+		actions: snip(
+			`<button type="button" style="height: var(--ca-control-height)">Add ticket</button>`
+		),
+	};
+	const box = (el: Element) => el.getBoundingClientRect();
+	const mid = (el: Element) => box(el).top + box(el).height / 2;
+
+	it("lays icon, text and action on one line", async () => {
+		const screen = await render(EmptyState, row);
+		const root = q(screen.container, ".ca-empty");
+		const [icon, title, desc, actions] = [
+			".ca-empty__icon",
+			".ca-empty__title",
+			".ca-empty__description",
+			".ca-empty__actions",
+		].map((s) => q(root, s));
+		// One control height plus a small inset, never the stacked block (~200px).
+		expect(box(root).height).toBeLessThanOrEqual(56);
+		for (const el of [title, desc, actions]) expect(Math.abs(mid(el) - mid(icon))).toBeLessThan(4);
+		expect(box(title).left).toBeGreaterThan(box(icon).right);
+		expect(box(actions).left).toBeGreaterThan(box(desc).right);
+		expect(q(icon, "svg").getAttribute("width")).toBe("16");
+	});
+
+	it("keeps its name, text and action; no heading", async () => {
+		const screen = await render(EmptyState, row);
+		await expect.element(screen.getByRole("status", { name: row.title })).toBeVisible();
+		await expect.element(screen.getByText(row.title)).toBeVisible();
+		await expect.element(screen.getByText(row.description)).toBeVisible();
+		await expect.element(screen.getByRole("button", { name: "Add ticket" })).toBeVisible();
+		// Five empty rows must not add five headings to the page outline.
+		expect(screen.container.querySelector("h1, h2, h3, h4, h5, h6")).toBeNull();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("wraps in a narrow slot instead of overflowing", async () => {
+		// A title wider than the slot on one line: it must wrap, not push the row sideways.
+		const title = "No one is waiting in the priority support queue right now";
+		const screen = await render(EmptyState, { ...row, title });
+		const root = q(screen.container, ".ca-empty");
+		(root.parentElement as HTMLElement).style.width = "240px";
+		expect(root.scrollWidth).toBeLessThanOrEqual(root.clientWidth);
+		expect(box(q(root, ".ca-empty__actions")).right).toBeLessThanOrEqual(box(root).right);
+	});
+
+	it("leaves the default size stacked", async () => {
+		const screen = await render(EmptyState, { ...row, size: undefined });
+		const root = q(screen.container, ".ca-empty");
+		expect(root.classList.contains("ca-empty--row")).toBe(false);
+		expect(box(q(root, ".ca-empty__icon")).bottom).toBeLessThanOrEqual(
+			box(q(root, ".ca-empty__title")).top
+		);
+		expect(screen.container.querySelector("h5")).not.toBeNull();
+	});
+});
+
 describe("EmptyState title leading (#1005)", () => {
 	it("keeps its heading's line-height until --ca-empty-title-leading is set", async () => {
 		const screen = await render(EmptyState, { title: "No data", headingLevel: 5 });

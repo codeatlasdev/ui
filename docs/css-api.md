@@ -230,6 +230,8 @@ Scoped variable: `--ca-menu-max` (default `32rem`) caps the panel height togethe
 
 `.ca-empty` `.ca-empty--hero` `.ca-empty__actions` `.ca-empty__description` `.ca-empty__icon` `.ca-empty__title` `.ca-empty__title--display`
 
+`.ca-empty--row` (prop `size="row"`, #992): icon, title, description and actions on one line for an empty slot in a list or a grid; the title is a `<p>`, not a heading, and the variant class is not emitted. Token `--ca-empty-row-padding` (default `--ca-space-2 --ca-space-3`; `.ca-empty--bare` wins); the stacked tokens do not apply to a row.
+
 ## ErrorPage
 
 `.ca-error-page` `.ca-error-page__actions` `.ca-error-page__bubble` `.ca-error-page__hint` `.ca-error-page__inner` `.ca-error-page__status` `.ca-error-page__title`
