@@ -1,0 +1,179 @@
+---
+title: Pitfalls and recipes
+description: Eighteen traps a production app hit on top of the library (sheet focus, attributes that do not reach the DOM, load-older versus the scroll threshold, wheel targets on a board, layout shift on slow data, popover on a phone, route transitions over persistent bars, an audit that cannot pass by absence, a decorative 3D scene, long menus, tabs that cannot be vetoed, scroll-snap under keyboard focus, read-then-edit sections, compact step pickers, hover-opened menus, hover-only card actions, empty charts, page width by layout recipe, workaround markers without an issue) and what to do today.
+group: Getting started
+order: 21
+---
+import { Callout } from "@codeatlasdev/ui";
+
+Each entry says what goes wrong, what to do today and which issue tracks the library side. Open items are marked; when the issue closes, the recipe moves into the component page. Parent issue: [#1072](https://github.com/codeatlasdev/ui/issues/1072).
+
+## 1. A sheet opened by touch lights up its close button
+
+`Sheet`, `Dialog` and `Drawer` are native modal `<dialog>` elements, so focus lands on the first focusable control when they open. Opened by a tap, that is the close button, drawn with `:focus-visible`. The layer engine can place focus on the panel (`initialFocus: 'container'`, used by `AlertDialog`, `Lightbox` and `MobilePane`), but `Sheet`, `Dialog` and `Drawer` do not expose it yet.
+
+Today, put a non-interactive focus target first in the content:
+
+```svelte
+<Sheet bind:open title="Status">
+  <!-- svelte-ignore a11y_autofocus -->
+  <div tabindex="-1" autofocus>…content…</div>
+</Sheet>
+```
+
+Tracked: [#1056](https://github.com/codeatlasdev/ui/issues/1056) (focus on open), [#1059](https://github.com/codeatlasdev/ui/issues/1059) (the panel itself takes Tab in WebKit).
+
+## 2. An attribute you pass is not in the DOM
+
+Components that forward their remaining attributes to the root element say so on their page (`Tabs`, `DropdownMenu` items, `Checkbox`, `Drawer`, `TextField`, `Card`, `Button`). Most leaf components do not yet: `Badge`, `StatusChip`, `Chip`, `Avatar`, `Stat`, `Progress`, `Spinner`, `Switch`, `Select`, `Sheet`, `Dialog`, `Alert`, `Divider`, `Kbd` and `EmptyState` reject `data-testid`, `id` and `aria-*` in the type check.
+
+Today, wrap the component in your own element that carries the attribute, or select by role and accessible name in tests. Do not cast the props to silence the type error: the attribute is dropped at runtime.
+
+Tracked: [#1066](https://github.com/codeatlasdev/ui/issues/1066).
+
+## 3. `VirtualList`: the load-older button and the scroll threshold
+
+`VirtualList` loads the previous page by itself when the scroll position is within `loadThreshold` (120 px) of the top, and also shows a "Load older messages" button. Scrolling to the button crosses the threshold, and the button is replaced by the loading note in the middle of the gesture. A test that scrolls to the button and calls `click()` fails with "element was detached" (4 of 180 runs under load in the app that found it).
+
+To test scroll loading, use the real gesture: put the pointer over the list and repeat `page.mouse.wheel(0, -60)` until the loading indicator appears. Never `dispatchEvent('click')`: it skips the actionability checks. To test the button, keep the list away from the threshold, or set `loadThreshold={0}`.
+
+Tracked: [#1067](https://github.com/codeatlasdev/ui/issues/1067), related [#1046](https://github.com/codeatlasdev/ui/issues/1046).
+
+## 4. `Kanban`: the wheel over a board
+
+A vertical wheel over the gap between columns, or past the end of a column's list, should move the board sideways. If the target is decided on every event, the board moves under a still cursor and the next notch scrolls the neighbouring column. Latch the target for the whole gesture: the first notch decides, and the decision holds until the wheel stops. With a still cursor, hold it for about 1 s (slow wheels and a loaded machine space notches by more than 160 ms); only a real pointer move, compared by **screen** position (the browser fires a synthetic `pointermove` when content scrolls under a still cursor), returns to the short 160 ms pause.
+
+Tracked: [#1049](https://github.com/codeatlasdev/ui/issues/1049).
+
+## 5. Layout shift appears only with slow data
+
+A header with a row of status chips that fills in piece by piece, and a two-column page whose side panel moves when the list arrives, shift 0.17 to 0.54 on a 360 px phone when each call takes 300 to 1500 ms; with a fast local API they shift 0. Reserve the final size before the data arrives: a status row with a one-line minimum height, chip placeholders of the real width, a side panel whose position in the DOM and height do not depend on the data. Run the screen audit with a slowed API (entry 8).
+
+Reveal what comes after a region only when the region says it is done, and the signal is `aria-busy`, not "has height and no `.ca-skeleton`". A region that loads **without** drawing a skeleton (controls already drawn, the data not yet there) looks ready, so what follows moves up into its space and is pushed down when the data arrives (CLS 0.52 to 0.56 at 360 px, measured). Put `aria-busy="true"` on the loading region for the **whole** wait, including the delay before the skeleton, with no extra box (`display: contents` or an attachment on the element itself), and keep a ceiling (for example 1.5 s without change) so a reveal can never hang. The library's own boundaries do this for suspended content (`LoadingBoundary`); a region fed by a resource or state does not get it for free.
+
+Tracked: [#1068](https://github.com/codeatlasdev/ui/issues/1068).
+
+## 6. A popover on a phone
+
+A `Popover` is anchored to its trigger. In a phone header the trigger sits near an edge, so the panel opens beside it, over the brand, with wide buttons at the border. Below 900 px use a `Sheet`; from 900 px use a `Popover` with its width limited to the screen:
+
+```svelte
+<script lang="ts">
+  import { Popover, Sheet, responsive } from "@codeatlasdev/ui";
+  let open = $state(false);
+</script>
+
+{#snippet body()}…one body, rendered once…{/snippet}
+
+{#if responsive.isMobile}
+  <button type="button" onclick={() => (open = true)}>Status</button>
+  <Sheet bind:open title="Status">{@render body()}</Sheet>
+{:else}
+  <Popover bind:open side="bottom" align="end">
+    {#snippet triggerChild(props)}<button type="button" {...props}>Status</button>{/snippet}
+    {@render body()}
+  </Popover>
+{/if}
+```
+
+Tracked: [#1069](https://github.com/codeatlasdev/ui/issues/1069).
+
+## 7. The bars blink on every page change
+
+A view transition on every navigation, with `view-transition-name` on the top bar or bottom navigation, paints two frozen images of the bar and cross-fades them for about 250 ms (measured on a real iPhone: opacity painted 1 to 0). Persistent chrome must be the same nodes with opacity 1 in every frame. Do not name the bars, and do not call `startViewTransition` for navigations that keep the same shell; transition only the content region, or only a real drill from a list to a detail. The router snippet on [App navigation](/docs/navigation/app-navigation/#view-transitions) starts a transition on every route: add that condition before using it in an app with persistent bars.
+
+Tracked: [#1070](https://github.com/codeatlasdev/ui/issues/1070).
+
+## 8. An audit that passes by absence
+
+A screen audit is only a gate if it cannot pass without looking. Fail the run on: a serious finding without an exception; any detector that threw (the visit may be incomplete); a missing visit (screen times project without a result file, against a saved list); a failed discovery of dynamic ids (an API error removes screens silently otherwise). Keep exceptions narrow: serious findings only, matched by detector, screen, rule and selector, with a cap equal to the count measured when it was registered and an open issue. Add a slow-API mode (each call delayed 300 to 1500 ms, deterministic by URL) to see what arrives late and pushes the page. When the build runs behind a proxy header (`ADDRESS_HEADER=X-Forwarded-For`), every browser context needs that header or the server answers 500. Always pass the URL of the tree you test.
+
+Tracked: [#1071](https://github.com/codeatlasdev/ui/issues/1071).
+
+## 9. A decorative 3D scene delays the first paint
+
+A decorative WebGL scene (a globe in a card) on a **work screen** sits in the viewport from the first frame, so an `IntersectionObserver` fires at once and its chunk is requested together with the screen's data: first contentful paint was 22% worse. Gate it twice. First capability: no scene for `prefers-reduced-motion: reduce`, `navigator.connection.saveData`, a 2g connection, 2 cores or fewer, 2 GB of memory or less, or no WebGL (those devices keep a static CSS fallback and request **no** chunk). Then `hold`: do not request the chunk until the content has loaded, and wait another 400 ms for the first paint to settle; after that gate the same A/B showed no difference. On a login page, where the scene is the content, no hold is needed.
+
+Tracked: [#746](https://github.com/codeatlasdev/ui/issues/746).
+
+## 10. A long `DropdownMenu` does not scroll
+
+`DropdownMenu` has no height cap: 22 items make a panel about 800 px tall, taller than a phone screen, and the last items cannot be reached. Cap the panel and scroll inside it, and bring the marked item into view when it opens (a pointer-opened menu focuses the container without scrolling):
+
+```css
+.my-menu {
+  max-block-size: min(32rem, calc(var(--ca-vh) - var(--ca-space-8)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+```
+
+```svelte
+<DropdownMenu class="my-menu" onOpenChange={(o) => o && requestAnimationFrame(() =>
+  document.querySelector('.my-menu [aria-checked="true"], .my-menu .is-current')?.scrollIntoView({ block: 'center' }))}>
+```
+
+Tracked: [#1074](https://github.com/codeatlasdev/ui/issues/1074).
+
+## 11. Tabs: you cannot veto a change, and focus selects the tab
+
+`Tabs` writes the new value before it calls `onchange`, so `onchange` cannot protect unsaved changes. Use a function binding that receives the write and applies it only when it is safe: `bind:value={() => tab, (next) => guard(next)}`. Also, focus selects a tab (automatic activation): when a confirmation dialog closes, the browser gives focus back to the tab that opened it, the library selects it again, and the dialog reopens. The moment that focus arrives differs by engine: Chromium at once, WebKit (iPhone) one macrotask later, so `setTimeout(0)` passes in Chromium and fails on the device. Ignore the restored focus **until the next user action** (`pointerdown` or `keydown` in capture), not for a fixed time, and send "keep editing" focus to the field, not to the tab.
+
+Tracked: [#1075](https://github.com/codeatlasdev/ui/issues/1075).
+
+## 12. A scrolling tab strip hides the focused tab
+
+`TabsList` sets `scroll-snap-type: x proximity` and only reveals the **selected** tab with 4 px of room, while the fade mask covers 32 px at each end. Moving focus with the arrow keys leaves the tab cut off by about 40 px, because the browser snaps the scroll back. Remove the snap and leave room for the fade at the end:
+
+```css
+.my-tabs .ca-tabs-list {
+  scroll-snap-type: none;
+  padding-inline-end: var(--ca-space-10);
+}
+```
+
+Test it by moving focus through every tab and back with `ArrowRight`, `ArrowLeft`, `Home` and `End`, at the widths where the strip scrolls.
+
+Tracked: [#1076](https://github.com/codeatlasdev/ui/issues/1076).
+
+## 13. A page of always-open inputs buries the record
+
+A detail tab with one input per field (32 controls in the first tab, mostly empty early on) makes reading a record the same as looking at boxes. Read-only text by default with one **Edit** button per section (4 instead of 32) costs the same keystrokes to fill in (1 click, 7 `Tab`, `Ctrl+Enter` for 8 fields). Rules that held: the button is always visible (never hover-only); editing opens **all** fields of the section, so empty ones are reachable; two signals for the mode (a different background and an "Editing" label); focus goes to the first field; `Esc` cancels and `Ctrl/Cmd+Enter` saves only with focus inside the section; `onsave` returns a promise and the section goes back to reading only when it succeeds; the draft is created when editing starts and dropped when it ends, never mirrored from the external data by an effect (a new value from the server rewrote the draft and froze the page in an effect loop).
+
+Tracked: [#1077](https://github.com/codeatlasdev/ui/issues/1077), related [#1053](https://github.com/codeatlasdev/ui/issues/1053).
+
+## 14. A step strip that does not fit
+
+22 steps as pills scrolled 1854 px sideways at 1440 px. Use one control of constant width: previous and next buttons that carry the **neighbour's name** in their accessible label, and a menu button "Step N of M · name" that lists every step with the current one marked. The arrows cover the common move with one tap; the menu covers the jump (menus alone are hard for older users). Cap the menu height (entry 10).
+
+Tracked: [#1050](https://github.com/codeatlasdev/ui/issues/1050).
+
+## 15. A menu that opens on hover and closes on click
+
+People who hover a menu trigger and then click want it **open**. A trigger that opens on hover and toggles on click closes it (measured with a real mouse: hover then click at 150, 400 and 600 ms all closed it). Model three states, with no clock: closed, open by hover (temporary: closes on leave), pinned (closes on a click on the same trigger, an outside click, `Esc`, another trigger or navigation). A click on a hover-opened menu pins it. Add a safe triangle so a pointer crossing the gap diagonally to a wide panel does not close it, and move focus to the first item only when it was opened by keyboard.
+
+Tracked: [#1078](https://github.com/codeatlasdev/ui/issues/1078), related [#1012](https://github.com/codeatlasdev/ui/issues/1012).
+
+## 16. A hover-only action covers the card text
+
+An action button that floats over the corner of a `Kanban` card and appears on hover covered the title text of most cards. Reserve its corner **always**, hovered or not: publish its size and inset as variables on the card and give the title row `padding-inline-end` equal to the reserved width, so nothing moves when the button appears. On touch keep it in the row with a 44 px target. Never make the information depend on hover.
+
+Tracked: [#1042](https://github.com/codeatlasdev/ui/issues/1042).
+
+## 17. A chart with no data, and the page that jumps
+
+Early on there is almost no data. A 30-day series of zeros draws a flat line that looks like data. Show an unmistakable example instead (outline only, dashed, no fill, `aria-hidden`, a short caption), in the **same box** as the real chart, and make loading, example, series and legend share one fixed height. A ranked bar list needs the number written on each row and a floor on the scale: four rows of 1 against "scale to the largest" draw four full bars that read as complete. Use `--ca-brand-text` for bars and lines, not `--ca-brand-main` (2.13:1 on a light card, under the 3:1 of WCAG 1.4.11; 5.65:1 with the text colour).
+
+Tracked: [#1079](https://github.com/codeatlasdev/ui/issues/1079), related [#1068](https://github.com/codeatlasdev/ui/issues/1068).
+
+## 18. One page width for every screen, and workarounds without an issue yet
+
+Line-length research is about running text. It says nothing against a wide board, table or inbox. Cap running text at 75ch everywhere (`max-inline-size`; WCAG 1.4.8 asks for 80 at most) and choose the page width by layout recipe: a record, dashboard or settings page centred at about 90rem; a form at about 56rem next to a preview; a table anchored left at about 120rem; a board or inbox fluid. A single cap on every page cuts a wide tab strip and leaves dead areas elsewhere. `--ca-measure` (68ch) is defined but nothing in the library uses it yet.
+
+When you write a workaround before the issue exists, do not invent an issue number: `codeatlas-ui lint` and `workarounds` only recognise `ca-ui-workaround(#number)`, so a made-up number makes `workarounds` query the wrong issue (a "closed" one invites removing a workaround that is still needed). Write the marker only when the issue exists; until then keep a plain comment with the reason and search for it before each release.
+
+Tracked: [#1080](https://github.com/codeatlasdev/ui/issues/1080) (width), [#1081](https://github.com/codeatlasdev/ui/issues/1081) (marker).
+
+<Callout type="note" title="Found another?">
+  Mark the workaround with `ca-ui-workaround(#issue)` and open the issue as described in [Reporting problems](/docs/getting-started/reporting/).
+</Callout>
