@@ -1,7 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { settled } from "../../../../tests/settled";
+import { setLocale } from "../../i18n/index.js";
 import TextArea from "./TextArea.svelte";
 import TextAreaRef from "./TextAreaRef.test.svelte";
 
@@ -85,5 +87,88 @@ describe("TextArea", () => {
 		const screen = await render(TextArea, { "aria-label": "Notes" });
 		await expect.element(screen.getByRole("textbox", { name: "Notes" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+// #1120: the same counter as TextField (n/max, warning at warnAt, error over the limit, one polite
+// announcement per crossing).
+describe("TextArea counter (#1120)", () => {
+	afterEach(() => setLocale("en"));
+
+	const counterOf = (s: { container: HTMLElement }) =>
+		s.container.querySelector<HTMLElement>(".ca-field-counter");
+
+	it("shows n/max and describes the field", async () => {
+		const screen = await render(TextArea, { label: "Bio", maxlength: 20, counter: true });
+		const field = screen.getByLabelText("Bio");
+		await field.fill("Hello");
+		await expect.element(screen.getByText("5/20")).toBeVisible();
+		await userEvent.keyboard("!");
+		await expect.element(screen.getByText("6/20")).toBeVisible();
+		await expect.element(field).toHaveAccessibleDescription("6 of 20 characters");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("warning tone at 90%, error tone over a soft max", async () => {
+		const warn = await render(TextArea, {
+			label: "Bio",
+			maxlength: 10,
+			counter: true,
+			value: "123456789",
+		});
+		expect(counterOf(warn)?.classList.contains("ca-field-counter--warn")).toBe(true);
+		expect(await checkA11y(warn.container)).toHaveNoViolations();
+		const over = await render(TextArea, { label: "Post", counter: { max: 10 } });
+		await over.getByLabelText("Post").fill("12345678901");
+		expect(counterOf(over)?.classList.contains("ca-field-counter--over")).toBe(true);
+		expect(await checkA11y(over.container)).toHaveNoViolations();
+	});
+
+	it("from keeps it hidden until that many characters", async () => {
+		const screen = await render(TextArea, { label: "Post", counter: { max: 10, from: 4 } });
+		const field = screen.getByLabelText("Post");
+		await field.fill("abc");
+		expect(counterOf(screen)).toBeNull();
+		expect(field.element().hasAttribute("aria-describedby")).toBe(false);
+		await field.fill("abcd");
+		await expect.element(screen.getByText("4/10")).toBeVisible();
+	});
+
+	it("announces once when crossing the threshold", async () => {
+		const said: string[] = [];
+		const watch = new MutationObserver((records) => {
+			for (const r of records) {
+				if ((r.target as HTMLElement).dataset?.caAnnouncer !== "polite") continue;
+				for (const node of r.addedNodes) if (node.textContent) said.push(node.textContent);
+			}
+		});
+		const screen = await render(TextArea, {
+			label: "Bio",
+			maxlength: 10,
+			counter: true,
+			value: "12345678",
+		});
+		watch.observe(document.body, { childList: true, subtree: true });
+		try {
+			await screen.getByLabelText("Bio").click();
+			await userEvent.keyboard("{Control>}{End}{/Control}9");
+			await expect.poll(() => said).toEqual(["9 of 10 characters"]);
+			await userEvent.keyboard("0");
+			await expect.element(screen.getByText("10/10")).toBeVisible();
+			await settled();
+			await settled();
+			expect(said).toEqual(["9 of 10 characters"]);
+		} finally {
+			watch.disconnect();
+		}
+	});
+
+	it("is localized", async () => {
+		setLocale("pt-BR");
+		const screen = await render(TextArea, { label: "Bio", maxlength: 10, counter: true });
+		await screen.getByLabelText("Bio").fill("abc");
+		await expect
+			.element(screen.getByLabelText("Bio"))
+			.toHaveAccessibleDescription("3 de 10 caracteres");
 	});
 });
