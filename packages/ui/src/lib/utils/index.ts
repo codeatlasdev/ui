@@ -2,7 +2,7 @@ export { copyToClipboard } from "./clipboard.js";
 export type { ClassValue } from "./cn.js";
 export { cn } from "./cn.js";
 export { debounce } from "./debounce.js";
-export type { ExportColumn } from "./export.js";
+export type { CsvOptions, ExportColumn } from "./export.js";
 export { downloadFile, toCsv, toJson } from "./export.js";
 export { formatCurrency, formatDate, formatNumber, formatRelativeTime } from "./format.js";
 export { storageGet, storageRemove, storageSet } from "./local-storage.js";

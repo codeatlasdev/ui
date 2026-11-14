@@ -3,7 +3,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { exportMenu } from '../../i18n/groups/exportMenu.js';
   import { announce } from '../../utils/announce.js';
-  import { downloadFile, toCsv, toJson, type ExportColumn } from '../../utils/export.js';
+  import { downloadFile, toCsv, toJson, type CsvOptions, type ExportColumn } from '../../utils/export.js';
   import Button from '../Button/Button.svelte';
   import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
   import DropdownMenuItem from '../DropdownMenu/DropdownMenuItem.svelte';
@@ -38,6 +38,11 @@
     columns?: readonly ExportColumn<T>[];
     /** Formats offered, in menu order. */
     formats?: Format[];
+    /**
+     * CSV options: `{ locale: 'pt-BR' }` writes `;` separators and decimal commas for a Brazilian
+     * spreadsheet; `delimiter` overrides the separator. The download always starts with a UTF-8 BOM.
+     */
+    csv?: Omit<CsvOptions, 'bom'>;
     /** Visible button label. */
     label?: string;
     size?: 'sm' | 'md' | 'lg';
@@ -53,6 +58,7 @@
     filename = 'export',
     columns,
     formats = ['csv', 'json'],
+    csv,
     label,
     size = 'md',
     variant = 'outlined',
@@ -64,7 +70,7 @@
   const MIME: Record<Format, string> = { csv: 'text/csv;charset=utf-8', json: 'application/json' };
 
   function run(format: Format) {
-    const content = format === 'csv' ? toCsv(data, columns) : toJson(data, columns);
+    const content = format === 'csv' ? toCsv(data, columns, { ...csv, bom: false }) : toJson(data, columns);
     const name = `${filename}.${format}`;
     // A leading BOM lets Excel open UTF-8 CSV with the right encoding.
     downloadFile(name, format === 'csv' ? `\uFEFF${content}` : content, MIME[format]);

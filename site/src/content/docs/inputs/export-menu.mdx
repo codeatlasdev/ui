@@ -31,13 +31,19 @@ The same logic is exported for custom UI:
 import { toCsv, toJson, downloadFile } from "@codeatlasdev/ui";
 
 downloadFile("domains.csv", toCsv(rows, columns), "text/csv;charset=utf-8");
+
+// For a spreadsheet in Brazil: `;` between fields, decimal commas and a UTF-8 BOM.
+downloadFile("domains.csv", toCsv(rows, columns, { locale: "pt-BR", bom: true }), "text/csv;charset=utf-8");
 ```
+
+`toCsv` takes `{ locale?, delimiter?, bom? }` as a third argument. With a `locale` whose decimal mark is a comma (`pt-BR`, `de-DE`, `fr-FR`), numbers use that mark and fields are separated by `;`; `delimiter` (`,`, `;` or a tab) overrides it. A field holding the separator, a quote or a line break is quoted.
 
 <Props rows={[
   { name: "data", type: "readonly T[]", description: "Rows to export." },
   { name: "filename", type: "string", default: "'export'", description: "File name without extension." },
   { name: "columns", type: "ExportColumn<T>[]", description: "`{ key, header?, value? }` per column: header defaults to key, value overrides row[key]. Defaults to the keys of the first row." },
   { name: "formats", type: "('csv' | 'json')[]", default: "['csv', 'json']", description: "Formats offered, in menu order." },
+  { name: "csv", type: "{ locale?: string; delimiter?: ',' | ';' | '\\t' }", description: "CSV options passed to toCsv. { locale: 'pt-BR' } writes ; separators and decimal commas so the file opens correctly in Excel pt-BR. The download always starts with a UTF-8 BOM." },
   { name: "label", type: "string", default: "'Export' (localized)", description: "Button label." },
   { name: "variant", type: "'filled' | 'glass' | 'outlined' | 'ghost'", default: "'outlined'", description: "Button variant." },
   { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Button size." },

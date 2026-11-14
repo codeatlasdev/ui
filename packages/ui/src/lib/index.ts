@@ -404,6 +404,7 @@ export {
 } from "./utils/color.js";
 export type {
 	ClassValue,
+	CsvOptions,
 	ExportColumn,
 	FieldState,
 	FormState,

@@ -16,6 +16,18 @@ describe("ExportMenu", () => {
 		expect(e.content).toBe("domain,price\r\na.com,12\r\nb.com,8\r\n");
 	});
 
+	it("csv options reach the file: pt-BR separator and decimal comma (#1138)", async () => {
+		const onexport = vi.fn();
+		const screen = await render(Harness, {
+			onexport,
+			data: [{ domain: "a.com", price: 12.5 }],
+			csv: { locale: "pt-BR" },
+		});
+		await screen.getByRole("button", { name: "Export" }).click();
+		await screen.getByRole("menuitem", { name: "CSV" }).click();
+		expect(onexport.mock.calls[0][0].content).toBe("domain;price\r\na.com;12,5\r\n");
+	});
+
 	it("offers only the requested formats", async () => {
 		const screen = await render(Harness, { formats: ["json"] });
 		await screen.getByRole("button", { name: "Export" }).click();
