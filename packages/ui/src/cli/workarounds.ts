@@ -2,15 +2,19 @@
  * `codeatlas-ui workarounds`: lists the `ca-ui-workaround(#n)` markers an agent left in the code and
  * whether the issue behind each one is closed (so the workaround can go), then the `.ca-*` selectors
  * in app CSS that target a part the library does not document as stable (`dist/parts.json`, #381).
- * Read-only; offline-safe. Exit code is 0 unless `--strict` finds such a selector.
+ * A workaround written before its issue exists is marked `ca-ui-workaround(pending: reason)` (or
+ * `pendente:`): it excuses the selector like a numbered one and is listed apart until the number replaces it
+ * (#1081). Read-only; offline-safe. Exit code is 0 unless `--strict` finds such a selector or a pending marker.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { WORKAROUND_MARKER } from "./markers.ts";
 import { relPosix } from "./paths.ts";
 
 export interface Marker {
 	line: number;
-	issue: number;
+	/** `null` for a pending marker: the issue is not open yet. */
+	issue: number | null;
 	reason: string;
 }
 
@@ -18,7 +22,8 @@ export interface Found extends Marker {
 	file: string;
 }
 
-type IssueState = "open" | "closed" | "unknown";
+/** `not found`: the API answered 404. `unknown`: offline or rate limited. `invalid`: `#0`, never asked. */
+type IssueState = "open" | "closed" | "not found" | "unknown" | "invalid";
 
 /** The slice of `dist/parts.json` the scan needs. */
 export interface PartsData {
@@ -31,8 +36,10 @@ export interface WorkaroundsOptions {
 	log?: (line: string) => void;
 	/** Stable/internal parts of the installed library; without it the selector scan is skipped. */
 	parts?: PartsData;
-	/** Exit 1 when a selector targets a part that is not documented as stable. */
+	/** Exit 1 when a selector targets a part that is not documented as stable, or a marker is pending. */
 	strict?: boolean;
+	/** Only list the pending markers (`--pending`), without asking the API anything. */
+	pendingOnly?: boolean;
 }
 
 export interface Selector {
@@ -41,7 +48,11 @@ export interface Selector {
 }
 
 const MARKER = /ca-ui-workaround\(#(\d+)\):[ \t]*(.*?)[ \t]*(?:-->)?[ \t]*$/;
-const MARKER_ANY = /ca-ui-workaround\(#\d+\)/;
+/** `ca-ui-workaround(pending: reason)`: the reason runs to the last `)` of the line. */
+const PENDING_IN = /ca-ui-workaround\((?:pending|pendente):[ \t]*(.*)\)/;
+/** `ca-ui-workaround(pending): reason`, the shape of the numbered marker. */
+const PENDING_AFTER =
+	/ca-ui-workaround\((?:pending|pendente)\):[ \t]*(.*?)[ \t]*(?:\*\/|-->)?[ \t]*$/;
 const SOURCE = /\.(svelte|ts|js|astro|mdx|css)$/;
 const API = "https://api.github.com/repos/codeatlasdev/ui/issues";
 
@@ -49,7 +60,12 @@ export function findMarkers(src: string): Marker[] {
 	const out: Marker[] = [];
 	src.split("\n").forEach((text, i) => {
 		const m = text.match(MARKER);
-		if (m) out.push({ line: i + 1, issue: Number(m[1]), reason: m[2] });
+		if (m) {
+			out.push({ line: i + 1, issue: Number(m[1]), reason: m[2] });
+			return;
+		}
+		const p = text.match(PENDING_AFTER) ?? text.match(PENDING_IN);
+		if (p) out.push({ line: i + 1, issue: null, reason: p[1].trim() });
 	});
 	return out;
 }
@@ -93,8 +109,11 @@ function collect(path: string): string[] {
 }
 
 async function state(issue: number, f: typeof fetch): Promise<IssueState> {
+	// `#0` (a placeholder) is never an issue: asking would report "unknown", or worse another issue's state.
+	if (!(issue > 0)) return "invalid";
 	try {
 		const res = await f(`${API}/${issue}`, { headers: { accept: "application/vnd.github+json" } });
+		if (res.status === 404) return "not found";
 		if (!res.ok) return "unknown";
 		const data: unknown = await res.json();
 		const s = data && typeof data === "object" && "state" in data ? data.state : undefined;
@@ -104,7 +123,10 @@ async function state(issue: number, f: typeof fetch): Promise<IssueState> {
 	}
 }
 
-/** Resolves to 0 (a report), or 1 when `strict` and a selector targets a part that is not stable. */
+/**
+ * Resolves to 0 (a report), or 1 when `strict` and a selector targets a part that is not stable or a marker is
+ * still pending (a change does not ship with a workaround nobody filed).
+ */
 export async function runWorkarounds(
 	targets: string[],
 	opts: WorkaroundsOptions = {}
@@ -114,9 +136,21 @@ export async function runWorkarounds(
 	const found: Found[] = files.flatMap((file) =>
 		findMarkers(readFileSync(file, "utf8")).map((m) => ({ ...m, file: relPosix(cwd, file) }))
 	);
+	const numbered = found.filter((m) => m.issue !== null);
+	const pending = found.filter((m) => m.issue === null);
+
+	if (opts.pendingOnly) {
+		if (pending.length) reportPending(pending, log);
+		else log("No pending ca-ui-workaround markers.");
+		return opts.strict && pending.length ? 1 : 0;
+	}
 
 	if (!found.length) log("No ca-ui-workaround markers found.");
-	else await reportMarkers(found, f, log);
+	if (numbered.length) await reportMarkers(numbered, f, log);
+	if (pending.length) {
+		if (numbered.length) log("");
+		reportPending(pending, log);
+	}
 
 	const offenders = opts.parts ? scanSelectors(files, opts.parts, cwd) : [];
 	if (offenders.length) {
@@ -124,10 +158,20 @@ export async function runWorkarounds(
 		for (const o of offenders)
 			log(`${o.file}:${o.line}  .${o.name}  not a stable part of @codeatlasdev/ui`);
 		log(
-			`${offenders.length} selector${offenders.length === 1 ? "" : "s"} target a part the library may rename in any release. Use a documented part, variable or data attribute (get_component / list_parts), or mark the line with ca-ui-workaround(#n) after opening the issue.`
+			`${offenders.length} selector${offenders.length === 1 ? "" : "s"} target a part the library may rename in any release. Use a documented part, variable or data attribute (get_component / list_parts), or mark the line with ca-ui-workaround(#n) after opening the issue (ca-ui-workaround(pending: reason) until it exists).`
 		);
 	}
-	return opts.strict && offenders.length ? 1 : 0;
+	return opts.strict && (offenders.length || pending.length) ? 1 : 0;
+}
+
+/** Pending markers: a warning, listed apart, with what to do next. */
+function reportPending(pending: Found[], log: (line: string) => void) {
+	log("Pending (no issue yet): open the issue, then replace pending: with its number.");
+	const w = Math.max(...pending.map((m) => `${m.file}:${m.line}`.length));
+	for (const m of pending) log(`${`${m.file}:${m.line}`.padEnd(w)}  ${m.reason}`);
+	log(
+		`${pending.length} pending marker${pending.length === 1 ? "" : "s"}. Never borrow another issue's number: a closed one tells you to remove a workaround that still holds.`
+	);
 }
 
 /** Selectors on `.ca-*` names the library does not document as stable, minus the ones a marker excuses. */
@@ -141,7 +185,9 @@ function scanSelectors(files: string[], data: PartsData, cwd: string) {
 		const lines = src.split("\n");
 		for (const s of findSelectors(src, file)) {
 			if (stable.has(s.name)) continue;
-			const excused = [lines[s.line - 1], lines[s.line - 2]].some((l) => l && MARKER_ANY.test(l));
+			const excused = [lines[s.line - 1], lines[s.line - 2]].some(
+				(l) => l && WORKAROUND_MARKER.test(l)
+			);
 			if (!excused) out.push({ file: relPosix(cwd, file), ...s });
 		}
 	}
@@ -149,7 +195,7 @@ function scanSelectors(files: string[], data: PartsData, cwd: string) {
 }
 
 async function reportMarkers(found: Found[], f: typeof fetch, log: (line: string) => void) {
-	const ids = [...new Set(found.map((m) => m.issue))];
+	const ids = [...new Set(found.map((m) => m.issue as number))];
 	const states = new Map(
 		await Promise.all(ids.map(async (id) => [id, await state(id, f)] as const))
 	);
@@ -164,16 +210,28 @@ async function reportMarkers(found: Found[], f: typeof fetch, log: (line: string
 	for (const r of rows)
 		log(`${r[0].padEnd(w[0])}  ${r[1].padEnd(w[1])}  ${r[2].padEnd(w[2])}  ${r[3]}`);
 
-	const closed = found.filter((m) => states.get(m.issue) === "closed").length;
-	const unknown = found.filter((m) => states.get(m.issue) === "unknown").length;
+	const count = (s: IssueState) => found.filter((m) => states.get(m.issue as number) === s).length;
+	const [closed, unknown, missing, invalid] = [
+		count("closed"),
+		count("unknown"),
+		count("not found"),
+		count("invalid"),
+	];
+	const plural = (n: number) => (n === 1 ? "" : "s");
 	log("");
-	log(`${found.length} workaround${found.length === 1 ? "" : "s"}, ${closed} closed.`);
+	log(`${found.length} workaround${plural(found.length)}, ${closed} closed.`);
 	if (closed)
 		log(
 			"A closed issue means the library fixed it: update @codeatlasdev/ui, then remove the workaround and its marker."
 		);
-	if (unknown)
+	if (missing)
 		log(
-			`${unknown} marker${unknown === 1 ? "" : "s"} with unknown state (offline, rate limited or not found).`
+			`${missing} marker${plural(missing)} point at an issue that does not exist: fix the number.`
 		);
+	if (invalid)
+		log(
+			`${invalid} marker${plural(invalid)} with an invalid number (#0): write ca-ui-workaround(pending: reason) until the issue exists.`
+		);
+	if (unknown)
+		log(`${unknown} marker${plural(unknown)} with unknown state (offline or rate limited).`);
 }

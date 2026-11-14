@@ -47,6 +47,18 @@ describe("ui guard: styles", () => {
 		).toEqual([]);
 	});
 
+	it("a pending marker (no issue yet) excuses the rule like a numbered one (#1081)", () => {
+		expect(
+			rules("app.css", "/* ca-ui-workaround(pending: no token for this) */\n.a { color: #123456; }")
+		).toEqual([]);
+		expect(
+			rules("app.css", ".a { color: #123456; } /* ca-ui-workaround(pendente: sem token) */")
+		).toEqual([]);
+		expect(rules("app.css", "/* ca-ui-workaround(soon) */\n.a { color: #123456; }")).toEqual([
+			"hex:2",
+		]);
+	});
+
 	it("ignores comments", () => {
 		expect(
 			rules("app.css", "/* color: #fff; padding: 12px */\n.a { color: var(--ca-text-primary); }")

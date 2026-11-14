@@ -14,12 +14,13 @@
  *   nested-surface a Card or Surface directly inside another: one frame per group
  *
  * The layout rules follow /docs/getting-started/layout-principles/.
- * A `ca-ui-workaround(#n)` marker on the line or the one above excuses it. Exit 1 on any finding.
+ * A `ca-ui-workaround(#n)` (or `ca-ui-workaround(pending: reason)`) marker on the line or the one above excuses it. Exit 1 on any finding.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { parse } from "svelte/compiler";
 import { BREAKPOINTS } from "../lib/components/Layout/layout.ts";
+import { WORKAROUND_MARKER } from "./markers.ts";
 import { relPosix } from "./paths.ts";
 
 export const GUARD_RULES = [
@@ -50,7 +51,7 @@ export interface GuardOptions {
 	rules?: readonly GuardRule[];
 }
 
-const MARKER = /ca-ui-workaround\(#\d+\)/;
+const MARKER = WORKAROUND_MARKER;
 const lineOf = (s: string, i: number) => s.slice(0, i).split("\n").length;
 /** Blank comments but keep newlines, so offsets and line numbers stay those of the file. */
 const blank = (s: string) =>

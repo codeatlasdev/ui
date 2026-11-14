@@ -37,6 +37,18 @@ describe("findMarkers", () => {
 	it("ignores a marker without an issue number", () => {
 		expect(findMarkers("// ca-ui-workaround: nope")).toEqual([]);
 	});
+
+	it("reads a pending marker, written before the issue exists, with its reason (#1081)", () => {
+		expect(
+			findMarkers(
+				"/* ca-ui-workaround(pending: label is not a part) */\n<!-- ca-ui-workaround(pendente: foco some) -->\n// ca-ui-workaround(pending): close on scroll"
+			)
+		).toEqual([
+			{ line: 1, issue: null, reason: "label is not a part" },
+			{ line: 2, issue: null, reason: "foco some" },
+			{ line: 3, issue: null, reason: "close on scroll" },
+		]);
+	});
 });
 
 describe("runWorkarounds", () => {
@@ -82,12 +94,84 @@ describe("runWorkarounds", () => {
 		expect(lines.join("\n")).toContain("offline");
 	});
 
-	it("treats a non-200 (rate limit, 404) as unknown", async () => {
+	it("treats a non-200 other than 404 (rate limit) as unknown", async () => {
 		lines.length = 0;
 		const root = project(FILES);
 		const fetchMock = (async () => new Response("{}", { status: 403 })) as unknown as typeof fetch;
 		await runWorkarounds([join(root, "src")], { cwd: root, fetch: fetchMock, ...out });
 		expect(lines.join("\n")).toMatch(/#40[^\n]*unknown/);
+	});
+
+	it("#0 is an invalid number: no API call, reported as invalid (#1081)", async () => {
+		lines.length = 0;
+		const calls: string[] = [];
+		const fetchMock = (async (url: string) => {
+			calls.push(url);
+			return new Response(JSON.stringify({ state: "open" }), { status: 200 });
+		}) as unknown as typeof fetch;
+		const root = project({ "src/a.ts": "// ca-ui-workaround(#0): placeholder\n" });
+		const code = await runWorkarounds([join(root, "src")], { cwd: root, fetch: fetchMock, ...out });
+		expect(code).toBe(0);
+		expect(calls).toEqual([]);
+		expect(lines.join("\n")).toMatch(/#0[^\n]*invalid/);
+	});
+
+	it("tells a 404 (no such issue) from a state it could not read (#1081)", async () => {
+		lines.length = 0;
+		const root = project(FILES);
+		const fetchMock = (async (url: string) =>
+			url.endsWith("/40")
+				? new Response("{}", { status: 404 })
+				: new Response("{}", { status: 403 })) as unknown as typeof fetch;
+		await runWorkarounds([join(root, "src")], { cwd: root, fetch: fetchMock, ...out });
+		expect(lines.join("\n")).toMatch(/#40[^\n]*not found/);
+		expect(lines.join("\n")).toMatch(/#12[^\n]*unknown/);
+	});
+
+	it("lists pending markers apart, a warning that --strict turns into exit 1 (#1081)", async () => {
+		const files = {
+			...FILES,
+			"src/e.css": "/* ca-ui-workaround(pendente: menu fecha ao rolar) */\n.x { a: b }\n",
+		};
+		const fetchMock = (async () =>
+			new Response(JSON.stringify({ state: "open" }), { status: 200 })) as unknown as typeof fetch;
+		lines.length = 0;
+		const root = project(files);
+		const code = await runWorkarounds([join(root, "src")], { cwd: root, fetch: fetchMock, ...out });
+		const text = lines.join("\n");
+		expect(code).toBe(0);
+		expect(text).toMatch(/pending[^\n]*\n[^\n]*src\/e\.css:1[^\n]*menu fecha ao rolar/i);
+		expect(text).toContain("1 pending");
+		lines.length = 0;
+		const strict = await runWorkarounds([join(root, "src")], {
+			cwd: root,
+			fetch: fetchMock,
+			strict: true,
+			...out,
+		});
+		expect(strict).toBe(1);
+	});
+
+	it("--pending lists only the pending markers, offline (#1081)", async () => {
+		lines.length = 0;
+		const root = project({
+			...FILES,
+			"src/e.ts": "// ca-ui-workaround(pending: tabs lose focus)\n",
+		});
+		const fetchMock = (async () => {
+			throw new Error("must not be called");
+		}) as unknown as typeof fetch;
+		const code = await runWorkarounds([join(root, "src")], {
+			cwd: root,
+			fetch: fetchMock,
+			pendingOnly: true,
+			...out,
+		});
+		const text = lines.join("\n");
+		expect(code).toBe(0);
+		expect(text).toContain("src/e.ts:1");
+		expect(text).toContain("tabs lose focus");
+		expect(text).not.toContain("#12");
 	});
 
 	it("prints a clear line and exits 0 when there are no markers", async () => {
@@ -159,6 +243,14 @@ describe("runWorkarounds selector scan (#381)", () => {
 		expect(text).toContain("src/a.css:1");
 		expect(text).not.toContain("src/a.css:3");
 		expect(code).toBe(1);
+	});
+
+	it("a pending marker above a selector excuses it too (#1081)", async () => {
+		const { text } = await run({
+			"src/a.css":
+				"/* ca-ui-workaround(pending: label is not a part) */\n.ca-btn__label { a: b }\n",
+		});
+		expect(text).not.toContain("not a stable part");
 	});
 
 	it("only reports, exit 0, without --strict", async () => {
