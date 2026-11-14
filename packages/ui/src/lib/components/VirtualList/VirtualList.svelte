@@ -421,13 +421,19 @@
   >
     {#if hasMore || loadingMore}
       <div class="ca-virtual-list__head" {@attach measureHead}>
-        {#if loadingMore}
-          <p class="ca-virtual-list__loading" aria-busy="true">{t().virtualList.loadingOlder}</p>
-        {:else}
-          <button type="button" class="ca-virtual-list__older" onclick={loadOlder}>
-            {t().virtualList.loadOlder}
-          </button>
-        {/if}
+        <!-- One node for both states (#1067): the threshold starts a load while a pointer or a test is on its way
+             here, and swapping the button for a text detached the click target and dropped focus. `aria-disabled`,
+             not `disabled`: a disabled button loses focus. -->
+        <button
+          type="button"
+          class="ca-virtual-list__older"
+          class:ca-virtual-list__loading={loadingMore}
+          aria-busy={loadingMore ? 'true' : undefined}
+          aria-disabled={loadingMore ? 'true' : undefined}
+          onclick={() => { if (!loadingMore) loadOlder(); }}
+        >
+          {loadingMore ? t().virtualList.loadingOlder : t().virtualList.loadOlder}
+        </button>
       </div>
     {/if}
 
@@ -508,13 +514,11 @@
       outline-offset: 2px;
     }
 
-    .ca-virtual-list__loading {
-      margin: 0;
-      padding: var(--ca-space-1-5) var(--ca-space-3);
-      border-radius: var(--ca-radius-pill);
+    /* The same button while a page loads: muted, no hover fill, the reset's not-allowed cursor (aria-disabled). */
+    .ca-virtual-list__older.ca-virtual-list__loading,
+    .ca-virtual-list__older.ca-virtual-list__loading:hover {
       background: var(--ca-surface-raised);
       color: var(--ca-text-secondary);
-      font-size: var(--ca-font-size-caption);
     }
 
     .ca-virtual-list__list {

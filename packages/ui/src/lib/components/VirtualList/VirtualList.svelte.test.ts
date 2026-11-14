@@ -222,15 +222,32 @@ describe("VirtualList", () => {
 		expect(none.container.querySelector(".ca-virtual-list__older")).toBeNull();
 	});
 
-	it("shows a busy loading indicator instead of the button while loadingMore", async () => {
-		const screen = await render(Harness, {
-			props: { initial: 50, hasMore: true, loadingMore: true },
-		});
+	// #1067: the threshold starts a load while a pointer or a test is on its way to the button. Swapping the button
+	// for a text node then detached the click target and dropped focus: the same node now turns busy and back.
+	it("keeps the same button, busy and focused, while loadingMore", async () => {
+		const onloadmore = vi.fn();
+		const screen = await render(Harness, { props: { initial: 50, hasMore: true, onloadmore } });
 		await settle();
-		const busy = screen.container.querySelector("[aria-busy=true]") as HTMLElement;
-		expect(busy.textContent).toContain("Loading older messages");
-		expect(screen.container.querySelector("button.ca-virtual-list__older")).toBeNull();
+		const btn = screen.container.querySelector(".ca-virtual-list__older") as HTMLButtonElement;
+		btn.focus();
+		onloadmore.mockClear();
+		await screen.rerender({ loadingMore: true });
+		await settle();
+		const busy = screen.container.querySelector(".ca-virtual-list__older");
+		expect(busy, "the button node survives the load").toBe(btn);
+		expect(btn.getAttribute("aria-busy")).toBe("true");
+		expect(btn.getAttribute("aria-disabled")).toBe("true");
+		expect(btn.classList.contains("ca-virtual-list__loading")).toBe(true);
+		expect(btn.textContent).toContain("Loading older messages…");
+		expect(document.activeElement).toBe(btn);
+		btn.click();
+		expect(onloadmore).not.toHaveBeenCalled();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+		await screen.rerender({ loadingMore: false });
+		await settle();
+		expect(screen.container.querySelector(".ca-virtual-list__older")).toBe(btn);
+		expect(btn.hasAttribute("aria-busy")).toBe(false);
+		expect(btn.textContent?.trim()).toBe("Load older messages");
 	});
 
 	it(

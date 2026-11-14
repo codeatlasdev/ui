@@ -606,6 +606,8 @@ A `Toggle` is a one-item `ToggleGroup`: it wraps its button in `.ca-toggle-group
 
 `.ca-virtual-list` `.ca-virtual-list__empty` `.ca-virtual-list__head` `.ca-virtual-list__item` `.ca-virtual-list__list` `.ca-virtual-list__loading` `.ca-virtual-list__older` `.ca-virtual-list__scroller` `.ca-virtual-list--bordered`
 
+`.ca-virtual-list__loading` is a state of `.ca-virtual-list__older` (the same `<button>`, with `aria-busy="true"` and `aria-disabled="true"`) while `loadingMore`; it was a separate `<p>` until #1067.
+
 ---
 
 ## Data attributes
