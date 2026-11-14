@@ -530,7 +530,7 @@ Data attributes: `data-orientation` (`vertical`)
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1225,7 +1225,7 @@ Internal (may change in any release): `ca-spin`
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1269,7 +1269,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1308,10 +1308,13 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `triggerLabel?` | `string` |  | aria-label of the calendar button. |
 | `clearable?` | `boolean` | `false` | A "Clear dates" button while either end is set: both ends go back to empty (#1210). |
+| `presets?` | `boolean \| readonly (DateRangePresetId \| DateRangePreset)[]` | `false` | Shortcut ranges listed beside the calendar (#1139). `true`: today, last 7 days, last 30 days, this month and last month, labelled from the catalog. An array mixes built-in ids (`'yesterday'`, `'last90Days'`, `'thisYear'`, …) with `{ label, range }`, `range` being a `{ start, end }` or a function of today. Ranges are clamped to `minValue` / `maxValue` (one wholly outside is disabled). Picking one sets both ends, calls `onchange` once and closes like a completed range; the one equal to the value is `aria-pressed`. |
+| `today?` | `DateValue` |  | The day presets count from. Default: today in `timeZone`. |
+| `timeZone?` | `string` |  | IANA time zone of "today" for presets (`'America/Sao_Paulo'`). Default: the browser's. |
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -2632,7 +2635,7 @@ Variables: `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 | `onchange?` | `(value: CalendarDate \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -3169,7 +3172,7 @@ Tokens: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -3808,16 +3811,17 @@ Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-i
 |---|---|---|---|
 | `steps` | `StepItem[]` |  |  |
 | `current?` | `number` | `0` | `bind:` |
-| `orientation?` | `'horizontal' \| 'vertical' \| 'auto'` | `'auto'` | `horizontal`: steps in a row, text under each number. `vertical`: a list, number then text. `auto` (default): vertical when the stepper is narrower than 40rem (container query), horizontal above. |
+| `orientation?` | `'horizontal' \| 'vertical' \| 'auto' \| 'compact'` | `'auto'` | `horizontal`: steps in a row, text under each number. `vertical`: a list, number then text. `auto` (default): vertical when the stepper is narrower than 40rem (container query), horizontal above. `compact`: one line, "Step 2 of 6" and the current label, over a thin progress bar (`role="progressbar"`): for many steps on a phone, where the vertical list would push the form down (#1050). |
+| `showDescriptions?` | `boolean` | `true` | `false` keeps only the labels (the descriptions take a line each under them). |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-stepper` `ca-stepper__bubble` `ca-stepper__desc` `ca-stepper__label` `ca-stepper__line` `ca-stepper__line--done` `ca-stepper__list` `ca-stepper__step` `ca-stepper__step--active` `ca-stepper__step--done` `ca-stepper__text`
+Parts: `ca-stepper` `ca-stepper--compact` `ca-stepper__bar` `ca-stepper__bar-fill` `ca-stepper__bubble` `ca-stepper__count` `ca-stepper__desc` `ca-stepper__label` `ca-stepper__line` `ca-stepper__line--done` `ca-stepper__list` `ca-stepper__step` `ca-stepper__step--active` `ca-stepper__step--done` `ca-stepper__summary` `ca-stepper__text`
 
-Variables: `--ca-stepper-text-max`
+Variables: `--ca-stepper-progress` `--ca-stepper-text-max`
 
 Data attributes: `data-orientation` (`auto` `vertical`)
 
-Tokens: `--ca-stepper-text-max`
+Tokens: `--ca-stepper-progress` `--ca-stepper-text-max`
 
 ## Steps
 
@@ -4235,7 +4239,7 @@ Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__i
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -4286,7 +4290,7 @@ Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timelin
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -4613,8 +4617,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@298: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@300: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@302: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@304: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
@@ -4906,6 +4910,16 @@ First navigable path inside a module (used by Rail/BottomNav on tap).
 
 ```ts
 function firstModulePath(mod: NavModule): string
+```
+
+### foldText
+
+`import { foldText } from "@codeatlasdev/ui"`
+
+Lowercases and strips diacritics so "São", "SAO" and "sao" compare equal: `foldText("Açúcar")` is `"acucar"`.
+
+```ts
+const foldText: (text: string) => string
 ```
 
 ### fontFamily
@@ -5384,6 +5398,26 @@ Every term must match. Title hits rank above heading hits above body hits. Retur
 function searchDocs(index: DocsSearchEntry[], query: string, limit?: number): DocsSearchResult[]
 ```
 
+### searchItems
+
+`import { searchItems } from "@codeatlasdev/ui"`
+
+Filters `items` by `query` ignoring accents and case ("acucar" finds "Açúcar") and sorts them by relevance: a field equal to the query, then one starting with it, then the query at the start of a word, then inside a word, then the words of the query found apart (any order, any field). Ties go to the earlier key, then to source order. An empty query returns every item. `searchItems(users, q, { keys: ["name", "email"] })`.
+
+```ts
+function searchItems<T>(items: readonly T[], query: string, options?: SearchItemsOptions<NoInfer<T>>): T[]
+```
+
+### searchScore
+
+`import { searchScore } from "@codeatlasdev/ui"`
+
+Relevance of `query` in `text` (one field, or several, most important first), ignoring accents and case; 0 when it does not match. Every word of the query must appear in some field. A higher score is a better match: compare scores, never rely on their values. `searchScore("Pão de açúcar", "acucar") > 0`.
+
+```ts
+function searchScore(text: string | readonly (string | null | undefined)[], query: string): number
+```
+
 ### semanticDark
 
 `import { semanticDark } from "@codeatlasdev/ui"`
@@ -5441,6 +5475,16 @@ const shadows: {
   thick: "0 6px 24px oklch(0.25 0.008 70 / 0.14)";
   chrome: "0 12px 40px oklch(0.25 0.008 70 / 0.19)";
 }
+```
+
+### slugify
+
+`import { slugify } from "@codeatlasdev/ui"`
+
+A lowercase ASCII slug for a URL or an id: accents dropped, letters that do not decompose spelled out (`ß` → `ss`, `×` → `x`), apostrophes removed, every other run of characters a single `-`. `slugify("Etiqueta Térmica 10×5")` is `"etiqueta-termica-10x5"`. Text outside the Latin script is dropped.
+
+```ts
+function slugify(text: string): string
 ```
 
 ### soundBus
@@ -5718,6 +5762,8 @@ Types:
 | `CsvOptions` | `interface CsvOptions { locale?: string; delimiter?: "," \| ";" \| "\t"; bom?: boolean; }` |  |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
+| `DateRangePreset` | `interface DateRangePreset { label: string; range: \| { start: DateValue; end: DateValue } \| ((today: CalendarDate) => { start: DateValue; end: DateValue }); }` | A custom DateRangePicker preset: its label and its range, or a function of today that returns one. |
+| `DateRangePresetId` | `type DateRangePresetId = \| "today" \| "yesterday" \| "last7Days" \| "last30Days" \| "last90Days" \| "thisMonth" \| "lastMonth" \| "thisYear";` | A built-in DateRangePicker preset, labelled from the i18n catalog. "Last N days" ends today; `thisMonth` / `lastMonth` / `thisYear` run from the first to the last day. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| "auto" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. `"auto"` is comfortable under a coarse pointer (touch targets stay 44px) and compact under a fine one (mouse, trackpad), where spacing, control heights and body text shrink together (#999). |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
@@ -5792,6 +5838,8 @@ Types:
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; successMuted?: ColorValue; successFg?: ColorValue; warningMuted?: ColorValue; warningFg?: ColorValue; infoMuted?: ColorValue; infoFg?: ColorValue; errorMuted?: ColorValue; errorFg?: ColorValue; neutralMuted?: ColorValue; neutralFg?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SearchItemsOptions` | `interface SearchItemsOptions<T> { keys?: readonly SearchKey<T>[]; limit?: number; }` | Options of `searchItems`: which fields to read and how many results to keep. |
+| `SearchKey` | `type SearchKey<T> = keyof T \| ((item: T) => unknown);` | A field `searchItems` reads: a property name or a getter. |
 | `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
@@ -5925,6 +5973,13 @@ Types:
 |---|---|---|
 | `start` | `DateValue \| undefined` |  |
 | `end` | `DateValue \| undefined` |  |
+
+#### DateRangePreset
+
+| Field | Type | Notes |
+|---|---|---|
+| `label` | `string` |  |
+| `range` | `\| { start: DateValue; end: DateValue } \| ((today: CalendarDate) => { start: DateValue; end: DateValue })` |  |
 
 #### DesignStyle
 
@@ -6419,6 +6474,13 @@ Types:
 | `errorFg?` | `ColorValue` | Text on `errorMuted` (--ca-semantic-error-fg). |
 | `neutralMuted?` | `ColorValue` | Muted background of the neutral Badge (--ca-semantic-neutral-muted); see `successMuted`. |
 | `neutralFg?` | `ColorValue` | Text on `neutralMuted` (--ca-semantic-neutral-fg). |
+
+#### SearchItemsOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `keys?` | `readonly SearchKey<T>[]` | Fields to search, most important first (an earlier key wins a tie). Default: the item itself, for a list of strings. |
+| `limit?` | `number` | At most this many results. |
 
 #### SegmentedTokens
 
@@ -8830,6 +8892,86 @@ Types:
 | `hex` | `string` |  |
 | `oklch` | `Oklch` |  |
 | `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
+
+## @codeatlasdev/ui/utils/money
+
+### allocateByWeights
+
+`import { allocateByWeights } from "@codeatlasdev/ui/utils/money"`
+
+Splits `total` in proportion to `weights` without losing or inventing a cent: the shares always sum to `total`. Each share is the exact proportion rounded toward zero; the cents left over go one each to the shares with the largest remainders, and a tie goes to the earlier share, so `allocateByWeights(100, [1, 1, 1])` is `[34, 33, 33]` and `(100, [1, 2])` is `[33, 67]`. A negative total splits like its absolute value, negated. Weights are non-negative decimals (percentages work) and at least one must be above zero; a zero weight gets 0. A `bigint` total gives `bigint` shares.
+
+```ts
+function allocateByWeights(total: number, weights: readonly Rate[]): number[]
+```
+
+### applyBasisPoints
+
+`import { applyBasisPoints } from "@codeatlasdev/ui/utils/money"`
+
+The share of `amount` that `bps` basis points represent (1 bp = 0.01%, 10000 bp = 100%), rounded with `mode` (default `"halfExpand"`): `applyBasisPoints(10000, 250)` is 250. Returns the share, not `amount` plus it; fractional points (`12.5`) are allowed. A `bigint` amount gives a `bigint`.
+
+```ts
+function applyBasisPoints(amount: number, bps: Rate, mode?: RoundingMode): number
+```
+
+### assertCents
+
+`import { assertCents } from "@codeatlasdev/ui/utils/money"`
+
+Throws unless `value` is an integer amount of minor units: a `bigint`, or a `number` that is a safe integer (`1.5`, `NaN` and `2 ** 53` throw a `RangeError`, a non-number a `TypeError`).
+
+```ts
+function assertCents(value: unknown, name?: string): asserts value is Cents
+```
+
+### divRound
+
+`import { divRound } from "@codeatlasdev/ui/utils/money"`
+
+`numerator / denominator` rounded to an integer with `mode` (default `"halfExpand"`, half away from zero): `divRound(5, 2)` is 3, `divRound(-5, 2)` is -3, `divRound(5, 2, "halfEven")` is 2. A `bigint` numerator gives a `bigint`.
+
+```ts
+function divRound(numerator: number, denominator: Cents, mode?: RoundingMode): number
+```
+
+### divRoundHalfUp
+
+`import { divRoundHalfUp } from "@codeatlasdev/ui/utils/money"`
+
+`divRound(numerator, denominator, "halfExpand")`: a tie goes away from zero (`5 / 2` → 3, `-5 / 2` → -3). A `bigint` numerator gives a `bigint`.
+
+```ts
+function divRoundHalfUp(numerator: number, denominator: Cents): number
+```
+
+### multiplyCents
+
+`import { multiplyCents } from "@codeatlasdev/ui/utils/money"`
+
+`amount × rate`, rounded with `mode` (default `"halfExpand"`). A quantity is exact (`multiplyCents(1999, 3)` is 5997); a decimal rate is read as written, so `multiplyCents(100, 1.005)` is 101 where `Math.round(100 * 1.005)` gives 100. A `bigint` amount gives a `bigint`.
+
+```ts
+function multiplyCents(amount: number, rate: Rate, mode?: RoundingMode): number
+```
+
+### sumCents
+
+`import { sumCents } from "@codeatlasdev/ui/utils/money"`
+
+Exact sum. A `bigint` total when any amount is a `bigint`; `[]` sums to `0`.
+
+```ts
+function sumCents(amounts: readonly number[]): number
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `Cents` | `type Cents = number \| bigint;` | An integer amount in the currency's minor unit: a safe-integer `number` or a `bigint`. |
+| `Rate` | `type Rate = number \| bigint \| string;` | A multiplier: an integer, or a decimal read as the digits it prints as (`1.005` is exactly 1005/1000, not its binary value), or a decimal string of any precision (`"0.0725"`). |
+| `RoundingMode` | `type RoundingMode = \| "ceil" \| "floor" \| "expand" \| "trunc" \| "halfCeil" \| "halfFloor" \| "halfExpand" \| "halfTrunc" \| "halfEven";` | How a result between two integers is rounded, with the names and meaning of `Intl.NumberFormat`'s `roundingMode`. `halfExpand` (the default) is "half up": a tie goes away from zero, so 2.5 → 3 and -2.5 → -3. `halfEven` is banker's rounding. |
 
 ## @codeatlasdev/ui/utils/palette-generator
 
