@@ -36,7 +36,7 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { availableParallelism, loadavg, tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { delimiter, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { evictAll } from "./caches.ts";
 import { cpuCap, lowPriority } from "./cpu-cap.ts";
@@ -358,7 +358,8 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 		bins.push(join(d, "node_modules/.bin"));
 		if (d === root) break;
 	}
-	const PATH = [...bins, process.env.PATH ?? ""].join(":");
+	// `delimiter`: ":" on macOS/Linux, ";" on Windows, where ":" made one bogus entry of the whole PATH (#1248).
+	const PATH = [...bins, process.env.PATH ?? ""].join(delimiter);
 
 	// Own process group, so a signal or exit tears down the whole test tree (workers, servers).
 	// The whole tree runs at low priority (scripts/cpu-cap.ts, #632): `taskpolicy`/`nice` exec the command, so the
