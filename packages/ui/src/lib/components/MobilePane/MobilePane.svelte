@@ -82,7 +82,7 @@
   >
     <MobileHeader class="ca-mobile-pane__header" title={title} titleSlot={headerTitle}>
       {#snippet leading()}
-        <IconButton variant="text" aria-label={t().mobilePane.back} onclick={close}>
+        <IconButton variant="ghost" aria-label={t().mobilePane.back} onclick={close}>
           <ArrowLeft size={22} aria-hidden="true" />
         </IconButton>
       {/snippet}

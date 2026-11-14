@@ -180,7 +180,7 @@
   >
     {#if modal}
       <header class="ca-md__header">
-        <IconButton variant="text" aria-label={t().masterDetail.back} onclick={close}>
+        <IconButton variant="ghost" aria-label={t().masterDetail.back} onclick={close}>
           <ArrowLeft size={22} aria-hidden="true" />
         </IconButton>
         <span class="ca-md__title">{detailTitle}</span>

@@ -64,7 +64,7 @@
     <span class="ca-toolbar__more">
       <DropdownMenu align="end">
         {#snippet triggerChild(props)}
-          <IconButton {...props} variant="text" size="sm" aria-label={moreLabel ?? t().toolbar.more}>
+          <IconButton {...props} variant="ghost" size="sm" aria-label={moreLabel ?? t().toolbar.more}>
             <Ellipsis size={16} />
           </IconButton>
         {/snippet}

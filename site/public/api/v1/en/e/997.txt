@@ -54,7 +54,7 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/sortable-list#pipeline-stages
         <Select label="Kind" options={kinds} bind:value={stage.kind} />
         <NumberField label="Stale after (days)" bind:value={stage.staleDays} min={0} />
         {#snippet actions()}
-          <IconButton variant="text" aria-label="Delete {stage.name}" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
+          <IconButton variant="ghost" aria-label="Delete {stage.name}" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
             <Trash2 size={16} />
           </IconButton>
         {/snippet}

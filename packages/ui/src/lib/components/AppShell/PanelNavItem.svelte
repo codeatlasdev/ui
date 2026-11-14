@@ -73,13 +73,15 @@
       <span class="ca-nav-item__count" aria-hidden="true">{compact(item.count)}</span>
       <span class="ca-sr-only">{item.count}</span>
     {/if}
+    <!-- A plain span cannot be named (ARIA prohibits aria-label on it), so the unread count and the new-dot
+         reach the link name as visually hidden text: "Messages 120 unread" (#1181). -->
     {#if item.badge && item.badge > 0}
-      <span class="ca-nav-item__badge" aria-label={t().appShell.unread(item.badge)}>
-        {item.badge > 99 ? '99+' : item.badge}
-      </span>
+      <span class="ca-nav-item__badge" aria-hidden="true">{item.badge > 99 ? '99+' : item.badge}</span>
+      <span class="ca-sr-only">{t().appShell.unread(item.badge)}</span>
     {/if}
     {#if item.isNew}
-      <span class="ca-nav-item__dot" aria-label={t().appShell.new}></span>
+      <span class="ca-nav-item__dot" aria-hidden="true"></span>
+      <span class="ca-sr-only">{t().appShell.new}</span>
     {/if}
   </a>
   {#if item.actions && extras?.itemMenu}

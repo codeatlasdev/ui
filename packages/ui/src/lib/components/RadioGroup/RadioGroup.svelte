@@ -19,6 +19,12 @@
 		 * the selected one is emphasized.
 		 */
 		variant?: 'list' | 'cards';
+		/**
+		 * `variant="cards"` only. `auto` (default): as many columns as fit, and a short list stretches its
+		 * cards over the whole row. `1`: one card per row at full width. `2` / `3`: at most that many per
+		 * row, fewer when the container is too narrow for the cards' minimum width.
+		 */
+		columns?: 1 | 2 | 3 | 'auto';
 		disabled?: boolean;
 		class?: string;
 		'aria-label'?: string;
@@ -31,6 +37,7 @@
 		name,
 		orientation = 'vertical',
 		variant = 'list',
+		columns = 'auto',
 		disabled = false,
 		class: className = '',
 		'aria-label': ariaLabel,
@@ -55,6 +62,7 @@
 	aria-disabled={disabled ? 'true' : undefined}
 	data-orientation={orientation}
 	data-disabled={disabled ? '' : undefined}
+	data-columns={variant === 'cards' && columns !== 'auto' ? columns : undefined}
 	class="ca-radio-group ca-radio-group--{orientation} ca-radio-group--{variant} {className}"
 >
 	{#each items as item (item.value)}
@@ -216,11 +224,30 @@
   	}
 
   	/* ── Cards ─────────────────────────────────────────────────────────── */
+  	/* `auto-fit`, not `auto-fill`: empty tracks collapse, so two cards in a wide dialog share the row instead
+  	   of leaving it dead (#1062). `data-columns` caps the count: a track is never narrower than 1/N of the
+  	   row, and below the cards' minimum width (`--ca-radio-card-min`) the grid still drops to fewer columns. */
   	:global(.ca-radio-group--cards) {
+  		--ca-radio-card-min: min(100%, calc(var(--ca-space-24) * 1.75));
+  		--rg-cols: 1;
   		display: grid;
-  		grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--ca-space-24) * 1.75)), 1fr));
+  		grid-template-columns: repeat(auto-fit, minmax(var(--ca-radio-card-min), 1fr));
   		gap: var(--ca-space-2);
   	}
+  	:global(.ca-radio-group--cards[data-columns]) {
+  		grid-template-columns: repeat(
+  			auto-fit,
+  			minmax(
+  				max(
+  					var(--ca-radio-card-min),
+  					calc((100% - (var(--rg-cols) - 1) * var(--ca-space-2)) / var(--rg-cols))
+  				),
+  				1fr
+  			)
+  		);
+  	}
+  	:global(.ca-radio-group--cards[data-columns='2']) { --rg-cols: 2; }
+  	:global(.ca-radio-group--cards[data-columns='3']) { --rg-cols: 3; }
 
   	:global(.ca-radio-card) {
   		position: relative;

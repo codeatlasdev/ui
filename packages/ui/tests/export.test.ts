@@ -65,3 +65,34 @@ describe("interface row types", () => {
 		toCsv(keys, [{ key: "nope" }]);
 	});
 });
+
+// #1138: a CSV for a Brazilian spreadsheet needs `;` between fields and a decimal comma (Excel pt-BR reads
+// `,` as the decimal mark and `;` as the list separator), plus a UTF-8 BOM to pick the encoding.
+describe("toCsv with a locale", () => {
+	const rows = [{ item: "Café; com leite", price: 12.5, qty: -3, note: 'diz "oi"', when: "2,5 h" }];
+
+	it("pt-BR: `;` between fields, decimal comma, quotes fields with `;` or quotes", () => {
+		expect(toCsv(rows, undefined, { locale: "pt-BR" })).toBe(
+			'item;price;qty;note;when\r\n"Café; com leite";12,5;-3;"diz ""oi""";2,5 h\r\n'
+		);
+	});
+
+	it("en keeps `,` and the decimal point", () => {
+		expect(toCsv([{ a: 1.5, b: "x" }], undefined, { locale: "en-US" })).toBe("a,b\r\n1.5,x\r\n");
+	});
+
+	it("bom prepends a UTF-8 byte order mark; delimiter overrides the locale's", () => {
+		const csv = toCsv([{ a: 1.5, b: "x;y" }], undefined, {
+			locale: "pt-BR",
+			bom: true,
+			delimiter: "\t",
+		});
+		expect(csv).toBe("﻿a\tb\r\n1,5\tx;y\r\n");
+	});
+
+	it("keeps formula neutralisation and real negative numbers", () => {
+		expect(toCsv([{ a: "=1+1", n: -0.25 }], undefined, { locale: "pt-BR" })).toBe(
+			"a;n\r\n'=1+1;-0,25\r\n"
+		);
+	});
+});

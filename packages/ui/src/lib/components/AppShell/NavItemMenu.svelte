@@ -11,7 +11,7 @@
 
 <DropdownMenu align="end" side="bottom">
   {#snippet triggerChild(props)}
-    <IconButton variant="text" size="sm" aria-label={label} {...props}>
+    <IconButton variant="ghost" size="sm" aria-label={label} {...props}>
       <MoreHorizontal size={14} />
     </IconButton>
   {/snippet}

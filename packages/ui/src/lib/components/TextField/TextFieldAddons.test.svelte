@@ -15,7 +15,7 @@
 </script>
 
 {#snippet copyBtn()}
-  <IconButton variant="text" size="sm" aria-label="Copy address" onclick={oncopy}><Copy size={14} /></IconButton>
+  <IconButton variant="ghost" size="sm" aria-label="Copy address" onclick={oncopy}><Copy size={14} /></IconButton>
 {/snippet}
 {#snippet applyBtn()}
   <Button variant="ghost" size="sm" onclick={onapply}>Apply</Button>

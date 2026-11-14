@@ -464,7 +464,7 @@ Tokens: `--ca-breadcrumb-line-height` `--ca-breadcrumb-link-radius` `--ca-breadc
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost' \| 'destructive'` | `'filled'` | `filled` (default) is the primary action; `glass` is a tinted surface button (blur only under the glass and frosted styles). |
+| `variant?` | `ButtonVariant \| 'destructive' \| 'text'` | `'filled'` | `filled` (default) is the primary action; `glass` is a tinted surface button (blur only under the glass and frosted styles). `ghost` has no background; `text` is its deprecated alias (#1233). |
 | `tone?` | `'brand' \| 'neutral' \| 'danger'` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. `'danger'` draws them in the error colour, for a quiet destructive action (Remove, Disconnect) where the filled `destructive` is too loud. Other variants ignore it. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -1517,7 +1517,7 @@ Parts: `ca-dropdown-content` `ca-dropdown__point` `ca-dropdown__trigger`
 
 Internal (may change in any release): `ca-dropdown-in` `ca-dropdown-out`
 
-Variables: `--ca-point-x` `--ca-point-y`
+Variables: `--ca-available-height` `--ca-menu-max` `--ca-point-x` `--ca-point-y`
 
 Data attributes: `data-align` (`end`), `data-side` (`top`), `data-state` (`closed`)
 
@@ -1714,6 +1714,7 @@ Parts: `ca-error-page` `ca-error-page__actions` `ca-error-page__bubble` `ca-erro
 | `filename?` | `string` | `'export'` | Base file name without extension. |
 | `columns?` | `readonly ExportColumn<T>[]` |  | Columns, order and headers. Defaults to the keys of the first row. |
 | `formats?` | `Format[]` | `['csv', 'json']` | Formats offered, in menu order. |
+| `csv?` | `Omit<CsvOptions, 'bom'>` |  | CSV options: `{ locale: 'pt-BR' }` writes `;` separators and decimal commas for a Brazilian spreadsheet; `delimiter` overrides the separator. The download always starts with a UTF-8 BOM. |
 | `label?` | `string` |  | Visible button label. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost'` | `'outlined'` |  |
@@ -2044,8 +2045,8 @@ Snippets: `children`
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `variant?` | `'glass' \| 'filled' \| 'outlined' \| 'text'` | `'glass'` |  |
-| `tone?` | `'brand' \| 'neutral' \| 'danger'` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. |
+| `variant?` | `ButtonVariant \| 'text'` | `'glass'` | `glass` (default), `filled`, `outlined` or `ghost` (no background, like Button's). `text` is a deprecated alias of `ghost` (#1233). |
+| `tone?` | `'brand' \| 'neutral' \| 'danger'` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `ghost` is always neutral. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. |
@@ -2772,7 +2773,7 @@ Variables: `--ca-available-height` `--ca-notif-body-lines` `--ca-notif-width` `-
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `value?` | `number` | `0` | `bind:` |
+| `value?` | `number \| null` | `0` | `bind:` Bindable. `null` when the field is empty (the user cleared it). |
 | `min?` | `number` |  |  |
 | `max?` | `number` |  |  |
 | `step?` | `number` | `1` |  |
@@ -2788,7 +2789,8 @@ Variables: `--ca-available-height` `--ca-notif-body-lines` `--ca-notif-width` `-
 | `name?` | `string` |  |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
-| `onchange?` | `(value: number) => void` |  |  |
+| `locale?` | `string` |  | Locale the user types in (BCP 47). With it the field reads and shows that locale's decimal mark (`2,5` in `pt-BR`; a `.` is accepted too) and is a text input with `inputmode="decimal"` and `role="spinbutton"`, stepped by ArrowUp/ArrowDown and Home/End. Without it the field is a native `type="number"`, whose decimal mark follows the browser. |
+| `onchange?` | `(value: number \| null) => void` |  | Called with the new value, `null` when the field was cleared. |
 
 Snippets: `suffix`: A companion control after the number, usually its unit (a `Select` of units). Rendered in the same row; the field becomes a `role="group"` named by `label`, so the pair reads as one control. Give the companion its own accessible name (`hideLabel` + `label`).
 
@@ -3091,6 +3093,7 @@ Tokens: `--ca-progress-bar` `--ca-progress-height` `--ca-progress-track`
 | `name?` | `string` |  | Native `name` of the radios, so the value is part of `FormData` on a plain form submit. |
 | `orientation?` | `'vertical' \| 'horizontal'` | `'vertical'` |  |
 | `variant?` | `'list' \| 'cards'` | `'list'` | `list` (default): radio + label rows. `cards`: each option is a selectable card (label + description) in a responsive grid; the whole card is the hit area and only the selected one is emphasized. |
+| `columns?` | `1 \| 2 \| 3 \| 'auto'` | `'auto'` | `variant="cards"` only. `auto` (default): as many columns as fit, and a short list stretches its cards over the whole row. `1`: one card per row at full width. `2` / `3`: at most that many per row, fewer when the container is too narrow for the cards' minimum width. |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `aria-label?` | `string` |  |  |
@@ -3098,7 +3101,9 @@ Tokens: `--ca-progress-bar` `--ca-progress-height` `--ca-progress-track`
 
 Parts: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-card__input` `ca-radio-card__label` `ca-radio-group` `ca-radio-group--cards` `ca-radio-group--horizontal` `ca-radio-group--vertical` `ca-radio-indicator` `ca-radio-input` `ca-radio-input__native` `ca-radio-item` `ca-radio-label` `ca-radio-label--disabled`
 
-Data attributes: `data-disabled`, `data-state` (`checked` `unchecked`)
+Variables: `--ca-radio-card-min`
+
+Data attributes: `data-columns` (`2` `3`), `data-disabled`, `data-state` (`checked` `unchecked`)
 
 ## Rail
 
@@ -3768,7 +3773,7 @@ Tokens: `--ca-stat-gap` `--ca-stat-label-size` `--ca-stat-label-weight` `--ca-st
 | `label` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-status-chip` `ca-status-chip--error` `ca-status-chip--info` `ca-status-chip--neutral` `ca-status-chip--success` `ca-status-chip--warning`
+Parts: `ca-status-chip` `ca-status-chip--error` `ca-status-chip--info` `ca-status-chip--neutral` `ca-status-chip--success` `ca-status-chip--warning` `ca-status-chip__label`
 
 Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-muted` `--ca-semantic-success-fg` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-muted`
 
@@ -4022,6 +4027,8 @@ Snippets: `children`
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
 
 Parts: `ca-tabs-list`
+
+Variables: `--ca-tabs-scroll-gutter`
 
 Data attributes: `data-fade` (`both` `end` `start`), `data-fill`, `data-variant` (`line`)
 
@@ -4579,8 +4586,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@295: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@297: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@297: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@299: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
@@ -5293,7 +5300,7 @@ const radius: {
 
 `import { reducedMotion } from "@codeatlasdev/ui"`
 
-Reactive `prefers-reduced-motion: reduce` (`.value`). Call `reducedMotion.init()` once in the root layout; it returns a cleanup.
+Reactive `prefers-reduced-motion: reduce` (`.value`). Call `reducedMotion.init()` once in the root layout to follow changes; it returns a cleanup. `true` on the server: it cannot read the preference, so server markup renders without motion and the client turns it on after reading the query (#1102).
 
 ```ts
 const reducedMotion: { readonly value: boolean; init: () => () => void; }
@@ -5516,10 +5523,10 @@ const toast: {
 
 `import { toCsv } from "@codeatlasdev/ui"`
 
-RFC 4180 CSV (CRLF line ends, trailing newline). Columns default to the first row's keys.
+RFC 4180 CSV (CRLF line ends, trailing newline). Columns default to the first row's keys. `options.locale` adapts it to a spreadsheet in that locale: `toCsv(rows, cols, { locale: "pt-BR", bom: true })` gives `;` separators, decimal commas and a BOM, so it opens correctly in Excel pt-BR.
 
 ```ts
-function toCsv<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
+function toCsv<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[], options?: CsvOptions): string
 ```
 
 ### toHex
@@ -5673,6 +5680,7 @@ Types:
 | `BuiltinPresetSource` | `interface BuiltinPresetSource { id: string; label: string; color: `#${string}`; hue: number; chroma: number; lightL: number; overrides: { light: TokenMap; dark: TokenMap }; }` |  |
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; gap?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
+| `ButtonVariant` | `type ButtonVariant = "filled" \| "glass" \| "outlined" \| "ghost";` | The variants Button and IconButton share (#1233). `ghost` is the background-less one on both; `Button` adds `destructive`. Each also accepts `text` until the next major, as a deprecated alias of `ghost` (it was IconButton's name for it): the component renders `ghost` and warns once in dev. |
 | `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
 | `CaTokenName` | `type CaTokenName = keyof CaTokenRegistry extends never ? never : keyof CaTokenRegistry & string;` | Names declared through `CaTokenRegistry`, else any `group.name` string. |
 | `CaTokenRegistry` | `interface CaTokenRegistry {}` | Registry of domain tokens an app declares, for typed names. Augment it to get autocomplete in `tokenRgba("status.new")`: |
@@ -5680,6 +5688,7 @@ Types:
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
 | `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; localeSwitcher?: LocaleSwitcherTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `CsvOptions` | `interface CsvOptions { locale?: string; delimiter?: "," \| ";" \| "\t"; bom?: boolean; }` |  |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5873,6 +5882,14 @@ Types:
 | `passwordStrength?` | `PasswordStrengthTokens` |  |
 | `switch?` | `SwitchTokens` |  |
 | `localeSwitcher?` | `LocaleSwitcherTokens` |  |
+
+#### CsvOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `locale?` | `string` | Locale of the spreadsheet that will open the file (BCP 47). Numbers use its decimal mark (`12,5` in `pt-BR`), and when that mark is a comma the fields are separated by `;`, which is what Excel in those locales expects. |
+| `delimiter?` | `"," \| ";" \| "\t"` | Field separator. Default `,`, or `;` for a `locale` whose decimal mark is a comma. |
+| `bom?` | `boolean` | Prepend a UTF-8 byte order mark so Excel picks the encoding. Default `false`. |
 
 #### DateRange
 

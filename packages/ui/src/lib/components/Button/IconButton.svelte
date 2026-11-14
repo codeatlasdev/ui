@@ -8,13 +8,15 @@
   import { devWarn } from '../../utils/dev-warn.js';
   const t = useMessages(button);
 
-  type Variant = 'glass' | 'filled' | 'outlined' | 'text';
+  import { textVariantWarning, type ButtonVariant } from './variants.js';
+
   type Size = 'sm' | 'md' | 'lg';
   type Tone = 'brand' | 'neutral' | 'danger';
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick' | 'aria-label'> {
-    variant?: Variant;
-    /** `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. */
+    /** `glass` (default), `filled`, `outlined` or `ghost` (no background, like Button's). `text` is a deprecated alias of `ghost` (#1233). */
+    variant?: ButtonVariant | 'text';
+    /** `'neutral'` draws `outlined` without brand colour (neutral border and icon). `ghost` is always neutral. */
     tone?: Tone;
     size?: Size;
     disabled?: boolean;
@@ -54,6 +56,14 @@
       devWarn('icon-button-label', '<IconButton> has no accessible name. Pass aria-label (or aria-labelledby).');
   });
 
+  // `ghost` is the background-less variant on Button and IconButton; `text` is its deprecated alias (#1233).
+  // The rendered class stays `ca-icon-btn--text` (public CSS contract) and gains `ca-icon-btn--ghost`.
+  const look = $derived(variant === 'text' ? 'ghost' : variant);
+  const kind = $derived(look === 'ghost' ? 'text' : look);
+  $effect(() => {
+    if (variant === 'text') devWarn('icon-button-variant-text', textVariantWarning('IconButton'));
+  });
+
   const isDisabled = $derived(disabled || loading);
   const rel = $derived(
     target === '_blank' ? [...new Set([...(relProp ?? '').split(/\s+/).filter(Boolean), 'noopener', 'noreferrer'])].join(' ') : relProp
@@ -75,9 +85,10 @@
     {target}
     {rel}
     aria-label={ariaLabel}
-    class="ca-icon-btn ca-icon-btn--{variant} ca-icon-btn--{size} {className}"
-    class:ca-icon-btn--neutral={tone === 'neutral' && variant === 'outlined'}
-    class:ca-icon-btn--danger={tone === 'danger' && (variant === 'outlined' || variant === 'text')}
+    class="ca-icon-btn ca-icon-btn--{kind} ca-icon-btn--{size} {className}"
+    class:ca-icon-btn--ghost={look === 'ghost'}
+    class:ca-icon-btn--neutral={tone === 'neutral' && look === 'outlined'}
+    class:ca-icon-btn--danger={tone === 'danger' && (look === 'outlined' || look === 'ghost')}
     class:ca-icon-btn--loading={loading}
     aria-disabled={isDisabled || undefined}
     aria-busy={loading || undefined}
@@ -96,9 +107,10 @@
     type="button"
     disabled={isDisabled}
     aria-label={ariaLabel}
-    class="ca-icon-btn ca-icon-btn--{variant} ca-icon-btn--{size} {className}"
-    class:ca-icon-btn--neutral={tone === 'neutral' && variant === 'outlined'}
-    class:ca-icon-btn--danger={tone === 'danger' && (variant === 'outlined' || variant === 'text')}
+    class="ca-icon-btn ca-icon-btn--{kind} ca-icon-btn--{size} {className}"
+    class:ca-icon-btn--ghost={look === 'ghost'}
+    class:ca-icon-btn--neutral={tone === 'neutral' && look === 'outlined'}
+    class:ca-icon-btn--danger={tone === 'danger' && (look === 'outlined' || look === 'ghost')}
     class:ca-icon-btn--loading={loading}
     aria-disabled={isDisabled}
     aria-busy={loading || undefined}
@@ -209,7 +221,7 @@
       background: var(--ca-action-selected);
     }
 
-    /* Danger tone (outlined, text): error border and icon, tints capped at 10% (#700). */
+    /* Danger tone (outlined, ghost): error border and icon, tints capped at 10% (#700). */
     .ca-icon-btn--danger.ca-icon-btn--outlined {
       border-color: var(--ca-semantic-error);
     }
@@ -223,7 +235,7 @@
       background: color-mix(in oklab, var(--ca-semantic-error) 10%, transparent);
     }
 
-    /* Text */
+    /* Ghost (`variant="ghost"`, or the deprecated `"text"`): both render `.ca-icon-btn--text` */
     .ca-icon-btn--text {
       background: transparent;
       color: var(--ca-text-secondary);

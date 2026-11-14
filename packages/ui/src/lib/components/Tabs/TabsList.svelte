@@ -11,7 +11,7 @@
     children?: Snippet;
   }
 
-  let { fade = false, class: className = '', children, onscroll, ...rest }: Props = $props();
+  let { fade = false, class: className = '', children, onscroll, onfocusin, ...rest }: Props = $props();
 
   const tabs = getTabsContext();
 
@@ -34,14 +34,17 @@
     hidden = max < 1 ? undefined : atStart ? 'end' : atEnd ? 'start' : 'both';
   }
 
-  // Keep the selected trigger in view. Scrolls only the strip (never an ancestor or the window,
-  // unlike scrollIntoView) and never moves focus.
-  function reveal() {
+  // Keep a trigger in view: the selected one when the value changes, the focused one on focus (focus and
+  // selection can differ: a disabled neighbour, focus restored by a dialog). Scrolls only the strip (never
+  // an ancestor or the window, unlike scrollIntoView) and never moves focus. The gutter is the strip's
+  // `scroll-padding-inline`, the fade width while an edge is faded, so a revealed tab never sits under the
+  // mask (#1076).
+  function reveal(target?: HTMLElement | null) {
     if (!list) return;
-    const active = list.querySelector<HTMLElement>('.ca-tabs-trigger[data-state="active"]');
-    if (!active) return;
+    const el = target ?? list.querySelector<HTMLElement>('.ca-tabs-trigger[data-state="active"]');
+    if (!el) return;
     const box = list.getBoundingClientRect();
-    const rect = active.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
     const pad = parseFloat(getComputedStyle(list).scrollPaddingInline) || 0;
     if (rect.left < box.left + pad) list.scrollLeft += rect.left - box.left - pad;
     else if (rect.right > box.right - pad) list.scrollLeft += rect.right - box.right + pad;
@@ -77,6 +80,11 @@
     if (fade) measure();
     onscroll?.(e);
   }}
+  onfocusin={(e) => {
+    const t = e.target as HTMLElement;
+    if (t.matches?.('.ca-tabs-trigger')) reveal(t);
+    onfocusin?.(e);
+  }}
   {@attach roving}
 >
   {@render children?.()}
@@ -100,7 +108,8 @@
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scrollbar-width: none;
-      scroll-snap-type: x proximity;
+      /* No scroll snapping: after a programmatic reveal it re-snapped to the nearest tab start and pulled
+         the focused tab back under the edge (#1076). */
       scroll-padding-inline: var(--ca-space-1);
       border-radius: var(--ca-radius-pill);
       background: var(--ca-glass-tint-ultra-thin);
@@ -128,9 +137,13 @@
 
     :global(.ca-tabs-list > *) {
       flex-shrink: 0;
-      scroll-snap-align: start;
     }
 
+    /* While an edge is faded the reveal gutter is the fade width, so a revealed or focused tab never sits
+       under the mask (#1076). --ca-tabs-scroll-gutter overrides it. */
+    :global(.ca-tabs-list[data-fade]) {
+      scroll-padding-inline: var(--ca-tabs-scroll-gutter, var(--ca-space-8));
+    }
     :global(.ca-tabs-list[data-fade='end']) {
       -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-space-8)), transparent);
       mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-space-8)), transparent);

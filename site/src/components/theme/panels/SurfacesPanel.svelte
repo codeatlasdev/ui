@@ -71,7 +71,7 @@
               />
             </div>
             <IconButton
-              variant="text"
+              variant="ghost"
               size="sm"
               aria-label="Reset {label}"
               onclick={() => write(role, undefined)}

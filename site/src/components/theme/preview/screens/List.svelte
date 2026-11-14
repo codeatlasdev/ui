@@ -67,7 +67,7 @@
           </div>
           <span class="ts-list__tag"><Chip label={p.tag} size="sm" /></span>
           <StatusChip status={p.status} label={p.label} />
-          <IconButton aria-label="More actions for {p.name}" size="sm" variant="text" tone="neutral">
+          <IconButton aria-label="More actions for {p.name}" size="sm" variant="ghost" tone="neutral">
             <MoreHorizontal size={16} />
           </IconButton>
         </li>

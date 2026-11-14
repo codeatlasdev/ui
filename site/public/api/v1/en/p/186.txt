@@ -3,7 +3,7 @@ What it shows: A button that opens a full-screen mobile pane titled Maria Souza 
 Spec:
 - `<MobilePane bind:open title="Maria Souza">` with `let open = $state(false)`
 - `<Button variant="filled" onclick={() => (open = true)}>Open conversation</Button>` opens it
-- `{#snippet actions()}` holds `<IconButton variant="text" aria-label="More options">` with `<MoreVertical size={20} aria-hidden="true" />`
+- `{#snippet actions()}` holds `<IconButton variant="ghost" aria-label="More options">` with `<MoreVertical size={20} aria-hidden="true" />`
 - `const messages` has 5 strings rendered with `{#each messages as m}<li>{m}</li>{/each}`
 - Composer is `<TextField label="Message" placeholder="Write something…" />`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?

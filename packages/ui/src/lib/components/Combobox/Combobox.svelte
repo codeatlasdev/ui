@@ -1,7 +1,6 @@
 <script lang="ts">
   import { focusTextField, primeKeyboard } from '../../actions/autofocus.js';
   import { useMessages } from '../../i18n/state.svelte.js';
-  import { chip } from '../../i18n/groups/chip.js';
   import { combobox } from '../../i18n/groups/combobox.js';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
@@ -9,10 +8,11 @@
   import '../field-variant.css';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
-  import { ChevronDown, Check, X } from '@lucide/svelte';
+  import { ChevronDown, Check } from '@lucide/svelte';
   import Highlight from '../Highlight/Highlight.svelte';
+  import Chip from '../Chip/Chip.svelte';
   import { fold, rankMatches, splitMatch } from './match.js';
-  const t = useMessages(chip, combobox);
+  const t = useMessages(combobox);
 
   export interface ComboboxOption {
     value: string;
@@ -256,15 +256,8 @@
     <div class="ca-combobox__chips" role="group" aria-label={t().combobox.selectedValues}>
       {#each selectedValues as val (val)}
         {@const chipLabel = options.find(o => o.value === val)?.label ?? val}
-        <span class="ca-chip ca-chip--sm ca-combobox__chip">
-          <span class="ca-chip__label">{chipLabel}</span>
-          <button
-            type="button"
-            class="ca-chip__delete"
-            aria-label={t().chip.remove(chipLabel)}
-            onclick={() => removeChip(val)}
-          ><X size={12} stroke-width={2} /></button>
-        </span>
+        <!-- The real Chip (#1086): its CSS is scoped, so hand-written `ca-chip` markup rendered unstyled. -->
+        <Chip label={chipLabel} size="sm" deletable ondelete={() => removeChip(val)} class="ca-combobox__chip" />
       {/each}
     </div>
   {/if}

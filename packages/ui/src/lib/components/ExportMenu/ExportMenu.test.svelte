@@ -3,6 +3,7 @@
 	interface Props {
 		data?: Record<string, unknown>[];
 		formats?: ("csv" | "json")[];
+		csv?: { locale?: string; delimiter?: "," | ";" | "\t"; bom?: boolean };
 		onexport?: (e: { format: "csv" | "json"; filename: string; content: string; rows: number }) => void;
 	}
 	let {
@@ -11,10 +12,11 @@
 			{ domain: "b.com", price: 8 },
 		],
 		formats,
+		csv,
 		onexport,
 	}: Props = $props();
 </script>
 
 <main>
-	<ExportMenu {data} filename="results" {formats} {onexport} />
+	<ExportMenu {data} filename="results" {formats} {csv} {onexport} />
 </main>

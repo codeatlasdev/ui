@@ -30,6 +30,19 @@ describe("reducedMotion store", () => {
 	});
 });
 
+// #1102: the server assumes reduced motion; the client reads the real preference as soon as the store loads,
+// so a page that never calls init() does not stay in the server's snapshot (hydration repairs the markup).
+describe("reducedMotion before init()", () => {
+	it.each([
+		["no-preference", false],
+		["reduce", true],
+	] as const)("reads %s on the client without init()", async (pref, expected) => {
+		await emulate("prefers-reduced-motion", pref);
+		const fresh = await import(/* @vite-ignore */ `./reduced-motion.svelte.js?fresh=${pref}`);
+		expect(fresh.reducedMotion.value).toBe(expected);
+	});
+});
+
 describe("reducedTransparency store", () => {
 	it("follows prefers-reduced-transparency", async () => {
 		await emulate("prefers-reduced-transparency", "no-preference");

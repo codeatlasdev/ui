@@ -282,3 +282,14 @@ describe('Button align="start" (#811)', () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });
+
+// #1233: `text` (IconButton's old name for the background-less variant) is accepted on Button as a
+// deprecated alias of `ghost`, so code written against either name type-checks and renders the same.
+describe("Button text variant alias", () => {
+	it("renders text as ghost", async () => {
+		const screen = await render(Button, { children: label("Skip"), variant: "text" });
+		const btn = screen.getByRole("button", { name: "Skip" }).element();
+		expect(btn.classList.contains("ca-btn--ghost")).toBe(true);
+		expect(btn.classList.contains("ca-btn--text")).toBe(false);
+	});
+});

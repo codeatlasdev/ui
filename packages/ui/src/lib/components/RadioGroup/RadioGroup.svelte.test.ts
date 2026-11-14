@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import RadioGroup from "./RadioGroup.svelte";
 import RadioGroupHarness from "./RadioGroupHarness.test.svelte";
 
 describe("RadioGroup", () => {
@@ -57,5 +58,46 @@ describe("RadioGroup", () => {
 		const screen = await render(RadioGroupHarness, { disabled: true, onchange });
 		await screen.getByRole("radio", { name: "Pro" }).click({ force: true });
 		expect(onchange).not.toHaveBeenCalled();
+	});
+});
+
+// #1062: `variant="cards"` filled the row with empty `auto-fill` tracks, so two cards in a wide dialog took
+// ~40% of it and left the rest dead; there was no way to stack them in one column.
+describe("RadioGroup cards layout", () => {
+	const two = [
+		{ value: "keep", label: "Keep data", description: "Reset the test but keep every answer." },
+		{ value: "wipe", label: "Wipe data", description: "Reset the test and delete the answers." },
+	];
+	type CardProps = { items: typeof two; columns?: 1 | 2 | 3 | "auto" };
+	const cards = async (props: CardProps, width = 900) => {
+		const screen = await render(RadioGroup, { variant: "cards", "aria-label": "Mode", ...props });
+		const box = screen.container as HTMLElement;
+		box.style.width = `${width}px`;
+		const group = box.querySelector('[role="radiogroup"]') as HTMLElement;
+		const rects = [...group.querySelectorAll(".ca-radio-card")].map((c) =>
+			c.getBoundingClientRect()
+		);
+		return { group: group.getBoundingClientRect(), rects };
+	};
+
+	it("by default the cards share the whole row", async () => {
+		const { group, rects } = await cards({ items: two });
+		expect(rects[0].top).toBe(rects[1].top);
+		expect(rects[1].right).toBeCloseTo(group.right, 0);
+	});
+
+	it("columns={1} stacks every card at full width", async () => {
+		const { group, rects } = await cards({ items: two, columns: 1 });
+		expect(rects[1].top).toBeGreaterThan(rects[0].bottom - 1);
+		for (const r of rects) expect(r.width).toBeCloseTo(group.width, 0);
+	});
+
+	it("columns={2} puts at most two cards on a row and stacks on a phone", async () => {
+		const items = [...two, { value: "skip", label: "Skip", description: "Do nothing." }];
+		const wide = await cards({ items, columns: 2 });
+		expect(wide.rects[0].top).toBe(wide.rects[1].top);
+		expect(wide.rects[2].top).toBeGreaterThan(wide.rects[0].bottom - 1);
+		const narrow = await cards({ items, columns: 2 }, 280);
+		expect(narrow.rects[1].top).toBeGreaterThan(narrow.rects[0].bottom - 1);
 	});
 });

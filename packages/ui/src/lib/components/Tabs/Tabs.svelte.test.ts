@@ -137,6 +137,40 @@ describe("TabsList overflow", () => {
 	});
 });
 
+// #1076: arrowing through a faded strip left the focused tab clipped or under the 32px edge fade: the reveal
+// kept a 4px gutter and scroll snapping pulled the strip back after it.
+describe("TabsList keyboard reveal with fade", () => {
+	const clear = (list: HTMLElement, tab: HTMLElement) => {
+		const l = list.getBoundingClientRect();
+		const t = tab.getBoundingClientRect();
+		const max = list.scrollWidth - list.clientWidth;
+		// An edge is faded (32px) only while the strip can still scroll toward it.
+		const startOk = list.scrollLeft < 1 || t.left >= l.left + 32 - 1;
+		const endOk = list.scrollLeft > max - 1 || t.right <= l.right - 32 + 1;
+		return startOk && endOk;
+	};
+
+	it("keeps every focused tab out from under the fade, both ways", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(TabsOverflow, { fade: true });
+		const list = screen.getByRole("tablist").element() as HTMLElement;
+		const tabs = [...list.querySelectorAll<HTMLElement>('[role="tab"]')];
+		expect(list.scrollWidth).toBeGreaterThan(list.clientWidth);
+		tabs[0].focus();
+		for (const key of ["{ArrowRight}", "{ArrowLeft}"]) {
+			for (let i = 1; i < tabs.length; i++) {
+				await userEvent.keyboard(key);
+				const focused = document.activeElement as HTMLElement;
+				await expect.poll(() => clear(list, focused), { timeout: 2000 }).toBe(true);
+			}
+		}
+		await userEvent.keyboard("{End}");
+		await expect.poll(() => clear(list, tabs.at(-1) as HTMLElement)).toBe(true);
+		await userEvent.keyboard("{Home}");
+		await expect.poll(() => clear(list, tabs[0])).toBe(true);
+	});
+});
+
 describe("TabsTrigger icon", () => {
 	it("renders a fixed, aria-hidden icon box and keeps the label as the name", async () => {
 		const screen = await render(TabsIcon, {});

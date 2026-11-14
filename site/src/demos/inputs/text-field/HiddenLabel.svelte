@@ -16,7 +16,7 @@
       autocomplete="off"
     />
   {/each}
-  <Button size="sm" variant="text" onclick={() => first?.focus()}>Focus the last field</Button>
+  <Button size="sm" variant="ghost" onclick={() => first?.focus()}>Focus the last field</Button>
 </div>
 
 <style>

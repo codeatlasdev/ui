@@ -164,7 +164,7 @@
             <span class="ca-page-shell__more">
               <DropdownMenu align="end">
                 {#snippet triggerChild(props)}
-                  <IconButton {...props} variant="text" size="sm" aria-label={t().pageShell.more}>
+                  <IconButton {...props} variant="ghost" size="sm" aria-label={t().pageShell.more}>
                     <Ellipsis size={16} />
                   </IconButton>
                 {/snippet}

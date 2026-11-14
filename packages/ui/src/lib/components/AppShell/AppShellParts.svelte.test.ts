@@ -178,7 +178,10 @@ describe("Panel", () => {
 			.not.toHaveAttribute("aria-current");
 	});
 
-	it("exposes badge count (capped at 99+) and the new-dot with accessible names", async () => {
+	// #1181: the badge and the dot named themselves with `aria-label` on a plain span, which ARIA prohibits
+	// (a generic element cannot be named), so screen readers may read "Messages 99+" and never "unread".
+	// The text sits in an absolutely positioned node, which Chromium separates with a space.
+	it("puts the unread count and the new-dot in the link name as text", async () => {
 		const screen = await render(Panel, {
 			modules,
 			activeModuleIndex: 0,
@@ -186,8 +189,18 @@ describe("Panel", () => {
 			show: true,
 			panelW: 200,
 		});
-		await expect.element(screen.getByLabelText("120 unread")).toHaveTextContent("99+");
-		await expect.element(screen.getByLabelText("New")).toBeInTheDocument();
+		const messages = screen.getByRole("link", { name: "Messages 120 unread", exact: true });
+		await expect.element(messages).toBeVisible();
+		await expect
+			.element(screen.getByRole("link", { name: "What's new New", exact: true }))
+			.toBeVisible();
+		const badge = messages.element().querySelector(".ca-nav-item__badge") as HTMLElement;
+		expect(badge.textContent?.trim()).toBe("99+");
+		expect(badge.getAttribute("aria-hidden")).toBe("true");
+		const named = [...screen.container.querySelectorAll(".ca-nav-item [aria-label]")].filter(
+			(el) => !el.getAttribute("role") && !el.matches("a, button, input, nav, section")
+		);
+		expect(named.map((el) => el.className)).toEqual([]);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
