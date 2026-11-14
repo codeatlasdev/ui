@@ -1,7 +1,16 @@
 // ─── Reduced motion / transparency stores ────────────────────────────────────
 
-function createMediaStore(query: string) {
-	let matches = $state(false);
+/**
+ * `serverValue` is what the store holds where there is no `window` (SSR, prerender). On the client it reads
+ * the media query as soon as the module loads, so a page that never calls `init()` still has the real value,
+ * and hydration repairs any attribute the server snapshot wrote (#1102).
+ */
+function createMediaStore(query: string, serverValue: boolean) {
+	let matches = $state(
+		typeof window === "undefined"
+			? serverValue
+			: typeof window.matchMedia === "function" && window.matchMedia(query).matches
+	);
 	let teardown: (() => void) | undefined;
 
 	/** Re-reads the query; the listener attaches once. Returns cleanup. */
@@ -29,7 +38,14 @@ function createMediaStore(query: string) {
 	};
 }
 
-/** Reactive `prefers-reduced-motion: reduce` (`.value`). Call `reducedMotion.init()` once in the root layout; it returns a cleanup. */
-export const reducedMotion = createMediaStore("(prefers-reduced-motion: reduce)");
+/**
+ * Reactive `prefers-reduced-motion: reduce` (`.value`). Call `reducedMotion.init()` once in the root layout
+ * to follow changes; it returns a cleanup. `true` on the server: it cannot read the preference, so server
+ * markup renders without motion and the client turns it on after reading the query (#1102).
+ */
+export const reducedMotion = createMediaStore("(prefers-reduced-motion: reduce)", true);
 /** Reactive `prefers-reduced-transparency: reduce` (`.value`). Call `reducedTransparency.init()` once in the root layout; it returns a cleanup. */
-export const reducedTransparency = createMediaStore("(prefers-reduced-transparency: reduce)");
+export const reducedTransparency = createMediaStore(
+	"(prefers-reduced-transparency: reduce)",
+	false
+);
