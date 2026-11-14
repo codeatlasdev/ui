@@ -24,6 +24,8 @@ import YearToggleSrc from "~/demos/charts/heatmap/YearToggle.svelte?raw";
 
 `variant` is required. The calendar variant reads `data` and `range`; the matrix variant reads `matrixData`, `xCategories` and `yCategories`.
 
+In the matrix, a cell at 0 is painted on the theme's sunken surface (`--ca-surface-sunken`, or `emptyColor`) and the ramp runs from there to the series colour in both schemes, so an empty row reads as empty, not as data. The alternating axis bands are off (`bands` turns them back on: in dark mode they showed through the empty cells as a checkerboard). The scale under the chart is a static legend, not a draggable range; `legend={false}` hides it and gives its ~64 px back to the cells, which is the better choice for a small range such as "day × hour" counts up to 3.
+
 <Demo title="Calendar heatmap" description="Daily commit activity from January to September." src={CalendarSrc}><Calendar client:visible /></Demo>
 <Demo title="Hour by day matrix" description="Points are [xIndex, yIndex, value] into xCategories and yCategories." src={MatrixSrc}><Matrix client:visible /></Demo>
 <Demo title="Year toggle" description="Swap data and range to move between years." src={YearToggleSrc}><YearToggle client:visible /></Demo>
@@ -37,6 +39,9 @@ import YearToggleSrc from "~/demos/charts/heatmap/YearToggle.svelte?raw";
   { name: "yCategories", type: "string[]", default: "[]", description: "Matrix variant: y-axis labels." },
   { name: "color", type: "string", description: "Hex or rgb color of the high end of the ramp. Defaults to the first palette color. Use hex or rgb, not oklch." },
   { name: "max", type: "number", description: "Value that maps to the full color. Defaults to the data maximum." },
+  { name: "emptyColor", type: "string", default: "--ca-surface-sunken", description: "Matrix variant: fill of a cell at 0, the start of the ramp. Any CSS colour; oklch is converted for the canvas." },
+  { name: "legend", type: "boolean", default: "true", description: "Matrix variant: the static scale under the chart. false hides it (colours still map) and reclaims its height." },
+  { name: "bands", type: "boolean", default: "false", description: "Matrix variant: alternating axis bands behind the cells." },
   { name: "tooltipFormatter", type: "(value: number) => string", description: "Formats the value in the tooltip." },
   { name: "height", type: "string", default: "'240px'", description: "CSS height of the chart." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },

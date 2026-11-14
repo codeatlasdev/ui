@@ -6,7 +6,7 @@
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { withChartTheme } from "./theme.js";
 	import { useChartScope } from "./tokens.js";
-	import { chartPalette, withAlpha } from "./palette.js";
+	import { canvasColor, chartPalette, withAlpha } from "./palette.js";
 	import { chartTokens } from "./tokens.js";
 	import type { CalendarHeatmapPoint, MatrixHeatmapPoint } from "./types.js";
   const msg = useMessages(charts);
@@ -20,6 +20,13 @@
 		matrixData?: MatrixHeatmapPoint[];
 		xCategories?: string[];
 		yCategories?: string[];
+		/** matrix: the alternating axis bands behind the cells. Off: in dark mode they showed through empty cells as a
+		 * checkerboard that read like data (#1061). */
+		bands?: boolean;
+		/** matrix: the `visualMap` scale under the chart (static, not draggable). `false` hides it; colours still map. */
+		legend?: boolean;
+		/** matrix: fill of a cell at 0, the start of the ramp. Default: the theme's `--ca-surface-sunken`. */
+		emptyColor?: string;
 		// shared
 		color?: string;
 		max?: number;
@@ -35,6 +42,9 @@
 		matrixData = [],
 		xCategories = [],
 		yCategories = [],
+		bands = false,
+		legend = true,
+		emptyColor,
 		color,
 		max,
 		tooltipFormatter,
@@ -93,13 +103,16 @@
 		palette: string[],
 	): EChartsOption {
 		const rampColor = color ?? palette[0];
+		// Theme tokens are oklch; a visualMap stop has to be rgb (canvasColor).
+		const empty = canvasColor(emptyColor ?? t.surfaceSunken);
 		const dataMax = max ?? Math.max(0, ...matrixData.map((d) => d[2]));
 		return withChartTheme({
-			grid: { top: 32, right: 20, bottom: 64, left: 56 },
+			// Without the legend its ~64 px band goes back to the cells.
+			grid: { top: 32, right: 20, bottom: legend ? 64 : 24, left: 56 },
 			xAxis: {
 				type: "category",
 				data: xCategories,
-				splitArea: { show: true },
+				splitArea: { show: bands },
 				axisLabel: { fontSize: 10, color: t.textDisabled, fontFamily: t.fontSans },
 				axisTick: { show: false },
 				axisLine: { show: false },
@@ -107,7 +120,7 @@
 			yAxis: {
 				type: "category",
 				data: yCategories,
-				splitArea: { show: true },
+				splitArea: { show: bands },
 				axisLabel: { fontSize: 11, color: t.textSecondary, fontFamily: t.fontSans },
 				axisTick: { show: false },
 				axisLine: { show: false },
@@ -121,16 +134,18 @@
 				},
 			},
 			visualMap: {
+				show: legend,
 				min: 0,
 				max: dataMax,
-				calculable: true,
+				// A scale to read, not a range filter: the drag handles invited a control nobody needs.
+				calculable: false,
 				orient: "horizontal",
 				left: "center",
 				bottom: 4,
 				itemHeight: 120,
 				text: [msg().charts.high, msg().charts.low],
 				textStyle: { color: t.textSecondary, fontSize: 11, fontFamily: t.fontSans },
-				inRange: { color: ["rgba(255,255,255,0.04)", rampColor] },
+				inRange: { color: [empty, rampColor] },
 			},
 			series: [
 				{

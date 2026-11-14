@@ -65,6 +65,8 @@ export interface ChartTokens {
 	blur: string;
 	outlineSubtle: string;
 	actionHover: string;
+	/** Recessed fill: the empty cell of a heatmap matrix (#1061). */
+	surfaceSunken: string;
 	radiusMd: string;
 	radiusLg: string;
 	fontSans: string;
@@ -88,6 +90,7 @@ export function chartTokens(scope: Element | null = null): ChartTokens {
 		blur: v("--ca-blur-regular", "blur(16px)", scope),
 		outlineSubtle: v("--ca-outline-subtle", "rgba(0,0,0,0.07)", scope),
 		actionHover: v("--ca-action-hover", "rgba(0,0,0,0.04)", scope),
+		surfaceSunken: v("--ca-surface-sunken", "rgba(0,0,0,0.04)", scope),
 		radiusMd: v("--ca-radius-md", "12px", scope),
 		radiusLg: v("--ca-radius-lg", "16px", scope),
 		fontSans: v(
