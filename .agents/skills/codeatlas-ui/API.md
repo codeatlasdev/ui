@@ -1032,9 +1032,9 @@ Parts: `ca-contextmenu`
 | `onclick?` | `(event: MouseEvent) => void` |  | Click handler. |
 | `class?` | `string` | `''` | Extra class on the row. |
 
-Snippets: `previewIcon`: Leading icon or ticks rendered before the preview.; `avatar`: Avatar slot.
+Snippets: `previewIcon`: Leading icon or ticks rendered before the preview.; `meta`: A third line inside the card (context, stage, owner, status badges), so the whole card is one click target (#1022). Text and badges only: a control here would nest inside the row's button or link.; `avatar`: Avatar slot.
 
-Parts: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca-conversation__avatar` `ca-conversation__flags` `ca-conversation__line` `ca-conversation__main` `ca-conversation__preview` `ca-conversation__preview--typing` `ca-conversation__previewicon` `ca-conversation__previewrow` `ca-conversation__time` `ca-conversation__title` `ca-conversation__unread` `ca-conversation__unread--muted`
+Parts: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca-conversation__avatar` `ca-conversation__flags` `ca-conversation__line` `ca-conversation__main` `ca-conversation__meta` `ca-conversation__preview` `ca-conversation__preview--typing` `ca-conversation__previewicon` `ca-conversation__previewrow` `ca-conversation__time` `ca-conversation__title` `ca-conversation__unread` `ca-conversation__unread--muted`
 
 ## CopyButton
 
