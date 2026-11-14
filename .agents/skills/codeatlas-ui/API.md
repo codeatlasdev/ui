@@ -530,7 +530,7 @@ Data attributes: `data-orientation` (`vertical`)
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1225,7 +1225,7 @@ Internal (may change in any release): `ca-spin`
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1269,7 +1269,7 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -1308,10 +1308,13 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `triggerLabel?` | `string` |  | aria-label of the calendar button. |
 | `clearable?` | `boolean` | `false` | A "Clear dates" button while either end is set: both ends go back to empty (#1210). |
+| `presets?` | `boolean \| readonly (DateRangePresetId \| DateRangePreset)[]` | `false` | Shortcut ranges listed beside the calendar (#1139). `true`: today, last 7 days, last 30 days, this month and last month, labelled from the catalog. An array mixes built-in ids (`'yesterday'`, `'last90Days'`, `'thisYear'`, …) with `{ label, range }`, `range` being a `{ start, end }` or a function of today. Ranges are clamped to `minValue` / `maxValue` (one wholly outside is disabled). Picking one sets both ends, calls `onchange` once and closes like a completed range; the one equal to the value is `aria-pressed`. |
+| `today?` | `DateValue` |  | The day presets count from. Default: today in `timeZone`. |
+| `timeZone?` | `string` |  | IANA time zone of "today" for presets (`'America/Sao_Paulo'`). Default: the browser's. |
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -2632,7 +2635,7 @@ Variables: `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 | `onchange?` | `(value: CalendarDate \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -3167,7 +3170,7 @@ Tokens: `--ca-rail-icon` `--ca-rail-item-h` `--ca-rail-pip-h` `--ca-rail-pip-w`
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -4234,7 +4237,7 @@ Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__i
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -4285,7 +4288,7 @@ Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timelin
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date-native` `ca-date__clear` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__preset` `ca-date__presets` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap` `ca-mp__cell` `ca-mp__grid` `ca-mp__month` `ca-mp__value` `ca-tf__input` `ca-tf__wrap` `ca-tp__item`
 
 Internal (may change in any release): `ca-date-in` `ca-date-out`
 
@@ -4612,8 +4615,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@297: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@299: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@301: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@303: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
@@ -5757,6 +5760,8 @@ Types:
 | `CsvOptions` | `interface CsvOptions { locale?: string; delimiter?: "," \| ";" \| "\t"; bom?: boolean; }` |  |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
+| `DateRangePreset` | `interface DateRangePreset { label: string; range: \| { start: DateValue; end: DateValue } \| ((today: CalendarDate) => { start: DateValue; end: DateValue }); }` | A custom DateRangePicker preset: its label and its range, or a function of today that returns one. |
+| `DateRangePresetId` | `type DateRangePresetId = \| "today" \| "yesterday" \| "last7Days" \| "last30Days" \| "last90Days" \| "thisMonth" \| "lastMonth" \| "thisYear";` | A built-in DateRangePicker preset, labelled from the i18n catalog. "Last N days" ends today; `thisMonth` / `lastMonth` / `thisYear` run from the first to the last day. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| "auto" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. `"auto"` is comfortable under a coarse pointer (touch targets stay 44px) and compact under a fine one (mouse, trackpad), where spacing, control heights and body text shrink together (#999). |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
@@ -5965,6 +5970,13 @@ Types:
 |---|---|---|
 | `start` | `DateValue \| undefined` |  |
 | `end` | `DateValue \| undefined` |  |
+
+#### DateRangePreset
+
+| Field | Type | Notes |
+|---|---|---|
+| `label` | `string` |  |
+| `range` | `\| { start: DateValue; end: DateValue } \| ((today: CalendarDate) => { start: DateValue; end: DateValue })` |  |
 
 #### DesignStyle
 

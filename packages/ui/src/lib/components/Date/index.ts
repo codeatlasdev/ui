@@ -20,4 +20,4 @@ export { default as MonthPicker } from "./MonthPicker.svelte";
 export { default as RangeCalendar } from "./RangeCalendar.svelte";
 export { default as TimeField } from "./TimeField.svelte";
 export { default as TimePicker } from "./TimePicker.svelte";
-export type { DateRange, TimeValue } from "./types.js";
+export type { DateRange, DateRangePreset, DateRangePresetId, TimeValue } from "./types.js";

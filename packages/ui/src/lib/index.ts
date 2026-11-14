@@ -90,7 +90,13 @@ export { default as ContextMenu } from "./components/ContextMenu/ContextMenu.sve
 export { default as ConversationItem } from "./components/ConversationItem/ConversationItem.svelte";
 export { default as CopyButton } from "./components/CopyButton/CopyButton.svelte";
 export { default as CopyField } from "./components/CopyField/CopyField.svelte";
-export type { DateRange, DateValue, TimeValue } from "./components/Date/index.js";
+export type {
+	DateRange,
+	DateRangePreset,
+	DateRangePresetId,
+	DateValue,
+	TimeValue,
+} from "./components/Date/index.js";
 export {
 	Calendar,
 	CalendarDate,

@@ -1,0 +1,5 @@
+---
+"@codeatlasdev/ui": minor
+---
+
+`DateRangePicker` takes `presets` (#1139): shortcut ranges listed beside the calendar (`.ca-date__presets`, buttons `.ca-date__preset`; a row that scrolls sideways under 600px, 44px targets under a coarse pointer). `presets` (`true`) lists today, last 7 days, last 30 days, this month and last month, labelled from the catalog in English and Portuguese ("Hoje", "Últimos 7 dias", "Este mês"…); an array mixes the built-in ids (`yesterday`, `last90Days`, `thisYear` too) with `{ label, range }` items whose `range` may be a function of today. Ranges count from today in the new `timeZone` prop (or a fixed `today`), "this month" runs from the 1st to the last day, and every range is clamped to `minValue` / `maxValue` (a preset wholly outside is disabled). Picking one sets both ends, calls `onchange` once with the range and closes like a completed range; the preset that equals the value is marked with `aria-pressed="true"`. New types `DateRangePreset` and `DateRangePresetId`.
