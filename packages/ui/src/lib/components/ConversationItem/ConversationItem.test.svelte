@@ -14,6 +14,7 @@
 		typing?: boolean;
 		href?: string;
 		clicks?: { n: number };
+		withMeta?: boolean;
 	}
 	let {
 		title = "Ana Souza",
@@ -28,6 +29,7 @@
 		typing,
 		href,
 		clicks = { n: 0 },
+		withMeta = false,
 	}: Props = $props();
 </script>
 
@@ -45,4 +47,5 @@
 >
 	{#snippet avatar()}{#if withAvatar}<span data-testid="avatar">AS</span>{/if}{/snippet}
 	{#snippet previewIcon()}{#if withIcon}<span data-testid="ticks">ok</span>{/if}{/snippet}
+	{#snippet meta()}{#if withMeta}<span data-testid="meta">Waiting for the team · Trial</span>{/if}{/snippet}
 </ConversationItem>
