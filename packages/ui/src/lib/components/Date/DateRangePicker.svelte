@@ -49,6 +49,8 @@
     variant?:         FieldVariant;
     /** aria-label of the calendar button. */
     triggerLabel?: string;
+    /** A "Clear dates" button while either end is set: both ends go back to empty (#1210). */
+    clearable?:    boolean;
     onchange?:     (value: DateRange) => void;
     class?:        string;
   }
@@ -76,6 +78,7 @@
     size         = 'md',
     variant,
     triggerLabel,
+    clearable    = false,
     onchange,
     class: className = '',
   }: Props = $props();
@@ -153,6 +156,14 @@
     announce,
   });
 
+  /** Both ends at once, reported like a cleared end is; focus moves to the calendar trigger. */
+  function clear() {
+    const empty: DateRange = { start: undefined, end: undefined };
+    value = empty;
+    onchange?.(empty);
+    triggerEl?.focus();
+  }
+
   function close(restoreFocus = false) {
     open = false;
     if (restoreFocus) triggerEl?.focus();
@@ -179,6 +190,9 @@
   triggerLabel={triggerLabel ?? t().calendar.openCalendar}
   bind:triggerEl
   onToggle={() => (open = !open)}
+  onClear={clearable ? clear : undefined}
+  clearLabel={t().calendar.clearDates}
+  hasValue={!!(value.start || value.end)}
   bind:wrap
 >
   {#snippet segments()}
