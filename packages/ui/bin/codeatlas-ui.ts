@@ -74,7 +74,7 @@ const HELP = `codeatlas-ui <command>
   migrate  Rewrite code for renamed APIs and report what is left, per major (--from 2 --to 4; see MIGRATION.md)
   compare  compare <urlA> <urlB>: diff boxes, computed styles and pixels of the same elements at 390 and 1280px, sorted by deviation
   migrate-react  List the shadcn/Radix/Base UI/MUI imports of a React app with their replacement; fix React props in ported .svelte files
-  lint     UI guard for the app: no hex colors or raw px, no inline styles, no :global(.ca-*) outside ui-guard.config.json, no literal text in templates, no word from its forbiddenTerms in template text (whole word, any case), and the layout rules (off-scale spacing and breakpoints, magic vh offsets, rows that cannot shrink, nested surfaces); --rules a,b picks, bare --rules lists
+  lint     UI guard for the app: no hex colors or raw px, no inline styles, no :global(.ca-*) outside ui-guard.config.json, no literal text in templates, no word from its forbiddenTerms in template text (whole word, any case), no hard navigation (location.href = "/x", also in .ts/.js) to a route outside its reloadRoutes, and the layout rules (off-scale spacing and breakpoints, magic vh offsets, rows that cannot shrink, nested surfaces); --rules a,b picks, bare --rules lists
   doctor   Check peers, theme wiring, viewport meta, root font size and markers; one-line fixes (--fix applies the safe ones)
   tokens   tokens import <css|json>: turn your design tokens into theme.ts, alpha flattened and every low-contrast pair listed
   brand    Render the brand icons and src/generated/brand.ts without a Vite run (type-check jobs)
