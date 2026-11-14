@@ -53,7 +53,7 @@
   }}
   onfocus={(e) => {
     onfocus?.(e);
-    tabs.select(value);
+    if (tabs.activation === 'automatic') tabs.select(value);
   }}
 >
   {#if icon}

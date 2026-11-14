@@ -47,9 +47,19 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 
 <Demo title="Scrollable" description="Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge." src={ScrollableSrc}><Scrollable client:visible /></Demo>
 
+## Unsaved changes in a tab
+
+A panel unmounts when its tab is left, so a draft in it is lost. `onbeforechange` runs before the switch: return `false` to stay, or a promise that resolves once the user answers an `AlertDialog` ("Discard changes?"). Pair it with `activation="manual"`: with the default automatic activation, the focus the dialog returns to the clicked tab selects it again and reopens the dialog.
+
+```svelte
+<Tabs bind:value={tab} activation="manual" onbeforechange={(next) => (dirty ? confirmDiscard() : true)}>
+```
+
 <Props for="Tabs" title="Tabs" rows={[
   { name: "value", type: "string", description: "Bindable active tab value." },
   { name: "onchange", type: "(v: string) => void", description: "Fires when the active tab changes by click or keyboard." },
+  { name: "onbeforechange", type: "(next: string) => boolean | Promise<boolean>", description: "Called before another tab is selected. false (or a promise of false) keeps the current tab and skips onchange. Other selections are ignored while a promise is pending." },
+  { name: "activation", type: "'automatic' | 'manual'", default: "'automatic'", description: "automatic: focusing a tab selects it. manual: arrows move focus, Enter, Space or a click selects." },
   { name: "variant", type: "'pill' | 'line'", default: "'pill'", description: "`pill` fills the active tab on a filled list. `line` is bare text with an underline on the active tab, for page headers." },
   { name: "fill", type: "boolean", default: "false", description: "The list stretches across its container and the hairline of `variant=\"line\"` spans it. Default: the list hugs its tabs." },
   { name: "children", type: "Snippet", description: "`TabsList` and `TabsContent` children." },
