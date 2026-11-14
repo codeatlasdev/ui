@@ -54,6 +54,13 @@
     oncreate?:          (value: string) => void;
     /** Show a "Create …" option when the query doesn't match any existing option exactly. */
     creatable?:         boolean;
+    /**
+     * Refuses a new tag before it is added: return the message to show (the typed text stays for a fix);
+     * `undefined` accepts it. A tag already in the value is always refused ("Already added", #1214).
+     */
+    validateCreate?:    (value: string) => string | undefined;
+    /** `multiple`: at most this many values; a pick or a new tag past it is refused with the limit (#1214). */
+    max?:               number;
     /** Multiple mode: show "N selected" in the trigger instead of the placeholder. Default `false` (the chips already list the selection). */
     showCount?:         boolean;
   }
@@ -80,6 +87,8 @@
     onchange,
     oncreate,
     creatable         = false,
+    validateCreate,
+    max,
     showCount         = false,
   }: Props = $props();
 
@@ -205,6 +214,11 @@
     if ('_create' in row && row._create) {
       // creatable: add new tag
       const newVal = row.value;
+      const why = refuse(newVal, true);
+      if (why) {
+        refusal = why;
+        return;
+      }
       writeValue(multiple ? [...selectedValues, newVal] : [newVal]);
       oncreate?.(newVal);
       query = '';
@@ -215,6 +229,11 @@
     const opt = row as ComboboxOption;
     if (multiple) {
       const already = selectedValues.includes(opt.value);
+      const why = already ? '' : refuse(opt.value, false);
+      if (why) {
+        refusal = why;
+        return;
+      }
       const next = already
         ? selectedValues.filter(v => v !== opt.value)
         : [...selectedValues, opt.value];
@@ -232,8 +251,25 @@
     writeValue(selectedValues.filter(v => v !== val));
   }
 
+  /** Why the last pick or new tag was refused; shown as an alert until the text changes or the list closes. */
+  let refusal = $state('');
+  $effect(() => {
+    void query;
+    refusal = '';
+  });
+
+  /** A refusal message, or `''` to go on: the limit of `max`, then (for a new tag) duplicates and `validateCreate`. */
+  function refuse(adding: string, created: boolean): string {
+    if (!multiple) return '';
+    if (max !== undefined && selectedValues.length >= max) return t().combobox.limit(max);
+    if (!created) return '';
+    if (selectedValues.some(v => fold(v) === fold(adding))) return t().combobox.exists;
+    return validateCreate?.(adding) ?? '';
+  }
+
   function close(restoreFocus = true) {
     open = false;
+    refusal = '';
     query = '';
     listbox.clear();
     if (restoreFocus) trigger?.focus({ preventScroll: true });
@@ -374,6 +410,7 @@
         onkeydown={onInputKeydown}
       />
     </div>
+    {#if refusal}<p class="ca-combobox__refusal" role="alert">{refusal}</p>{/if}
     <div
       id={listboxId}
       role="listbox"
@@ -594,6 +631,14 @@
     :global(.ca-combobox__item--create) {
       color: var(--ca-brand-text);
       font-style: italic;
+    }
+
+    /* A refused pick or new tag: why, under the search field (#1214). */
+    .ca-combobox__refusal {
+      margin: 0;
+      padding: var(--ca-space-1) var(--ca-space-3);
+      color: var(--ca-semantic-error);
+      font-size: var(--ca-font-size-caption);
     }
 
     .ca-combobox__empty {

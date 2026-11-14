@@ -9,6 +9,8 @@ export const combobox = defineGroup("combobox", {
 		selectedValues: "Selected values",
 		selectedCount: (n: number) => `${n} selected`,
 		create: (query: string) => `Create "${query}"`,
+		exists: "Already added",
+		limit: (n: number) => `Limit of ${n} reached`,
 	},
 	"pt-BR": {
 		required: "obrigatório",
@@ -18,5 +20,7 @@ export const combobox = defineGroup("combobox", {
 		selectedValues: "Valores selecionados",
 		selectedCount: (n) => `${n} selecionado${n === 1 ? "" : "s"}`,
 		create: (query) => `Criar "${query}"`,
+		exists: "Já adicionado",
+		limit: (n) => `Limite de ${n} atingido`,
 	},
 });
