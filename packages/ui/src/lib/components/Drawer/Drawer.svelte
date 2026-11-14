@@ -92,6 +92,7 @@
     {...rest}
     class="ca-overlay ca-overlay--drawer ca-drawer ca-drawer--{side} {inline ? 'ca-overlay--inline' : ''} {className}"
     role="dialog"
+    tabindex="-1"
     data-ca-blur="sheet"
     aria-labelledby={labelledby}
     data-state={open ? 'open' : 'closed'}

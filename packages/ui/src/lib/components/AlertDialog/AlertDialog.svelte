@@ -130,6 +130,7 @@
   <dialog
     class="ca-overlay ca-dialog ca-dialog--sm ca-alert-dialog {className}"
     role="alertdialog"
+    tabindex="-1"
     data-ca-blur="sheet"
     aria-labelledby={ids.part('title')}
     aria-describedby={description ? ids.part('description') : undefined}

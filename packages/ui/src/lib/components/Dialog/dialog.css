@@ -262,6 +262,13 @@
     background: var(--ca-action-hover);
     color: var(--ca-text-primary);
   }
+  /* A panel is no Tab stop (`tabindex="-1"` on the <dialog>: WebKit otherwise stops on it after a blur),
+     but keyboard focus can still land on it (no focusable child, `initialFocus: "container"`, a script).
+     Then it draws the ring every control draws, inset so the panel's `overflow: hidden` keeps it (#1059). */
+  dialog.ca-overlay:focus-visible {
+    outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+    outline-offset: calc(var(--ca-border-width-focus) * -1);
+  }
   .ca-layer-close:focus-visible {
     outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
     outline-offset: var(--ca-focus-ring-offset);
