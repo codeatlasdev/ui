@@ -63,3 +63,34 @@ With `allowNegative`, a sign button follows the input (`aria-pressed` while the 
   { name: "onchange", type: "(cents: number) => void", description: "Called on every edit with the new cents value." },
   { name: "onblur", type: "(e: FocusEvent) => void", description: "Called when the input loses focus. The display is re-formatted first." },
 ]} />
+
+## Arithmetic on cents
+
+`@codeatlasdev/ui/utils/money` adds, multiplies and splits amounts in the same minor unit. It computes in `bigint`, so a total never loses or gains a cent, and it has no Svelte code, so a server route or a worker can import it alone. Every function returns the type of the amount it receives: a `number` gives a `number`, a `bigint` gives a `bigint`. A `number` result past `Number.MAX_SAFE_INTEGER` throws a `RangeError` instead of rounding; pass amounts that large as `bigint`.
+
+```ts
+import {
+  allocateByWeights,
+  applyBasisPoints,
+  assertCents,
+  divRoundHalfUp,
+  multiplyCents,
+  sumCents,
+} from "@codeatlasdev/ui/utils/money";
+
+allocateByWeights(100, [1, 1, 1]); // [34, 33, 33], always sums to 100
+allocateByWeights(100, [1, 2]); // [33, 67]
+applyBasisPoints(10000, 250); // 250: 2.5% of R$ 100,00
+multiplyCents(1999, 3); // 5997
+multiplyCents(100, 1.005); // 101, where Math.round(100 * 1.005) gives 100
+divRoundHalfUp(5, 2); // 3
+sumCents([10n ** 20n, 1n]); // 100000000000000000001n
+assertCents(1.5); // throws a RangeError
+```
+
+- `allocateByWeights(total, weights)` rounds each share toward zero, then gives the cents left over, one each, to the shares with the largest remainders. A tie goes to the earlier share, so the same input always splits the same way. A negative total splits like its absolute value. Weights are non-negative decimals (percentages work), at least one above zero; a zero weight gets 0.
+- `multiplyCents(amount, rate, mode)` and `applyBasisPoints(amount, bps, mode)` read a decimal rate as written (`1.005` is exactly 1005/1000; a string such as `"0.0725"` takes any number of digits) and round once, at the end. `applyBasisPoints` returns the share (1 bp is 0.01%), not the amount plus the share.
+- `mode` takes the names of `Intl.NumberFormat`'s `roundingMode`. The default, `"halfExpand"`, sends a tie away from zero (`divRound(-5, 2)` is -3); `"halfEven"` is banker's rounding; `"trunc"`, `"floor"`, `"ceil"`, `"expand"`, `"halfTrunc"`, `"halfFloor"` and `"halfCeil"` are accepted too. `divRound(numerator, denominator, mode)` is the division behind all of them, and `divRoundHalfUp` is its `"halfExpand"` form.
+- `assertCents(value)` throws unless the value is a safe-integer `number` or a `bigint`: a `RangeError` for `1.5`, `NaN` or `2 ** 53`, a `TypeError` for a string.
+
+Formatting and parsing stay in `@codeatlasdev/ui/forms` (`centsToDisplay`, `parseAmountToCents`).

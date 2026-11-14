@@ -45,6 +45,8 @@ const ENTRIES: Entry[] = [
 		requires: "sound/index.js",
 		external: ["svelte", "svelte/*", "@lucide/svelte", "@lucide/svelte/*"],
 	},
+	// Pure bigint arithmetic, no Svelte: a server or a worker imports it alone.
+	{ name: "./utils/money", js: `export * from "./utils/money.js";`, requires: "utils/money.js" },
 	{ name: "styles/core.css", css: "styles/core.css" },
 	{ name: "styles/global.css", css: "styles/global.css" },
 ];
