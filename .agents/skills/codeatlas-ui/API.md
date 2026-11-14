@@ -4330,12 +4330,9 @@ Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
 | `required?` | `boolean` | `false` | Keep a selection: pressing the pressed item (the last one, for `multiple`) does nothing instead of clearing it, like a radio group. An empty group still selects on the first press. |
 | `class?` | `string` | `''` |  |
 | `aria-label?` | `string` |  |  |
-
-Also accepts: `(
-      \| { type?: 'single'; value?: T \| ''; onchange?: (value: T \| '') => void }
-      \| { type: 'multiple'; value?: T[]; onchange?: (value: T[]) => void }
-      \| { type: 'single' \| 'multiple'; value?: T \| '' \| T[]; onchange?: (value: T \| '' \| T[]) => void }
-    )`
+| `type?` | `'single' \| 'multiple'` | `'single'` | `single` (radios, one tab stop) or `multiple` (independent toggle buttons). |
+| `value?` | `T \| '' \| T[]` |  | `bind:` Bindable. `T` for single (`''` once cleared), `T[]` for multiple. |
+| `onchange?` | `(value: T \| '' \| T[]) => void` |  |  |
 
 Parts: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca-toggle-group--sm` `ca-toggle-group__item`
 

@@ -243,6 +243,11 @@ function resolvePropsType(sf: ts.SourceFile, type: ts.TypeNode | undefined): Pro
 						rest.push("PolymorphicAttributes<T>");
 					} else if (ts.isTypeReferenceNode(part) && isLocalInterface(sf, part)) {
 						own.push(...resolvePropsType(sf, part).members);
+					} else if (ts.isParenthesizedTypeNode(part) && ts.isUnionTypeNode(part.type)) {
+						// `Common & (A | B)`: props typed by a discriminant (ToggleGroup's `type`, #1235).
+						const u = resolveUnion(sf, part.type);
+						own.push(...u.members);
+						if (u.ext) rest.push(u.ext);
 					} else rest.push(part.getText(sf));
 				}
 				members = own;

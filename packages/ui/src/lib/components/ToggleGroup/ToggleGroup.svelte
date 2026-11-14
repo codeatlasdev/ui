@@ -35,13 +35,19 @@
    * `T` is inferred from `items`, so a literal union (`'list' | 'grid'`) stays narrow (#1235).
    * `single`: `value` is one `T`, or `''` once the pressed item is pressed again (not with `required`).
    * `multiple`: `value` is the pressed `T[]`, in the order of `items`.
-   * A `type` only known at run time takes the union of both shapes.
+   * The first branch (both shapes) is what a `type` only known at run time gets.
    */
   type Props = Common &
     (
+      | {
+          /** `single` (radios, one tab stop) or `multiple` (independent toggle buttons). */
+          type?: 'single' | 'multiple';
+          /** Bindable. `T` for single (`''` once cleared), `T[]` for multiple. */
+          value?: T | '' | T[];
+          onchange?: (value: T | '' | T[]) => void;
+        }
       | { type?: 'single'; value?: T | ''; onchange?: (value: T | '') => void }
       | { type: 'multiple'; value?: T[]; onchange?: (value: T[]) => void }
-      | { type: 'single' | 'multiple'; value?: T | '' | T[]; onchange?: (value: T | '' | T[]) => void }
     );
 
   let {
