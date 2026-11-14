@@ -574,6 +574,10 @@ The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-ro
 
 `.ca-field-optional`: the "(optional)" text after the label of TextField, TextArea, NumberField, Select, Combobox and Label with `optional` (#1215). A `required` Select or Combobox also carries a visually hidden "(required)" in its label, because its trigger is a button and cannot take `aria-required`.
 
+## Field counter (shared)
+
+`.ca-field-foot` `.ca-field-counter` `.ca-field-counter--warn` `.ca-field-counter--over`: the `counter` of TextField and TextArea (#1120). `.ca-field-foot` is the row under the field that holds the description or error and the count; `.ca-field-counter` is the `n/max` text (`--ca-text-secondary`), `--warn` from `warnAt` of the limit (`--ca-semantic-warning`), `--over` past it (`--ca-semantic-error`).
+
 ## TextField
 
 `.ca-tf` `.ca-tf--disabled` `.ca-tf--error` `.ca-tf--sm` `.ca-tf__addon` `.ca-tf__addon--prefix` `.ca-tf__addon--suffix` `.ca-tf__addon--text` `.ca-tf__adorn` `.ca-tf__adorn--lead` `.ca-tf__adorn--trail` `.ca-tf__hint` `.ca-tf__hint--error` `.ca-tf__input` `.ca-tf__label` `.ca-tf__req` `.ca-tf__wrap` `.ca-tf__wrap--addons` `.ca-tf__wrap--error` `.ca-tf__wrap--focused`

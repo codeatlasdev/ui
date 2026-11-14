@@ -1,0 +1,36 @@
+{
+	"summary": "Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier.",
+	"use": "Single-line fields with a length limit where the writer needs to see how much room is left.",
+	"spec": [
+		"Headline has `maxlength={40}`, `counter` and a 37-character value, so the count reads 37/40 in the warning tone",
+		"Promo code has `maxlength={12}` and `counter={{ warnAt: 0.75 }}`: the warning tone starts at 9 characters",
+		"The count sits beside the description and is the field's accessible description; crossing the threshold is announced once",
+		"Column wrapper has `max-width: 400px`"
+	],
+	"tags": ["text-field", "counter", "maxlength", "character count", "limit"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["TextField"],
+		"aliases": ["character counter", "char count", "length limit", "remaining characters"],
+		"related": ["056", "058", "5031"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-14",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { settled } from "../../../../tests/settled";
 import { setLocale } from "../../i18n/index.js";
 import TextField from "./TextField.svelte";
 import TextFieldAddons from "./TextFieldAddons.test.svelte";
@@ -349,5 +350,134 @@ describe("TextField keyboard defaults (#1213)", () => {
 		const plain = await render(TextField, { label: "Name" });
 		expect(plain.getByLabelText("Name").element().hasAttribute("inputmode")).toBe(false);
 		expect(plain.getByLabelText("Name").element().hasAttribute("autocomplete")).toBe(false);
+	});
+});
+
+// #1120: `counter` shows n/max, turns to the warning tone at warnAt and the error tone over the limit,
+// and tells a screen reader once per crossing, through the shared polite region.
+describe("TextField counter (#1120)", () => {
+	afterEach(() => setLocale("en"));
+
+	/** Every text the shared polite region receives, one entry per announce(). */
+	function listen() {
+		const said: string[] = [];
+		const watch = new MutationObserver((records) => {
+			for (const r of records) {
+				if ((r.target as HTMLElement).dataset?.caAnnouncer !== "polite") continue;
+				for (const node of r.addedNodes) if (node.textContent) said.push(node.textContent);
+			}
+		});
+		watch.observe(document.body, { childList: true, subtree: true });
+		return { said, stop: () => watch.disconnect() };
+	}
+	const counterOf = (s: { container: HTMLElement }) =>
+		s.container.querySelector<HTMLElement>(".ca-field-counter");
+	/** The computed colour of a token, to compare with the counter's. */
+	function tone(token: string, host: HTMLElement) {
+		const probe = host.appendChild(document.createElement("span"));
+		probe.style.color = `var(${token})`;
+		const color = getComputedStyle(probe).color;
+		probe.remove();
+		return color;
+	}
+
+	it("shows n/max on every keystroke and describes the field", async () => {
+		const screen = await render(TextField, { label: "Title", maxlength: 10, counter: true });
+		const input = screen.getByLabelText("Title");
+		await expect.element(screen.getByText("0/10")).toBeVisible();
+		await input.fill("abc");
+		await expect.element(screen.getByText("3/10")).toBeVisible();
+		await userEvent.keyboard("d");
+		await expect.element(screen.getByText("4/10")).toBeVisible();
+		await expect.element(input).toHaveAccessibleDescription("4 of 10 characters");
+		const counter = counterOf(screen) as HTMLElement;
+		expect(counter.className).not.toMatch(/--warn|--over/);
+		expect(getComputedStyle(counter).color).toBe(tone("--ca-text-secondary", counter));
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("warning tone from 90%, error tone over the limit", async () => {
+		const warn = await render(TextField, {
+			label: "Title",
+			maxlength: 10,
+			counter: true,
+			value: "123456789",
+		});
+		const w = counterOf(warn) as HTMLElement;
+		expect(w.classList.contains("ca-field-counter--warn")).toBe(true);
+		expect(getComputedStyle(w).color).toBe(tone("--ca-semantic-warning", w));
+		expect(await checkA11y(warn.container)).toHaveNoViolations();
+
+		// A soft limit (counter.max, no maxlength) lets typing go past it.
+		const over = await render(TextField, { label: "Bio", counter: { max: 10 } });
+		await over.getByLabelText("Bio").fill("12345678901");
+		await expect.element(over.getByText("11/10")).toBeVisible();
+		const o = counterOf(over) as HTMLElement;
+		expect(o.classList.contains("ca-field-counter--over")).toBe(true);
+		expect(getComputedStyle(o).color).toBe(tone("--ca-semantic-error", o));
+		expect(await checkA11y(over.container)).toHaveNoViolations();
+	});
+
+	it("warnAt moves the threshold", async () => {
+		const screen = await render(TextField, {
+			label: "Title",
+			maxlength: 10,
+			counter: { warnAt: 0.5 },
+			value: "12345",
+		});
+		expect(counterOf(screen)?.classList.contains("ca-field-counter--warn")).toBe(true);
+	});
+
+	it("from hides the counter below that many characters", async () => {
+		const screen = await render(TextField, {
+			label: "Post",
+			description: "Markdown works",
+			maxlength: 10,
+			counter: { from: 4 },
+		});
+		const input = screen.getByLabelText("Post");
+		await input.fill("abc");
+		expect(counterOf(screen)).toBeNull();
+		await expect.element(input).toHaveAccessibleDescription("Markdown works");
+		await input.fill("abcd");
+		await expect.element(screen.getByText("4/10")).toBeVisible();
+		await expect.element(input).toHaveAccessibleDescription("Markdown works 4 of 10 characters");
+	});
+
+	it("announces once when crossing the threshold", async () => {
+		const screen = await render(TextField, {
+			label: "Title",
+			maxlength: 10,
+			counter: true,
+			value: "1234567",
+		});
+		const { said, stop } = listen();
+		try {
+			await screen.getByLabelText("Title").click();
+			await userEvent.keyboard("{End}8");
+			await settled();
+			expect(said).toEqual([]);
+			await userEvent.keyboard("9");
+			await expect.poll(() => said).toEqual(["9 of 10 characters"]);
+			await userEvent.keyboard("0");
+			await expect.element(screen.getByText("10/10")).toBeVisible();
+			await settled();
+			await settled();
+			expect(said).toEqual(["9 of 10 characters"]);
+			// Back under the threshold and over it again: a new crossing, a new announcement.
+			await userEvent.keyboard("{Backspace}{Backspace}9");
+			await expect.poll(() => said).toEqual(["9 of 10 characters", "9 of 10 characters"]);
+		} finally {
+			stop();
+		}
+	});
+
+	it("is localized", async () => {
+		setLocale("pt-BR");
+		const screen = await render(TextField, { label: "Título", maxlength: 10, counter: true });
+		await screen.getByLabelText("Título").fill("abc");
+		await expect
+			.element(screen.getByLabelText("Título"))
+			.toHaveAccessibleDescription("3 de 10 caracteres");
 	});
 });

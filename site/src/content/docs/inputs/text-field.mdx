@@ -19,6 +19,8 @@ import Addons from "~/demos/inputs/text-field/Addons.svelte";
 import AddonsSrc from "~/demos/inputs/text-field/Addons.svelte?raw";
 import AddonButtons from "~/demos/inputs/text-field/AddonButtons.svelte";
 import AddonButtonsSrc from "~/demos/inputs/text-field/AddonButtons.svelte?raw";
+import Counter from "~/demos/inputs/text-field/Counter.svelte";
+import CounterSrc from "~/demos/inputs/text-field/Counter.svelte?raw";
 
 ```svelte
 <script>
@@ -37,7 +39,12 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
 <Demo title="Text addons" description={"`prefix` and `suffix` as strings: fixed context inside the border, read with the label."} src={AddonsSrc}><Addons client:visible /></Demo>
 <Demo title="Button addons" description={"`prefix` and `suffix` as snippets: a Button or IconButton keeps its own name and Tab stop."} src={AddonButtonsSrc}><AddonButtons client:visible /></Demo>
 <Demo title="Password" description="revealable adds the show/hide eye, below holds the Forgot password link, requiredIndicator={false} drops the asterisk." src={PasswordSrc}><Password client:visible /></Demo>
+<Demo title="Counter and warning tone" description={"`counter` with `maxlength`: the headline is past 90% of its limit, the promo code warns from `warnAt: 0.75`."} src={CounterSrc}><Counter client:visible /></Demo>
 <Demo title="Hidden label" description="hideLabel keeps the label for assistive tech only; maxlength and ref reach the native input." src={HiddenLabelSrc}><HiddenLabel client:visible /></Demo>
+
+## Character counter
+
+`counter` shows `n/max` under the field, at the end of the row the description or error sits on, and updates on every keystroke. With `counter` alone it counts against `maxlength`; the object form takes `max` (a soft limit when there is no `maxlength`: typing goes on past it and the count turns to the error tone, so block the submit yourself), `from` (no count below that many characters, for a limit that matters only near the end) and `warnAt` (the fraction of the limit where the warning tone starts, default `0.9`). The count is part of the field's accessible description ("37 of 40 characters", localized from the catalog), and crossing `warnAt` or the limit is announced once, politely, through the shared `announce()` region: never on every keystroke, and not when the value changes while the field is not focused. Classes: `.ca-field-foot` (the row), `.ca-field-counter`, `--warn`, `--over`.
 
 ## Addons (input group)
 
@@ -76,6 +83,7 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
   { name: "prefix", type: "string | Snippet", description: "Addon before the input, inside the border. A string is text read as part of the description; a snippet is interactive content (Button, IconButton, select)." },
   { name: "suffix", type: "string | Snippet", description: "Addon after the input, same rules as `prefix`." },
   { name: "revealable", type: "boolean", default: "false", description: "With `type=\"password\"`: adds a show/hide eye button inside the field (`aria-pressed`, localized name, 44px on touch)." },
+  { name: "counter", type: "boolean | { max?: number; from?: number; warnAt?: number }", description: "Character counter `n/max` beside the hint, against `maxlength` or `max` (soft limit). `from` hides it below that count; `warnAt` (default 0.9) starts the warning tone and one polite announcement. See Character counter." },
   { name: "below", type: "Snippet", description: "Content under the field and its hint or error: a link such as Forgot password, or a strength meter." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded field (disabled, `aria-busy`). See Skeleton." },
   { name: "class", type: "string", description: "Extra classes on the root." },

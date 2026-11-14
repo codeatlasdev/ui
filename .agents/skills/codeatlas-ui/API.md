@@ -4122,6 +4122,7 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 | `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `readonly?` | `boolean` | `false` |  |
 | `resize?` | `'none' \| 'vertical' \| 'horizontal' \| 'both'` | `'vertical'` |  |
+| `counter?` | `boolean \| { max?: number; from?: number; warnAt?: number }` |  | Character counter `n/max` beside the hint, counting against `maxlength`. `{ max }` sets a soft limit instead (typing goes past it, error tone), `{ from }` hides it below that many characters and `{ warnAt }` (default `0.9`) is where the warning tone starts and a screen reader hears the count, once. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
 | `ref?` | `HTMLTextAreaElement \| null` | `null` | `bind:` The native `<textarea>`, to focus it or read it. |
@@ -4132,9 +4133,9 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 
 Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 'rows' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-field-optional` `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
+Parts: `ca-field-counter` `ca-field-counter--over` `ca-field-counter--warn` `ca-field-foot` `ca-field-optional` `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-radius-control-multiline` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
+Variables: `--ca-field-gap` `--ca-field-hint-leading` `--ca-field-label-leading` `--ca-radius-control-multiline` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
 Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
@@ -4161,6 +4162,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `prefix?` | `string \| Snippet` |  | Addon before the input, inside the field border, set apart by a divider. A string is static text (`https://`, `$`): it is read after the label, as part of the field's description, and a click on it focuses the input. A snippet is interactive content (a `Button`, `IconButton` or select) that keeps its own name and Tab stop. |
 | `suffix?` | `string \| Snippet` |  | Addon after the input, same rules as `prefix`. |
 | `revealable?` | `boolean` | `false` | `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). |
+| `counter?` | `boolean \| { max?: number; from?: number; warnAt?: number }` |  | Character counter `n/max` beside the hint, counting against `maxlength`. `{ max }` sets a soft limit instead (typing goes past it, error tone), `{ from }` hides it below that many characters and `{ warnAt }` (default `0.9`) is where the warning tone starts and a screen reader hears the count, once. |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `width?` | `FieldWidth` |  | `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
@@ -4177,7 +4179,7 @@ Snippets: `leading`; `trailing`; `below`: Content under the field and its hint, 
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'prefix' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-counter` `ca-field-counter--over` `ca-field-counter--warn` `ca-field-foot` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
 Variables: `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 

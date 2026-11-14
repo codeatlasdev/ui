@@ -1,0 +1,31 @@
+/* `counter` of TextField and TextArea (#1120): the hint and the count share a row under the field,
+   the count at the inline end. Tone: secondary text, warning from `warnAt`, error over the limit. */
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  .ca-field-foot {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ca-space-2);
+  }
+  .ca-field-foot > :not(.ca-field-counter) {
+    flex: 1;
+    min-width: 0;
+  }
+  .ca-field-counter {
+    flex-shrink: 0;
+    margin: 0;
+    margin-inline-start: auto;
+    font-size: var(--ca-font-size-caption);
+    line-height: var(--ca-field-hint-leading, var(--ca-line-height-snug));
+    font-variant-numeric: tabular-nums;
+    color: var(--ca-text-secondary);
+  }
+  .ca-field-counter--warn {
+    color: var(--ca-semantic-warning);
+  }
+  /* Weight as well as hue: over the limit is not told by colour alone. */
+  .ca-field-counter--over {
+    color: var(--ca-semantic-error);
+    font-weight: var(--ca-font-weight-medium);
+  }
+}

@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #5030 "Counter and warning tone" (inputs/text-field).
+What it shows: Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier. When to use: Single-line fields with a length limit where the writer needs to see how much room is left.
+Spec:
+- Headline has `maxlength={40}`, `counter` and a 37-character value, so the count reads 37/40 in the warning tone
+- Promo code has `maxlength={12}` and `counter={{ warnAt: 0.75 }}`: the warning tone starts at 9 characters
+- The count sits beside the description and is the field's accessible description; crossing the threshold is announced once
+- Column wrapper has `max-width: 400px`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5030 Counter and warning tone → file, what changed, https://ui.codeatlas.com.br/docs/inputs/text-field#counter-and-warning-tone; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5030.txt   Components API: ca-ui-mcp get_component(TextField)
