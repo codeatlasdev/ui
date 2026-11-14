@@ -3,7 +3,7 @@
   import type { NavItem, NavSection } from './types.js';
   import { isItemActive } from './types.js';
   import NavList from './NavList.svelte';
-  import { readShellState, writeShellState } from './shell-state.js';
+  import { readSectionOpen, sectionKey, writeSectionOpen } from './shell-state.js';
   import { ChevronRight } from '@lucide/svelte';
   import { createIds, createPresence } from '../../primitives/index.js';
 
@@ -12,28 +12,53 @@
     pathname: string;
     /** Decides which link is current (the shell passes the module-wide winner); defaults to `isItemActive`. */
     active?: (item: NavItem) => boolean;
+    /**
+     * `id` of the module the section belongs to (`Panel` sets it). The open state is kept under
+     * `<moduleId>/<label>`, so the same label in two modules is two sections.
+     */
+    moduleId?: string;
+    /** Open state when `section.defaultOpen` is not set (`AppShellLayout` passes `sectionsDefaultOpen`). */
+    defaultOpen?: boolean;
     class?: string;
   }
 
-  let { section, pathname, active, class: className = '' }: Props = $props();
+  let { section, pathname, active, moduleId, defaultOpen = true, class: className = '' }: Props = $props();
 
-  const hasActiveChild = $derived(
-    section.items.some((item) => (active ? active(item) : isItemActive(item, pathname)))
+  // Path of this section's current page, if it holds it. A string, so a rebuilt `items` array with
+  // the same current page does not count as a navigation.
+  const activePath = $derived(
+    section.items.find((item) => (active ? active(item) : isItemActive(item, pathname)))?.path
   );
 
   // Only inside an AppShellLayout with persistPanel (a bare SectionGroup keeps nothing).
   const persist = getContext<{ readonly enabled: boolean } | undefined>('appshell-persist');
+  // Choices made since the panel mounted (`Panel` remounts its sections on a module switch).
+  const memory = getContext<Map<string, boolean> | undefined>('appshell-sections');
 
-  // The user's last choice wins over `defaultOpen`; the active section is never hidden on load.
-  // defaultOpen is init-only on purpose.
+  // The user's last choice (this panel's memory, then storage) wins over `defaultOpen`; the active
+  // section is never hidden on load. Key and defaults are init-only on purpose.
   // svelte-ignore state_referenced_locally
-  const saved = persist?.enabled && section.label ? readShellState().sections[section.label] : undefined;
+  const { label } = section;
   // svelte-ignore state_referenced_locally
-  let open = $state(hasActiveChild || (saved ?? section.defaultOpen !== false));
+  const key = label ? sectionKey(moduleId, label) : '';
+  // svelte-ignore state_referenced_locally
+  const saved = label
+    ? (memory?.get(key) ?? (persist?.enabled ? readSectionOpen(moduleId, label) : undefined))
+    : undefined;
+  // svelte-ignore state_referenced_locally
+  let open = $state(activePath !== undefined || (saved ?? section.defaultOpen ?? defaultOpen));
+
+  // Navigating to a page inside the section opens it. It runs only when the current page changes, so
+  // a section the user closes while on one of its pages stays closed until they navigate again.
+  $effect.pre(() => {
+    if (activePath !== undefined) open = true;
+  });
 
   function toggle() {
     open = !open;
-    if (persist?.enabled && section.label) writeShellState({ sections: { [section.label]: open } });
+    if (!label) return;
+    memory?.set(key, open);
+    if (persist?.enabled) writeSectionOpen(moduleId, label, open);
   }
 
   const uid = $props.id();

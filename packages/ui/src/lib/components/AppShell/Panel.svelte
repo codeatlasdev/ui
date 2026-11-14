@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext } from 'svelte';
+  import { getContext, setContext } from 'svelte';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { appShell } from '../../i18n/groups/appShell.js';
   import type { NavItem, NavModule, NavSection } from './types.js';
@@ -23,10 +23,17 @@
     onResize?:         (width: number) => void;
     onCommit?:         (width: number) => void;
     onResizing?:       (resizing: boolean) => void;
+    /** Open state of a section that sets no `defaultOpen` (`AppShellLayout` passes its `sectionsDefaultOpen`). */
+    sectionsDefaultOpen?: boolean;
     class?:            string;
   }
 
-  let { modules, activeModuleIndex, pathname, show, panelW, resizable = false, width = panelW, onResize, onCommit, onResizing, class: className = '' }: Props = $props();
+  let { modules, activeModuleIndex, pathname, show, panelW, resizable = false, width = panelW, onResize, onCommit, onResizing, sectionsDefaultOpen = true, class: className = '' }: Props = $props();
+
+  // Sections the user opened or closed while this panel is mounted, by `sectionKey`. The list below
+  // is keyed by module, so a module switch remounts its sections: this keeps their choices without
+  // `persistPanel`, and never hands one module's state to another module's section (#1173).
+  setContext('appshell-sections', new Map<string, boolean>());
 
   let activeModule = $derived(modules[activeModuleIndex]);
 
@@ -96,9 +103,9 @@
     <!-- data-ca-module: the inline shell script restores this module's scroll when none is stored (#826) -->
     <nav class="ca-panel__nav" data-ca-module={activeModule?.id} bind:this={nav}>
       {#if activeModule}
-        {#each runs as run, r (r)}
+        {#each runs as run, r (`${activeModule.id}/${r}`)}
           {#if run.section}
-            <SectionGroup section={run.section} {pathname} active={isActiveHere} />
+            <SectionGroup section={run.section} {pathname} active={isActiveHere} moduleId={activeModule.id} defaultOpen={sectionsDefaultOpen} />
           {:else}
             <NavList items={run.items} {pathname} onReorder={activeModule.onReorder} label={activeModule.label} active={isActiveHere} />
           {/if}

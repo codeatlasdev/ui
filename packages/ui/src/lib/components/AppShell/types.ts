@@ -84,6 +84,11 @@ export interface NavReorderEvent {
 export interface NavSection {
 	label?: string;
 	collapsible?: boolean;
+	/**
+	 * Starts open (`true`) or closed (`false`) until the user toggles it. Unset follows
+	 * `AppShellLayout`'s `sectionsDefaultOpen` (open by default). The section holding the current
+	 * page always opens.
+	 */
 	defaultOpen?: boolean;
 	items: NavItem[];
 	/**
