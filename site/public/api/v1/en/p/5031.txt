@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #5031 "Soft limit and threshold" (inputs/text-area).
+What it shows: Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters. When to use: Composers and long-form fields where a length limit matters only near the end.
+Spec:
+- Post has `counter={{ max: 280 }}` and no `maxlength`: typing may go past 280 and the count turns to the error tone
+- Report details has `maxlength={500}` and `counter={{ from: 400 }}`: no count below 400 characters
+- Both have `rows={3}` and a description beside the count
+- Column wrapper has `max-width: 480px`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5031 Soft limit and threshold → file, what changed, https://ui.codeatlas.com.br/docs/inputs/text-area#soft-limit-and-threshold; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5031.txt   Components API: ca-ui-mcp get_component(TextArea)

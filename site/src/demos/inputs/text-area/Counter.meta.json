@@ -1,0 +1,36 @@
+{
+	"summary": "Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters.",
+	"use": "Composers and long-form fields where a length limit matters only near the end.",
+	"spec": [
+		"Post has `counter={{ max: 280 }}` and no `maxlength`: typing may go past 280 and the count turns to the error tone",
+		"Report details has `maxlength={500}` and `counter={{ from: 400 }}`: no count below 400 characters",
+		"Both have `rows={3}` and a description beside the count",
+		"Column wrapper has `max-width: 480px`"
+	],
+	"tags": ["text-area", "textarea", "counter", "maxlength", "character count", "limit"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["TextArea"],
+		"aliases": ["character counter", "char count", "soft limit", "composer"],
+		"related": ["054", "055", "5030"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-14",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

@@ -417,6 +417,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5027", path: "layout/record-list/RecordPage" },
 	{ id: "5028", path: "inputs/time-picker/Default" },
 	{ id: "5029", path: "inputs/month-picker/Default" },
+	{ id: "5030", path: "inputs/text-field/Counter" },
+	{ id: "5031", path: "inputs/text-area/Counter" },
 ];
 
 /**

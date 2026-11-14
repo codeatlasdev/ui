@@ -4,6 +4,8 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { common } from '../../i18n/groups/common.js';
   import '../field-optional.css';
+  import { useFieldCounter } from '../field-counter.svelte.js';
+  import '../field-counter.css';
   const t = useMessages(common);
 
   interface Props
@@ -25,6 +27,12 @@
     optional?:    boolean;
     readonly?:    boolean;
     resize?:      'none' | 'vertical' | 'horizontal' | 'both';
+    /**
+     * Character counter `n/max` beside the hint, counting against `maxlength`. `{ max }` sets a soft limit
+     * instead (typing goes past it, error tone), `{ from }` hides it below that many characters and
+     * `{ warnAt }` (default `0.9`) is where the warning tone starts and a screen reader hears the count, once.
+     */
+    counter?:     boolean | { max?: number; from?: number; warnAt?: number };
     class?:       string;
     name?:        string;
     /** The native `<textarea>`, to focus it or read it. */
@@ -50,6 +58,7 @@
     optional     = false,
     readonly     = false,
     resize       = 'vertical',
+    counter,
     class: className = '',
     name,
     ref          = $bindable(null),
@@ -63,6 +72,11 @@
   let focused = $state(false);
   const id    = uid('ta');
   const hint  = $derived(description ?? helperText);
+  const count = useFieldCounter(() => ({ counter, maxlength: rest.maxlength, value, focused }));
+  const describedBy = $derived(
+    [error ? `${id}-err` : hint ? `${id}-hint` : '', count.visible ? `${id}-count` : '']
+      .filter(Boolean).join(' ') || undefined
+  );
 
   // min-height is computed in CSS from the row count so it follows density and font scale
   const minRows_ = $derived(minRows ?? rows);
@@ -93,7 +107,7 @@
       bind:value
       class="ca-ta__input"
       style="--ta-resize:{resize}; --ta-min-rows:{minRows_}"
-      aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
+      aria-describedby={describedBy}
       aria-invalid={error ? 'true' : undefined}
       onfocus={(e) => { focused = true; onfocus?.(e); }}
       onblur={(e) => { focused = false; onblur?.(e); }}
@@ -102,10 +116,25 @@
     ></textarea>
   </div>
 
-  {#if error}
-    <p id="{id}-err" class="ca-ta__hint ca-ta__hint--error" role="alert">{error}</p>
-  {:else if hint}
-    <p id="{id}-hint" class="ca-ta__hint">{hint}</p>
+  {#snippet message()}
+    {#if error}
+      <p id="{id}-err" class="ca-ta__hint ca-ta__hint--error" role="alert">{error}</p>
+    {:else if hint}
+      <p id="{id}-hint" class="ca-ta__hint">{hint}</p>
+    {/if}
+  {/snippet}
+  <!-- Same row as TextField: hint and count side by side, the row kept while the hint is shown. -->
+  {#if count.on && (count.visible || error || hint)}
+    <div class="ca-field-foot">
+      {@render message()}
+      {#if count.visible}
+        <p id="{id}-count" class="ca-field-counter" class:ca-field-counter--warn={count.level === 'warn'} class:ca-field-counter--over={count.level === 'over'}>
+          <span aria-hidden="true">{count.text}</span><span class="ca-sr-only">{count.label}</span>
+        </p>
+      {/if}
+    </div>
+  {:else}
+    {@render message()}
   {/if}
 </div>
 

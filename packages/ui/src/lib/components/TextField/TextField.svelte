@@ -10,6 +10,8 @@
   import { textField } from '../../i18n/groups/textField.js';
   import { common } from '../../i18n/groups/common.js';
   import '../field-optional.css';
+  import { useFieldCounter } from '../field-counter.svelte.js';
+  import '../field-counter.css';
   const t = useMessages(textField, common);
 
   interface Props
@@ -47,6 +49,12 @@
     revealable?:   boolean;
     /** Content under the field and its hint, such as a "Forgot password?" link or a strength meter. */
     below?:        Snippet;
+    /**
+     * Character counter `n/max` beside the hint, counting against `maxlength`. `{ max }` sets a soft limit
+     * instead (typing goes past it, error tone), `{ from }` hides it below that many characters and
+     * `{ warnAt }` (default `0.9`) is where the warning tone starts and a screen reader hears the count, once.
+     */
+    counter?:      boolean | { max?: number; from?: number; warnAt?: number };
     size?:         'sm' | 'md';
     /** `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. */
     width?:         FieldWidth;
@@ -85,6 +93,7 @@
     suffix,
     revealable   = false,
     below,
+    counter,
     size         = 'md',
     width,
     variant,
@@ -101,6 +110,7 @@
 
   let focused = $state(false);
   const id    = uid('tf');
+  const count = useFieldCounter(() => ({ counter, maxlength: rest.maxlength, value, focused }));
   const hint  = $derived(description ?? helperText);
   // Text addons describe the field ("https://", ".com"), so they join the accessible description.
   const prefixId = `${id}-pre`;
@@ -110,6 +120,7 @@
       typeof prefix === 'string' && prefix ? prefixId : '',
       typeof suffix === 'string' && suffix ? suffixId : '',
       error ? `${id}-err` : hint ? `${id}-hint` : '',
+      count.visible ? `${id}-count` : '',
     ].filter(Boolean).join(' ') || undefined
   );
 
@@ -202,10 +213,26 @@
     {/if}
   </div>
 
-  {#if error}
-    <p id="{id}-err" class="ca-tf__hint ca-tf__hint--error" role="alert">{error}</p>
-  {:else if hint}
-    <p id="{id}-hint" class="ca-tf__hint">{hint}</p>
+  {#snippet message()}
+    {#if error}
+      <p id="{id}-err" class="ca-tf__hint ca-tf__hint--error" role="alert">{error}</p>
+    {:else if hint}
+      <p id="{id}-hint" class="ca-tf__hint">{hint}</p>
+    {/if}
+  {/snippet}
+  <!-- With a counter the hint and the count share a row; the row stays while the hint does, so a shown
+       error is never re-mounted (and re-announced) when the count appears. -->
+  {#if count.on && (count.visible || error || hint)}
+    <div class="ca-field-foot">
+      {@render message()}
+      {#if count.visible}
+        <p id="{id}-count" class="ca-field-counter" class:ca-field-counter--warn={count.level === 'warn'} class:ca-field-counter--over={count.level === 'over'}>
+          <span aria-hidden="true">{count.text}</span><span class="ca-sr-only">{count.label}</span>
+        </p>
+      {/if}
+    </div>
+  {:else}
+    {@render message()}
   {/if}
 
   {#if below}
