@@ -140,7 +140,7 @@ describe("componentRuns", () => {
 	];
 
 	it("runs the throttled specs after the others, alone, with one worker", () => {
-		const runs = componentRuns(comp, [], false);
+		const runs = componentRuns(comp, [], false, "linux");
 		expect(runs).toEqual([
 			["--project", "browser", "src/lib/components/Dialog/Dialog.svelte.test.ts"],
 			[
@@ -153,7 +153,7 @@ describe("componentRuns", () => {
 	});
 
 	it("a shared change runs every file: the parallel run excludes the throttled ones", () => {
-		expect(componentRuns(comp, [], true)).toEqual([
+		expect(componentRuns(comp, [], true, "linux")).toEqual([
 			["--project", "browser", "--exclude", "**/*.throttled.svelte.test.ts"],
 			["--project", "browser", "--maxWorkers=1", "throttled"],
 		]);
@@ -161,7 +161,7 @@ describe("componentRuns", () => {
 
 	it("keeps ssr tests in the first run and adds no throttled run without one", () => {
 		const ssr = ["packages/ui/src/lib/forms/Turnstile.ssr.test.ts"];
-		expect(componentRuns([comp[0]], ssr, false)).toEqual([
+		expect(componentRuns([comp[0]], ssr, false, "linux")).toEqual([
 			[
 				"--project",
 				"browser",
@@ -171,5 +171,24 @@ describe("componentRuns", () => {
 				"src/lib/forms/Turnstile.ssr.test.ts",
 			],
 		]);
+	});
+});
+
+// #1263: on Windows CDP CPU throttling is far stronger than its rate (150x CommandPalette > 240 s alone, ~19 s on
+// the reference Mac); the land gate leaves the throttled specs to CI's throttled job there.
+describe("componentRuns on win32", () => {
+	const comp = [
+		"packages/ui/src/lib/components/Dialog/Dialog.svelte.test.ts",
+		"packages/ui/src/lib/components/CommandPalette/CommandPalette.throttled.svelte.test.ts",
+	];
+
+	it("drops the throttled run, keeps the others", () => {
+		expect(componentRuns(comp, [], false, "win32")).toEqual([
+			["--project", "browser", "src/lib/components/Dialog/Dialog.svelte.test.ts"],
+		]);
+		expect(componentRuns(comp, [], true, "win32")).toEqual([
+			["--project", "browser", "--exclude", "**/*.throttled.svelte.test.ts"],
+		]);
+		expect(componentRuns(comp, [], false, "linux")).toHaveLength(2);
 	});
 });

@@ -198,7 +198,15 @@ const packageTests = async () => {
 		const unit = run(["bun", "test", `--changed=${base}`]);
 		return unit === 1 && !changed.some((f) => /\.(ts|js|svelte)$/.test(f)) ? 0 : unit;
 	});
-	// CPU-throttled specs run after the others with one worker, like CI's throttled job (#1259).
+	// CPU-throttled specs run after the others with one worker, like CI's throttled job (#1259); on Windows
+	// they are left to that job (#1263).
+	if (
+		process.platform === "win32" &&
+		compTests.some((f) => f.endsWith(".throttled.svelte.test.ts"))
+	)
+		console.log(
+			"test:changed: CPU-throttled specs skipped on Windows (CDP throttling runs far slower than its rate); CI's throttled job runs them (#1263)"
+		);
 	if (compTests.length || ssrTests.length)
 		await step("components", async () => {
 			let code = 0;
