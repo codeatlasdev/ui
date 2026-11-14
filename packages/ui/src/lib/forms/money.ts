@@ -14,6 +14,7 @@ interface MoneyFormat {
 	format: Intl.NumberFormat;
 	decimals: number;
 	decimal: string;
+	symbol: string;
 }
 
 const cache = new Map<string, MoneyFormat>();
@@ -31,6 +32,7 @@ function resolve({ currency = "BRL", locale = "pt-BR" }: MoneyOptions = {}): Mon
 			format,
 			decimals: format.resolvedOptions().maximumFractionDigits ?? 2,
 			decimal: decimal ?? ".",
+			symbol: format.formatToParts(1).find((p) => p.type === "currency")?.value ?? "",
 		};
 		cache.set(key, hit);
 	}
@@ -83,5 +85,42 @@ export function parseInputToCents(text: string, options?: MoneyOptions): number 
 		const d = text.replace(/\D/g, "");
 		cents = d ? Number(d) : 0;
 	}
+	return negative && cents !== 0 ? -cents : cents;
+}
+
+/**
+ * Parse an amount the way a person types or pastes it, into integer minor units. Unlike
+ * `parseInputToCents`, digits without a decimal separator are whole units, not a digit stream:
+ * - The locale's decimal separator starts the fraction (`"12,5"` → 1250, `"1.234,56"` → 123456 in
+ *   pt-BR); extra fraction digits are truncated, a 0-decimal currency drops them.
+ * - The locale's group separator is ignored (`"1.234"` → 123400 in pt-BR, `"1,234"` → 123400 in
+ *   en-US), and so are the currency symbol, spaces and letters.
+ * - Without the locale's decimal separator, a single `.` or `,` followed by 1 to `decimals` digits
+ *   other than exactly 3 is read as the decimal point of a keypad from another locale
+ *   (`"12.5"` → 1250 in pt-BR). Three digits after it are always a thousands group.
+ * A `-` (or U+2212) anywhere yields a negative value.
+ */
+export function parseAmountToCents(text: string, options?: MoneyOptions): number {
+	const { decimals, decimal, symbol } = resolve(options);
+	const negative = /[-−]/.test(text);
+	const clean = (symbol ? text.split(symbol).join("") : text).replace(/[^\d.,'’]/g, "");
+	let at = clean.lastIndexOf(decimal);
+	let sep = decimal;
+	if (at < 0) {
+		for (const alt of [".", ","]) {
+			if (alt === decimal || clean.indexOf(alt) !== clean.lastIndexOf(alt)) continue;
+			const tail = clean.slice(clean.indexOf(alt) + 1);
+			if (/^\d+$/.test(tail) && tail.length <= decimals && tail.length !== 3) {
+				at = clean.indexOf(alt);
+				sep = alt;
+			}
+		}
+	}
+	const whole = (at >= 0 ? clean.slice(0, at) : clean).replace(/\D/g, "") || "0";
+	const fraction = (at >= 0 ? clean.slice(at + sep.length) : "")
+		.replace(/\D/g, "")
+		.slice(0, decimals)
+		.padEnd(decimals, "0");
+	const cents = Number(whole) * 10 ** decimals + (decimals ? Number(fraction) : 0);
 	return negative && cents !== 0 ? -cents : cents;
 }
