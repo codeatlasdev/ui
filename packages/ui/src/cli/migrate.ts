@@ -1,5 +1,4 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { relative } from "node:path";
 import MagicString from "magic-string";
 import { parse } from "svelte/compiler";
 // `typescript` is an optional peer: only its types are imported here and the runtime module is
@@ -7,6 +6,7 @@ import { parse } from "svelte/compiler";
 import type * as TS from "typescript";
 import { unifiedDiff } from "./diff.ts";
 import { loadMigrations, type MigrationFile, migrationsBetween } from "./migrations.ts";
+import { relPosix } from "./paths.ts";
 import { loadTypescript, MISSING_TYPESCRIPT, type TypeScript } from "./typescript.ts";
 
 let ts: TypeScript;
@@ -733,7 +733,7 @@ function scanLeftovers(
 			const lines = readFileSync(file, "utf8").split("\n");
 			lines.forEach((text, i) => {
 				if (re.test(text) && !/ca-ui-migrated\(/.test(text))
-					out.push({ id: e.id, file: relative(cwd, file), line: i + 1, note: e.replacement });
+					out.push({ id: e.id, file: relPosix(cwd, file), line: i + 1, note: e.replacement });
 			});
 		}
 	}
@@ -788,7 +788,7 @@ export function migrate(
 			try {
 				if (active.has("layout-primitives")) current = migrateComponents(file, src, skipped);
 			} catch (e) {
-				log(`  skip    ${relative(cwd, file)}: ${(e as Error).message}`);
+				log(`  skip    ${relPosix(cwd, file)}: ${(e as Error).message}`);
 				continue;
 			}
 		}
@@ -805,15 +805,15 @@ export function migrate(
 						out.overwrite(sc.start, sc.start + sc.text.length, local.toString());
 				}
 			} catch (e) {
-				log(`  skip    ${relative(cwd, file)}: ${(e as Error).message}`);
+				log(`  skip    ${relPosix(cwd, file)}: ${(e as Error).message}`);
 				continue;
 			}
 		const next = out.toString();
 		if (next === src) continue;
 		changed++;
-		touched.push(relative(cwd, file));
+		touched.push(relPosix(cwd, file));
 		for (const id of CODEMOD_IDS) if (active.has(id)) applied.add(id);
-		const rel = relative(cwd, file);
+		const rel = relPosix(cwd, file);
 		if (write) {
 			writeFileSync(file, next);
 			if (!report) log(`  migrate ${rel}`);
@@ -831,7 +831,7 @@ export function migrate(
 	const unmapped: Leftover[] = [
 		...skipped.map((u) => ({
 			id: COMPONENT_MIGRATION[u.component] ?? "v3-gap-step-scale",
-			file: relative(cwd, u.file),
+			file: relPosix(cwd, u.file),
 			line: u.line,
 			component: u.component,
 			note: `${u.reason} (${u.recipe})`,

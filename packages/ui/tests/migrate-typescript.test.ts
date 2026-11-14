@@ -28,9 +28,14 @@ function runCli(args: string[], project: Record<string, string> = {}) {
 	);
 	cpSync(join(pkgRoot, "bin/codeatlas-ui.ts"), join(cli, "bin/codeatlas-ui.ts"));
 	// The published bundle inlines magic-string and keeps svelte as a peer: only typescript is absent.
+	// A junction on Windows (a symlink needs a privilege there); the type is ignored elsewhere.
 	mkdirSync(join(cli, "node_modules"), { recursive: true });
 	for (const dep of ["magic-string", "svelte", "esm-env"])
-		symlinkSync(realpathSync(join(pkgRoot, "node_modules", dep)), join(cli, "node_modules", dep));
+		symlinkSync(
+			realpathSync(join(pkgRoot, "node_modules", dep)),
+			join(cli, "node_modules", dep),
+			"junction"
+		);
 	const app = join(root, "app");
 	for (const [path, content] of Object.entries(project)) {
 		mkdirSync(dirname(join(app, path)), { recursive: true });

@@ -5,7 +5,8 @@
  * Read-only; offline-safe. Exit code is 0 unless `--strict` finds such a selector.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { join, resolve } from "node:path";
+import { relPosix } from "./paths.ts";
 
 export interface Marker {
 	line: number;
@@ -111,7 +112,7 @@ export async function runWorkarounds(
 	const { cwd = process.cwd(), fetch: f = fetch, log = console.log } = opts;
 	const files = [...new Set(targets.flatMap((t) => collect(resolve(cwd, t))))];
 	const found: Found[] = files.flatMap((file) =>
-		findMarkers(readFileSync(file, "utf8")).map((m) => ({ ...m, file: relative(cwd, file) }))
+		findMarkers(readFileSync(file, "utf8")).map((m) => ({ ...m, file: relPosix(cwd, file) }))
 	);
 
 	if (!found.length) log("No ca-ui-workaround markers found.");
@@ -141,7 +142,7 @@ function scanSelectors(files: string[], data: PartsData, cwd: string) {
 		for (const s of findSelectors(src, file)) {
 			if (stable.has(s.name)) continue;
 			const excused = [lines[s.line - 1], lines[s.line - 2]].some((l) => l && MARKER_ANY.test(l));
-			if (!excused) out.push({ file: relative(cwd, file), ...s });
+			if (!excused) out.push({ file: relPosix(cwd, file), ...s });
 		}
 	}
 	return out;

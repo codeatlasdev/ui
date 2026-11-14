@@ -10,7 +10,7 @@
  * Anything that every page depends on (styles, tokens, theme, stores, the shared layout) selects all routes.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { dirname, join, relative } from "node:path";
+import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -128,7 +128,9 @@ const walk = (dir: string, ext: RegExp, out: string[] = []): string[] => {
 	}
 	return out;
 };
-const rel = (p: string) => relative(ROOT, p);
+/** `relative()` with `/` on every OS: routes, repo paths and git diffs all use it, never Windows' `\` (#1243). */
+export const relPosix = (from: string, to: string) => relative(from, to).split(sep).join("/");
+const rel = (p: string) => relPosix(ROOT, p);
 const read = (p: string) => readFileSync(p, "utf8");
 
 /**
@@ -191,13 +193,13 @@ export interface RouteImpact {
 }
 
 const docRoute = (mdx: string) =>
-	`/docs/${relative(join(SITE, "content/docs"), mdx)
+	`/docs/${relPosix(join(SITE, "content/docs"), mdx)
 		.replace(/\.mdx$/, "")
 		.replace(/(^|\/)index$/, "")}/`.replace("//", "/");
 
 /** Astro page -> route (`pages/templates/app/users/index.astro` -> `/templates/app/users/`). */
 const pageRoute = (page: string) =>
-	`/${relative(join(SITE, "pages"), page)
+	`/${relPosix(join(SITE, "pages"), page)
 		.replace(/\.astro$/, "")
 		.replace(/(^|\/)index$/, "")}/`.replace("//", "/");
 
@@ -332,7 +334,7 @@ export function buildImpact(): RouteImpact {
 		for (const m of src.matchAll(/(?:from|import)\s+["'](~\/[^"']+\.(?:svelte|astro|ts))["']/g))
 			if (!m[1].includes("/pages/")) followImports(route, demoFile(m[1]));
 		// The changelog's scenes and figures import each other and `./scenes` by relative path.
-		if (file.includes("/components/changelog/"))
+		if (rel(file).includes("/components/changelog/"))
 			for (const m of src.matchAll(/(?:from|import)\s+["'](\.{1,2}\/[^"']+)["']/g)) {
 				const target = join(dirname(file), m[1]);
 				const found = [target, `${target}.astro`, `${target}.ts`, join(target, "index.ts")].find(
@@ -342,11 +344,12 @@ export function buildImpact(): RouteImpact {
 			}
 	};
 	for (const page of walk(join(SITE, "pages"), /\.astro$/)) {
+		const at = rel(page);
 		if (
-			page.includes("[...slug]") ||
-			page.includes("/llms/") ||
-			page.includes("/gallery/[id]") ||
-			page.includes("/changelog/[version]")
+			at.includes("[...slug]") ||
+			at.includes("/llms/") ||
+			at.includes("/gallery/[id]") ||
+			at.includes("/changelog/[version]")
 		)
 			continue;
 		followImports(pageRoute(page), page);

@@ -13,8 +13,8 @@
  * selection can only grow, never shrink.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
-import { isTestFile, ROOT, select } from "./route-impact.ts";
+import { basename, dirname, join, resolve } from "node:path";
+import { isTestFile, ROOT, relPosix, select } from "./route-impact.ts";
 
 const PKG = join(ROOT, "packages/ui");
 const SRC = join(PKG, "src");
@@ -100,7 +100,7 @@ export function buildGraph(): TestGraph {
 	// A barrel is a file made only of re-exports: name -> the file that defines it.
 	const barrel = new Map<string, Map<string, string>>();
 	const isBarrel = (f: string) => {
-		if (!/(^|\/)index\.ts$/.test(f)) return false;
+		if (basename(f) !== "index.ts") return false;
 		const body = (text.get(f) ?? "")
 			.replace(/\/\*[\s\S]*?\*\//g, "")
 			.replace(/\/\/.*$/gm, "")
@@ -150,7 +150,7 @@ export function buildGraph(): TestGraph {
 		deps.set(f, set);
 	}
 
-	const rel = (f: string) => relative(ROOT, f);
+	const rel = (f: string) => relPosix(ROOT, f);
 	const only = (re: RegExp) =>
 		files
 			.filter((f) => re.test(f) && f.startsWith(SRC))

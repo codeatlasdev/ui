@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { fileURLToPath } from "node:url";
 import { parseIds, runPick } from "../src/cli/pick.ts";
 
 const GALLERY = "https://ui.codeatlas.com.br/gallery/";
@@ -106,7 +107,7 @@ describe("runPick", () => {
 });
 
 describe("codeatlas-ui pick (binary)", () => {
-	const BIN = new URL("../bin/codeatlas-ui.ts", import.meta.url).pathname;
+	const BIN = fileURLToPath(new URL("../bin/codeatlas-ui.ts", import.meta.url));
 
 	it("prints the link, then the picked ids, and exits 0", async () => {
 		const proc = Bun.spawn([process.execPath, BIN, "pick", "12", "--url", GALLERY], {

@@ -4,9 +4,10 @@
  * everything else is a hint, never a guess. Exit 1 when a finding is an error.
  */
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join, relative } from "node:path";
+import { join } from "node:path";
 import { groups } from "../lib/i18n/all.ts";
 import { detectFramework } from "./init.ts";
+import { relPosix } from "./paths.ts";
 
 export interface Finding {
 	id: string;
@@ -94,7 +95,7 @@ function optionalPeerFindings(files: string[], root: string, deps: Record<string
 					level: "error",
 					message: `${need.feature} needs the optional peer ${need.peer}`,
 					fix: `bun add ${need.peer}`,
-					file: relative(root, file),
+					file: relPosix(root, file),
 					line: lineOf(src, m.index),
 				});
 		}
@@ -186,7 +187,7 @@ function rootFontFindings(files: string[], root: string): Finding[] {
 					level: "warn",
 					message: "font-size on html/:root changes the rem base and resizes every component",
 					fix: "set body text with --ca-font-size-body1 (or a typography role) instead",
-					file: relative(root, file),
+					file: relPosix(root, file),
 					line: lineOf(src, (rule.index ?? 0) + rule[0].indexOf("{") + (decl.index ?? 0)),
 				});
 		}
@@ -208,7 +209,7 @@ function markerFindings(files: string[], root: string, fix: boolean): Finding[] 
 				level: "warn",
 				message: `TODO(lib#${h[2]}) is not read by \`workarounds\``,
 				fix: `write ca-ui-workaround(#${h[2]}): reason (doctor --fix does it)`,
-				file: relative(root, file),
+				file: relPosix(root, file),
 				line: lineOf(src, h.index ?? 0),
 			});
 		if (fix && hits.length)
@@ -233,7 +234,7 @@ function selectorFinding(files: string[], root: string, scripts: string): Findin
 					level: "warn",
 					message: "app CSS targets .ca-* classes and no script checks they are stable parts",
 					fix: 'add "check:ca": "codeatlas-ui workarounds --strict" to package.json scripts and run it in CI',
-					file: relative(root, file),
+					file: relPosix(root, file),
 					line: lineOf(src, m.index),
 				},
 			];
@@ -284,7 +285,7 @@ function localeFindings(files: string[], root: string): Finding[] {
 					level: "warn",
 					message: `registerLocale: "${name}" is not in the catalog, so it renders in English`,
 					fix: "check the name with get_export / getMessages(\x27en\x27) (MCP) and correct or remove it",
-					file: relative(root, file),
+					file: relPosix(root, file),
 					line: lineOf(src, at),
 				});
 			for (const g of body.matchAll(GROUP_OPEN)) {

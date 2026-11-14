@@ -56,32 +56,51 @@ describe("test-run budgets", () => {
 	});
 
 	it("within budget passes quietly, over budget fails and lists the slowest tests", () => {
+		// macOS and Linux (`"linux"` here): a platform with a load average, so the verdict follows it.
 		const err = spyOn(console, "error").mockImplementation(() => {});
 		try {
 			const file = timings([
 				{ name: "slow one", ms: 9000 },
 				{ name: "fast one", ms: 5 },
 			]);
-			expect(report("changed", 12, file, 3, 12)).toBe(0);
+			expect(report("changed", 12, file, 3, 12, 3, "linux")).toBe(0);
 			expect(err.mock.calls.flat().join("\n")).toContain("within budget: changed 12.0s of 60s");
 			err.mockClear();
 
-			expect(report("changed", 61, file, 3, 12)).toBe(1);
+			expect(report("changed", 61, file, 3, 12, 3, "linux")).toBe(1);
 			const out = err.mock.calls.flat().join("\n");
 			expect(out).toContain("OVER BUDGET: changed 61.0s of 60s");
 			expect(out).toContain("slow one");
 			// the boundary: exactly on budget is within it
-			expect(report("validate", 90, file, 3, 12)).toBe(0);
-			expect(report("full", 300.1, file, 3, 12)).toBe(1);
+			expect(report("validate", 90, file, 3, 12, 3, "linux")).toBe(0);
+			expect(report("full", 300.1, file, 3, 12, 3, "linux")).toBe(1);
 			// no budget, no verdict
-			expect(report(undefined, 9999, file, 3, 12)).toBe(0);
+			expect(report(undefined, 9999, file, 3, 12, 3, "linux")).toBe(0);
 
 			// a loaded machine (above 3/4 of the cores at the start or the end of the run): reported, not failed (#793)
 			err.mockClear();
-			expect(report("changed", 61, file, 9.1, 12)).toBe(0);
+			expect(report("changed", 61, file, 9.1, 12, 9.1, "linux")).toBe(0);
 			expect(err.mock.calls.flat().join("\n")).toContain("OVER BUDGET, NOT ENFORCED");
-			expect(report("changed", 61, file, 3, 12, 9.5)).toBe(0);
-			expect(report("changed", 61, file, 9, 12, 2)).toBe(1);
+			expect(report("changed", 61, file, 3, 12, 9.5, "linux")).toBe(0);
+			expect(report("changed", 61, file, 9, 12, 2, "linux")).toBe(1);
+		} finally {
+			err.mockRestore();
+		}
+	});
+
+	// Windows has no load average: `os.loadavg()` is always [0, 0, 0], so "not loaded" is unknown, not proven (#1243).
+	it("over budget is not enforced where the platform has no load average", () => {
+		const err = spyOn(console, "error").mockImplementation(() => {});
+		try {
+			const file = timings([{ name: "slow one", ms: 9000 }]);
+			expect(report("changed", 61, file, 0, 12, 0, "win32")).toBe(0);
+			const out = err.mock.calls.flat().join("\n");
+			expect(out).toContain("OVER BUDGET, NOT ENFORCED: changed 61.0s of 60s");
+			expect(out).toContain("load average unavailable on this platform");
+			expect(out).toContain("slow one");
+			// within budget is still within budget, and other platforms keep enforcing it
+			expect(report("changed", 12, file, 0, 12, 0, "win32")).toBe(0);
+			expect(report("changed", 61, file, 0, 12, 0, "linux")).toBe(1);
 		} finally {
 			err.mockRestore();
 		}

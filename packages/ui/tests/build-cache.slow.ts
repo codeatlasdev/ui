@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { existsSync, readFileSync, statSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { INPUTS } from "../scripts/build-inputs";
 
 // The package build skips itself when the bytes of its inputs are the ones the last finished build had. A release is
@@ -36,7 +36,8 @@ function importClosure(entries: string[]): string[] {
 			if (target && !target.includes("node_modules")) queue.push(target);
 		}
 	}
-	return [...seen].map((f) => relative(ROOT, f));
+	// INPUTS are `/` paths; `relative` gives `\` on Windows (#1243).
+	return [...seen].map((f) => relative(ROOT, f).split(sep).join("/"));
 }
 
 describe("build inputs", () => {

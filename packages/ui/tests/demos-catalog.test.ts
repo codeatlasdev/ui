@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import { CATALOG } from "../../../site/src/demos/catalog.ts";
 import {
 	buildDemos,
@@ -10,6 +10,7 @@ import {
 	HELPERS,
 } from "../scripts/build-manifest.ts";
 import { ID_PATTERN } from "../scripts/index-schema.ts";
+import { relPosix } from "../src/cli/paths.ts";
 
 const DEMOS = resolve(import.meta.dir, "../../../site/src/demos");
 
@@ -18,7 +19,7 @@ function svelteFiles(dir: string): string[] {
 		e.isDirectory()
 			? svelteFiles(join(dir, e.name))
 			: e.name.endsWith(".svelte")
-				? [relative(DEMOS, join(dir, e.name)).replace(/\.svelte$/, "")]
+				? [relPosix(DEMOS, join(dir, e.name)).replace(/\.svelte$/, "")]
 				: []
 	);
 }

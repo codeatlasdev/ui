@@ -1,7 +1,8 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, relative } from "node:path";
+import { dirname, join } from "node:path";
 import { CONSUMER_GUIDE, GUIDE_END, GUIDE_START } from "./agent-guide.ts";
 import { unifiedDiff } from "./diff.ts";
+import { relPosix } from "./paths.ts";
 
 export type Framework = "sveltekit" | "astro";
 
@@ -1149,7 +1150,7 @@ export function init(
 		} else {
 			pending++;
 			log(
-				`  diff    ${step.path} (exists, not modified)\n${unifiedDiff(relative(root, abs), current, next)}\n`
+				`  diff    ${step.path} (exists, not modified)\n${unifiedDiff(relPosix(root, abs), current, next)}\n`
 			);
 		}
 	}

@@ -9,12 +9,12 @@
  * Dry run unless `write`; running it twice changes nothing the second time.
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { relative } from "node:path";
 import MagicString from "magic-string";
 import { parse } from "svelte/compiler";
 import type * as TS from "typescript";
 import { unifiedDiff } from "./diff.ts";
 import { type Equivalent, findEquivalent, loadEquivalents } from "./equivalents.ts";
+import { relPosix } from "./paths.ts";
 import { loadTypescript, MISSING_TYPESCRIPT } from "./typescript.ts";
 
 export interface ReactImport {
@@ -148,7 +148,7 @@ export function migrateReact(
 	const manual: string[] = [];
 	for (const file of files) {
 		const src = readFileSync(file, "utf8");
-		const rel = relative(cwd, file);
+		const rel = relPosix(cwd, file);
 		if (/\.(tsx|jsx)$/.test(file)) {
 			for (const f of scanReactImports(src, table, ts)) {
 				const to = f.row?.gap

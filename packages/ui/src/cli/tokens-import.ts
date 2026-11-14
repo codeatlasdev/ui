@@ -9,8 +9,9 @@
  * to one of these two first.
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { relative, resolve } from "node:path";
+import { resolve } from "node:path";
 import { contrastRatio, oklchToHex } from "../lib/utils/palette-generator.ts";
+import { relPosix } from "./paths.ts";
 
 export interface ParsedColor {
 	hex: string;
@@ -316,11 +317,11 @@ export function runTokensImport(
 	if (out) {
 		const dest = resolve(cwd, out);
 		if (existsSync(dest) && !force) {
-			log(`${relative(cwd, dest)} exists: pass --force to overwrite it`);
+			log(`${relPosix(cwd, dest)} exists: pass --force to overwrite it`);
 			return 1;
 		}
 		writeFileSync(dest, result.source);
-		log(`wrote ${relative(cwd, dest)}`);
+		log(`wrote ${relPosix(cwd, dest)}`);
 	}
 	return strict && low.length ? 1 : 0;
 }

@@ -11,8 +11,13 @@ const built = existsSync(bin);
 
 function app(files: Record<string, string>) {
 	const dir = tmpDir("ca-mig-cli-");
-	// `migrate` loads the project's typescript: borrow the repo's.
-	symlinkSync(join(import.meta.dir, "../../../node_modules"), join(dir, "node_modules"));
+	// `migrate` loads the project's typescript: borrow the repo's. A junction on Windows (a symlink
+	// needs a privilege there); the type is ignored elsewhere.
+	symlinkSync(
+		join(import.meta.dir, "../../../node_modules"),
+		join(dir, "node_modules"),
+		"junction"
+	);
 	for (const [p, c] of Object.entries(files)) {
 		mkdirSync(join(dir, p, ".."), { recursive: true });
 		writeFileSync(join(dir, p), c);
