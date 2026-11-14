@@ -9178,7 +9178,7 @@ function brandHash(...parts: string[]): string
 The URLs `generateBrand` will write, computed from the inputs alone (no rasterizer, no files). Names depend on a hash of the inputs, so this is cheap and exact.
 
 ```ts
-function brandUrls(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName">): BrandAssets
+function brandUrls(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName" | "tint">): BrandAssets
 ```
 
 ### CA_THEME_MARKER
@@ -9205,7 +9205,7 @@ const CA_THEME_SCRIPT_TAG: string
 
 `import { caBrandPlugin } from "@codeatlasdev/ui/vite"`
 
-Vite plugin. As soon as the config resolves (dev server, build, and any tool that loads the Vite config) it writes `src/generated/brand.ts` exporting `brand: BrandAssets`: the URLs depend only on a hash of the inputs, so no rendering is needed and the module type-checks before the first build. At build start (and dev server start) it renders the favicon set. `svelte-kit sync` and `svelte-check` do not load Vite plugins: run `bunx @codeatlasdev/ui brand` first in a job that only type-checks. Add `outDir` and the generated module to `.gitignore`: nothing it writes is meant to be committed. Warns and does nothing when the mark file is missing.
+Vite plugin. As soon as the config resolves (dev server, build, and any tool that loads the Vite config) it writes `src/generated/brand.ts` exporting `brand: BrandAssets`: the URLs depend only on a hash of the inputs, so no rendering is needed and the module type-checks before the first build. At build start (and dev server start) it renders the favicon set. `svelte-kit sync` and `svelte-check` do not load Vite plugins: run `bunx @codeatlasdev/ui brand` first in a job that only type-checks. Add `outDir` and the generated module to `.gitignore`: nothing it writes is meant to be committed. Warns and does nothing when the mark file is missing. Under `vite dev` a `devTint` draws the set in that color, under its own hash; every other command writes the untinted set.
 
 ```ts
 function caBrandPlugin(options?: CaBrandPluginOptions): Plugin
@@ -9335,7 +9335,7 @@ function resolveBrand(theme?: ThemeOptions): ResolvedBrand
 
 `import { runBrand } from "@codeatlasdev/ui/vite"`
 
-Renders the whole set and writes the module, outside Vite: what `codeatlas-ui brand` runs, for a type-check-only job on a fresh clone. Returns `false` when the mark file is missing.
+Renders the whole set and writes the module, outside Vite: what `codeatlas-ui brand` runs, for a type-check-only job on a fresh clone. Returns `false` when the mark file is missing. Ignores `devTint`: this is production output.
 
 ```ts
 function runBrand(root: string, options: CaBrandPluginOptions): Promise<boolean>
@@ -9348,12 +9348,12 @@ Types:
 | `BrandAssets` | `interface BrandAssets { favicon: string; ico: string; favicon32: string; appleTouch: string; icon192: string; icon512: string; maskable512: string; manifest: string; hash: string; }` | Public URLs of the generated assets. `og` is keyed by whatever the caller passed in `ogPages`. |
 | `BrandColors` | `interface BrandColors { ink: string; spark: string; surface: string; }` | Literal sRGB colors of one scheme. |
 | `BrowserLike` | `interface BrowserLike { newContext: (options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>; }` | The subset of Playwright's `Browser` this module uses. |
-| `CaBrandPluginOptions` | `interface CaBrandPluginOptions { mark?: string; theme?: ThemeOptions; outDir?: string; base?: string; manifestFile?: string; name?: string; shortName?: string; }` |  |
+| `CaBrandPluginOptions` | `interface CaBrandPluginOptions { mark?: string; theme?: ThemeOptions; outDir?: string; base?: string; manifestFile?: string; name?: string; shortName?: string; devTint?: string; }` |  |
 | `CaErrorPluginOptions` | `interface CaErrorPluginOptions extends ErrorHtmlOptions { root?: string; routesDir?: string; scaffold?: boolean; scaffoldErrorHtml?: boolean; }` |  |
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
-| `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; }` |  |
+| `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; tint?: string; }` |  |
 | `OgCardOptions` | `interface OgCardOptions { title: string; description?: string; eyebrow?: string; siteName: string; mark: string; colors: { ink: string; spark: string; surface: string }; css?: string; fontFamily?: string; lang?: string; }` |  |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
@@ -9401,6 +9401,7 @@ Types:
 | `manifestFile?` | `string` | Where the asset URLs are written as a TypeScript module. @default "src/generated/brand.ts" |
 | `name?` | `string` |  |
 | `shortName?` | `string` |  |
+| `devTint?` | `string` | `vite dev` only: draws the mark in this one color (`#rgb`, `#rrggbb` or `oklch(L C H)`) in the favicon and every icon, so apps open side by side in dev have tabs you can tell apart. `vite build`, `vite preview` and `codeatlas-ui brand` ignore it: their output is the untinted set, byte for byte. |
 
 #### CaErrorPluginOptions
 
@@ -9435,6 +9436,7 @@ Types:
 | `base?` | `string` | URL prefix of `outDir`. @default "/brand" |
 | `name?` | `string` | Web app manifest fields. |
 | `shortName?` | `string` |  |
+| `tint?` | `string` | Draws the whole mark (ink and spark) in this one color, in both schemes, in every icon: `#rgb`, `#rrggbb` or `oklch(L C H)`. Part of the hash, so every file is renamed. What `caBrandPlugin`'s `devTint` passes under `vite dev`; leave it out of production output. |
 
 #### OgCardOptions
 

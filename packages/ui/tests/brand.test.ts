@@ -1,4 +1,5 @@
 import { afterAll, describe, expect, it, spyOn } from "bun:test";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { runBrandCommand } from "../src/cli/brand.ts";
@@ -11,6 +12,7 @@ import {
 	resvgOptions,
 } from "../src/lib/brand.js";
 import { iconLinks, ogCard } from "../src/lib/seo/index.js";
+import { oklchToHex } from "../src/lib/utils/palette-generator.js";
 import { cleanTmp, tmpDir } from "./tmp";
 
 afterAll(cleanTmp);
@@ -192,16 +194,16 @@ describe("recipes from the Node-safe vite entry (#148)", () => {
 	});
 });
 
-describe("brand module on a fresh clone (#141)", () => {
-	const project = (files: Record<string, string>) => {
-		const root = tmpDir("brand-proj-");
-		for (const [path, content] of Object.entries(files)) {
-			mkdirSync(dirname(join(root, path)), { recursive: true });
-			writeFileSync(join(root, path), content);
-		}
-		return root;
-	};
+const project = (files: Record<string, string>) => {
+	const root = tmpDir("brand-proj-");
+	for (const [path, content] of Object.entries(files)) {
+		mkdirSync(dirname(join(root, path)), { recursive: true });
+		writeFileSync(join(root, path), content);
+	}
+	return root;
+};
 
+describe("brand module on a fresh clone (#141)", () => {
 	it("brandUrls returns the URLs generateBrand writes, without rendering", async () => {
 		const o = { mark: MARK, theme, name: "T" };
 		const urls = brandUrls(o);
@@ -247,5 +249,67 @@ describe("brand module on a fresh clone (#141)", () => {
 	it("the brand CLI fails clearly when the mark is missing", async () => {
 		const root = project({});
 		expect(await runBrandCommand(root, { log: () => {} })).toBe(1);
+	});
+});
+
+describe("devTint (#1096)", () => {
+	const TINT = "#e11d48";
+	type Env = { command: "serve" | "build"; mode: string; isPreview?: boolean };
+	const dev: Env = { command: "serve", mode: "development" };
+	const build: Env = { command: "build", mode: "production" };
+	const preview: Env = { command: "serve", mode: "production", isPreview: true };
+	const sha = (b: Buffer) => createHash("sha256").update(b).digest("hex");
+
+	/** Drives the plugin as Vite does (config, configResolved, buildStart); returns what it wrote. */
+	const run = async (env: Env, devTint?: string) => {
+		const root = project({ "src/brand/mark.svg": MARK });
+		const plugin = caBrandPlugin({ theme, name: "T", devTint });
+		(plugin.config as (c: object, e: Env) => unknown)({}, env);
+		(plugin.configResolved as (c: { root: string }) => void)({ root });
+		await (plugin.buildStart as () => Promise<void>)();
+		const out = join(root, "static/brand");
+		const files: Record<string, string> = {};
+		for (const f of readdirSync(out)) files[f] = sha(readFileSync(join(out, f)));
+		const module = readFileSync(join(root, "src/generated/brand.ts"), "utf8");
+		const url = (key: string) => module.match(new RegExp(`"${key}": "/brand/([^"]+)"`))?.[1] ?? "";
+		const svg = readFileSync(join(out, url("favicon")), "utf8");
+		return { files, module, svg, ico: files[url("ico")], png: files[url("favicon32")] };
+	};
+
+	it("vite dev serves the tinted favicon", async () => {
+		const [tinted, plain] = await Promise.all([run(dev, TINT), run(build)]);
+		expect(tinted.svg).toContain(`--ink:${TINT};--spark:${TINT}`);
+		expect(tinted.svg).not.toContain(resolveBrand(theme).light.spark);
+		// Browsers without SVG favicons read the ICO / PNG: those carry the tint too.
+		expect(tinted.ico).not.toBe(plain.ico);
+		expect(tinted.png).not.toBe(plain.png);
+	});
+
+	it("build and preview stay byte for byte", async () => {
+		const plain = await run(build);
+		for (const env of [build, preview]) {
+			const tinted = await run(env, TINT);
+			expect(tinted.module).toBe(plain.module);
+			expect(tinted.files).toEqual(plain.files);
+		}
+	});
+
+	it("no devTint: dev writes what build does", async () => {
+		const [a, b] = await Promise.all([run(dev), run(build)]);
+		expect(a.module).toBe(b.module);
+		expect(a.files).toEqual(b.files);
+	});
+
+	it("takes #rgb and oklch(), rejects names", () => {
+		const hash = (tint: string) => brandUrls({ mark: MARK, theme, tint }).hash;
+		expect(hash("#E1D")).toBe(hash("#ee11dd"));
+		expect(hash("oklch(0.6 0.2 20)")).toBe(hash(oklchToHex("oklch(0.6 0.2 20)")));
+		expect(hash("#ee11dd")).not.toBe(brandUrls({ mark: MARK, theme }).hash);
+		const plugin = caBrandPlugin({ theme, devTint: "tomato" });
+		(plugin.config as (c: object, e: Env) => unknown)({}, dev);
+		const root = project({ "src/brand/mark.svg": MARK });
+		expect(() => (plugin.configResolved as (c: { root: string }) => void)({ root })).toThrow(
+			/devTint/
+		);
 	});
 });
