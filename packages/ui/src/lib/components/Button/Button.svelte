@@ -8,8 +8,7 @@
   import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
   const t = useMessages(button);
 
-  import { devWarn } from '../../utils/dev-warn.js';
-  import { textVariantWarning, type ButtonVariant } from './variants.js';
+  import type { ButtonVariant } from './variants.js';
 
   type Size = 'sm' | 'md' | 'lg';
   type Tone = 'brand' | 'neutral' | 'danger';
@@ -118,10 +117,9 @@
   // `rest` is a union (anchor | button attributes); each element receives only its own half.
   const rest = $derived(restProps as AnchorAttributes & ButtonAttributes);
 
+  // `text` is IconButton's old name for `ghost`, accepted here as a deprecated alias (#1233). No dev warning:
+  // Button stays free of `devWarn` (the "Button only" tree-shaking budget); IconButton warns.
   const look = $derived(variant === 'text' ? 'ghost' : variant);
-  $effect(() => {
-    if (variant === 'text') devWarn('button-variant-text', textVariantWarning('Button'));
-  });
 
   const isDisabled = $derived(disabled || loading);
   const neutral = $derived(tone === 'neutral' && (look === 'outlined' || look === 'ghost'));

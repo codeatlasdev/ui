@@ -1,7 +1,7 @@
 /**
  * The variants Button and IconButton share (#1233). `ghost` is the background-less one on both; `Button`
  * adds `destructive`. Each also accepts `text` until the next major, as a deprecated alias of `ghost` (it
- * was IconButton's name for it): the component renders `ghost` and warns once in dev.
+ * was IconButton's name for it): the component renders `ghost` (IconButton also warns once in dev).
  */
 export type ButtonVariant = "filled" | "glass" | "outlined" | "ghost";
 
