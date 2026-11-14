@@ -203,7 +203,7 @@ async function reportMarkers(found: Found[], f: typeof fetch, log: (line: string
 	const rows = found.map((m) => [
 		`${m.file}:${m.line}`,
 		`#${m.issue}`,
-		states.get(m.issue) ?? "unknown",
+		states.get(m.issue as number) ?? "unknown",
 		m.reason,
 	]);
 	const w = [0, 1, 2].map((c) => Math.max(...rows.map((r) => r[c].length)));
