@@ -68,7 +68,8 @@ describe("RadioGroup cards layout", () => {
 		{ value: "keep", label: "Keep data", description: "Reset the test but keep every answer." },
 		{ value: "wipe", label: "Wipe data", description: "Reset the test and delete the answers." },
 	];
-	const cards = async (props: Record<string, unknown>, width = 900) => {
+	type CardProps = { items: typeof two; columns?: 1 | 2 | 3 | "auto" };
+	const cards = async (props: CardProps, width = 900) => {
 		const screen = await render(RadioGroup, { variant: "cards", "aria-label": "Mode", ...props });
 		const box = screen.container as HTMLElement;
 		box.style.width = `${width}px`;
