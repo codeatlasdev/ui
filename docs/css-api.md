@@ -188,7 +188,7 @@ Token: `--ca-cf-gap` (falls back to `--ca-field-gap`). The value box is `user-se
 
 ## Date
 
-`.ca-cal` `.ca-cal--standalone` `.ca-cal__cell` `.ca-cal__day` `.ca-cal__grid` `.ca-cal__head-cell` `.ca-cal__header` `.ca-cal__heading` `.ca-cal__months` `.ca-cal__nav` `.ca-date` `.ca-date--disabled` `.ca-date--error` `.ca-date--sm` `.ca-date-in` `.ca-date-out` `.ca-date__content` `.ca-date__hint` `.ca-date__hint--error` `.ca-date__input` `.ca-date__label` `.ca-date__range-sep` `.ca-date__req` `.ca-date__segment` `.ca-date__sep` `.ca-date__clear` `.ca-date__trigger` `.ca-date__wrap` `.ca-mp__cell` `.ca-mp__grid` `.ca-mp__month` `.ca-mp__value` `.ca-tf` `.ca-tp__item`
+`.ca-cal` `.ca-cal--standalone` `.ca-cal__cell` `.ca-cal__day` `.ca-cal__grid` `.ca-cal__head-cell` `.ca-cal__header` `.ca-cal__heading` `.ca-cal__months` `.ca-cal__nav` `.ca-date` `.ca-date--disabled` `.ca-date--error` `.ca-date--sm` `.ca-date-in` `.ca-date-native` `.ca-date-out` `.ca-date__content` `.ca-date__hint` `.ca-date__hint--error` `.ca-date__input` `.ca-date__label` `.ca-date__range-sep` `.ca-date__req` `.ca-date__segment` `.ca-date__sep` `.ca-date__clear` `.ca-date__trigger` `.ca-date__wrap` `.ca-mp__cell` `.ca-mp__grid` `.ca-mp__month` `.ca-mp__value` `.ca-tf` `.ca-tp__item`
 
 ## Dialog
 

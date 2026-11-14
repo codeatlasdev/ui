@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { DateValue } from '@internationalized/date';
+  import { parseDate, toCalendarDate, type DateValue } from '@internationalized/date';
+  import TextField from '../TextField/TextField.svelte';
   import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
@@ -35,6 +36,11 @@
     variant?:         FieldVariant;
     /** Name for the hidden input (ISO string) in native forms. */
     name?:         string;
+    /**
+     * The system date picker (`<input type="date">`, a wheel on a phone) instead of typed segments, with `min` and
+     * `max` from `minValue` / `maxValue`; `value` stays a `DateValue` (a `CalendarDate`). Day granularity only (#1216).
+     */
+    native?:       boolean;
     onchange?:     (value: DateValue | undefined) => void;
     class?:        string;
   }
@@ -58,9 +64,20 @@
     size        = 'md',
     variant,
     name,
+    native      = false,
     onchange,
     class: className = '',
   }: Props = $props();
+
+  /** `YYYY-MM-DD`, the only format `<input type="date">` reads and writes. */
+  const iso = (v: DateValue | undefined) => (v ? toCalendarDate(v).toString() : undefined);
+
+  function commitNative(raw: string) {
+    const next = raw ? parseDate(raw) : undefined;
+    value = next;
+    if (next) placeholder = next;
+    onchange?.(next);
+  }
 
   const id = uid('df');
 
@@ -94,6 +111,27 @@
   $effect(() => field.sync(value));
 </script>
 
+{#if native && granularity === 'day'}
+  <TextField
+    type="date"
+    class="ca-date-native {className}"
+    {label}
+    {hideLabel}
+    {width}
+    {description}
+    {error}
+    {disabled}
+    {required}
+    {readonly}
+    {size}
+    {variant}
+    {name}
+    value={iso(value) ?? ''}
+    min={iso(minValue)}
+    max={iso(maxValue)}
+    onchange={commitNative}
+  />
+{:else}
 <DateFieldShell
   {id}
   {field}
@@ -112,3 +150,4 @@
   formValue={value?.toString()}
   bind:wrap
 />
+{/if}

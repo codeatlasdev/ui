@@ -177,6 +177,14 @@
     }
   }
 
+  /* Native mode (#1216): the date input fills the field, so the whole field opens the system picker; a coarse
+     pointer gets at least the touch target. */
+  .ca-date-native .ca-tf__input { align-self: stretch; height: auto; }
+  @media (pointer: coarse) {
+    .ca-date-native .ca-tf__wrap { height: auto; }
+    .ca-date-native .ca-tf__input { min-block-size: var(--ca-touch-target); }
+  }
+
   .ca-date__range-sep { color: var(--ca-text-hint); user-select: none; }
   .ca-date__wrap:has(.ca-date__range-sep) .ca-date__input { flex: 0 0 auto; flex-wrap: nowrap; min-width: max-content; }
   .ca-date__wrap:has(.ca-date__range-sep) { column-gap: var(--ca-space-2); }
