@@ -8,6 +8,7 @@ import SegmentedControlContent from "./SegmentedControlContent.test.svelte";
 import SegmentedControlHarness from "./SegmentedControlHarness.test.svelte";
 import SegmentedControlLong from "./SegmentedControlLong.test.svelte";
 import SegmentedControlNarrow from "./SegmentedControlNarrow.test.svelte";
+import TypedValue from "./TypedValue.test.svelte";
 
 const segIndex = (el: Element) => (el as HTMLElement).style.getPropertyValue("--seg-index");
 
@@ -315,5 +316,14 @@ describe("SegmentedControl", () => {
 			expect(all[0].hasAttribute("title")).toBe(false);
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		});
+	});
+
+	// #1235: the type test is `bun run check` on TypedValue.test.svelte; this proves the typed callbacks run.
+	it("a literal-union value flows through onchange (#1235)", async () => {
+		const screen = await render(TypedValue);
+		await screen.getByRole("radio", { name: "Connect a number" }).click();
+		await expect.element(screen.getByTestId("picked")).toHaveTextContent("connect");
+		await screen.getByRole("button", { name: "Opt-in campaign" }).click();
+		await expect.element(screen.getByTestId("toggled")).toHaveTextContent("campaign");
 	});
 });

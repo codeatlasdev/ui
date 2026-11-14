@@ -1,8 +1,9 @@
 <script lang="ts" module>
   import type { IconComponent } from '../../types.js';
 
-  export interface ToggleGroupItem {
-    value: string;
+  /** `T`: the option values, e.g. a literal union (`'list' | 'grid'`); `string` when omitted (#1235). */
+  export interface ToggleGroupItem<T extends string = string> {
+    value: T;
     label?: string;
     icon?: IconComponent;
     disabled?: boolean;
@@ -11,16 +12,13 @@
   }
 </script>
 
-<script lang="ts">
+<script lang="ts" generics="T extends string = string">
   import { untrack } from 'svelte';
   import { rovingFocus } from '../../primitives/index.js';
   import './toggle-group.css';
 
-  interface Props {
-    type?: 'single' | 'multiple';
-    /** `string` for type="single", `string[]` for type="multiple". */
-    value?: string | string[];
-    items: ToggleGroupItem[];
+  interface Common {
+    items: ToggleGroupItem<T>[];
     size?: 'sm' | 'md';
     variant?: 'outlined' | 'ghost';
     disabled?: boolean;
@@ -32,8 +30,19 @@
     required?: boolean;
     class?: string;
     'aria-label'?: string;
-    onchange?: (value: string | string[]) => void;
   }
+  /**
+   * `T` is inferred from `items`, so a literal union (`'list' | 'grid'`) stays narrow (#1235).
+   * `single`: `value` is one `T`, or `''` once the pressed item is pressed again (not with `required`).
+   * `multiple`: `value` is the pressed `T[]`, in the order of `items`.
+   * A `type` only known at run time takes the union of both shapes.
+   */
+  type Props = Common &
+    (
+      | { type?: 'single'; value?: T | ''; onchange?: (value: T | '') => void }
+      | { type: 'multiple'; value?: T[]; onchange?: (value: T[]) => void }
+      | { type: 'single' | 'multiple'; value?: T | '' | T[]; onchange?: (value: T | '' | T[]) => void }
+    );
 
   let {
     type = 'single',
@@ -48,6 +57,8 @@
     'aria-label': ariaLabel,
     onchange,
   }: Props = $props();
+  // The union is for callers; inside, one callback shape for both modes.
+  const emit = (next: T | '' | T[]) => (onchange as ((v: T | '' | T[]) => void) | undefined)?.(next);
 
   // Normalise bindable value so it always has the shape matching `type`.
   if (value === undefined) value = untrack(() => (type === 'multiple' ? [] : ''));
@@ -55,7 +66,7 @@
   const multiple = $derived(type === 'multiple');
   const selected = $derived(Array.isArray(value) ? value : value ? [value] : []);
 
-  function toggle(item: ToggleGroupItem) {
+  function toggle(item: ToggleGroupItem<T>) {
     if (disabled || item.disabled) return;
     if (required && selected.length === 1 && selected[0] === item.value) return;
     if (multiple) {
@@ -64,12 +75,12 @@
         : // keep the order of `items`, not click order
           items.map((i) => i.value).filter((v) => v === item.value || selected.includes(v));
       value = next;
-      onchange?.(next);
+      emit(next);
     } else {
       // Pressing the active item again clears a single group (unless `required`, returned above).
-      const next = selected[0] === item.value ? '' : item.value;
+      const next: T | '' = selected[0] === item.value ? '' : item.value;
       value = next;
-      onchange?.(next);
+      emit(next);
     }
   }
 
@@ -81,7 +92,7 @@
   }
 </script>
 
-{#snippet content(item: ToggleGroupItem)}
+{#snippet content(item: ToggleGroupItem<T>)}
   {#if item.icon}
     {@const Icon = item.icon}
     <Icon size={size === 'sm' ? 14 : 16} stroke-width={2} />
