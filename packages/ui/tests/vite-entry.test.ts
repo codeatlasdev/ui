@@ -57,7 +57,11 @@ describe("server-safe import of the recipes from /vite (#184)", () => {
 
 describe("caBrandPlugin config (#184)", () => {
 	it("marks the native peers ssr.external so an SSR build never inlines them", () => {
-		const config = caBrandPlugin().config as () => { ssr: { external: string[] } };
-		expect(config().ssr.external).toEqual(["@resvg/resvg-js", "png-to-ico"]);
+		const config = caBrandPlugin().config as (
+			c: object,
+			env: { command: string; mode: string }
+		) => { ssr: { external: string[] } };
+		const { ssr } = config({}, { command: "build", mode: "production" });
+		expect(ssr.external).toEqual(["@resvg/resvg-js", "png-to-ico"]);
 	});
 });

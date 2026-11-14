@@ -284,12 +284,24 @@ The generated manifest is installable as is: `display: "standalone"`, `id` and `
 | `base` | `"/brand"` | URL prefix of `outDir`. |
 | `manifestFile` | `"src/generated/brand.ts"` | Where the asset URLs are written, as a module exporting `brand`. |
 | `name`, `shortName` | none | Fields of the generated web app manifest. |
+| `devTint` | none | `vite dev` only: draws the mark in this one color (`#rgb`, `#rrggbb` or `oklch(L C H)`) in the favicon and every icon. `vite build`, `vite preview` and the `brand` CLI ignore it. See [Tell apps apart in dev](#tell-apps-apart-in-dev). |
 
 `@resvg/resvg-js` and `png-to-ico` are optional peer dependencies. Install them where you register the plugin:
 
 ```sh
 bun add -d @resvg/resvg-js png-to-ico
 ```
+
+### Tell apps apart in dev
+
+With several apps open at once in dev (a storefront, a seller panel and an admin drawn from the same mark), every tab shows the same favicon. Give each app its own `devTint`:
+
+```ts
+// apps/seller/vite.config.ts
+caBrandPlugin({ theme, name: "Acme Seller", outDir: "static/brand", devTint: "#e11d48" }),
+```
+
+Under `vite dev` the whole mark, outline and accent, is drawn in that color in both schemes, in the SVG favicon and in the ICO and PNG fallbacks. The color is part of the hash, so the tinted files get names of their own and never share a URL with the real ones. `vite build`, `vite preview` and `codeatlas-ui brand` ignore the option: the build writes the untinted set, byte for byte the same as without `devTint`. Pick a color that reads on both a light and a dark tab strip, a mid-lightness one such as `#e11d48` or `oklch(0.62 0.2 150)`. `generateBrand` and `brandUrls` take the same color as `tint`, for a script that renders the set itself.
 
 ### Type-check on a fresh clone
 

@@ -41,6 +41,27 @@ export interface ResolvedBrand {
 const HEX = /^#[0-9a-f]{6}$/i;
 const toHex = (c: string) => (HEX.test(c) ? c.toLowerCase() : oklchToHex(c));
 
+/** A user-given tint as `#rrggbb`: `#rgb`, `#rrggbb` or `oklch(L C H)`. Anything else throws. */
+function tintHex(tint: string): string {
+	const t = tint.trim();
+	const short = t.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
+	if (short) return toHex(`#${short[1]}${short[1]}${short[2]}${short[2]}${short[3]}${short[3]}`);
+	if (HEX.test(t) || /^oklch\(/.test(t)) return toHex(t);
+	throw new Error(
+		`[codeatlasdev/ui] brand tint (caBrandPlugin devTint) must be #rgb, #rrggbb or oklch(L C H), got "${tint}"`
+	);
+}
+
+/** The whole mark (ink and spark) in one color, in both schemes; the surface stays. */
+function tinted(brand: ResolvedBrand, tint: string | undefined): ResolvedBrand {
+	if (tint === undefined) return brand;
+	const c = tintHex(tint);
+	return {
+		light: { ...brand.light, ink: c, spark: c },
+		dark: { ...brand.dark, ink: c, spark: c },
+	};
+}
+
 /** Colors of the theme's default preset in both schemes, as `#rrggbb`. Pure: same theme, same result. */
 export function resolveBrand(theme: ThemeOptions = {}): ResolvedBrand {
 	const t = defaultPresetTokens(defineTheme(theme));
@@ -107,6 +128,12 @@ export interface GenerateBrandOptions {
 	/** Web app manifest fields. */
 	name?: string;
 	shortName?: string;
+	/**
+	 * Draws the whole mark (ink and spark) in this one color, in both schemes, in every icon:
+	 * `#rgb`, `#rrggbb` or `oklch(L C H)`. Part of the hash, so every file is renamed. What
+	 * `caBrandPlugin`'s `devTint` passes under `vite dev`; leave it out of production output.
+	 */
+	tint?: string;
 }
 
 const SIZES = [16, 32, 48] as const;
@@ -124,9 +151,12 @@ export function resvgOptions(svg: string, size: number) {
 }
 
 /** Everything that decides the output names, without rendering: shared by `generateBrand` and `brandUrls`. */
-function plan(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName">) {
+function plan(
+	o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName" | "tint">
+) {
 	const base = (o.base ?? "/brand").replace(/\/$/, "");
-	const brand = resolveBrand(o.theme);
+	// A tint replaces the colors the hash covers, so a tinted set never shares a name with the real one.
+	const brand = tinted(resolveBrand(o.theme), o.tint);
 	const scheme: keyof ResolvedBrand =
 		defineTheme(o.theme).defaultScheme === "light" ? "light" : "dark";
 	// resvg and standalone SVG files need the namespace; inline use in HTML does not.
@@ -162,7 +192,7 @@ function plan(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" |
  * Names depend on a hash of the inputs, so this is cheap and exact.
  */
 export function brandUrls(
-	o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName">
+	o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName" | "tint">
 ): BrandAssets {
 	return plan(o).assets;
 }
@@ -278,6 +308,13 @@ export interface CaBrandPluginOptions {
 	manifestFile?: string;
 	name?: string;
 	shortName?: string;
+	/**
+	 * `vite dev` only: draws the mark in this one color (`#rgb`, `#rrggbb` or `oklch(L C H)`) in the
+	 * favicon and every icon, so apps open side by side in dev have tabs you can tell apart.
+	 * `vite build`, `vite preview` and `codeatlas-ui brand` ignore it: their output is the untinted
+	 * set, byte for byte.
+	 */
+	devTint?: string;
 }
 
 function writeBrandModule(file: string, assets: BrandAssets) {
@@ -288,8 +325,11 @@ function writeBrandModule(file: string, assets: BrandAssets) {
 	);
 }
 
-/** Reads the mark and options relative to `root`; `null` (after a warning) when the mark file is missing. */
-function brandInputs(root: string, options: CaBrandPluginOptions) {
+/**
+ * Reads the mark and options relative to `root`; `null` (after a warning) when the mark file is
+ * missing. `tint` is passed explicitly, never read from `options.devTint`: only the dev server tints.
+ */
+function brandInputs(root: string, options: CaBrandPluginOptions, tint?: string) {
 	const markFile = resolve(root, options.mark ?? "src/brand/mark.svg");
 	if (!existsSync(markFile)) {
 		console.warn(`\n[codeatlasdev/ui] caBrandPlugin: no mark at ${markFile}; skipped.\n`);
@@ -301,20 +341,26 @@ function brandInputs(root: string, options: CaBrandPluginOptions) {
 		base: options.base,
 		name: options.name,
 		shortName: options.shortName,
+		tint,
 		outDir: resolve(root, options.outDir ?? "static/brand"),
 		moduleFile: resolve(root, options.manifestFile ?? "src/generated/brand.ts"),
 	};
 }
 
-/**
- * Renders the whole set and writes the module, outside Vite: what `codeatlas-ui brand` runs, for a
- * type-check-only job on a fresh clone. Returns `false` when the mark file is missing.
- */
-export async function runBrand(root: string, options: CaBrandPluginOptions): Promise<boolean> {
-	const i = brandInputs(root, options);
+async function render(root: string, options: CaBrandPluginOptions, tint?: string) {
+	const i = brandInputs(root, options, tint);
 	if (!i) return false;
 	writeBrandModule(i.moduleFile, await generateBrand(i));
 	return true;
+}
+
+/**
+ * Renders the whole set and writes the module, outside Vite: what `codeatlas-ui brand` runs, for a
+ * type-check-only job on a fresh clone. Returns `false` when the mark file is missing. Ignores
+ * `devTint`: this is production output.
+ */
+export async function runBrand(root: string, options: CaBrandPluginOptions): Promise<boolean> {
+	return render(root, options);
 }
 
 /**
@@ -324,22 +370,28 @@ export async function runBrand(root: string, options: CaBrandPluginOptions): Pro
  * At build start (and dev server start) it renders the favicon set. `svelte-kit sync` and
  * `svelte-check` do not load Vite plugins: run `bunx @codeatlasdev/ui brand` first in a job that only
  * type-checks. Add `outDir` and the generated module to `.gitignore`: nothing it writes is meant to be committed.
- * Warns and does nothing when the mark file is missing.
+ * Warns and does nothing when the mark file is missing. Under `vite dev` a `devTint` draws the
+ * set in that color, under its own hash; every other command writes the untinted set.
  */
 export function caBrandPlugin(options: CaBrandPluginOptions = {}): Plugin {
 	let root = "";
+	let tint: string | undefined;
 	return {
 		name: "codeatlasdev-ui:brand",
-		// Belt and braces for #184: the specifiers below are already opaque to bundlers, but an app
-		// that bundles the SSR graph must never try to inline these native packages.
-		config: () => ({ ssr: { external: [...NATIVE_PEERS] } }),
+		config(_config, env) {
+			// `vite preview` also runs as "serve": it serves the build, so it must name the build's files.
+			tint = env.command === "serve" && !env.isPreview ? options.devTint : undefined;
+			// Belt and braces for #184: the specifiers below are already opaque to bundlers, but an app
+			// that bundles the SSR graph must never try to inline these native packages.
+			return { ssr: { external: [...NATIVE_PEERS] } };
+		},
 		configResolved(config) {
 			root = config.root;
-			const i = brandInputs(root, options);
+			const i = brandInputs(root, options, tint);
 			if (i) writeBrandModule(i.moduleFile, brandUrls(i));
 		},
 		async buildStart() {
-			await runBrand(root, options);
+			await render(root, options, tint);
 		},
 	};
 }
