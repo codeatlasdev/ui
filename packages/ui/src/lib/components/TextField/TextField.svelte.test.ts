@@ -322,3 +322,32 @@ describe("TextField in a narrow slot (#464)", () => {
 		expect(field.getBoundingClientRect().width).toBeLessThanOrEqual(200.5);
 	});
 });
+
+// #1213: a type's usual keyboard and autofill come by default; a prop always wins.
+describe("TextField keyboard defaults (#1213)", () => {
+	it.each([
+		["email", "email", "email"],
+		["tel", "tel", "tel"],
+		["url", "url", "url"],
+	])("type=%s: inputmode=%s, autocomplete=%s", async (type, inputmode, autocomplete) => {
+		const screen = await render(TextField, { label: "Field", type });
+		const input = screen.getByLabelText("Field");
+		await expect.element(input).toHaveAttribute("inputmode", inputmode);
+		await expect.element(input).toHaveAttribute("autocomplete", autocomplete);
+	});
+
+	it("props win over the defaults; text gets none", async () => {
+		const screen = await render(TextField, {
+			label: "Invite",
+			type: "email",
+			autocomplete: "off",
+			inputmode: "text",
+		});
+		const input = screen.getByLabelText("Invite");
+		await expect.element(input).toHaveAttribute("autocomplete", "off");
+		await expect.element(input).toHaveAttribute("inputmode", "text");
+		const plain = await render(TextField, { label: "Name" });
+		expect(plain.getByLabelText("Name").element().hasAttribute("inputmode")).toBe(false);
+		expect(plain.getByLabelText("Name").element().hasAttribute("autocomplete")).toBe(false);
+	});
+});
