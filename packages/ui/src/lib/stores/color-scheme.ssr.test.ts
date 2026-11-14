@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import type { ThemeOptions } from "../theme-script.js";
 
 const theme: ThemeOptions = {
@@ -7,6 +7,18 @@ const theme: ThemeOptions = {
 	defaultScheme: "light",
 	defaultStyle: "flat",
 };
+
+// #1295: the first import of this graph pays the cold SSR transform (Svelte compiles the runes module), 3.7 s on
+// Windows and over the 5 s test timeout under load. `vi.resetModules()` drops the module instances, not the
+// transforms, so warming the graph here moves that cost out of the tests: each test still imports fresh modules.
+beforeAll(async () => {
+	await Promise.all([
+		import("./color-scheme.svelte.js"),
+		import("./theme-defaults.js"),
+		import("../kit/theme-handle.js"),
+	]);
+	vi.resetModules();
+}, 60_000);
 
 describe("colorScheme on the server (#729)", () => {
 	it("is the library built-ins until the app registers its theme", async () => {
