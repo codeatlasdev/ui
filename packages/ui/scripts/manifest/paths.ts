@@ -33,4 +33,5 @@ export const API_ENTRIES: Record<string, string> = {
 	[`${PKG}/utils/color`]: "utils/color.ts",
 	[`${PKG}/utils/money`]: "utils/money.ts",
 	[`${PKG}/utils/format`]: "utils/format.ts",
+	[`${PKG}/utils/app-badge`]: "utils/app-badge.ts",
 };

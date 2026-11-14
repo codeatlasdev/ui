@@ -453,6 +453,7 @@ export {
 	getInitials,
 	searchItems,
 	searchScore,
+	setAppBadge,
 	slugify,
 	storageGet,
 	storageRemove,

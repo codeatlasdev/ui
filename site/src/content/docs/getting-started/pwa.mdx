@@ -143,6 +143,48 @@ Create `src/routes/offline/+page.svelte` with a short message and a retry button
   Service workers only run on HTTPS or `localhost`, and only in a production build: run `bun run build && bun run preview`, open DevTools, Application, Service Workers, then tick Offline and reload.
 </Callout>
 
+## App badge
+
+`setAppBadge(count)` puts a count on the installed app's icon with the Badging API. Call it from the page and from the service worker: both then go through the same rules, so a push carrying `app_badge: 3` and a page whose total is 3 make the same call.
+
+```svelte
+<script lang="ts">
+  import { setAppBadge } from "@codeatlasdev/ui";
+
+  let { unread, enabled = true }: { unread: number; enabled?: boolean } = $props();
+
+  $effect(() => {
+    if (enabled) setAppBadge(unread);
+  });
+</script>
+```
+
+Keep the worker off the package root, which imports every `.svelte` component: it takes the same function from its own subpath, a file with no imports.
+
+```ts
+// src/service-worker.ts
+import { setAppBadge } from "@codeatlasdev/ui/utils/app-badge";
+
+sw.addEventListener("push", (event) => {
+  const data = event.data?.json() ?? {};
+  event.waitUntil(
+    Promise.all([
+      setAppBadge(data.app_badge),
+      sw.registration.showNotification(data.title, { body: data.body }),
+    ]),
+  );
+});
+```
+
+| Value | Effect |
+|---|---|
+| `5` | `navigator.setAppBadge(5)` |
+| `3.9` or `"3"` (an untyped push payload) | `navigator.setAppBadge(3)` |
+| `0`, a negative number, `null`, `undefined`, `NaN` | `navigator.clearAppBadge()` |
+| Above `Number.MAX_SAFE_INTEGER` | Capped at it, the largest value the API accepts |
+
+It never throws. It resolves `true` once the browser accepted the call and `false` when there is no Badging API or the browser refused it (the app is not installed, or on iOS it has no notification permission), so you never need a feature check or a `catch` around it.
+
 ## Install prompt
 
 Browsers only offer to install an app that meets the criteria: the manifest above (`display: "standalone"`, 192 and 512 icons) and a service worker. [`InstallPrompt`](/docs/feedback/install-prompt/) turns that into UI: put it once in the root layout and it shows the native install dialog on Chromium, the Share, Add to Home Screen steps on iOS, and nothing once the app is installed or the user dismissed it.
@@ -158,3 +200,4 @@ Browsers only offer to install an app that meets the criteria: the manifest abov
 | Offline page prerendered and cached on install | `src/service-worker.ts` |
 | No authenticated responses cached | fetch handler |
 | An install entry point | `InstallPrompt` in the root layout |
+| One badge rule for the page and the push handler | `setAppBadge` |

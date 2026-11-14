@@ -95,6 +95,10 @@
 			"types": "./dist/utils/palette-generator.d.ts",
 			"default": "./dist/utils/palette-generator.js"
 		},
+		"./utils/app-badge": {
+			"types": "./dist/utils/app-badge.d.ts",
+			"default": "./dist/utils/app-badge.js"
+		},
 		"./utils/color": {
 			"types": "./dist/utils/color.d.ts",
 			"default": "./dist/utils/color.js"
