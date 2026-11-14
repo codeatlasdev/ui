@@ -113,3 +113,28 @@ describe("Stepper", () => {
 		});
 	});
 });
+
+// #1050: six steps on a 360px phone as a vertical list take ~300px before the form; compact is one line.
+describe("Stepper compact (#1050)", () => {
+	const six = ["Type", "Discount", "Where", "When", "Limits", "Review"].map((label) => ({
+		label,
+		description: `${label} details`,
+	}));
+
+	it("one summary line and a progress bar", async () => {
+		const screen = await render(Stepper, { steps: six, current: 1, orientation: "compact" });
+		const bar = screen.getByRole("progressbar", { name: "Step 2 of 6: Discount" });
+		await expect.element(bar).toHaveAttribute("aria-valuenow", "2");
+		await expect.element(bar).toHaveAttribute("aria-valuemax", "6");
+		await expect.element(screen.getByText("Step 2 of 6")).toBeVisible();
+		const nav = screen.getByRole("navigation").element();
+		expect(nav.getBoundingClientRect().height).toBeLessThanOrEqual(48);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("showDescriptions={false} keeps only the labels", async () => {
+		const screen = await render(Stepper, { steps: six, current: 0, showDescriptions: false });
+		await expect.element(screen.getByText("Discount")).toBeVisible();
+		expect(screen.container.querySelector(".ca-stepper__desc")).toBeNull();
+	});
+});

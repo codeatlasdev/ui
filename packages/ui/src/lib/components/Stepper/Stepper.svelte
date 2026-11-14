@@ -15,14 +15,38 @@
     /**
      * `horizontal`: steps in a row, text under each number. `vertical`: a list, number then text.
      * `auto` (default): vertical when the stepper is narrower than 40rem (container query), horizontal above.
+     * `compact`: one line, "Step 2 of 6" and the current label, over a thin progress bar (`role="progressbar"`):
+     * for many steps on a phone, where the vertical list would push the form down (#1050).
      */
-    orientation?: 'horizontal' | 'vertical' | 'auto';
+    orientation?: 'horizontal' | 'vertical' | 'auto' | 'compact';
+    /** `false` keeps only the labels (the descriptions take a line each under them). @default true */
+    showDescriptions?: boolean;
     class?: string;
   }
 
-  let { steps, current = $bindable(0), orientation = 'auto', class: className = '' }: Props = $props();
+  let { steps, current = $bindable(0), orientation = 'auto', showDescriptions = true, class: className = '' }: Props = $props();
+
+  const count = $derived(t().stepper.progress(Math.min(current + 1, steps.length), steps.length));
 </script>
 
+{#if orientation === 'compact'}
+  {@const step = steps[current]}
+  <nav aria-label={t().stepper.label} class="ca-stepper ca-stepper--compact {className}">
+    <p class="ca-stepper__summary">
+      <span class="ca-stepper__count">{count}</span>
+      {#if step}<span class="ca-stepper__label">{step.label}</span>{/if}
+    </p>
+    <div
+      class="ca-stepper__bar"
+      role="progressbar"
+      aria-label={step ? `${count}: ${step.label}` : count}
+      aria-valuemin={1}
+      aria-valuemax={steps.length}
+      aria-valuenow={Math.min(current + 1, steps.length)}
+      style="--ca-stepper-progress:{steps.length ? Math.min(current + 1, steps.length) / steps.length : 0}"
+    ><span class="ca-stepper__bar-fill"></span></div>
+  </nav>
+{:else}
 <nav aria-label={t().stepper.label} class="ca-stepper {className}">
   <ol class="ca-stepper__list" data-orientation={orientation}>
   {#each steps as step, i}
@@ -45,7 +69,7 @@
       </button>
       <div class="ca-stepper__text">
         <span class="ca-stepper__label">{step.label}</span>
-        {#if step.description}
+        {#if step.description && showDescriptions}
           <span class="ca-stepper__desc">{step.description}</span>
         {/if}
       </div>
@@ -56,10 +80,47 @@
   {/each}
   </ol>
 </nav>
+{/if}
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
+    /* Compact (#1050): a summary line and a 4px progress bar, ~40px in all. */
+    .ca-stepper__summary {
+      display: flex;
+      align-items: baseline;
+      gap: var(--ca-space-2);
+      min-width: 0;
+      margin: 0;
+      font-size: var(--ca-font-size-body2);
+    }
+    .ca-stepper__count { flex: none; color: var(--ca-text-secondary); }
+    .ca-stepper--compact .ca-stepper__label {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ca-stepper__bar {
+      height: var(--ca-space-1);
+      margin-top: var(--ca-space-2);
+      border-radius: var(--ca-radius-pill);
+      background: var(--ca-surface-sunken);
+      overflow: hidden;
+    }
+    .ca-stepper__bar-fill {
+      display: block;
+      height: 100%;
+      width: calc(var(--ca-stepper-progress, 0) * 100%);
+      border-radius: inherit;
+      background: var(--ca-brand-main);
+      transition: width var(--ca-duration-base) var(--ca-ease-standard);
+    }
+    @media (forced-colors: active) {
+      .ca-stepper__bar { border: 1px solid CanvasText; }
+      .ca-stepper__bar-fill { background: Highlight; }
+    }
+
     /* The nav is the container; the list inside reads its width (#988). */
     .ca-stepper {
       container: ca-stepper / inline-size;
