@@ -1,6 +1,6 @@
 ---
 title: App copy
-description: How an app keeps its own visible text, and why codeatlas-ui lint reports i18n-literal on literal copy in a template.
+description: How an app keeps its own visible text, why codeatlas-ui lint reports i18n-literal on literal copy in a template, and how forbidden-term bans words from it.
 group: Getting started
 order: 16
 ---
@@ -24,6 +24,36 @@ Allowed, because they are not literal words:
 - Attributes that are not in the list above (`href`, `class`, `name`, `type`, `value`, `data-*`). A literal `placeholder` is flagged, a literal `name="email"` is not.
 - Everything inside `<script>` and `<style>`, and every `.ts` file. That is where the copy lives.
 - A line (or the line below a marker) with `ca-ui-workaround(#n)`, for the rare literal that must stay.
+
+## Banned words: `forbidden-term`
+
+Some products ban words from their interface: a legacy name, a term legal asked to drop, "Cliente" where the product says "Contato". List them in `forbiddenTerms` in `ui-guard.config.json` (the project root, next to `allow`), as a word or as an entry with the word to write instead:
+
+```json
+{
+  "allow": [],
+  "forbiddenTerms": [
+    "Usuário",
+    { "term": "Cliente", "use": "Contato" },
+    { "term": "SKU", "caseSensitive": true }
+  ]
+}
+```
+
+`codeatlas-ui lint` reports each one it finds in the visible text of a `.svelte` template, with file and line:
+
+```text
+src/routes/contacts/+page.svelte:12 forbidden-term "cliente" is a forbidden term: write "Contato" (forbiddenTerms in ui-guard.config.json)
+```
+
+How a term matches:
+
+- **Whole word.** `Cliente` does not match `Clientes` or `Clientela`, so list every form you ban. Accents count: `Usuário` does not match `Usuario`.
+- **Any case** (`cliente`, `CLIENTE`), unless the entry sets `"caseSensitive": true`.
+- **A phrase** (`"Fale conosco"`) matches with any spaces or a line break between its words.
+- `use` only changes the message.
+
+It reads the same text as `i18n-literal` (text nodes and the attributes in the table above), plus the literal part of a mixed attribute (`title="Novo cliente {n}"`). Comments, `<script>`, `<style>`, `{…}` expressions, other attributes (`class`, `href`, `data-*`), `.ts` and `.astro` files are never read, so a variable named `cliente` is fine. Text that comes from `messages.ts` is not checked either: the rule sees `{m.title}`, not what it returns. An app that keeps literal copy in its templates can run this rule alone with `--rules forbidden-term`. A malformed entry (not a word or `{ term, use?, caseSensitive? }`, or an unknown key) stops the run with exit code 2 and names the entry, and a `ca-ui-workaround(#n)` marker on the line or the one above excuses a finding.
 
 The same run also reports `hex`, `px`, `inline-style`, `global-ca` and the layout rules (`layout-css`, `breakpoint`, `vh-offset`, `fixed-width-row`, `nested-surface`; [layout principles](/docs/getting-started/layout-principles/#lint-rules)); see [Installation](/docs/getting-started/installation/#lint-and-e2e-templates) for how to run it and wire it into CI.
 
