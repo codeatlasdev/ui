@@ -32,13 +32,16 @@ beforeEach(async () => {
 	pointerMoved = false;
 });
 
-// The host decides prefers-reduced-transparency: Windows with "Transparency effects" off reports `reduce`, and every
-// glass assertion then reads the solid fallback the library correctly paints (#1250). The suite assumes no preference,
-// like a default macOS or Linux; a test that wants `reduce` emulates it. The CDP call is only paid on such a host (or
-// after a test left `reduce` emulated): `matchMedia` is read first.
+// The host decides prefers-reduced-transparency and prefers-reduced-motion: Windows with "Transparency effects" off
+// reports `reduce` for the first (#1250), with "Animation effects" off or energy saver on for the second (#1296), and
+// glass and animation assertions then read the reduced state the library correctly paints. The suite assumes no
+// preference, like a default macOS or Linux; a test that wants `reduce` emulates it. One call carries both features
+// (a second `setEmulatedMedia` would replace the first), and it is only paid on such a host or after a test left
+// `reduce` emulated: `matchMedia` is read first.
+const HOST_MEDIA = ["prefers-reduced-transparency", "prefers-reduced-motion"];
 beforeEach(async () => {
-	if (!matchMedia("(prefers-reduced-transparency: reduce)").matches) return;
+	if (!HOST_MEDIA.some((name) => matchMedia(`(${name}: reduce)`).matches)) return;
 	await cdp().send("Emulation.setEmulatedMedia", {
-		features: [{ name: "prefers-reduced-transparency", value: "no-preference" }],
+		features: HOST_MEDIA.map((name) => ({ name, value: "no-preference" })),
 	});
 });
