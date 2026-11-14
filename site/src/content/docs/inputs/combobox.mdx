@@ -44,6 +44,8 @@ Add `creatable` to offer a `Create "text"` row when the query matches no option 
   { name: "multiple", type: "boolean", default: "false", description: "Multi-select: `value` is `string[]`, the list stays open after each pick, selections render as removable chips." },
   { name: "showCount", type: "boolean", default: "false", description: "With `multiple`, shows \"N selected\" in the trigger instead of the placeholder. The chips already list the selection, so it is off by default." },
   { name: "creatable", type: "boolean", default: "false", description: "Offers a `Create \"query\"` row when the query matches no option label exactly." },
+  { name: "validateCreate", type: "(value: string) => string | undefined", description: "Refuses a new tag: return the message to show (an alert under the search field, the typed text stays). A tag already in the value is always refused with \"Already added\"." },
+  { name: "max", type: "number", description: "Multiple: at most this many values. A pick or a new tag past it is refused with \"Limit of N reached\"." },
   { name: "oncreate", type: "(value: string) => void", description: "Called with the new text when the create row is chosen." },
   { name: "options", type: "ComboboxOption[]", description: "Options: { value, label, disabled?, group? }. `group` renders section headers (see Grouped options)." },
   { name: "label", type: "string", description: "Visible label above the trigger." },

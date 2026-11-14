@@ -207,6 +207,42 @@ describe("Combobox multiple (#295)", () => {
 		await expect.element(screen.getByRole("button", { name: "Remove urgent" })).toBeVisible();
 	});
 
+	// #1214: a refused tag says why and keeps the text, never vanishes in silence.
+	it("refuses a duplicate created tag, says so, keeps the text", async () => {
+		const screen = await openList({ creatable: true });
+		const input = screen.getByRole("combobox", { name: "Search…" });
+		await input.fill("urgent");
+		await userEvent.keyboard("{Enter}");
+		await input.fill("Urgent");
+		await userEvent.keyboard("{Enter}");
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("Already added");
+		await expect.element(input).toHaveValue("Urgent");
+		await expect.poll(() => screen.getByTestId("bound").element().textContent).toBe("urgent");
+	});
+
+	it("validateCreate refuses with its message and keeps the text", async () => {
+		const validateCreate = (v: string) => (v.length < 3 ? "At least 3 letters" : undefined);
+		const screen = await openList({ creatable: true, validateCreate });
+		const input = screen.getByRole("combobox", { name: "Search…" });
+		await input.fill("ab");
+		await userEvent.keyboard("{Enter}");
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("At least 3 letters");
+		await expect.element(input).toHaveValue("ab");
+		await expect.poll(() => screen.getByTestId("bound").element().textContent).toBe("");
+		await input.fill("abc");
+		await userEvent.keyboard("{Enter}");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("abc");
+	});
+
+	it("max: a pick past the limit is refused with the limit", async () => {
+		const screen = await openList({ max: 2 });
+		await screen.getByRole("option", { name: "Bug" }).click();
+		await screen.getByRole("option", { name: "Docs" }).click();
+		await screen.getByRole("option", { name: "UI" }).click();
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("Limit of 2 reached");
+		await expect.poll(() => screen.getByTestId("bound").element().textContent).toBe("bug,docs");
+	});
+
 	it("creatable hides the create row when the query matches an option exactly", async () => {
 		const screen = await openList({ creatable: true });
 		await screen.getByRole("combobox", { name: "Search…" }).fill("bug");

@@ -153,7 +153,7 @@ Variants are `[data-variant="boxed" | "flush"]` and `[data-divided]` on `.ca-col
 
 ## Combobox
 
-`.ca-combobox--error` `.ca-combobox--multiple` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__chip` `.ca-combobox__chips` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__group` `.ca-combobox__group-label` `.ca-combobox__hint--error` `.ca-combobox__hint` `.ca-combobox__input` `.ca-combobox__item--create` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__item` `.ca-combobox__label` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger-count` `.ca-combobox__trigger-label` `.ca-combobox__trigger` `.ca-combobox__viewport` `.ca-combobox`
+`.ca-combobox--error` `.ca-combobox--multiple` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__chip` `.ca-combobox__chips` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__group` `.ca-combobox__group-label` `.ca-combobox__hint--error` `.ca-combobox__hint` `.ca-combobox__input` `.ca-combobox__item--create` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__item` `.ca-combobox__label` `.ca-combobox__refusal` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger-count` `.ca-combobox__trigger-label` `.ca-combobox__trigger` `.ca-combobox__viewport` `.ca-combobox`
 
 ## CommandPalette
 
