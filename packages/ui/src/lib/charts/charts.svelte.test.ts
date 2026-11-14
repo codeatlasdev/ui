@@ -324,14 +324,14 @@ describe("charts", () => {
 			visualMap: { show?: boolean; calculable?: boolean; inRange: { color: string[] } }[];
 		};
 		const matrix = {
-			variant: "matrix",
+			variant: "matrix" as const,
 			xCategories: ["Mon", "Tue", "Wed"],
 			yCategories: ["9am", "10am"],
 			matrixData: [
 				[0, 0, 0],
 				[1, 0, 3],
 				[2, 1, 0],
-			],
+			] as [number, number, number][],
 		};
 		const applied = async (props: Record<string, unknown>) => {
 			const screen = await render(HeatmapChart, { ...matrix, ...props });
