@@ -26,6 +26,7 @@ The Stepper shows progress and each step bubble is a button that sets `current` 
 <Props for="Stepper" rows={[
   { name: "steps", type: "StepItem[]", description: "Array of { label, description? }." },
   { name: "current", type: "number", default: "0", description: "Bindable, zero-indexed active step. Earlier steps render as completed." },
-  { name: "orientation", type: "'horizontal' | 'vertical' | 'auto'", default: "'auto'", description: "`auto` stacks the steps as a list when the stepper is narrower than 40rem (container query) and lays them in a row above. The other two force one layout." },
+  { name: "orientation", type: "'horizontal' | 'vertical' | 'auto' | 'compact'", default: "'auto'", description: "`auto` stacks the steps as a list when the stepper is narrower than 40rem (container query) and lays them in a row above. `horizontal` and `vertical` force one layout. `compact` is one line, \"Step 2 of 6\" and the current label, over a thin progress bar (`role=\"progressbar\"`): for many steps on a phone, where the list would push the form below the fold; Back and Next in the form move between steps." },
+  { name: "showDescriptions", type: "boolean", default: "true", description: "`false` keeps only the labels." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
