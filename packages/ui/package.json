@@ -103,6 +103,10 @@
 			"types": "./dist/utils/money.d.ts",
 			"default": "./dist/utils/money.js"
 		},
+		"./utils/format": {
+			"types": "./dist/utils/format.d.ts",
+			"default": "./dist/utils/format.js"
+		},
 		"./vite": {
 			"types": "./dist/vite-plugin.d.ts",
 			"default": "./dist/vite-plugin.js"

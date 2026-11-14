@@ -1,0 +1,5 @@
+---
+"@codeatlasdev/ui": minor
+---
+
+New formatters with a locale and a time zone as options, defaulting to `pt-BR`, BRL and `America/Sao_Paulo`, in the new Svelte-free subpath `@codeatlasdev/ui/utils/format` and in the package root: `formatMoneyCompact` (`150000` cents is `R$ 1,5 mil` with the no-break spaces of `Intl`; exact below the locale's first abbreviation), `formatMoneyAxis` (chart ticks, up to two decimals, never `,00`), `formatPercent` (a ratio, `0.125` is `12,5%`), `formatDateInZone` and `formatDateTimeInZone` (02:00 UTC is the previous day in São Paulo; a `YYYY-MM-DD` string is never shifted), `formatRelativeTimeShort` (`há 5 min.`, with an injectable `now`), `formatBytes` (`1536` is `1,5 KB`), `formatName` (`maria DA silva` is `Maria da Silva`) and `getInitials` (`MS`). A missing value (`null`, `undefined`, `NaN`, an invalid date, a blank name) formats as `—`, or as the `empty` option. Amounts are in the currency's minor unit, as in `centsToDisplay`; the existing `formatCurrency`, `formatDate`, `formatNumber` and `formatRelativeTime` are unchanged.
