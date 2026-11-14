@@ -1,3 +1,4 @@
+export { setAppBadge } from "./app-badge.js";
 export { copyToClipboard } from "./clipboard.js";
 export type { ClassValue } from "./cn.js";
 export { cn } from "./cn.js";
