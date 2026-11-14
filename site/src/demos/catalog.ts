@@ -419,6 +419,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5029", path: "inputs/month-picker/Default" },
 	{ id: "5030", path: "inputs/text-field/Counter" },
 	{ id: "5031", path: "inputs/text-area/Counter" },
+	{ id: "5032", path: "inputs/date-picker/Fill" },
 ];
 
 /**

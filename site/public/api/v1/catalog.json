@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 413,
+	"count": 412,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5031",
-			"count": 99
+			"last": "5032",
+			"count": 98
 		},
 		{
 			"slug": "surfaces",
@@ -36644,27 +36644,29 @@
 			"needs": "@codeatlasdev/ui@4.6.0"
 		},
 		{
-			"id": "5030",
+			"id": "5032",
 			"group": "inputs",
-			"page": "text-field",
-			"variant": "Counter",
-			"slug": "counter-and-warning-tone",
-			"title": "Counter and warning tone",
-			"description": "",
-			"summary": "Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier.",
-			"use": "Single-line fields with a length limit where the writer needs to see how much room is left.",
+			"page": "date-picker",
+			"variant": "Fill",
+			"slug": "calendar-that-fills-its-container",
+			"title": "Calendar that fills its container",
+			"description": "With fill the calendar is as wide as its column: the seven columns share the width and each day keeps its square size, centred. The two months of the range sit side by side when they fit and stack on a phone.",
+			"summary": "A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.",
+			"use": "A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.",
 			"spec": [
-				"Headline has `maxlength={40}`, `counter` and a 37-character value, so the count reads 37/40 in the warning tone",
-				"Promo code has `maxlength={12}` and `counter={{ warnAt: 0.75 }}`: the warning tone starts at 9 characters",
-				"The count sits beside the description and is the field's accessible description; crossing the threshold is announced once",
-				"Column wrapper has `max-width: 400px`"
+				"`<Calendar bind:value={day} fill label=\"Appointment day\" locale=\"en-US\" weekStartsOn={0} />` preselects today",
+				"`<RangeCalendar bind:value={stay} fill label=\"Stay\" locale=\"en-US\" weekStartsOn={0} />` shows its default two months, side by side when they fit and stacked when they do not",
+				"With `fill` the seven columns share the width and each day keeps its square size, centred in its column",
+				"Output lines show `fmt(day)`, `fmt(stay.start)` and `fmt(stay.end)`, with `–` when unset",
+				"Wrapper `.col` is a full-width flex column"
 			],
 			"tags": [
-				"text-field",
-				"counter",
-				"maxlength",
-				"character count",
-				"limit"
+				"calendar",
+				"range-calendar",
+				"fill",
+				"full-width",
+				"responsive",
+				"date"
 			],
 			"shape": "wide",
 			"index": {
@@ -36678,6 +36680,7 @@
 				],
 				"motion": "subtle",
 				"interaction": [
+					"press",
 					"keyboard"
 				],
 				"layout": "stack",
@@ -36688,18 +36691,18 @@
 				],
 				"cost": "css",
 				"components": [
-					"TextField"
+					"Calendar",
+					"RangeCalendar"
 				],
 				"aliases": [
-					"character counter",
-					"char count",
-					"length limit",
-					"remaining characters"
+					"full width calendar",
+					"fluid calendar",
+					"stretch calendar",
+					"responsive calendar"
 				],
 				"related": [
-					"056",
-					"058",
-					"5031"
+					"015",
+					"018"
 				],
 				"a11y": {
 					"reducedMotion": true,
@@ -36711,101 +36714,24 @@
 				}
 			},
 			"components": [
-				"TextField"
+				"Calendar",
+				"RangeCalendar"
 			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"TextField"
+						"Calendar",
+						"RangeCalendar",
+						"getLocalTimeZone",
+						"today",
+						"DateRange",
+						"DateValue"
 					]
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#counter-and-warning-tone",
-			"needs": "@codeatlasdev/ui@4.6.0"
-		},
-		{
-			"id": "5031",
-			"group": "inputs",
-			"page": "text-area",
-			"variant": "Counter",
-			"slug": "soft-limit-and-threshold",
-			"title": "Soft limit and threshold",
-			"description": "",
-			"summary": "Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters.",
-			"use": "Composers and long-form fields where a length limit matters only near the end.",
-			"spec": [
-				"Post has `counter={{ max: 280 }}` and no `maxlength`: typing may go past 280 and the count turns to the error tone",
-				"Report details has `maxlength={500}` and `counter={{ from: 400 }}`: no count below 400 characters",
-				"Both have `rows={3}` and a description beside the count",
-				"Column wrapper has `max-width: 480px`"
-			],
-			"tags": [
-				"text-area",
-				"textarea",
-				"counter",
-				"maxlength",
-				"character count",
-				"limit"
-			],
-			"shape": "wide",
-			"index": {
-				"kind": "component",
-				"subtype": "input",
-				"industry": [
-					"general"
-				],
-				"style": [
-					"default"
-				],
-				"motion": "subtle",
-				"interaction": [
-					"keyboard"
-				],
-				"layout": "stack",
-				"colorMode": "both",
-				"density": "regular",
-				"tech": [
-					"css"
-				],
-				"cost": "css",
-				"components": [
-					"TextArea"
-				],
-				"aliases": [
-					"character counter",
-					"char count",
-					"soft limit",
-					"composer"
-				],
-				"related": [
-					"054",
-					"055",
-					"5030"
-				],
-				"a11y": {
-					"reducedMotion": true,
-					"keyboard": true
-				},
-				"added": "2026-11-14",
-				"review": {
-					"industry": "pending"
-				}
-			},
-			"components": [
-				"TextArea"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"TextArea"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-area#soft-limit-and-threshold",
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-that-fills-its-container",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

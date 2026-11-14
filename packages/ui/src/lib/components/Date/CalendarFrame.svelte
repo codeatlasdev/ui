@@ -14,16 +14,26 @@
     range?: boolean;
     /** A calendar on its own page (not inside a popover): adds the standalone class and state hooks. */
     standalone?: boolean;
+    /** Calendar and RangeCalendar `fill`: as wide as the container (`.ca-cal--fill`). */
+    fill?: boolean;
     class?: string;
   }
 
-  let { state: cal, disabled, readonly, range = false, standalone = false, class: className = '' }: Props = $props();
+  let {
+    state: cal,
+    disabled,
+    readonly,
+    range = false,
+    standalone = false,
+    fill = false,
+    class: className = '',
+  }: Props = $props();
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
   bind:this={cal.root}
-  class="ca-cal {standalone ? 'ca-cal--standalone' : ''} {className}"
+  class="ca-cal {standalone ? 'ca-cal--standalone' : ''} {fill ? 'ca-cal--fill' : ''} {className}"
   role="application"
   aria-label={cal.fullLabel}
   data-disabled={standalone && disabled ? '' : undefined}

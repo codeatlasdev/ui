@@ -1,0 +1,37 @@
+{
+	"summary": "A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.",
+	"use": "A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.",
+	"spec": [
+		"`<Calendar bind:value={day} fill label=\"Appointment day\" locale=\"en-US\" weekStartsOn={0} />` preselects today",
+		"`<RangeCalendar bind:value={stay} fill label=\"Stay\" locale=\"en-US\" weekStartsOn={0} />` shows its default two months, side by side when they fit and stacked when they do not",
+		"With `fill` the seven columns share the width and each day keeps its square size, centred in its column",
+		"Output lines show `fmt(day)`, `fmt(stay.start)` and `fmt(stay.end)`, with `–` when unset",
+		"Wrapper `.col` is a full-width flex column"
+	],
+	"tags": ["calendar", "range-calendar", "fill", "full-width", "responsive", "date"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Calendar", "RangeCalendar"],
+		"aliases": ["full width calendar", "fluid calendar", "stretch calendar", "responsive calendar"],
+		"related": ["015", "018"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-14",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}
