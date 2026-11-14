@@ -18,6 +18,13 @@
      *             full-width on mobile (put the primary action first).
      */
     variant?:     'default' | 'hero';
+    /**
+     * 'default' = the stacked block.
+     * 'row'     = one line (16px icon, text, actions) for an empty slot inside a list, a card or
+     *             a grid of sibling cards. The title is text, not a heading; `variant`, `display`,
+     *             `actionsFill` and `headingLevel` apply to the stacked block only.
+     */
+    size?:        'default' | 'row';
     description?: string;
     /** Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. */
     display?:     boolean;
@@ -30,20 +37,25 @@
     children?:    Snippet;
   }
 
-  let { icon: Icon, title, headingLevel, variant = 'default', description, display = false, bare = false, actionsFill = false, actions, children, class: className = '' }: Props = $props();
+  let { icon: Icon, title, headingLevel, variant = 'default', size = 'default', description, display = false, bare = false, actionsFill = false, actions, children, class: className = '' }: Props = $props();
 
   // Read once at init: context lookups are only valid during component initialisation.
   const inheritedLevel = sectionHeadingLevel(5);
   const level = $derived(headingLevel ?? inheritedLevel);
+  // #992: a row is a line of content in a list or a card, not a section: five empty rows must not
+  // add five headings to the outline, so its title is a paragraph.
+  const row = $derived(size === 'row');
+  const modifier = $derived(row ? 'row' : variant);
+  const iconSize = $derived(row ? 16 : variant === 'hero' ? 32 : 24);
 </script>
 
-<div class="ca-empty ca-empty--{variant} {className}" class:ca-empty--bare={bare} class:ca-empty--fill={actionsFill} role="status" aria-label={title}>
+<div class="ca-empty ca-empty--{modifier} {className}" class:ca-empty--bare={bare} class:ca-empty--fill={actionsFill && !row} role="status" aria-label={title}>
   {#if Icon}
     <div class="ca-empty__icon" aria-hidden="true">
-      <Icon size={variant === 'hero' ? 32 : 24} stroke-width={1.5} />
+      <Icon size={iconSize} stroke-width={row ? 2 : 1.5} />
     </div>
   {/if}
-  <svelte:element this={`h${level}`} class="ca-empty__title" class:ca-empty__title--display={display}>{title}</svelte:element>
+  <svelte:element this={row ? 'p' : `h${level}`} class="ca-empty__title" class:ca-empty__title--display={display && !row}>{title}</svelte:element>
   {#if description}
     <p class="ca-empty__description">{description}</p>
   {:else if children}
@@ -151,6 +163,57 @@
     .ca-empty--hero .ca-empty__title {
       font-size: var(--ca-empty-title-size, var(--ca-font-size-h6));
       font-weight: var(--ca-empty-title-weight, var(--ca-font-weight-heading));
+    }
+
+    /* ── Row (#992) ──────────────────────────────────────────────
+       One line for an empty slot in a list or a grid of siblings: icon, text and actions side by side,
+       about one control high. It wraps instead of overflowing a narrow slot. The stacked tokens size a
+       heading and a tile a row does not have, so it reads only --ca-empty-row-padding. */
+    .ca-empty--row {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      text-align: start;
+      gap: var(--ca-space-1) var(--ca-space-2);
+      padding: var(--ca-empty-row-padding, var(--ca-space-2) var(--ca-space-3));
+    }
+
+    .ca-empty--row .ca-empty__icon {
+      width: auto;
+      height: auto;
+      background: none;
+      border: none;
+      border-radius: 0;
+    }
+
+    .ca-empty--row .ca-empty__title,
+    .ca-empty--row .ca-empty__description {
+      font-size: var(--ca-font-size-body2);
+      line-height: var(--ca-line-height-body);
+      max-width: none;
+      min-width: 0;
+    }
+
+    .ca-empty--row .ca-empty__title {
+      flex: 0 1 auto;
+      font-family: inherit;
+      font-weight: var(--ca-font-weight-medium);
+      letter-spacing: normal;
+      text-transform: none;
+    }
+
+    .ca-empty--row .ca-empty__description {
+      flex: 1 1 auto;
+    }
+
+    .ca-empty--row .ca-empty__title + .ca-empty__description {
+      margin-top: 0;
+    }
+
+    .ca-empty--row .ca-empty__actions {
+      margin-block: 0;
+      margin-inline-start: auto;
+      justify-content: flex-end;
     }
 
     /* bare: no padding, whatever the variant or --ca-empty-padding (it follows the parent's inset). */
