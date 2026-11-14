@@ -658,8 +658,14 @@ import {
   caZIndex,      // z-index scale (nav, dropdown, sticky, fixed, drawer, modal, snackbar, tooltip)
   caShadows,     // shadows
   caMaterials,   // material tokens (regular, thick, thin, ultrathin, ultrachick)
+  springs,       // named springs { damping, stiffness, mass }: snappy, soft, bouncy
+  springCurve,   // spring → { easing: "linear(…)", duration } for WAAPI/CSS; 0 ms under reduced motion
+  springTween,   // spring → { easing: (t) => number, duration } for Svelte Tween and transitions
+  nearestSpring, // maps your own { damping, stiffness, mass } onto a preset (gap <= 0.05 = use it)
 } from "@codeatlasdev/ui";
 ```
+
+Never write loose spring numbers in an app: pick a preset, and when `nearestSpring` finds none within 0.05, add a named preset to `tokens/springs.ts`. Svelte's `Spring` counts in frames (stiffness and damping between 0 and 1), so it cannot take these physical numbers: use `springTween`.
 
 ---
 
@@ -678,6 +684,9 @@ import {
 /* Animation */
 --ca-ease-standard / decelerate / accelerate / spring
 --ca-duration-fast / base / slow
+/* Springs: opt-in, import "@codeatlasdev/ui/styles/springs.css" once next to global.css */
+--ca-spring-snappy / soft / bouncy             (linear() curve of springs.<name>)
+--ca-spring-snappy-duration / soft- / bouncy-  (its settle time x --ca-motion-scale: 0 under reduced motion)
 
 /* Surface fill and blur (every style rewrites these; they are translucent only under glass and frosted) */
 --ca-glass-bg / --ca-glass-separator / --ca-glass-tint-* / --ca-glass-border

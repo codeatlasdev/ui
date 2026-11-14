@@ -1,0 +1,22 @@
+/* @codeatlasdev/ui — named springs (#1228). Opt-in (not in global.css, whose size budget is spent: the
+ * three curves cost ~0.5 kB gzip):
+ *   import "@codeatlasdev/ui/styles/springs.css";
+ *   then  transition: translate var(--ca-spring-snappy-duration) var(--ca-spring-snappy);
+ * Each curve is `springs.<name>` of tokens/springs.ts sampled into linear() within 0.2% of the travel
+ * (`springCurve`), and each duration is its settle time times --ca-motion-scale, so 0 ms under reduced
+ * motion. tests/springs.test.ts fails when this file drifts from the TS numbers. */
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.tokens {
+  :root,
+  [data-ca-tokens] {
+    /* snappy: damping 12, stiffness 200, mass 0.1. No overshoot; settles in 357 ms. */
+    --ca-spring-snappy: linear(0, 0.004 0.56%, 0.014 1.12%, 0.029 1.68%, 0.058 2.52%, 0.117 3.92%, 0.314 8.12%, 0.41 10.36%, 0.464 11.76%, 0.514 13.17%, 0.56 14.57%, 0.601 15.97%, 0.646 17.65%, 0.686 19.33%, 0.753 22.69%, 0.809 26.33%, 0.859 30.53%, 0.897 35.01%, 0.93 40.34%, 0.954 46.22%, 0.971 52.94%, 0.983 60.5%, 0.992 70.03%, 1);
+    --ca-spring-snappy-duration: calc(357ms * var(--ca-motion-scale));
+    /* soft: damping 20, stiffness 170, mass 0.5. No overshoot; settles in 612 ms. */
+    --ca-spring-soft: linear(0, 0.004 0.82%, 0.018 1.8%, 0.039 2.78%, 0.072 3.92%, 0.145 6.05%, 0.348 11.27%, 0.448 14.05%, 0.548 17.16%, 0.629 20.1%, 0.704 23.37%, 0.766 26.63%, 0.819 30.23%, 0.864 34.15%, 0.902 38.56%, 0.932 43.46%, 0.955 49.02%, 0.972 55.56%, 0.984 62.75%, 0.992 71.57%, 1);
+    --ca-spring-soft-duration: calc(612ms * var(--ca-motion-scale));
+    /* bouncy: damping 15, stiffness 400, mass 0.5. Overshoots by 14%; settles in 449 ms. */
+    --ca-spring-bouncy: linear(0, 0.002 0.45%, 0.01 1.11%, 0.036 2.23%, 0.077 3.34%, 0.141 4.68%, 0.203 5.79%, 0.272 6.9%, 0.568 11.36%, 0.694 13.36%, 0.759 14.48%, 0.82 15.59%, 0.875 16.7%, 0.916 17.59%, 0.961 18.71%, 0.994 19.6%, 1.023 20.49%, 1.054 21.6%, 1.075 22.49%, 1.096 23.61%, 1.123 25.61%, 1.134 26.95%, 1.14 28.51%, 1.139 30.07%, 1.133 31.85%, 1.112 34.97%, 1.047 42.09%, 1.017 45.88%, 0.995 50.11%, 0.983 54.34%, 0.981 61.02%, 0.997 74.39%, 1.002 81.74%, 1);
+    --ca-spring-bouncy-duration: calc(449ms * var(--ca-motion-scale));
+  }
+}
