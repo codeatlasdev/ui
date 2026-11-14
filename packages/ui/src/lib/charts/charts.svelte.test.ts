@@ -314,6 +314,55 @@ describe("charts", () => {
 		const vertical = await axes({ horizontal: false });
 		expect(vertical.xAxis[0].inverse).toBeFalsy();
 	});
+
+	// #1061: in dark mode the axis bands showed through near-transparent empty cells as a checkerboard that read
+	// like data, and the legend was a draggable control taking ~64 px.
+	it("matrix heatmap: no bands, empty cells on the sunken surface, a static legend that can go", async () => {
+		type Applied = {
+			xAxis: { splitArea?: { show?: boolean } }[];
+			yAxis: { splitArea?: { show?: boolean } }[];
+			visualMap: { show?: boolean; calculable?: boolean; inRange: { color: string[] } }[];
+		};
+		const matrix = {
+			variant: "matrix" as const,
+			xCategories: ["Mon", "Tue", "Wed"],
+			yCategories: ["9am", "10am"],
+			matrixData: [
+				[0, 0, 0],
+				[1, 0, 3],
+				[2, 1, 0],
+			] as [number, number, number][],
+		};
+		const applied = async (props: Record<string, unknown>) => {
+			const screen = await render(HeatmapChart, { ...matrix, ...props });
+			await mountedCanvas(screen.container);
+			const host = screen.container.querySelector(".ca-chart-container") as HTMLElement;
+			const option = echarts.getInstanceByDom(host)?.getOption() as unknown as Applied;
+			screen.unmount();
+			return option;
+		};
+		colorScheme.setPreference("dark");
+		const token = getComputedStyle(document.documentElement)
+			.getPropertyValue("--ca-surface-sunken")
+			.trim();
+		// The token is oklch, which a visualMap stop rejects: the stop is the same colour as an rgb() pixel.
+		const ctx = document.createElement("canvas").getContext("2d") as CanvasRenderingContext2D;
+		ctx.fillStyle = token;
+		ctx.fillRect(0, 0, 1, 1);
+		const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+		const sunken = `rgb(${r}, ${g}, ${b})`;
+		const plain = await applied({});
+		expect(plain.xAxis[0].splitArea?.show).toBeFalsy();
+		expect(plain.yAxis[0].splitArea?.show).toBeFalsy();
+		expect(plain.visualMap[0].calculable).toBe(false);
+		expect(plain.visualMap[0].show).not.toBe(false);
+		expect(plain.visualMap[0].inRange.color[0]).toBe(sunken);
+		const tuned = await applied({ bands: true, legend: false, emptyColor: "rgb(1, 2, 3)" });
+		expect(tuned.xAxis[0].splitArea?.show).toBe(true);
+		expect(tuned.visualMap[0].show).toBe(false);
+		expect(tuned.visualMap[0].inRange.color[0]).toBe("rgb(1, 2, 3)");
+		expect(errors).not.toHaveBeenCalled();
+	});
 });
 
 describe("chart theme scope", () => {

@@ -1978,6 +1978,9 @@ Parts: `ca-heading` `ca-heading--display` `ca-heading--display-2` `ca-heading--d
 | `matrixData?` | `MatrixHeatmapPoint[]` | `[]` |  |
 | `xCategories?` | `string[]` | `[]` |  |
 | `yCategories?` | `string[]` | `[]` |  |
+| `bands?` | `boolean` | `false` | matrix: the alternating axis bands behind the cells. Off: in dark mode they showed through empty cells as a checkerboard that read like data (#1061). |
+| `legend?` | `boolean` | `true` | matrix: the `visualMap` scale under the chart (static, not draggable). `false` hides it; colours still map. |
+| `emptyColor?` | `string` |  | matrix: fill of a cell at 0, the start of the ramp. Default: the theme's `--ca-surface-sunken`. |
 | `color?` | `string` |  |  |
 | `max?` | `number` |  |  |
 | `tooltipFormatter?` | `(value: number) => string` |  |  |

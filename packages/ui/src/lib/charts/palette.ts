@@ -47,3 +47,17 @@ export function withAlpha(color: string, alpha: number): string {
 	}
 	return color;
 }
+
+/**
+ * `color` as `rgb()`/`rgba()` that the ECharts canvas APIs accept: theme tokens are oklch, which a visualMap stop
+ * or a gradient rejects. Painted on a 1×1 canvas and read back (sRGB); hex and rgb pass through untouched.
+ */
+export function canvasColor(color: string): string {
+	if (typeof document === "undefined" || /^(#|rgba?\()/i.test(color.trim())) return color;
+	const ctx = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+	if (!ctx) return color;
+	ctx.fillStyle = color;
+	ctx.fillRect(0, 0, 1, 1);
+	const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+	return a === 255 ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${+(a / 255).toFixed(3)})`;
+}
