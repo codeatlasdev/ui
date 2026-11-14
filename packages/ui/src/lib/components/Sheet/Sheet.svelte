@@ -121,6 +121,7 @@
 		bind:this={panel}
 		class="ca-overlay ca-sheet__overlay ca-sheet {inline ? 'ca-overlay--inline' : ''}"
 		role="dialog"
+		tabindex="-1"
 		aria-label={title ? undefined : t().sheet.panel}
 		aria-labelledby={title ? ids.part("title") : undefined}
 		aria-describedby={description ? ids.part("description") : undefined}
