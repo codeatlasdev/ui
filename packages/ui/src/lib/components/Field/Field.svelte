@@ -22,12 +22,14 @@
     /** Error under the control: `role="alert"`, and the control gets `aria-invalid`. */
     error?: string;
     required?: boolean;
+    /** Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). */
+    optional?: boolean;
     class?: string;
     /** The control. Spread the props it receives onto the element that takes the value. */
     children: Snippet<[FieldControlProps]>;
   }
 
-  let { label, hideLabel = false, description, error, required = false, class: className = '', children }: Props = $props();
+  let { label, hideLabel = false, description, error, required = false, optional = false, class: className = '', children }: Props = $props();
 
   const uid = $props.id();
   const id = `${uid}-control`;
@@ -43,7 +45,7 @@
 </script>
 
 <div class="ca-field {className}" data-invalid={error ? '' : undefined}>
-  <Label for={id} {required} hidden={hideLabel}>{label}</Label>
+  <Label for={id} {required} {optional} hidden={hideLabel}>{label}</Label>
   {@render children(control)}
   {#if description}<p id="{uid}-desc" class="ca-field__description">{description}</p>{/if}
   {#if error}<p id="{uid}-err" class="ca-field__error" role="alert">{error}</p>{/if}

@@ -13,6 +13,7 @@ export const common = defineGroup("common", {
 		new: "New",
 		noResults: "No results",
 		of: "of",
+		optional: "optional",
 	},
 	"pt-BR": {
 		close: "Fechar",
@@ -26,5 +27,6 @@ export const common = defineGroup("common", {
 		new: "Novo",
 		noResults: "Nenhum resultado",
 		of: "de",
+		optional: "opcional",
 	},
 });

@@ -1,0 +1,8 @@
+/* "(optional)" after a field label (#1215): text in the accessible name, quieter than the label. */
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  .ca-field-optional {
+    font-weight: var(--ca-font-weight-regular, 400);
+    color: var(--ca-text-secondary);
+  }
+}

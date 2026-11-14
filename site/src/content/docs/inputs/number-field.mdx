@@ -49,6 +49,7 @@ A `suffix` snippet renders a companion control, typically a unit `Select`, insid
   { name: "description", type: "string", description: "Hint shown below the field." },
   { name: "error", type: "string", description: "Error message. Puts the field in the error state." },
   { name: "required", type: "boolean", default: "false", description: "Marks the field as required." },
+  { name: "optional", type: "boolean", default: "false", description: "Shows \"(optional)\" (localized) after the label, as text that is part of the accessible name. Ignored with required." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the field and its buttons." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
