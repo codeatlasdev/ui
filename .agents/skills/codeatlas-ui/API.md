@@ -8876,6 +8876,86 @@ Types:
 | `oklch` | `Oklch` |  |
 | `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
 
+## @codeatlasdev/ui/utils/money
+
+### allocateByWeights
+
+`import { allocateByWeights } from "@codeatlasdev/ui/utils/money"`
+
+Splits `total` in proportion to `weights` without losing or inventing a cent: the shares always sum to `total`. Each share is the exact proportion rounded toward zero; the cents left over go one each to the shares with the largest remainders, and a tie goes to the earlier share, so `allocateByWeights(100, [1, 1, 1])` is `[34, 33, 33]` and `(100, [1, 2])` is `[33, 67]`. A negative total splits like its absolute value, negated. Weights are non-negative decimals (percentages work) and at least one must be above zero; a zero weight gets 0. A `bigint` total gives `bigint` shares.
+
+```ts
+function allocateByWeights(total: number, weights: readonly Rate[]): number[]
+```
+
+### applyBasisPoints
+
+`import { applyBasisPoints } from "@codeatlasdev/ui/utils/money"`
+
+The share of `amount` that `bps` basis points represent (1 bp = 0.01%, 10000 bp = 100%), rounded with `mode` (default `"halfExpand"`): `applyBasisPoints(10000, 250)` is 250. Returns the share, not `amount` plus it; fractional points (`12.5`) are allowed. A `bigint` amount gives a `bigint`.
+
+```ts
+function applyBasisPoints(amount: number, bps: Rate, mode?: RoundingMode): number
+```
+
+### assertCents
+
+`import { assertCents } from "@codeatlasdev/ui/utils/money"`
+
+Throws unless `value` is an integer amount of minor units: a `bigint`, or a `number` that is a safe integer (`1.5`, `NaN` and `2 ** 53` throw a `RangeError`, a non-number a `TypeError`).
+
+```ts
+function assertCents(value: unknown, name?: string): asserts value is Cents
+```
+
+### divRound
+
+`import { divRound } from "@codeatlasdev/ui/utils/money"`
+
+`numerator / denominator` rounded to an integer with `mode` (default `"halfExpand"`, half away from zero): `divRound(5, 2)` is 3, `divRound(-5, 2)` is -3, `divRound(5, 2, "halfEven")` is 2. A `bigint` numerator gives a `bigint`.
+
+```ts
+function divRound(numerator: number, denominator: Cents, mode?: RoundingMode): number
+```
+
+### divRoundHalfUp
+
+`import { divRoundHalfUp } from "@codeatlasdev/ui/utils/money"`
+
+`divRound(numerator, denominator, "halfExpand")`: a tie goes away from zero (`5 / 2` → 3, `-5 / 2` → -3). A `bigint` numerator gives a `bigint`.
+
+```ts
+function divRoundHalfUp(numerator: number, denominator: Cents): number
+```
+
+### multiplyCents
+
+`import { multiplyCents } from "@codeatlasdev/ui/utils/money"`
+
+`amount × rate`, rounded with `mode` (default `"halfExpand"`). A quantity is exact (`multiplyCents(1999, 3)` is 5997); a decimal rate is read as written, so `multiplyCents(100, 1.005)` is 101 where `Math.round(100 * 1.005)` gives 100. A `bigint` amount gives a `bigint`.
+
+```ts
+function multiplyCents(amount: number, rate: Rate, mode?: RoundingMode): number
+```
+
+### sumCents
+
+`import { sumCents } from "@codeatlasdev/ui/utils/money"`
+
+Exact sum. A `bigint` total when any amount is a `bigint`; `[]` sums to `0`.
+
+```ts
+function sumCents(amounts: readonly number[]): number
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `Cents` | `type Cents = number \| bigint;` | An integer amount in the currency's minor unit: a safe-integer `number` or a `bigint`. |
+| `Rate` | `type Rate = number \| bigint \| string;` | A multiplier: an integer, or a decimal read as the digits it prints as (`1.005` is exactly 1005/1000, not its binary value), or a decimal string of any precision (`"0.0725"`). |
+| `RoundingMode` | `type RoundingMode = \| "ceil" \| "floor" \| "expand" \| "trunc" \| "halfCeil" \| "halfFloor" \| "halfExpand" \| "halfTrunc" \| "halfEven";` | How a result between two integers is rounded, with the names and meaning of `Intl.NumberFormat`'s `roundingMode`. `halfExpand` (the default) is "half up": a tie goes away from zero, so 2.5 → 3 and -2.5 → -3. `halfEven` is banker's rounding. |
+
 ## @codeatlasdev/ui/utils/palette-generator
 
 ### contrastRatio

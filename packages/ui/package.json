@@ -99,6 +99,10 @@
 			"types": "./dist/utils/color.d.ts",
 			"default": "./dist/utils/color.js"
 		},
+		"./utils/money": {
+			"types": "./dist/utils/money.d.ts",
+			"default": "./dist/utils/money.js"
+		},
 		"./vite": {
 			"types": "./dist/vite-plugin.d.ts",
 			"default": "./dist/vite-plugin.js"

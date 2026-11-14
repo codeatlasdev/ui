@@ -8,5 +8,6 @@
 	"./map": 34977,
 	"./sound": 31700,
 	"./sound (own code, Svelte external)": 4096,
-	"inline: theme init script (default theme)": 1000
+	"inline: theme init script (default theme)": 1000,
+	"./utils/money": 1244
 }
