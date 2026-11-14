@@ -39,7 +39,9 @@
   let rest = $derived(modules.slice(visibleCount));
   // The More tab is current when the active module lives in the sheet.
   let moreActive = $derived(overflowing && activeIndex >= visibleCount);
-  let moreBadge = $derived(rest.some((m) => hasModuleBadge(m)));
+  // The More dot wears the tone of the first hidden module that has a badge (not of `rest[0]`, which may have none).
+  let moreMarker = $derived(rest.find((m) => hasModuleBadge(m)));
+  let moreBadge = $derived(!!moreMarker);
 
   let moreOpen = $state(false);
   const uid = $props.id();
@@ -93,7 +95,7 @@
     >
       <span class="ca-bottom-nav__icon">
         <Ellipsis size={22} stroke-width={moreActive ? 2 : 1.5} />
-        {#if moreBadge}<NavModuleBadge module={{ ...rest[0], badge: 'dot' }} />{/if}
+        {#if moreMarker}<NavModuleBadge module={{ ...moreMarker, badge: 'dot' }} />{/if}
       </span>
       <span class="ca-bottom-nav__label">{t().appShell.more}</span>
     </button>

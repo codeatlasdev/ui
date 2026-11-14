@@ -12,6 +12,30 @@ export function clampPanelWidth(width: number): number {
 
 import type { Component, Snippet } from "svelte";
 import type { IconComponent } from "../../types.js";
+import { devWarn } from "../../utils/dev-warn.js";
+
+/**
+ * Colour of a nav badge (`NavItem.badgeTone`, `NavModule.badgeTone`): `'brand'` (default) for
+ * something new or pending, `'error'` for something overdue or failed, `'warning'` for something
+ * that needs attention soon, `'neutral'` for a plain total. Each is a fill and label token pair.
+ * A tone other than `'brand'` needs a `badgeLabel`: colour is not the only signal.
+ */
+export type NavBadgeTone = "brand" | "error" | "warning" | "neutral";
+
+/**
+ * Dev warning (once per `kind`) for a drawn badge whose tone would be its only signal: a
+ * `badgeTone` other than `'brand'` and no `badgeLabel`. Called by `PanelNavItem` and `NavModuleBadge`.
+ */
+export function warnToneLabel(
+	kind: "NavItem" | "NavModule",
+	b: { label: string; badgeTone?: NavBadgeTone; badgeLabel?: string }
+): void {
+	if (b.badgeTone && b.badgeTone !== "brand" && !b.badgeLabel?.trim())
+		devWarn(
+			`${kind}-badge-label`,
+			`${kind} "${b.label}": badgeTone="${b.badgeTone}" needs a badgeLabel, colour alone does not say what the badge means.`
+		);
+}
 
 export interface NavItem {
 	id: string;
@@ -20,6 +44,13 @@ export interface NavItem {
 	path: string;
 	/** Unread-style badge: announced as "N unread" and capped at 99+. For a plain total use `count`. */
 	badge?: number;
+	/**
+	 * Replaces "N unread" in the link's name ("Returns 3 awaiting review"). Needed with a
+	 * `badgeTone` other than `'brand'`. Translate it yourself: the shell cannot.
+	 */
+	badgeLabel?: string;
+	/** Colour of `badge` (see `NavBadgeTone`). Default `'brand'`. */
+	badgeTone?: NavBadgeTone;
 	/**
 	 * Neutral count shown after the label (records in a folder, items in a list). It is part of the
 	 * link's name as a bare number, never "unread", and `0` renders. Large values abbreviate (`1.2k`).
@@ -96,9 +127,10 @@ export interface NavModule {
 	badgeLabel?: string;
 	/**
 	 * Colour of the `badge`: `'brand'` (default) for something pending, `'error'` for something
-	 * overdue or failed. Colour is not the only signal: say it in `badgeLabel` ("3 overdue").
+	 * overdue or failed, `'warning'` for something that needs attention soon, `'neutral'` for a plain
+	 * total. Colour is not the only signal: say it in `badgeLabel` ("3 overdue").
 	 */
-	badgeTone?: "brand" | "error";
+	badgeTone?: NavBadgeTone;
 }
 
 /** Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). */

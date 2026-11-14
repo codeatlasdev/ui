@@ -96,10 +96,10 @@ A module can carry a marker on its rail icon and tab:
 | Field | What it does |
 |---|---|
 | `badge` | A number (capped at `99+`) or `'dot'`. `0` and unset draw nothing. |
-| `badgeTone` | `'brand'` (default) for something pending, `'error'` for something overdue. Colour is not the only signal: say it in `badgeLabel` (`"3 overdue"`). |
+| `badgeTone` | `'brand'` (default) for something new or pending, `'error'` for something overdue or failed, `'warning'` for something that needs attention soon, `'neutral'` for a plain total. Each tone is a fill and label token pair (`--ca-semantic-error-fill`/`-contrast`, `--ca-semantic-warning-fill`/`-contrast`, `--ca-text-secondary` on `--ca-surface-base`), so a count stays at 4.5:1 or more. Colour is not the only signal: a tone other than `'brand'` needs a `badgeLabel` (`"3 overdue"`), and the shell warns in development without one. |
 | `badgeLabel` | The text a screen reader gets. The button is named `"<label>, <badgeLabel>"`. Without it a number reads `"Inbox, 12 unread"` and a dot reads `"Inbox, New"`. Set it for anything that is not "unread" (`"3 tasks pending"`) and translate it yourself. |
 
-The marker itself is decorative; the count is never announced separately from the button. When any module inside the More sheet has a badge, the More tab shows a dot.
+The marker itself is decorative; the count is never announced separately from the button. When any module inside the More sheet has a badge, the More tab shows a dot in the tone of the first of them.
 
 `filterModules` is for role-based navigation: keep one module list and filter it. Because the shell resolves the active module, the panel and the bottom navigation against the filtered list, hiding an earlier module cannot make the wrong rail icon active. When the URL belongs to a hidden module, the first visible module is selected.
 
@@ -170,6 +170,8 @@ A `NavItem` takes more than an icon and a label:
 | `leading` | A snippet that replaces the icon (a color swatch, an avatar, an emoji). Decorative: the label is the name. |
 | `count` | A neutral total after the label (`1.2k` above 999). The link's name carries the exact number, never "unread". `0` renders. |
 | `badge` | Unread-style count: announced "N unread", capped at 99+. Use `count` for a plain total. |
+| `badgeTone` | Colour of `badge`, the same four tones as on a module: `'brand'` (default), `'error'`, `'warning'`, `'neutral'`. A tone other than `'brand'` needs a `badgeLabel` (warned in development). |
+| `badgeLabel` | Replaces "N unread" in the link's name: `Returns 3 awaiting review`. Translate it yourself. |
 | `actions` | A snippet of `DropdownMenuItem`s. The row gets a "…" button named `Actions for <label>`, a sibling of the link, shown on hover and focus. Needs `itemMenu={NavItemMenu}` on the shell. |
 
 Reordering is per list: set `onReorder` on a `NavSection` (or on the `NavModule` for the items that sit outside any section) and pass `reorder={NavReorder}` to `AppShellLayout`. Each row gets a grip that works with the mouse, touch (press and hold) and the keyboard (Space lifts, arrows move, Enter drops, Escape cancels), and every step is announced. It is the same `useDnd` engine as [drag and drop](/docs/foundation/drag-and-drop/). The shell never reorders `items` for you: commit the move in your state and the new order flows back in. `onReorder` is not called when the drop lands where it started.
@@ -232,7 +234,7 @@ Render the shell on the server so the first paint is not blank: the inline scrip
 `PanelNavItem` renders a row with a plain `<a>` inside it (`aria-current="page"` when active); the actions button and the grip are siblings of the link, because a link cannot contain controls. `SectionGroup` opens itself when it holds the current page, and inside an `AppShellLayout` with `persistPanel` it stores its open state under the section `label`; a bare `SectionGroup` keeps nothing.
 
 <Props for="PanelNavItem" title="PanelNavItem props" rows={[
-  { name: "item", type: "NavItem", description: "The destination: `id`, `label`, `icon`, `path`, and optional `badge`, `count`, `color`, `leading`, `actions`, `isNew`, `shortcut`, `description`. Required." },
+  { name: "item", type: "NavItem", description: "The destination: `id`, `label`, `icon`, `path`, and optional `badge`, `badgeTone`, `badgeLabel`, `count`, `color`, `leading`, `actions`, `isNew`, `shortcut`, `description`. Required." },
   { name: "isActive", type: "boolean", description: "Marks the row as the current page (`aria-current=\"page\"`, active pip). Required." },
   { name: "href", type: "string", description: "Link target. Required." },
   { name: "grip", type: "boolean", default: "false", description: "Adds the drag grip. Set it when the list the row sits in is reorderable (`NavSection.onReorder`)." },

@@ -34,6 +34,7 @@ export { default as PanelNavItem } from "./components/AppShell/PanelNavItem.svel
 export { default as Rail } from "./components/AppShell/Rail.svelte";
 export { default as SectionGroup } from "./components/AppShell/SectionGroup.svelte";
 export type {
+	NavBadgeTone,
 	NavExtras,
 	NavItem,
 	NavModule,
