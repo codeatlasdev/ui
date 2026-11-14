@@ -3279,8 +3279,8 @@ Data attributes: `data-active`, `data-direction` (`horizontal` `vertical`)
 |---|---|---|---|
 | `id` | `string` |  | Stable id: the key of the persisted layout. Unique inside the group. |
 | `defaultSize?` | `number` |  | Starting size in percent. Unset panels share what the others leave. |
-| `minSize?` | `number` | `10` | Smallest size in percent. |
-| `maxSize?` | `number` | `100` | Largest size in percent. |
+| `minSize?` | `number \| `${number}px`` | `10` | Smallest size: percent of the group, or px (`"280px"`) that holds at any group size (#996). |
+| `maxSize?` | `number \| `${number}px`` | `100` | Largest size: percent of the group, or px (`"480px"`). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -3301,6 +3301,7 @@ Variables: `--ca-panel-size`
 | `label?` | `string` |  | Accessible name of the group. |
 | `persist?` | `string` |  | `localStorage` key: the layout is saved there when a drag or key press settles and restored on mount. |
 | `onlayout?` | `(sizes: number[]) => void` |  | Called with the sizes (percent, in panel order) when a drag or key press settles. |
+| `onoverflow?` | `(overflow: boolean) => void` |  | Called when the panels' minimums stop (or start again) fitting the group, which then also carries `data-overflow`: the cue to switch to a drawer or master/detail, decided by the group's own size (#996). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
