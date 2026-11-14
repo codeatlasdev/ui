@@ -10,7 +10,8 @@
   const t = useMessages(numberField);
 
   interface Props {
-    value?:       number;
+    /** Bindable. `null` when the field is empty (the user cleared it). */
+    value?:       number | null;
     min?:         number;
     max?:         number;
     step?:        number;
@@ -32,7 +33,15 @@
     variant?:        FieldVariant;
     /** A companion control after the number, usually its unit (a `Select` of units). Rendered in the same row; the field becomes a `role="group"` named by `label`, so the pair reads as one control. Give the companion its own accessible name (`hideLabel` + `label`). */
     suffix?:      Snippet;
-    onchange?:    (value: number) => void;
+    /**
+     * Locale the user types in (BCP 47). With it the field reads and shows that locale's decimal mark
+     * (`2,5` in `pt-BR`; a `.` is accepted too) and is a text input with `inputmode="decimal"` and
+     * `role="spinbutton"`, stepped by ArrowUp/ArrowDown and Home/End. Without it the field is a native
+     * `type="number"`, whose decimal mark follows the browser.
+     */
+    locale?:      string;
+    /** Called with the new value, `null` when the field was cleared. */
+    onchange?:    (value: number | null) => void;
   }
 
   let {
@@ -53,34 +62,98 @@
     size     = 'md',
     variant,
     suffix,
+    locale,
     onchange,
   }: Props = $props();
 
   let inputId = $state(uid('nf'));
   let focused = $state(false);
 
+  /** Text mode (`locale` set): the user's text while typing; `null` shows the formatted value. */
+  let draft = $state<string | null>(null);
+  const decimal = $derived(
+    locale
+      ? (new Intl.NumberFormat(locale).formatToParts(1.5).find((p) => p.type === 'decimal')?.value ?? '.')
+      : '.'
+  );
+  const shown = $derived(draft ?? (value == null ? '' : String(value).replace('.', decimal)));
+
+  const clamp = (n: number) =>
+    Math.min(max ?? Number.POSITIVE_INFINITY, Math.max(min ?? Number.NEGATIVE_INFINITY, n));
+
+  function set(next: number | null) {
+    if (next === value) return;
+    value = next;
+    onchange?.(next);
+  }
+
+  // A step keeps the precision of its operands, so 0.1 + 0.2 lands on 0.3 and 1.125 + 1 on 2.125.
+  // An empty field steps to 0, clamped to min/max.
+  const places = (n: number) => (/e/i.test(String(n)) ? -1 : (String(n).split('.')[1] ?? '').length);
+  function add(n: number, delta: number): number {
+    const p = Math.max(places(n), places(delta));
+    return p < 0 ? n + delta : Number((n + delta).toFixed(p));
+  }
   function increment() {
-    const next = value + step;
-    value = max !== undefined ? Math.min(next, max) : next;
-    onchange?.(value);
+    set(clamp(value == null ? 0 : add(value, step)));
   }
 
   function decrement() {
-    const next = value - step;
-    value = min !== undefined ? Math.max(next, min) : next;
-    onchange?.(value);
+    set(clamp(value == null ? 0 : add(value, -step)));
+  }
+
+  /** `null` for an empty field, `undefined` while the text is not a number yet (`-`, `2,5,`). */
+  function parse(raw: string): number | null | undefined {
+    const s = raw.replace(/[\s\u00a0\u202f]/g, '');
+    if (s === '') return null;
+    if (!/^[-+]?(\d+([.,]\d*)?|[.,]\d+)$/.test(s)) return undefined;
+    return Number(s.replace(',', '.'));
   }
 
   function handleInput(e: Event) {
-    const v = parseFloat((e.target as HTMLInputElement).value);
-    if (!isNaN(v)) {
-      value = v;
-      onchange?.(v);
+    const el = e.target as HTMLInputElement;
+    if (locale) {
+      draft = el.value;
+      const n = parse(el.value);
+      if (n !== undefined) set(n);
+      return;
     }
+    // A native number input reports "" both when empty and while the text is not a number yet ("-"):
+    // only a really empty field clears the value (#1209).
+    if (el.value === '') {
+      if (!el.validity.badInput) set(null);
+      return;
+    }
+    const v = parseFloat(el.value);
+    if (!isNaN(v)) set(v);
   }
 
-  let atMin = $derived(min !== undefined && value <= min);
-  let atMax = $derived(max !== undefined && value >= max);
+  /** Leaving the field: typed values are clamped to min/max and the text shows the committed value. */
+  function commit(e: FocusEvent) {
+    focused = false;
+    draft = null;
+    const el = e.target as HTMLInputElement;
+    if (value != null) set(clamp(value));
+    if (!locale && el.validity.badInput) el.value = value == null ? '' : String(value);
+  }
+
+  function onkeydown(e: KeyboardEvent) {
+    if (!locale) return;
+    const keys: Record<string, () => void> = {
+      ArrowUp: increment,
+      ArrowDown: decrement,
+      Home: () => min !== undefined && set(min),
+      End: () => max !== undefined && set(max),
+    };
+    const run = keys[e.key];
+    if (!run) return;
+    e.preventDefault();
+    draft = null;
+    run();
+  }
+
+  let atMin = $derived(min !== undefined && value != null && value <= min);
+  let atMax = $derived(max !== undefined && value != null && value >= max);
 </script>
 
 <div
@@ -112,23 +185,48 @@
         <Minus size={14} />
       </button>
     {/if}
-    <input
-      id={inputId}
-      {name}
-      type="number"
-      value={value}
-      {min}
-      {max}
-      {step}
-      {disabled}
-      {required}
-      class="ca-nf__input"
-      aria-describedby={error ? `${inputId}-err` : description ? `${inputId}-hint` : undefined}
-      aria-invalid={error ? 'true' : undefined}
-      onfocus={() => (focused = true)}
-      onblur={() => (focused = false)}
-      oninput={handleInput}
-    />
+    {#if locale}
+      <!-- Text mode: a native number input cannot take a decimal comma in an English browser (#1209). -->
+      <input
+        id={inputId}
+        {name}
+        type="text"
+        inputmode="decimal"
+        autocomplete="off"
+        role="spinbutton"
+        value={shown}
+        aria-valuenow={value ?? undefined}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        {disabled}
+        {required}
+        class="ca-nf__input"
+        aria-describedby={error ? `${inputId}-err` : description ? `${inputId}-hint` : undefined}
+        aria-invalid={error ? 'true' : undefined}
+        onfocus={() => (focused = true)}
+        onblur={commit}
+        oninput={handleInput}
+        {onkeydown}
+      />
+    {:else}
+      <input
+        id={inputId}
+        {name}
+        type="number"
+        value={value ?? ''}
+        {min}
+        {max}
+        {step}
+        {disabled}
+        {required}
+        class="ca-nf__input"
+        aria-describedby={error ? `${inputId}-err` : description ? `${inputId}-hint` : undefined}
+        aria-invalid={error ? 'true' : undefined}
+        onfocus={() => (focused = true)}
+        onblur={commit}
+        oninput={handleInput}
+      />
+    {/if}
     {#if steppers}
       <button
         type="button"

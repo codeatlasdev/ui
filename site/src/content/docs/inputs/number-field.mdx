@@ -37,7 +37,7 @@ A `suffix` snippet renders a companion control, typically a unit `Select`, insid
 <Demo title="States" description="Helper text, error, disabled and the small size." src={StatesSrc}><States client:visible /></Demo>
 
 <Props rows={[
-  { name: "value", type: "number", default: "0", description: "Bindable numeric value." },
+  { name: "value", type: "number | null", default: "0", description: "Bindable numeric value. null when the user cleared the field. A typed value outside min/max is clamped when the field is left." },
   { name: "min", type: "number", description: "Minimum value. The decrement button disables at this value." },
   { name: "max", type: "number", description: "Maximum value. The increment button disables at this value." },
   { name: "step", type: "number", default: "1", description: "Increment applied by the plus and minus buttons." },
@@ -54,5 +54,6 @@ A `suffix` snippet renders a companion control, typically a unit `Select`, insid
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "suffix", type: "Snippet", description: "A companion control after the number, usually its unit (a `Select` of units). It sits in the same row and the field becomes a `role=\"group\"` named by `label`, so the pair reads as one control. Give the companion its own accessible name (`hideLabel` + `label`)." },
-  { name: "onchange", type: "(value: number) => void", description: "Called on every change, from the buttons or from typing a valid number." },
+  { name: "locale", type: "string", description: "Locale the user types in. With it the field reads and shows that locale's decimal mark (2,5 in pt-BR; a dot is accepted too) and becomes a text input with inputmode=\"decimal\" and role=\"spinbutton\", stepped by ArrowUp/ArrowDown and Home/End. Without it the field is a native number input whose decimal mark follows the browser." },
+  { name: "onchange", type: "(value: number | null) => void", description: "Called on every change, from the buttons or from typing a valid number; null when the field was cleared." },
 ]} />

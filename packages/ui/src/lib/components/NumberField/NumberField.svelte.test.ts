@@ -115,3 +115,62 @@ describe("NumberField suffix (#811)", () => {
 		expect(Math.round(b.height)).toBe(Math.round(a.height));
 	});
 });
+
+// #1209: clearing the field left the old number in the model (the field showed nothing, the form sent 5);
+// typed values ignored min/max; a pt-BR decimal comma could not be typed at all.
+describe("NumberField typing", () => {
+	it("clearing the field and leaving sets the value to null", async () => {
+		const onchange = vi.fn();
+		const screen = await render(NumberField, { label: "Qty", value: 5, onchange });
+		const input = screen.getByRole("spinbutton", { name: "Qty" });
+		await input.fill("");
+		await userEvent.tab();
+		await expect.element(input).toHaveValue(null);
+		expect(onchange).toHaveBeenLastCalledWith(null);
+	});
+
+	it("a typed value past max is clamped when the field is left", async () => {
+		const onchange = vi.fn();
+		const screen = await render(NumberField, {
+			label: "Pct",
+			value: 10,
+			min: 0,
+			max: 100,
+			onchange,
+		});
+		const input = screen.getByRole("spinbutton", { name: "Pct" });
+		await input.fill("150");
+		await userEvent.tab();
+		await expect.element(input).toHaveValue(100);
+		expect(onchange).toHaveBeenLastCalledWith(100);
+	});
+
+	it("locale pt-BR reads and shows a decimal comma and still steps by keyboard", async () => {
+		const onchange = vi.fn();
+		const screen = await render(NumberField, {
+			label: "Horas",
+			value: 1.5,
+			step: 0.5,
+			min: 0,
+			locale: "pt-BR",
+			onchange,
+		});
+		const input = screen.getByRole("spinbutton", { name: "Horas" });
+		await expect.element(input).toHaveValue("1,5");
+		await expect.element(input).toHaveAttribute("inputmode", "decimal");
+		await input.fill("2,5");
+		await userEvent.tab();
+		expect(onchange).toHaveBeenLastCalledWith(2.5);
+		await expect.element(input).toHaveValue("2,5");
+		await expect.element(input).toHaveAttribute("aria-valuenow", "2.5");
+		input.element().focus();
+		await userEvent.keyboard("{ArrowUp}");
+		await expect.element(input).toHaveValue("3");
+		expect(onchange).toHaveBeenLastCalledWith(3);
+		await input.fill("");
+		await userEvent.tab();
+		expect(onchange).toHaveBeenLastCalledWith(null);
+		await expect.element(input).not.toHaveAttribute("aria-valuenow");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
