@@ -1,6 +1,12 @@
-import { afterEach, expect } from "bun:test";
+import { afterEach, expect, setDefaultTimeout } from "bun:test";
 import { plugin } from "bun";
 import { compileModule } from "svelte/compiler";
+
+// #1304: a Windows worktree loads every native binary and spawned tool for the first time on its first run
+// (lightningcss 9.7 s cold against 0.2 s warm, esbuild bundles, `node dist/bin/ca-ui-mcp.js` in a hook), and that
+// one-time cost alone ran past Bun's 5 s default in land gates. Tests and hooks get 30 s there; macOS and Linux keep
+// the 5 s default, so a genuinely slow test is still caught. `tests/unit-timeout.test.ts` fails if this is lost.
+if (process.platform === "win32") setDefaultTimeout(30_000);
 
 // Bun has no `expect.requireAssertions` like the Vitest config this replaces: fail any unit test
 // that finished without asserting anything.
