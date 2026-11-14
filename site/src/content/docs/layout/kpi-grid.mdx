@@ -38,11 +38,14 @@ Widths are the grid's own width (it uses a container query), which is smaller th
 
 Tiles are at least 10rem wide. Above 12 children there is no useful even split, so the grid falls back to `auto-fill` and may end on a partial row: use several `KpiGrid`s in that case. Odd prime counts (5, 7, 11) stack to one column below the width that fits them all, because no smaller column count divides them evenly.
 
+`dense` trades the even rows for density on a narrow container: an odd count keeps two columns from 344px (21.5rem) and its last card takes the whole last row, so three cards are 2 + 1 and five are 2 + 2 + 1 instead of one card per row. A width where the count divides evenly still wins (three across from 528px, five from 896px). Use it for a list of small numbers (a queue, a waiting list) where five full-width tiles would push the content below the fold.
+
 <Demo title="Three cards" description="One row when it fits, one column on a phone, never 2 + 1." src={OddSrc}><Odd /></Demo>
 <Demo title="Four cards" description="Four across, then 2 x 2, then one column." src={FourSrc}><Four /></Demo>
 
 <Props rows={[
   { name: "gap", type: "number | string", default: "var(--ca-space-3)", description: "Gap between cards. A number is pixels." },
+  { name: "dense", type: "boolean", default: "false", description: "An odd count keeps 2 columns on a narrow container; the last card spans the last row (2 + 1, 2 + 2 + 1). Even splits still win where they fit." },
   { name: "class", type: "string", default: "''", description: "Extra class names on the wrapper." },
   { name: "children", type: "Snippet", description: "The KpiCards (or any equal-weight tiles)." },
 ]} />

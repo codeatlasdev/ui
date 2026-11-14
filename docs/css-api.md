@@ -297,6 +297,12 @@ State attribute on the root: `data-open` (fields open while collapsed). The row 
 
 Tokens: `--ca-kanban-col-width` (column width, default `clamp(15rem, 22vw, 20rem)`), `--ca-kanban-gap` (gap between columns, default `var(--ca-space-3)`). Stable hooks: `data-kanban-column="<column id>"` on each column, `data-card-id="<card id>"` on each card (`li`). With `cardHref` the `.ca-kanban__body` is an `<a>`.
 
+## KpiGrid
+
+`.ca-kpi-grid` `.ca-kpi-grid--dense` `.ca-kpi-grid__grid`
+
+`--dense` is the `dense` prop: an odd count keeps two columns on a narrow container and its last child spans the last row.
+
 ## KpiCard
 
 `.ca-kpi` `.ca-kpi__chart` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value`

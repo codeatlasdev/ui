@@ -2210,11 +2210,12 @@ KpiGrid: a row of KpiCards (or any equal-weight tiles) that never ends on a part
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `gap?` | `number \| string` |  |  |
+| `dense?` | `boolean` | `false` | Odd counts keep 2 columns on a narrow container; the last tile spans the last row (#1240). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Parts: `ca-kpi-grid` `ca-kpi-grid__grid`
+Parts: `ca-kpi-grid` `ca-kpi-grid--dense` `ca-kpi-grid__grid`
 
 ## Label
 
