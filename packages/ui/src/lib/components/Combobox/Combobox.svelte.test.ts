@@ -166,6 +166,25 @@ describe("Combobox multiple (#295)", () => {
 		await expect.element(screen.getByRole("button", { name: "Remove Docs" })).toBeVisible();
 	});
 
+	// #1086: the chips were hand-written `ca-chip` markup; Chip's CSS is scoped, so they rendered as bare text
+	// followed by the browser's grey button.
+	it("selected chips carry the Chip look and a 24px remove target", async () => {
+		const screen = await render(MultiHarness, { label: "Labels", initial: ["bug"] });
+		const remove = screen.getByRole("button", { name: "Remove Bug" }).element() as HTMLElement;
+		const chip = remove.closest(".ca-combobox__chip") as HTMLElement;
+		const c = getComputedStyle(chip);
+		expect(c.display).toMatch(/flex$/);
+		expect(c.borderTopStyle).toBe("solid");
+		expect(Number.parseFloat(c.borderTopLeftRadius)).toBeGreaterThan(0);
+		const r = getComputedStyle(remove);
+		expect(r.borderTopStyle).toBe("none");
+		expect(r.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+		// The visual circle stays small; its hit area is at least 24px (WCAG 2.5.8).
+		const hit = getComputedStyle(remove, "::after");
+		expect(Number.parseFloat(hit.width)).toBeGreaterThanOrEqual(24);
+		expect(Number.parseFloat(hit.height)).toBeGreaterThanOrEqual(24);
+	});
+
 	it("Backspace on an empty query removes the last chip", async () => {
 		const screen = await openList({ initial: ["bug", "docs"] });
 		await userEvent.keyboard("{Backspace}");

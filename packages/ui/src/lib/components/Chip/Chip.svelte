@@ -150,6 +150,24 @@
                   background var(--ca-duration-fast) var(--ca-ease-standard);
     }
 
+    /* The circle stays 16px; its hit area is 24px (WCAG 2.5.8) and the touch target under a coarse pointer (#1086). */
+    .ca-chip__delete { position: relative; }
+    .ca-chip__delete::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, var(--ca-space-6));
+      height: max(100%, var(--ca-space-6));
+      translate: -50% -50%;
+    }
+    @media (pointer: coarse) {
+      .ca-chip__delete::after {
+        width: max(100%, var(--ca-touch-target));
+        height: max(100%, var(--ca-touch-target));
+      }
+    }
+
     .ca-chip__delete:hover {
       opacity: 1;
       background: var(--ca-action-hover);
