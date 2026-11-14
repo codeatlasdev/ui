@@ -1,6 +1,10 @@
 <script lang="ts">
   import type { HTMLTextareaAttributes } from 'svelte/elements';
   import { uid } from '../../utils/index.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { common } from '../../i18n/groups/common.js';
+  import '../field-optional.css';
+  const t = useMessages(common);
 
   interface Props
     extends Omit<HTMLTextareaAttributes, 'value' | 'class' | 'children' | 'rows' | 'oninput' | 'onchange' | 'onfocus' | 'onblur'> {
@@ -17,6 +21,8 @@
     helperText?:  string;
     disabled?:    boolean;
     required?:    boolean;
+    /** Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). */
+    optional?:    boolean;
     readonly?:    boolean;
     resize?:      'none' | 'vertical' | 'horizontal' | 'both';
     class?:       string;
@@ -41,6 +47,7 @@
     helperText,
     disabled     = false,
     required     = false,
+    optional     = false,
     readonly     = false,
     resize       = 'vertical',
     class: className = '',
@@ -68,7 +75,7 @@
 >
   {#if label}
     <label for={id} class="ca-ta__label" class:ca-sr-only={hideLabel}>
-      {label}{#if required}<span class="ca-ta__req" aria-hidden="true"> *</span>{/if}
+      {label}{#if required}<span class="ca-ta__req" aria-hidden="true"> *</span>{/if}{#if optional && !required}{' '}<span class="ca-field-optional">({t().common.optional})</span>{/if}
     </label>
   {/if}
 

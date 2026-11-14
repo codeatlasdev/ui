@@ -8,7 +8,9 @@
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check } from '@lucide/svelte';
-  const t = useMessages(select);
+  import { common } from '../../i18n/groups/common.js';
+  import '../field-optional.css';
+  const t = useMessages(select, common);
 
   interface Option {
     value:     string;
@@ -33,6 +35,8 @@
     description?:  string;
     error?:        string;
     required?:     boolean;
+    /** Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). */
+    optional?:     boolean;
     /** Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. */
     name?:         string;
     size?:         'sm' | 'md';
@@ -57,6 +61,7 @@
     description,
     error,
     required    = false,
+    optional    = false,
     name,
     size        = 'md',
     variant,
@@ -144,7 +149,7 @@
 <div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled} style:--ca-field-width={fieldWidth(width)} data-ca-field={variant}>
   {#if label}
     <label for={id} class="ca-sel__label" class:ca-sr-only={hideLabel}>
-      {label}{#if required}<span class="ca-sel__req" aria-hidden="true"> *</span><span class="ca-sr-only"> ({t().select.required})</span>{/if}
+      {label}{#if required}<span class="ca-sel__req" aria-hidden="true"> *</span><span class="ca-sr-only"> ({t().select.required})</span>{/if}{#if optional && !required}{' '}<span class="ca-field-optional">({t().common.optional})</span>{/if}
     </label>
   {/if}
 

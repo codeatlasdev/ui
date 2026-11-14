@@ -570,6 +570,10 @@ The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-ro
 
 `.ca-ta` `.ca-ta--disabled` `.ca-ta--error` `.ca-ta__hint` `.ca-ta__hint--error` `.ca-ta__input` `.ca-ta__label` `.ca-ta__req` `.ca-ta__wrap` `.ca-ta__wrap--error` `.ca-ta__wrap--focused`
 
+## Field labels (shared)
+
+`.ca-field-optional`: the "(optional)" text after the label of TextField, TextArea, NumberField, Select, Combobox and Label with `optional` (#1215). A `required` Select or Combobox also carries a visually hidden "(required)" in its label, because its trigger is a button and cannot take `aria-required`.
+
 ## TextField
 
 `.ca-tf` `.ca-tf--disabled` `.ca-tf--error` `.ca-tf--sm` `.ca-tf__addon` `.ca-tf__addon--prefix` `.ca-tf__addon--suffix` `.ca-tf__addon--text` `.ca-tf__adorn` `.ca-tf__adorn--lead` `.ca-tf__adorn--trail` `.ca-tf__hint` `.ca-tf__hint--error` `.ca-tf__input` `.ca-tf__label` `.ca-tf__req` `.ca-tf__wrap` `.ca-tf__wrap--addons` `.ca-tf__wrap--error` `.ca-tf__wrap--focused`

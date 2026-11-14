@@ -65,6 +65,7 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
   { name: "helperText", type: "string", description: "Deprecated alias of description." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the input." },
   { name: "required", type: "boolean", default: "false", description: "Marks the field as required." },
+  { name: "optional", type: "boolean", default: "false", description: "Shows \"(optional)\" (localized) after the label, as text that is part of the accessible name. Ignored with required." },
   { name: "requiredIndicator", type: "boolean", default: "true", description: "`false` hides the asterisk of a `required` field; the input stays `required`." },
   { name: "readonly", type: "boolean", default: "false", description: "Makes the input read-only." },
   { name: "autocomplete", type: "HTMLInputAttributes['autocomplete']", description: "Native autocomplete hint. Defaults to email, tel or url for those types." },

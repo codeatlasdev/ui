@@ -12,7 +12,9 @@
   import Highlight from '../Highlight/Highlight.svelte';
   import Chip from '../Chip/Chip.svelte';
   import { fold, rankMatches, splitMatch } from './match.js';
-  const t = useMessages(combobox);
+  import { common } from '../../i18n/groups/common.js';
+  import '../field-optional.css';
+  const t = useMessages(combobox, common);
 
   export interface ComboboxOption {
     value: string;
@@ -41,6 +43,8 @@
     error?:             string;
     description?:       string;
     required?:          boolean;
+    /** Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). */
+    optional?:          boolean;
     size?:              'sm' | 'md';
     /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
     variant?:              FieldVariant;
@@ -69,6 +73,7 @@
     error,
     description,
     required          = false,
+    optional          = false,
     size              = 'md',
     variant,
     emptyText,
@@ -249,7 +254,7 @@
 <div class={rootClass} style:--ca-field-width={fieldWidth(width)} data-ca-field={variant}>
   {#if label}
     <label for={triggerId} class="ca-combobox__label" class:ca-sr-only={hideLabel}>
-      {label}{#if required}<span class="ca-combobox__req" aria-hidden="true"> *</span>{/if}
+      {label}{#if required}<span class="ca-combobox__req" aria-hidden="true"> *</span><span class="ca-sr-only"> ({t().combobox.required})</span>{/if}{#if optional && !required}{' '}<span class="ca-field-optional">({t().common.optional})</span>{/if}
     </label>
   {/if}
   {#if multiple && selectedValues.length > 0}

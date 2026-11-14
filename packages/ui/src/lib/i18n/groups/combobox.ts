@@ -2,6 +2,7 @@ import { defineGroup } from "../catalog.js";
 
 export const combobox = defineGroup("combobox", {
 	en: {
+		required: "required",
 		placeholder: "Select…",
 		searchPlaceholder: "Search…",
 		empty: "No results",
@@ -10,6 +11,7 @@ export const combobox = defineGroup("combobox", {
 		create: (query: string) => `Create "${query}"`,
 	},
 	"pt-BR": {
+		required: "obrigatório",
 		placeholder: "Selecione…",
 		searchPlaceholder: "Buscar…",
 		empty: "Nenhum resultado",

@@ -7,7 +7,9 @@
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import type { FieldVariant } from '../../theme/components.js';
   import '../field-variant.css';
-  const t = useMessages(numberField);
+  import { common } from '../../i18n/groups/common.js';
+  import '../field-optional.css';
+  const t = useMessages(numberField, common);
 
   interface Props {
     /** Bindable. `null` when the field is empty (the user cleared it). */
@@ -27,6 +29,8 @@
     error?:       string;
     description?: string;
     required?:    boolean;
+    /** Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). */
+    optional?:    boolean;
     name?:        string;
     size?:        'sm' | 'md';
     /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
@@ -58,6 +62,7 @@
     error,
     description,
     required = false,
+    optional = false,
     name,
     size     = 'md',
     variant,
@@ -168,7 +173,7 @@
 >
   {#if label}
     <label id={suffix ? `${inputId}-label` : undefined} for={inputId} class="ca-nf__label" class:ca-sr-only={hideLabel}>
-      {label}{#if required}<span class="ca-nf__req" aria-hidden="true"> *</span>{/if}
+      {label}{#if required}<span class="ca-nf__req" aria-hidden="true"> *</span>{/if}{#if optional && !required}{' '}<span class="ca-field-optional">({t().common.optional})</span>{/if}
     </label>
   {/if}
 

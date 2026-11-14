@@ -8,7 +8,9 @@
   import '../field-variant.css';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { textField } from '../../i18n/groups/textField.js';
-  const t = useMessages(textField);
+  import { common } from '../../i18n/groups/common.js';
+  import '../field-optional.css';
+  const t = useMessages(textField, common);
 
   interface Props
     extends Omit<HTMLInputAttributes, 'value' | 'class' | 'children' | 'size' | 'prefix' | 'oninput' | 'onchange' | 'onfocus' | 'onblur'> {
@@ -24,6 +26,8 @@
     helperText?:   string;
     disabled?:     boolean;
     required?:     boolean;
+    /** Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). */
+    optional?:     boolean;
     /** `false` hides the asterisk of a `required` field (the input stays `required`), for forms where nothing is optional. */
     requiredIndicator?: boolean;
     readonly?:     boolean;
@@ -71,6 +75,7 @@
     helperText,
     disabled     = false,
     required     = false,
+    optional     = false,
     requiredIndicator = true,
     readonly     = false,
     autocomplete,
@@ -128,7 +133,7 @@
 <div class="ca-tf {className}" style:--ca-field-width={fieldWidth(width)} data-ca-field={variant} aria-busy={skeleton ? 'true' : undefined} data-skeleton={skeleton ? '' : undefined} class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
   {#if label}
     <label for={id} class="ca-tf__label" class:ca-sr-only={hideLabel}>
-      {label}{#if required && requiredIndicator}<span class="ca-tf__req" aria-hidden="true"> *</span>{/if}
+      {label}{#if required && requiredIndicator}<span class="ca-tf__req" aria-hidden="true"> *</span>{/if}{#if optional && !required}{' '}<span class="ca-field-optional">({t().common.optional})</span>{/if}
     </label>
   {/if}
 
