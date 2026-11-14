@@ -9,7 +9,7 @@
 </script>
 
 <span class="ca-status-chip ca-status-chip--{status} {className}" role="status">
-  {label}
+  <span class="ca-status-chip__label">{label}</span>
 </span>
 
 <style>
@@ -24,6 +24,18 @@
       font-size: var(--ca-font-size-caption);
       font-weight: var(--ca-font-weight-medium);
       line-height: 1;
+      /* A single-line pill like the inline Badge (#1232): never wraps out of its fixed height. In a cell
+         narrower than the label it shrinks to the cell and ends the label with an ellipsis. */
+      white-space: nowrap;
+      flex: none;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .ca-status-chip__label {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .ca-status-chip--success {

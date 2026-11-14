@@ -502,7 +502,7 @@ State attribute on a row: `data-dragging`. Each row carries `data-dnd-item="<id>
 
 ## StatusChip
 
-`.ca-status-chip` `.ca-status-chip--error` `.ca-status-chip--info` `.ca-status-chip--neutral` `.ca-status-chip--success` `.ca-status-chip--warning`
+`.ca-status-chip` `.ca-status-chip--error` `.ca-status-chip--info` `.ca-status-chip--neutral` `.ca-status-chip--success` `.ca-status-chip--warning` `.ca-status-chip__label`
 
 ## Stepper
 
