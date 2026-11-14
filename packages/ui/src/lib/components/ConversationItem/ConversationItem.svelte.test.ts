@@ -157,4 +157,16 @@ describe("ConversationItem rest attributes (#723)", () => {
 		}
 		expect(entered).toBe(2);
 	});
+	// #1022: a row's extra line (context, stage, owner) must be part of the card's one target, not dead space.
+	it("meta is part of the button (#1022)", async () => {
+		const clicks = { n: 0 };
+		const screen = await render(Harness, { preview: "See you", withMeta: true, clicks });
+		const meta = screen.getByTestId("meta");
+		await expect.element(meta).toBeVisible();
+		const btn = screen.getByRole("button", { name: /Ana Souza/ }).element();
+		expect(btn.contains(meta.element())).toBe(true);
+		await meta.click();
+		expect(clicks.n).toBe(1);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
 });

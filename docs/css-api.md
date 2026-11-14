@@ -170,7 +170,7 @@ Variants are `[data-variant="boxed" | "flush"]` and `[data-divided]` on `.ca-col
 
 ## ConversationItem
 
-`.ca-conversation` `.ca-conversation--active` `.ca-conversation--unread` `.ca-conversation__avatar` `.ca-conversation__flags` `.ca-conversation__line` `.ca-conversation__main` `.ca-conversation__preview` `.ca-conversation__preview--typing` `.ca-conversation__previewicon` `.ca-conversation__previewrow` `.ca-conversation__time` `.ca-conversation__title` `.ca-conversation__unread` `.ca-conversation__unread--muted`
+`.ca-conversation` `.ca-conversation--active` `.ca-conversation--unread` `.ca-conversation__avatar` `.ca-conversation__flags` `.ca-conversation__line` `.ca-conversation__main` `.ca-conversation__meta` `.ca-conversation__preview` `.ca-conversation__preview--typing` `.ca-conversation__previewicon` `.ca-conversation__previewrow` `.ca-conversation__time` `.ca-conversation__title` `.ca-conversation__unread` `.ca-conversation__unread--muted`
 
 ## CopyButton
 

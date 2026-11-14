@@ -25,6 +25,11 @@
     preview?: string;
     /** Leading icon or ticks rendered before the preview. */
     previewIcon?: Snippet;
+    /**
+     * A third line inside the card (context, stage, owner, status badges), so the whole card is one click
+     * target (#1022). Text and badges only: a control here would nest inside the row's button or link.
+     */
+    meta?: Snippet;
     /** Avatar slot. */
     avatar?: Snippet;
     /** Unread count. Shown as a pill, capped at `99+`. Hidden at 0. */
@@ -49,6 +54,7 @@
     time,
     preview,
     previewIcon,
+    meta,
     avatar,
     unread,
     pinned = false,
@@ -93,6 +99,7 @@
         {/if}
       </span>
     </span>
+    {#if meta}<span class="ca-conversation__meta">{@render meta()}</span>{/if}
   </span>
 {/snippet}
 
@@ -121,6 +128,16 @@
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
+    /* A third line inside the card (#1022): wraps, quieter than the preview. */
+    .ca-conversation__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ca-space-1) var(--ca-space-1-5);
+      min-inline-size: 0;
+      color: var(--ca-text-secondary);
+      font-size: var(--ca-font-size-caption);
+    }
     .ca-conversation {
       display: flex;
       align-items: center;
