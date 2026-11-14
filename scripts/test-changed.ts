@@ -43,6 +43,7 @@ import {
 	componentRuns,
 	isSharedComponent,
 	resolveBudget,
+	vrtRun,
 	widenedBecause,
 } from "./test-graph.ts";
 import { BUDGETS } from "./test-run.ts";
@@ -188,7 +189,6 @@ const step = async (name: string, work: () => number | Promise<number>, note = "
 };
 
 const vitestExtra = process.argv.slice(2).filter((a) => a !== "--" && a !== "--land");
-const inPkg = (files: string[]) => files.map((f) => f.replace("packages/ui/", ""));
 const pkgDir = join(ROOT, "packages/ui");
 
 /** Unit tests (only the files the diff reaches), then the component tests. */
@@ -198,7 +198,15 @@ const packageTests = async () => {
 		const unit = run(["bun", "test", `--changed=${base}`]);
 		return unit === 1 && !changed.some((f) => /\.(ts|js|svelte)$/.test(f)) ? 0 : unit;
 	});
-	// CPU-throttled specs run after the others with one worker, like CI's throttled job (#1259).
+	// CPU-throttled specs run after the others with one worker, like CI's throttled job (#1259); on Windows
+	// they are left to that job (#1263).
+	if (
+		process.platform === "win32" &&
+		compTests.some((f) => f.endsWith(".throttled.svelte.test.ts"))
+	)
+		console.log(
+			"test:changed: CPU-throttled specs skipped on Windows (CDP throttling runs far slower than its rate); CI's throttled job runs them (#1263)"
+		);
 	if (compTests.length || ssrTests.length)
 		await step("components", async () => {
 			let code = 0;
@@ -257,10 +265,13 @@ const building =
 await packageTests();
 await building;
 
-if (!shared && vrtTests.length)
-	await step("visual (components)", () =>
-		run(["vitest", "run", "--project", "vrt", ...(sharedFile ? [] : inPkg(vrtTests))], {}, pkgDir)
+const vrtArgs = shared ? null : vrtRun(vrtTests, Boolean(sharedFile));
+if (!shared && vrtTests.length && !vrtArgs)
+	console.log(
+		`test:changed: visual (components) skipped: no baselines for ${process.platform} (they are darwin and linux, #1263)`
 	);
+if (vrtArgs)
+	await step("visual (components)", () => run(["vitest", "run", ...vrtArgs], {}, pkgDir));
 
 if (!land && (pkgStale || siteStale)) {
 	console.log(

@@ -234,8 +234,15 @@ const inPackage = (files: string[]) => files.map((f) => f.replace("packages/ui/"
  * other. CPU-throttled specs (`*.throttled.svelte.test.ts`) get their own run with one worker, as in CI's
  * "Component tests (CPU throttled)" job: throttling multiplies the host's speed, and beside the other files the
  * 150x CommandPalette spec took 759 s (#1259). `shared`: every file is selected, so files are not listed.
+ * On Windows the throttled run is left out: CDP throttling is far stronger there than its rate (the 150x spec
+ * passed 240 s alone, ~19 s on the reference Mac), and CI's throttled job runs them after the merge (#1263).
  */
-export function componentRuns(browser: string[], ssr: string[], shared: boolean): string[][] {
+export function componentRuns(
+	browser: string[],
+	ssr: string[],
+	shared: boolean,
+	platform: NodeJS.Platform = process.platform
+): string[][] {
 	const throttled = browser.filter((f) => THROTTLED.test(f));
 	const rest = browser.filter((f) => !THROTTLED.test(f));
 	const runs: string[][] = [];
@@ -250,7 +257,7 @@ export function componentRuns(browser: string[], ssr: string[], shared: boolean)
 				: [...projects, ...inPackage([...rest, ...ssr])]
 		);
 	}
-	if (throttled.length)
+	if (throttled.length && platform !== "win32")
 		runs.push([
 			"--project",
 			"browser",
@@ -258,4 +265,18 @@ export function componentRuns(browser: string[], ssr: string[], shared: boolean)
 			...(shared ? ["throttled"] : inPackage(throttled)),
 		]);
 	return runs;
+}
+
+/**
+ * The `vitest run` arguments of the selected component screenshots, or `null` when there is nothing to run: no
+ * selected file, or a platform without baselines, where the vrt project excludes every file (vite.config.ts) and
+ * Vitest would exit 1 with "No test files found" (#1263). `shared`: every screenshot, so files are not listed.
+ */
+export function vrtRun(
+	vrt: string[],
+	shared: boolean,
+	platform: NodeJS.Platform = process.platform
+): string[] | null {
+	if (!vrt.length || !["darwin", "linux"].includes(platform)) return null;
+	return ["--project", "vrt", ...(shared ? [] : inPackage(vrt))];
 }
