@@ -3413,19 +3413,19 @@ Parts: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-sectio
 
 ## SegmentedControl
 
-`import { SegmentedControl } from "@codeatlasdev/ui"`
+`import { SegmentedControl } from "@codeatlasdev/ui"` (generic: `T extends string = string`)
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `value?` | `string` |  | `bind:` |
-| `items` | `ToggleGroupItem[]` |  |  |
+| `value?` | `T` |  | `bind:` One of the `items` values; `T` is inferred from them, so a literal union stays narrow (#1235). |
+| `items` | `ToggleGroupItem<T>[]` |  |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `fullWidth?` | `boolean` | `false` |  |
 | `sizing?` | `'equal' \| 'content'` | `'equal'` | `equal`: one shared column width. `content`: each segment is as wide as its label. |
 | `class?` | `string` | `''` |  |
 | `aria-label?` | `string` |  |  |
-| `onchange?` | `(value: string) => void` |  |  |
+| `onchange?` | `(value: T) => void` |  |  |
 
 Parts: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 
@@ -4318,13 +4318,11 @@ Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
 
 ## ToggleGroup
 
-`import { ToggleGroup } from "@codeatlasdev/ui"`
+`import { ToggleGroup } from "@codeatlasdev/ui"` (generic: `T extends string = string`)
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `type?` | `'single' \| 'multiple'` | `'single'` |  |
-| `value?` | `string \| string[]` |  | `bind:` `string` for type="single", `string[]` for type="multiple". |
-| `items` | `ToggleGroupItem[]` |  |  |
+| `items` | `ToggleGroupItem<T>[]` |  |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `variant?` | `'outlined' \| 'ghost'` | `'outlined'` |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -4332,7 +4330,12 @@ Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
 | `required?` | `boolean` | `false` | Keep a selection: pressing the pressed item (the last one, for `multiple`) does nothing instead of clearing it, like a radio group. An empty group still selects on the first press. |
 | `class?` | `string` | `''` |  |
 | `aria-label?` | `string` |  |  |
-| `onchange?` | `(value: string \| string[]) => void` |  |  |
+
+Also accepts: `(
+      \| { type?: 'single'; value?: T \| ''; onchange?: (value: T \| '') => void }
+      \| { type: 'multiple'; value?: T[]; onchange?: (value: T[]) => void }
+      \| { type: 'single' \| 'multiple'; value?: T \| '' \| T[]; onchange?: (value: T \| '' \| T[]) => void }
+    )`
 
 Parts: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca-toggle-group--sm` `ca-toggle-group__item`
 
