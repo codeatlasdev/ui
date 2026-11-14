@@ -1,20 +1,29 @@
 <script lang="ts">
 	import AppList from "./AppList.svelte";
 
+	interface User {
+		id: number;
+		name: string;
+		role: string;
+	}
+
 	interface Props {
 		perPage?: number;
 		withEmpty?: boolean;
+		data?: User[];
 	}
 
-	let { perPage = 3, withEmpty = false }: Props = $props();
-
-	const data = [
-		{ id: 1, name: "Ana", role: "Admin" },
-		{ id: 2, name: "Bruno", role: "User" },
-		{ id: 3, name: "Carla", role: "User" },
-		{ id: 4, name: "Diego", role: "Admin" },
-		{ id: 5, name: "Elisa", role: "User" },
-	];
+	let {
+		perPage = 3,
+		withEmpty = false,
+		data = [
+			{ id: 1, name: "Ana", role: "Admin" },
+			{ id: 2, name: "Bruno", role: "User" },
+			{ id: 3, name: "Carla", role: "User" },
+			{ id: 4, name: "Diego", role: "Admin" },
+			{ id: 5, name: "Elisa", role: "User" },
+		],
+	}: Props = $props();
 </script>
 
 <main>

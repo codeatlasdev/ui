@@ -137,7 +137,7 @@ AppList: fullscreen CRUD/list layout.
 | `title?` | `string` |  |  |
 | `description?` | `string` |  |  |
 | `data?` | `T[]` |  | Full dataset. When provided, AppList manages search/filter/pagination internally. |
-| `searchKeys?` | `NoInfer<keyof T>[]` |  | Fields to include in text search. Default: all string fields. |
+| `searchKeys?` | `NoInfer<keyof T>[]` |  | Fields to include in text search, which ignores case and accents ("joao" finds "João"). Default: all string fields. |
 | `perPage?` | `number` | `20` | Rows per page. Default: 20. |
 | `idKey?` | `NoInfer<keyof T>` |  | Row identifier field. Default: 'id'. |
 | `searchPlaceholder?` | `string` |  | Placeholder for the auto-rendered search input. Default: 'Search…' |
@@ -5682,7 +5682,7 @@ function useForm<K extends string, A extends Record<string, unknown> = Record<ne
 
 `import { useListState } from "@codeatlasdev/ui"`
 
-Reactive list controller for client-side tables: search over `searchKeys`, filters, pagination and row selection. Returns `UseListStateReturn`.
+Reactive list controller for client-side tables: search over `searchKeys` (ignoring case and accents), filters, pagination and row selection. Returns `UseListStateReturn`.
 
 ```ts
 function useListState<T extends object>(options: UseListStateOptions<T>): UseListStateReturn<T>
@@ -6685,7 +6685,7 @@ Types:
 |---|---|---|
 | `data` | `T[]` | Full dataset |
 | `perPage?` | `number` | Rows per page. Default: 20 |
-| `searchKeys?` | `(keyof T)[]` | Which fields are included in text search |
+| `searchKeys?` | `(keyof T)[]` | Which fields are included in text search (ignores case and accents: "joao" finds "João") |
 | `idKey?` | `keyof T` | Field used as row identifier for selection. Default: 'id' |
 | `ofLabel?` | `string` | Word between the numbers in `count` / `pageInfo` ("8 of 24"). Default: 'of'; use 'de' in pt-BR. |
 

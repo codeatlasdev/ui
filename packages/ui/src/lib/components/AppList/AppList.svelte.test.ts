@@ -27,6 +27,32 @@ describe("AppList data mode", () => {
 		await expect.element(screen.getByRole("listitem")).toHaveTextContent("Bruno");
 	});
 
+	// Accented names are deliberate: the subject is accent-insensitive search (#1279).
+	it("search ignores accents and case", async () => {
+		const data = [
+			{ id: 1, name: "João", role: "User" },
+			{ id: 2, name: "joão", role: "User" },
+			{ id: 3, name: "Ana", role: "Admin" },
+			{ id: 4, name: "Ação", role: "User" },
+			{ id: 5, name: "Acao", role: "User" },
+		];
+		const screen = await render(Harness, { data, perPage: 10 });
+		const field = screen.getByPlaceholder("Search…");
+		const shown = () =>
+			screen
+				.getByRole("listitem")
+				.elements()
+				.map((li) => li.textContent);
+		await userEvent.fill(field, "joao");
+		await expect.poll(shown).toEqual(["João", "joão"]);
+		await userEvent.fill(field, "JOÃO");
+		await expect.poll(shown).toEqual(["João", "joão"]);
+		await userEvent.fill(field, "acao");
+		await expect.poll(shown).toEqual(["Ação", "Acao"]);
+		await userEvent.fill(field, "ação");
+		await expect.poll(shown).toEqual(["Ação", "Acao"]);
+	});
+
 	it("shows the empty state when nothing matches", async () => {
 		const screen = await render(Harness, { withEmpty: true });
 		await userEvent.fill(screen.getByPlaceholder("Search…"), "zzz");

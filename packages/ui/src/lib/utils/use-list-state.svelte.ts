@@ -1,5 +1,6 @@
 import { common } from "../i18n/groups/common.js";
 import { useMessages } from "../i18n/state.svelte.js";
+import { foldText } from "./search.js";
 /**
  * useListState — eliminates boilerplate state management in list/CRUD pages.
  *
@@ -23,7 +24,7 @@ export interface UseListStateOptions<T extends object> {
 	data: T[];
 	/** Rows per page. Default: 20 */
 	perPage?: number;
-	/** Which fields are included in text search */
+	/** Which fields are included in text search (ignores case and accents: "joao" finds "João") */
 	searchKeys?: (keyof T)[];
 	/** Field used as row identifier for selection. Default: 'id' */
 	idKey?: keyof T;
@@ -74,7 +75,7 @@ export interface UseListStateReturn<T> {
 	clearSelection(): void;
 }
 
-/** Reactive list controller for client-side tables: search over `searchKeys`, filters, pagination and row selection. Returns `UseListStateReturn`. */
+/** Reactive list controller for client-side tables: search over `searchKeys` (ignoring case and accents), filters, pagination and row selection. Returns `UseListStateReturn`. */
 export function useListState<T extends object>(
 	options: UseListStateOptions<T>
 ): UseListStateReturn<T> {
@@ -90,14 +91,14 @@ export function useListState<T extends object>(
 
 	// ── Derived: filtered ───────────────────────────────────────────────
 	const filtered = $derived.by(() => {
-		const q = _search.trim().toLowerCase();
+		const q = foldText(_search.trim());
 
 		return data.filter((row) => {
-			// Text search
+			// Text search, ignoring case and accents ("joao" finds "João")
 			if (q && searchKeys.length > 0) {
 				const matches = searchKeys.some((key) => {
 					const val = row[key];
-					return val != null && String(val).toLowerCase().includes(q);
+					return val != null && foldText(String(val)).includes(q);
 				});
 				if (!matches) return false;
 			}
