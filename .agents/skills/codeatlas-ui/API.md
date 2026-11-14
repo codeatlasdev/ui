@@ -1685,6 +1685,7 @@ Data attributes: `data-open`
 | `title` | `string` |  |  |
 | `headingLevel?` | `2 \| 3 \| 4 \| 5 \| 6` |  | Heading level of the title (2–6). Only the tag changes, never the look. Defaults to 2 inside a `PageShell` (under its `<h1>`), 5 elsewhere. |
 | `variant?` | `'default' \| 'hero'` | `'default'` | 'default' = compact inline empty state. 'hero'    = larger brand-tinted icon tile with glow, bigger title; `actions` stack full-width on mobile (put the primary action first). |
+| `size?` | `'default' \| 'row'` | `'default'` | 'default' = the stacked block. 'row'     = one line (16px icon, text, actions) for an empty slot inside a list, a card or a grid of sibling cards. The title is text, not a heading; `variant`, `display`, `actionsFill` and `headingLevel` apply to the stacked block only. |
 | `description?` | `string` |  |  |
 | `display?` | `boolean` | `false` | Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. |
 | `bare?` | `boolean` | `false` | No padding: an empty state inside a Card, a table or a pane that already insets its content. |
@@ -1693,11 +1694,11 @@ Data attributes: `data-open`
 
 Snippets: `actions`; `children`
 
-Parts: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
+Parts: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty--row` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
 
-Variables: `--ca-empty-actions-margin` `--ca-empty-description-leading` `--ca-empty-description-max-width` `--ca-empty-description-size` `--ca-empty-icon-bg` `--ca-empty-icon-border` `--ca-empty-icon-radius` `--ca-empty-padding` `--ca-empty-title-gap` `--ca-empty-title-leading` `--ca-empty-title-size` `--ca-empty-title-tracking` `--ca-empty-title-weight`
+Variables: `--ca-empty-actions-margin` `--ca-empty-description-leading` `--ca-empty-description-max-width` `--ca-empty-description-size` `--ca-empty-icon-bg` `--ca-empty-icon-border` `--ca-empty-icon-radius` `--ca-empty-padding` `--ca-empty-row-padding` `--ca-empty-title-gap` `--ca-empty-title-leading` `--ca-empty-title-size` `--ca-empty-title-tracking` `--ca-empty-title-weight`
 
-Tokens: `--ca-empty-actions-margin` `--ca-empty-description-leading` `--ca-empty-description-max-width` `--ca-empty-description-size` `--ca-empty-icon-bg` `--ca-empty-icon-border` `--ca-empty-icon-radius` `--ca-empty-padding` `--ca-empty-title-gap` `--ca-empty-title-leading` `--ca-empty-title-size` `--ca-empty-title-tracking` `--ca-empty-title-weight`
+Tokens: `--ca-empty-actions-margin` `--ca-empty-description-leading` `--ca-empty-description-max-width` `--ca-empty-description-size` `--ca-empty-icon-bg` `--ca-empty-icon-border` `--ca-empty-icon-radius` `--ca-empty-padding` `--ca-empty-row-padding` `--ca-empty-title-gap` `--ca-empty-title-leading` `--ca-empty-title-size` `--ca-empty-title-tracking` `--ca-empty-title-weight`
 
 ## ErrorPage
 
