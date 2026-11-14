@@ -9,6 +9,7 @@
   import { createAttachmentKey } from 'svelte/attachments';
   import { modalBlocks } from '../../primitives/index.js';
   import { uid } from '../../utils/index.js';
+  import { devWarn } from '../../utils/dev-warn.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
 
   interface Props {
@@ -101,6 +102,16 @@
     };
   };
 
+  // `children` render inside the trigger <button>: a control there is a button inside a button (axe
+  // nested-interactive), silent at the call site. `triggerChild` is the way to wrap one (#1056).
+  function warnInteractive(node: HTMLElement) {
+    if (node.querySelector('a[href], button, input, select, textarea, [tabindex]'))
+      devWarn(
+        'tooltip-interactive-children',
+        'Tooltip: its children hold a focusable control, which nests it inside the trigger <button> (nested-interactive). Render the control through `triggerChild` instead.'
+      );
+  }
+
   const triggerAttrs = $derived({
     'aria-describedby': open ? id : undefined,
     'data-state': open ? 'open' : 'closed',
@@ -111,7 +122,7 @@
 {#if triggerChild}
   {@render triggerChild(triggerAttrs)}
 {:else}
-  <button type="button" class="ca-tooltip__trigger" {...triggerAttrs}>
+  <button type="button" class="ca-tooltip__trigger" {...triggerAttrs} {@attach warnInteractive}>
     {@render children?.()}
   </button>
 {/if}
