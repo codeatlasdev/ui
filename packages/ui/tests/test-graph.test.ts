@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import {
 	affected,
 	buildGraph,
+	componentRuns,
 	isSharedComponent,
 	resolveBudget,
 	widenedBecause,
@@ -127,5 +128,48 @@ describe("resolveBudget", () => {
 		])
 			expect(isSharedComponent(f)).toBe(false);
 		expect(isSharedComponent("packages/ui/src/lib/actions/scroll-focusable.ts")).toBe(true);
+	});
+});
+
+// #1259: CI runs `*.throttled.svelte.test.ts` in their own job with one worker; the land gate ran them beside the
+// other selected files, and sharing the cores turned the 150x CommandPalette spec into a 759 s timeout.
+describe("componentRuns", () => {
+	const comp = [
+		"packages/ui/src/lib/components/Dialog/Dialog.svelte.test.ts",
+		"packages/ui/src/lib/components/CommandPalette/CommandPalette.throttled.svelte.test.ts",
+	];
+
+	it("runs the throttled specs after the others, alone, with one worker", () => {
+		const runs = componentRuns(comp, [], false);
+		expect(runs).toEqual([
+			["--project", "browser", "src/lib/components/Dialog/Dialog.svelte.test.ts"],
+			[
+				"--project",
+				"browser",
+				"--maxWorkers=1",
+				"src/lib/components/CommandPalette/CommandPalette.throttled.svelte.test.ts",
+			],
+		]);
+	});
+
+	it("a shared change runs every file: the parallel run excludes the throttled ones", () => {
+		expect(componentRuns(comp, [], true)).toEqual([
+			["--project", "browser", "--exclude", "**/*.throttled.svelte.test.ts"],
+			["--project", "browser", "--maxWorkers=1", "throttled"],
+		]);
+	});
+
+	it("keeps ssr tests in the first run and adds no throttled run without one", () => {
+		const ssr = ["packages/ui/src/lib/forms/Turnstile.ssr.test.ts"];
+		expect(componentRuns([comp[0]], ssr, false)).toEqual([
+			[
+				"--project",
+				"browser",
+				"--project",
+				"ssr",
+				"src/lib/components/Dialog/Dialog.svelte.test.ts",
+				"src/lib/forms/Turnstile.ssr.test.ts",
+			],
+		]);
 	});
 });

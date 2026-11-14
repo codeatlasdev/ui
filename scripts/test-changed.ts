@@ -40,6 +40,7 @@ import { lockReachesRuntime, ownRoutes, ROOT, select, VISUAL_ROUTES } from "./ro
 import {
 	affected,
 	buildGraph,
+	componentRuns,
 	isSharedComponent,
 	resolveBudget,
 	widenedBecause,
@@ -197,21 +198,14 @@ const packageTests = async () => {
 		const unit = run(["bun", "test", `--changed=${base}`]);
 		return unit === 1 && !changed.some((f) => /\.(ts|js|svelte)$/.test(f)) ? 0 : unit;
 	});
+	// CPU-throttled specs run after the others with one worker, like CI's throttled job (#1259).
 	if (compTests.length || ssrTests.length)
-		await step("components", () =>
-			runAsync(
-				[
-					"vitest",
-					"run",
-					...(compTests.length ? ["--project", "browser"] : []),
-					...(ssrTests.length ? ["--project", "ssr"] : []),
-					...(sharedFile ? [] : inPkg([...compTests, ...ssrTests])),
-					...vitestExtra,
-				],
-				{},
-				pkgDir
-			)
-		);
+		await step("components", async () => {
+			let code = 0;
+			for (const args of componentRuns(compTests, ssrTests, Boolean(sharedFile)))
+				code ||= await runAsync(["vitest", "run", ...args, ...vitestExtra], {}, pkgDir);
+			return code;
+		});
 };
 
 // What the site tests need built. The route specs read `site/dist`: rebuild only what is older than the diff.

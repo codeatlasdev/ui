@@ -225,3 +225,37 @@ export function resolveBudget(changed: string[], land: boolean): "changed" | "la
 	if (widenedBecause(changed) !== undefined) return "landShared";
 	return land ? "land" : "changed";
 }
+
+const THROTTLED = /\.throttled\.svelte\.test\.ts$/;
+const inPackage = (files: string[]) => files.map((f) => f.replace("packages/ui/", ""));
+
+/**
+ * The `vitest run` argument lists for the selected component (`browser`) and `ssr` tests, run one after the
+ * other. CPU-throttled specs (`*.throttled.svelte.test.ts`) get their own run with one worker, as in CI's
+ * "Component tests (CPU throttled)" job: throttling multiplies the host's speed, and beside the other files the
+ * 150x CommandPalette spec took 759 s (#1259). `shared`: every file is selected, so files are not listed.
+ */
+export function componentRuns(browser: string[], ssr: string[], shared: boolean): string[][] {
+	const throttled = browser.filter((f) => THROTTLED.test(f));
+	const rest = browser.filter((f) => !THROTTLED.test(f));
+	const runs: string[][] = [];
+	if (rest.length || ssr.length) {
+		const projects = [
+			...(rest.length ? ["--project", "browser"] : []),
+			...(ssr.length ? ["--project", "ssr"] : []),
+		];
+		runs.push(
+			shared
+				? [...projects, ...(throttled.length ? ["--exclude", "**/*.throttled.svelte.test.ts"] : [])]
+				: [...projects, ...inPackage([...rest, ...ssr])]
+		);
+	}
+	if (throttled.length)
+		runs.push([
+			"--project",
+			"browser",
+			"--maxWorkers=1",
+			...(shared ? ["throttled"] : inPackage(throttled)),
+		]);
+	return runs;
+}
