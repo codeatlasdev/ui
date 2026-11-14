@@ -1,12 +1,13 @@
 // ─── Sound engine: one lazy AudioContext, every cue synthesized ───────────────
 // Principles enforced here (see the Sound guide): off by default, no AudioContext before a user
-// gesture, short and quiet (master gain 0.25, a compressor stops stacked cues clipping), reduced
-// motion drops hover and tick cues, silent while the tab is hidden or a <video>/<audio> plays,
-// one cue per name per 40 ms and at most 4 voices (the oldest is stolen).
+// gesture, short and quiet (master gain 0.25, a compressor stops stacked cues clipping), silent
+// while the tab is hidden or a <video>/<audio> plays, one cue per name per 40 ms and at most 4
+// voices (the oldest is stolen). Only the user's own toggle silences it: reduced motion is about
+// what moves on screen, not sound (#1183).
 
 import type { Action } from "svelte/action";
 import { type CueName, soundBus } from "../utils/sound-bus.js";
-import { MOTION_CUES, profileFor, type SoundProfile } from "./profiles.js";
+import { profileFor, type SoundProfile } from "./profiles.js";
 
 const KEY = "ca-sound";
 const MAX_VOICES = 4;
@@ -228,7 +229,6 @@ const api = {
 	play(cue: CueName): boolean {
 		if (!state.enabled || !ctx || !master || typeof document === "undefined") return false;
 		if (document.hidden || mediaPlaying()) return false;
-		if (MOTION_CUES[cue] && matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
 		const p = current();
 		if (cue === "hover" && !p.hover) return false;
 		const now = performance.now();

@@ -410,6 +410,8 @@ export {
 	toOklch,
 	wcagLevel,
 } from "./utils/color.js";
+export type { HapticKind } from "./utils/haptic.js";
+export { haptic } from "./utils/haptic.js";
 export type {
 	ClassValue,
 	CsvOptions,

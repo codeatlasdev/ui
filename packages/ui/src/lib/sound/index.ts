@@ -3,6 +3,8 @@
 // prop is silent. Off until the user turns it on with <SoundToggle />, and no AudioContext exists
 // before their first pointer or key event.
 
+export type { HapticKind } from "../utils/haptic.js";
+export { haptic } from "../utils/haptic.js";
 export type { CueName, SoundProp } from "../utils/sound-bus.js";
 export { soundBus } from "../utils/sound-bus.js";
 export type { SoundOptions } from "./engine.js";

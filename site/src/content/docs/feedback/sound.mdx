@@ -63,10 +63,12 @@ Every component takes the same prop. `sound` is `true` for the component's own c
   { name: "Toast / toast.*(msg, { sound })", type: "boolean | CueName", default: "false", description: "`success`, `error` or `warning` by variant, `notify` otherwise, when the toast appears." },
   { name: "Dialog", type: "boolean | CueName", default: "false", description: "`open` and `close` as `open` changes, including from outside through `bind:open`." },
   { name: "Tabs", type: "boolean | CueName", default: "false", description: "`tab` when the selected tab changes." },
-  { name: "Slider", type: "boolean | CueName", default: "false", description: "`tick` per step the user crosses. Off under reduced motion." },
+  { name: "Slider", type: "boolean | CueName", default: "false", description: "`tick` per step the user crosses." },
 ]} />
 
-For any other element use the action: `<div use:sound={{ on: "pointerenter", cue: "hover" }}>`. `hover` only plays in profiles that opt in (`glass`) and never under reduced motion.
+For any other element use the action: `<div use:sound={{ on: "pointerenter", cue: "hover" }}>`. `hover` only plays in profiles that opt in (`glass`).
+
+Sound does not read `prefers-reduced-motion`. That setting is about what moves on screen, and the user already chose sound with `SoundToggle`; only that choice silences it.
 
 <Props for="none" title="API" rows={[
   { name: "SoundToggle", type: "{ label?, size?, volume?, class? }", description: "A speaker button with `aria-pressed`, an accessible name and the persisted choice. `volume` adds a slider while sound is on. It uses the `ca-rail-btn` look, so it sits next to `ThemeToggle` in the AppShell `railBottom`." },
@@ -79,3 +81,30 @@ For any other element use the action: `<div use:sound={{ on: "pointerenter", cue
 ]} />
 
 Cues are `press`, `release`, `tap`, `toggle-on`, `toggle-off`, `select`, `check`, `success`, `error`, `warning`, `notify`, `open`, `close`, `forward`, `back`, `tab`, `tick` and `hover`.
+
+## Haptics
+
+`haptic` is a separate channel: a short vibration on devices that have `navigator.vibrate` (Android browsers). It has its own preference, so a user can keep vibration with sound off, or the reverse, and it ignores `prefers-reduced-motion`. It is exported from the root and from `@codeatlasdev/ui/sound`, needs no gesture listener of its own, and costs a few hundred bytes.
+
+```svelte
+<script>
+  import { Button, haptic, toast } from "@codeatlasdev/ui";
+
+  async function send() {
+    haptic("tap");
+    const ok = await api.send();
+    haptic(ok ? "success" : "error");
+    toast(ok ? "Sent" : "Not sent", { variant: ok ? "success" : "error" });
+  }
+</script>
+
+<Button onclick={send}>Send</Button>
+```
+
+Like sound, vibration is never the only signal: iOS, desktop Safari and Firefox have no `navigator.vibrate`, and there `haptic()` returns `false` and does nothing. Browsers also ignore a vibration that does not follow a user gesture.
+
+<Props for="none" title="haptic" rows={[
+  { name: "haptic(kind?)", type: "('tap' | 'success' | 'error') => boolean", default: "'tap'", description: "Vibrates one pulse (`tap`), a short double (`success`) or a heavier triple (`error`). Returns whether the device accepted it; `false` without `navigator.vibrate` or when the user turned haptics off. Never throws." },
+  { name: "haptic.supported", type: "boolean", description: "Whether `navigator.vibrate` exists. Hide a haptics setting where it is `false`." },
+  { name: "haptic.enabled / haptic.enable(on?)", type: "boolean / (boolean) => void", description: "The user's choice, persisted under `localStorage` key `ca-haptic` as `{ enabled }`. On by default; the sound toggle and reduced motion do not change it." },
+]} />

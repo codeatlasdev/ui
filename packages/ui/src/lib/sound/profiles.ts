@@ -2,8 +2,6 @@
 // A profile is a handful of numbers; the cue shapes (press, two-note up/down, rising success,
 // low double error, filtered sweep, tick) are derived from them in engine.ts. No audio files.
 
-import type { CueName } from "../utils/sound-bus.js";
-
 export type Wave = "sine" | "triangle" | "square" | "sawtooth";
 
 export interface SoundProfile {
@@ -22,7 +20,7 @@ export interface SoundProfile {
 	gain: number;
 	/** Cent offset between the two oscillators of a cue (0 = clean, more = chorused or detuned). */
 	detune: number;
-	/** Whether hover cues are part of the character. Hover is always off under reduced motion. */
+	/** Whether hover cues are part of the character. */
 	hover: boolean;
 }
 
@@ -90,6 +88,3 @@ const FOR: Record<string, string> = {
 export function profileFor(id: string | null | undefined): SoundProfile {
 	return profiles[id ?? ""] ?? profiles[FOR[id ?? ""] ?? "system"];
 }
-
-/** Cues that never play under reduced motion: ambient, hover and scroll/progress sounds. */
-export const MOTION_CUES: Partial<Record<CueName, true>> = { hover: true, tick: true };

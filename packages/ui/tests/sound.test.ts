@@ -117,15 +117,17 @@ describe("sound engine gating", () => {
 		expect(made.oscillators).toBe(played);
 	});
 
-	it("drops hover and tick cues under reduced motion but keeps feedback cues", async () => {
+	// #1183: reduced motion is about what moves on screen; only the user's own toggle silences sound.
+	it("plays every cue under reduced motion, haptics off", async () => {
 		reduce = true;
+		localStorage.setItem("ca-haptic", JSON.stringify({ enabled: false }));
 		html.style.setProperty("--ca-sound-profile", "glass");
 		const { sound } = await engine();
 		sound.enable(true);
 		gesture();
-		expect(sound.play("hover")).toBe(false);
-		expect(sound.play("tick")).toBe(false);
-		expect(sound.play("success")).toBe(true);
+		for (const cue of ["hover", "tick", "notify", "success"] as const) {
+			expect(sound.play(cue)).toBe(true);
+		}
 	});
 
 	it("allows one cue per name per 40 ms", async () => {

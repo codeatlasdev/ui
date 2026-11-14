@@ -33,7 +33,7 @@
     label?:    string;
     /** Called on change. Always receives array regardless of single/range mode. */
     onchange?: (value: number[]) => void;
-    /** Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. */
+    /** Plays `tick` for each step the user crosses (a cue name replaces it). Needs `@codeatlasdev/ui/sound`. */
     sound?:    SoundProp;
   }
 
