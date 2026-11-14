@@ -30,8 +30,8 @@ In `single` mode the user can press the active item again to clear the selection
 
 <Props rows={[
   { name: "type", type: "'single' | 'multiple'", default: "'single'", description: "Selection mode." },
-  { name: "value", type: "string | string[]", description: "Bindable. A string for single, an array for multiple." },
-  { name: "items", type: "ToggleGroupItem[]", description: "{ value, label?, icon?, disabled?, 'aria-label'? }. Icon-only items need aria-label." },
+  { name: "value", type: "T | '' | T[]", description: "Bindable. One T for single ('' once cleared), T[] for multiple. T is inferred from items, so a literal union stays narrow." },
+  { name: "items", type: "ToggleGroupItem<T>[]", description: "{ value, label?, icon?, disabled?, 'aria-label'? }. Icon-only items need aria-label." },
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Item height." },
   { name: "variant", type: "'outlined' | 'ghost'", default: "'outlined'", description: "Container style." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the whole group." },
@@ -39,5 +39,5 @@ In `single` mode the user can press the active item again to clear the selection
   { name: "required", type: "boolean", default: "false", description: "Keep a selection. Pressing the active item (the last pressed one for multiple) does not clear it." },
   { name: "aria-label", type: "string", description: "Accessible name of the group." },
   { name: "class", type: "string", description: "Extra classes on the root." },
-  { name: "onchange", type: "(value: string | string[]) => void", description: "Called on every change." },
+  { name: "onchange", type: "(value: T | '') => void | (value: T[]) => void", description: "Called on every change; typed by type: T | '' for single, T[] for multiple." },
 ]} />

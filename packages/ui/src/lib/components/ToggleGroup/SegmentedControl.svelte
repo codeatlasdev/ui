@@ -1,12 +1,13 @@
-<script lang="ts">
+<script lang="ts" generics="T extends string = string">
   import { tick, untrack } from 'svelte';
   import { rovingFocus } from '../../primitives/index.js';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { ToggleGroupItem } from './ToggleGroup.svelte';
 
   interface Props {
-    value?: string;
-    items: ToggleGroupItem[];
+    /** One of the `items` values; `T` is inferred from them, so a literal union stays narrow (#1235). */
+    value?: T;
+    items: ToggleGroupItem<T>[];
     size?: 'sm' | 'md';
     disabled?: boolean;
     fullWidth?: boolean;
@@ -14,7 +15,7 @@
     sizing?: 'equal' | 'content';
     class?: string;
     'aria-label'?: string;
-    onchange?: (value: string) => void;
+    onchange?: (value: T) => void;
   }
 
   let {
@@ -29,12 +30,13 @@
     onchange,
   }: Props = $props();
 
-  if (value === undefined) value = untrack(() => items.find((i) => !i.disabled)?.value ?? '');
+  // `''` (no enabled item) is outside `T`; it only ever means "nothing selected".
+  if (value === undefined) value = untrack(() => items.find((i) => !i.disabled)?.value ?? ('' as T));
 
   const index = $derived(items.findIndex((i) => i.value === value));
 
   // A segmented control always has a selection: pressing the active segment is a no-op.
-  function select(item: ToggleGroupItem) {
+  function select(item: ToggleGroupItem<T>) {
     if (disabled || item.disabled || item.value === value) return;
     value = item.value;
     onchange?.(item.value);

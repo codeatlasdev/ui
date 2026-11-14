@@ -37,13 +37,13 @@ Unlike [ToggleGroup](/docs/inputs/toggle-group/), exactly one item is always sel
 Long labels or four or more options on a phone (about 330 px): use `sizing="content"`, so every label stays whole and the strip scrolls. With the default equal columns a label that does not fit is cut with an ellipsis and carries its full text as `title`; one that fits has none. When the options need a sentence each, a `RadioGroup` (one choice per row) reads better than any segmented strip.
 
 <Props rows={[
-  { name: "value", type: "string", default: "first enabled item", description: "Bindable selected value." },
-  { name: "items", type: "ToggleGroupItem[]", description: "{ value, label?, icon?, disabled?, 'aria-label'? }." },
+  { name: "value", type: "T", default: "first enabled item", description: "Bindable selected value. T is inferred from items: a literal union ('list' | 'grid') stays narrow." },
+  { name: "items", type: "ToggleGroupItem<T>[]", description: "{ value, label?, icon?, disabled?, 'aria-label'? }." },
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Item height." },
   { name: "sizing", type: "'equal' | 'content'", default: "'equal'", description: "`equal`: one shared column width. `content`: each segment is as wide as its content." },
   { name: "fullWidth", type: "boolean", default: "false", description: "Stretches the control to the container width." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the whole control." },
   { name: "aria-label", type: "string", description: "Accessible name of the control." },
   { name: "class", type: "string", description: "Extra classes on the root." },
-  { name: "onchange", type: "(value: string) => void", description: "Called when the selection changes." },
+  { name: "onchange", type: "(value: T) => void", description: "Called when the selection changes, with the item value as typed in items." },
 ]} />
