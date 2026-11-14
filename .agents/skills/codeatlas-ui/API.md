@@ -2937,7 +2937,9 @@ Parts: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
 
 Parts: `ca-nav-item` `ca-nav-item--active` `ca-nav-item--grip` `ca-nav-item__actions` `ca-nav-item__badge` `ca-nav-item__color` `ca-nav-item__count` `ca-nav-item__dot` `ca-nav-item__grip` `ca-nav-item__icon` `ca-nav-item__label` `ca-nav-item__leading` `ca-nav-item__link` `ca-nav-item__pip`
 
-Variables: `--ca-nav-color`
+Variables: `--ca-nav-color` `--ca-semantic-warning-fill`
+
+Data attributes: `data-tone` (`error` `neutral` `warning`)
 
 ## PasswordStrength
 
@@ -4615,8 +4617,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@301: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@303: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@302: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@304: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
@@ -5807,9 +5809,10 @@ Types:
 | `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
 | `MotionCtx` | `interface MotionCtx { playing: boolean; reduced: boolean; takeover(): void; play(): void; pause(): void; cycle: number; }` | What a motion demo receives from `MotionStage`. Demos render from this and never run their own timers. |
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
+| `NavBadgeTone` | `type NavBadgeTone = "brand" \| "error" \| "warning" \| "neutral";` | Colour of a nav badge (`NavItem.badgeTone`, `NavModule.badgeTone`): `'brand'` (default) for something new or pending, `'error'` for something overdue or failed, `'warning'` for something that needs attention soon, `'neutral'` for a plain total. Each is a fill and label token pair. A tone other than `'brand'` needs a `badgeLabel`: colour is not the only signal. |
 | `NavExtras` | `interface NavExtras { reorder?: Component<NavReorderProps>; itemMenu?: Component<{ label: string; actions: Snippet }>; }` | Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. |
-| `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
-| `NavModule` | `interface NavModule { id: string; label: string; fullLabel?: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; badgeTone?: "brand" \| "error"; }` |  |
+| `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; badgeLabel?: string; badgeTone?: NavBadgeTone; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; fullLabel?: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; badgeTone?: NavBadgeTone; }` |  |
 | `NavMoreSheetProps` | `interface NavMoreSheetProps { open: boolean; title: string; rest: NavModule[]; visibleCount: number; activeIndex: number; overflow?: Snippet; onPick: (index: number) => void; }` | Props of the opt-in `NavMoreSheet` (see `AppShellLayout.moreSheet`). |
 | `NavReorderEvent` | `interface NavReorderEvent { id: string; from: number; to: number; }` | A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. |
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
@@ -6282,6 +6285,8 @@ Types:
 | `icon` | `IconComponent` |  |
 | `path` | `string` |  |
 | `badge?` | `number` | Unread-style badge: announced as "N unread" and capped at 99+. For a plain total use `count`. |
+| `badgeLabel?` | `string` | Replaces "N unread" in the link's name ("Returns 3 awaiting review"). Needed with a `badgeTone` other than `'brand'`. Translate it yourself: the shell cannot. |
+| `badgeTone?` | `NavBadgeTone` | Colour of `badge` (see `NavBadgeTone`). Default `'brand'`. |
 | `count?` | `number` | Neutral count shown after the label (records in a folder, items in a list). It is part of the link's name as a bare number, never "unread", and `0` renders. Large values abbreviate (`1.2k`). |
 | `color?` | `string` | A per-item marker: any CSS color (`#e11d48`, `var(--ca-success-main)`). Renders a decorative dot before the label, in place of the icon's position when `leading` is not set. The icon stays. |
 | `leading?` | `Snippet` | Replaces the icon (a color dot, an avatar, an emoji). Decorative: the label stays the name. |
@@ -6304,7 +6309,7 @@ Types:
 | `onReorder?` | `(e: NavReorderEvent) => void` | Same as `NavSection.onReorder`, for the items that sit directly in `items` (outside any section). |
 | `badge?` | `number \| "dot"` | Marker on the module's rail icon and bottom-nav tab: a number (capped at 99+) or `'dot'` (something is going on, no count). `0` and `undefined` render nothing. The marker is part of the button's accessible name: "Inbox, 12 unread", or `badgeLabel` when set. |
 | `badgeLabel?` | `string` | Accessible text for `badge`, appended to the module label ("Map, Search running"). Needed for a `'dot'` that should say more than "New", and for a count that is not "unread" ("3 tasks pending"). Translate it yourself: the shell cannot. |
-| `badgeTone?` | `"brand" \| "error"` | Colour of the `badge`: `'brand'` (default) for something pending, `'error'` for something overdue or failed. Colour is not the only signal: say it in `badgeLabel` ("3 overdue"). |
+| `badgeTone?` | `NavBadgeTone` | Colour of the `badge`: `'brand'` (default) for something pending, `'error'` for something overdue or failed, `'warning'` for something that needs attention soon, `'neutral'` for a plain total. Colour is not the only signal: say it in `badgeLabel` ("3 overdue"). |
 
 #### NavMoreSheetProps
 

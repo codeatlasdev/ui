@@ -1,9 +1,11 @@
 <script lang="ts">
   import { getContext } from 'svelte';
   import { GripVertical } from '@lucide/svelte';
+  import { DEV } from 'esm-env';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { appShell } from '../../i18n/groups/appShell.js';
   import type { NavExtras, NavItem } from './types.js';
+  import { warnToneLabel } from './types.js';
   const t = useMessages(appShell);
   const extras = getContext<NavExtras | undefined>('appshell-nav-extras');
 
@@ -26,6 +28,9 @@
     const k = n / 1000;
     return `${k >= 100 ? Math.round(k) : Math.round(k * 10) / 10}k`;
   }
+
+  // A toned badge needs its meaning as text (#1176). DEV comes from esm-env, like Image's checks.
+  if (DEV) $effect(() => { if (item.badge && item.badge > 0) warnToneLabel('NavItem', item); });
 </script>
 
 <!--
@@ -76,8 +81,8 @@
     <!-- A plain span cannot be named (ARIA prohibits aria-label on it), so the unread count and the new-dot
          reach the link name as visually hidden text: "Messages 120 unread" (#1181). -->
     {#if item.badge && item.badge > 0}
-      <span class="ca-nav-item__badge" aria-hidden="true">{item.badge > 99 ? '99+' : item.badge}</span>
-      <span class="ca-sr-only">{t().appShell.unread(item.badge)}</span>
+      <span class="ca-nav-item__badge" data-tone={item.badgeTone} aria-hidden="true">{item.badge > 99 ? '99+' : item.badge}</span>
+      <span class="ca-sr-only">{item.badgeLabel ?? t().appShell.unread(item.badge)}</span>
     {/if}
     {#if item.isNew}
       <span class="ca-nav-item__dot" aria-hidden="true"></span>
@@ -252,6 +257,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    /* Tones (NavItem.badgeTone): the same token pairs as the module badge; no attribute is brand. */
+    .ca-nav-item__badge[data-tone='error'] {
+      background: var(--ca-semantic-error-fill);
+      color: var(--ca-semantic-error-contrast);
+    }
+    .ca-nav-item__badge[data-tone='warning'] {
+      background: var(--ca-semantic-warning-fill, var(--ca-semantic-warning));
+      color: var(--ca-semantic-warning-contrast);
+    }
+    .ca-nav-item__badge[data-tone='neutral'] {
+      background: var(--ca-text-secondary);
+      color: var(--ca-surface-base);
     }
 
     .ca-nav-item__dot {
