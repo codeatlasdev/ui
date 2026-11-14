@@ -24,7 +24,7 @@ Fullscreen list layout. Built-in search, filters, pagination, empty state.
 | `title` | `string` | — |
 | `description` | `string` | auto (row count) |
 | `data` | `T[]` | — |
-| `searchKeys` | `(keyof T)[]` | all string fields |
+| `searchKeys` | `(keyof T)[]` | every string and number field |
 | `perPage` | `number` | `20` |
 | `idKey` | `keyof T` | `'id'` |
 | `maxWidth` | `string` | — |

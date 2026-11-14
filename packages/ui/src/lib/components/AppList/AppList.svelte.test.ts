@@ -25,6 +25,34 @@ describe("AppList data mode", () => {
 		await userEvent.fill(screen.getByPlaceholder("Search…"), "bru");
 		expect(screen.getByRole("listitem").elements()).toHaveLength(1);
 		await expect.element(screen.getByRole("listitem")).toHaveTextContent("Bruno");
+		// searchKeys={["name"]}: a role is not searched.
+		await userEvent.fill(screen.getByPlaceholder("Search…"), "admin");
+		await expect.poll(() => screen.getByRole("listitem").elements()).toHaveLength(0);
+	});
+
+	// No searchKeys: every string and number field is searched, a boolean is not (#1284).
+	// "Usuário" is accented on purpose: the default fields fold accents too.
+	it("searches string and number fields by default", async () => {
+		const data = [
+			{ id: 1, name: "Ana", role: "Admin", code: 1042, active: true },
+			{ id: 2, name: "Bruno", role: "Usuário", code: 2077, active: true },
+			{ id: 3, name: "Carla", role: "Admin", code: 3051, active: false },
+		];
+		const screen = await render(Harness, { data, perPage: 10, allFields: true });
+		const field = screen.getByPlaceholder("Search…");
+		const shown = () =>
+			screen
+				.getByRole("listitem")
+				.elements()
+				.map((li) => li.textContent);
+		await userEvent.fill(field, "admin");
+		await expect.poll(shown).toEqual(["Ana", "Carla"]);
+		await userEvent.fill(field, "usuario");
+		await expect.poll(shown).toEqual(["Bruno"]);
+		await userEvent.fill(field, "2077");
+		await expect.poll(shown).toEqual(["Bruno"]);
+		await userEvent.fill(field, "true");
+		await expect.poll(shown).toEqual([]);
 	});
 
 	// Accented names are deliberate: the subject is accent-insensitive search (#1279).
