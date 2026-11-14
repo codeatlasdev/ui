@@ -4028,6 +4028,8 @@ Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'ro
 
 Parts: `ca-tabs-list`
 
+Variables: `--ca-tabs-scroll-gutter`
+
 Data attributes: `data-fade` (`both` `end` `start`), `data-fill`, `data-variant` (`line`)
 
 ## TabsTrigger

@@ -544,6 +544,8 @@ Tokens: `--ca-switch-{track-width,track-height,padding,border-width,border-color
 
 `.ca-tabs` `.ca-tabs-content` `.ca-tabs-list` `.ca-tabs-trigger` `.ca-tabs-trigger__icon`
 
+`data-fade="start|end|both"` on `.ca-tabs-list` (with `fade`) marks the edges that still hide tabs. Scoped variable: `--ca-tabs-scroll-gutter` (default `--ca-space-8`, the fade width), the room kept beside a revealed or focused tab while an edge is faded.
+
 ## templates
 
 `.ca-form-section` `.ca-form-section--grid` `.ca-form-section--list` `.ca-form-section--stack` `.ca-form-section__desc` `.ca-form-section__fields` `.ca-form-section__header` `.ca-form-section__title`
