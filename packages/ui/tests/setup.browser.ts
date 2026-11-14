@@ -31,3 +31,14 @@ beforeEach(async () => {
 	// the park itself fires no event in the page (it is outside the viewport), so this stays false
 	pointerMoved = false;
 });
+
+// The host decides prefers-reduced-transparency: Windows with "Transparency effects" off reports `reduce`, and every
+// glass assertion then reads the solid fallback the library correctly paints (#1250). The suite assumes no preference,
+// like a default macOS or Linux; a test that wants `reduce` emulates it. The CDP call is only paid on such a host (or
+// after a test left `reduce` emulated): `matchMedia` is read first.
+beforeEach(async () => {
+	if (!matchMedia("(prefers-reduced-transparency: reduce)").matches) return;
+	await cdp().send("Emulation.setEmulatedMedia", {
+		features: [{ name: "prefers-reduced-transparency", value: "no-preference" }],
+	});
+});

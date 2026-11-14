@@ -38,7 +38,9 @@ describe("reducedMotion before init()", () => {
 		["reduce", true],
 	] as const)("reads %s on the client without init()", async (pref, expected) => {
 		await emulate("prefers-reduced-motion", pref);
-		const fresh = await import(/* @vite-ignore */ `./reduced-motion.svelte.js?fresh=${pref}`);
+		// The source file by its own name: the browser requests this URL as is, and a `.js` -> `.ts` mapping is not
+		// applied to it when the test is served from /@fs/ (Windows, #1250).
+		const fresh = await import(/* @vite-ignore */ `./reduced-motion.svelte.ts?fresh=${pref}`);
 		expect(fresh.reducedMotion.value).toBe(expected);
 	});
 });
