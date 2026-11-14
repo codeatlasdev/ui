@@ -105,9 +105,14 @@
     :global(.ca-menubar__item[data-state='open']) {
       background: var(--ca-action-hover);
     }
-    /* The bar's padding is only subtracted where the compact height leaves room for it. */
+    /* The bar's padding is only subtracted where the compact height leaves room for it. A short label ("File")
+       is narrower than the touch target with some fonts, so the width has the same floor as the height (#1252). */
     @media (pointer: coarse) {
-      :global(.ca-menubar__item) { block-size: var(--ca-control-height); }
+      :global(.ca-menubar__item) {
+        block-size: var(--ca-control-height);
+        min-inline-size: var(--ca-touch-target);
+        justify-content: center;
+      }
     }
     :global(.ca-menubar__item[data-disabled]) {
       color: var(--ca-text-disabled);
