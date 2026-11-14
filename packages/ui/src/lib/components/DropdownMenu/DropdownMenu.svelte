@@ -163,9 +163,30 @@
     const frame = requestAnimationFrame(() => {
       if (pendingFocus === 'first') listbox.first();
       else if (pendingFocus === 'last') listbox.last();
-      else el.focus({ preventScroll: true });
+      else {
+        el.focus({ preventScroll: true });
+        revealChecked(el);
+      }
     });
     return () => cancelAnimationFrame(frame);
+  }
+
+  /**
+   * A long menu scrolls inside its panel (#1074): bring the checked or current item into view without
+   * moving focus, so a "pick a stage" menu does not open at the top, far from the marked row.
+   */
+  function revealChecked(el: HTMLElement) {
+    if (el.scrollHeight <= el.clientHeight) return;
+    const item = ownItems(el).find((it) =>
+      it.matches('[aria-checked="true"], [aria-current]:not([aria-current="false"]), [data-active]')
+    );
+    if (!item) return;
+    const box = el.getBoundingClientRect();
+    const r = item.getBoundingClientRect();
+    // Rects are read mid-entrance (`scale(0.96)`): convert the gap back to layout pixels.
+    const k = box.height / el.offsetHeight || 1;
+    if (r.top < box.top) el.scrollTop -= (box.top - r.top) / k;
+    else if (r.bottom > box.bottom) el.scrollTop += (r.bottom - box.bottom) / k;
   }
 
   function onkeydown(e: KeyboardEvent) {
@@ -252,8 +273,18 @@
       padding: var(--ca-space-1);
       min-width: 160px;
       outline: none;
+      /* A long menu scrolls inside its panel (#1074): capped by --ca-menu-max (32rem) and by the room the
+         layer engine measured beside the trigger (--ca-available-height). Submenus are their own top-layer
+         boxes, so the scroll does not clip them. */
+      max-block-size: min(var(--ca-menu-max, 32rem), var(--ca-available-height, calc(var(--ca-vh) - var(--ca-space-8))));
+      overscroll-behavior: contain;
       animation: ca-dropdown-in var(--ca-enter-fast) var(--ca-ease-decelerate);
       transform-origin: top left;
+    }
+
+    /* Doubled to outrank `.ca-floating { overflow: visible }` (same layer, either stylesheet may load last). */
+    :global(.ca-dropdown-content.ca-floating) {
+      overflow-y: auto;
     }
 
     :global(.ca-dropdown-content[data-side='top']) { transform-origin: bottom left; }

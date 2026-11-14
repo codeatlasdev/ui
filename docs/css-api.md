@@ -224,6 +224,8 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-dropdown-content` `.ca-dropdown-group` `.ca-dropdown-in` `.ca-dropdown-item` `.ca-dropdown-item--destructive` `.ca-dropdown-item--selectable` `.ca-dropdown-item--sub-trigger` `.ca-dropdown-item__chevron` `.ca-dropdown-item__icon` `.ca-dropdown-item__indicator` `.ca-dropdown-item__label` `.ca-dropdown-label` `.ca-dropdown-out` `.ca-dropdown-sep` `.ca-dropdown-sub` `.ca-dropdown__point` `.ca-dropdown__trigger`
 
+Scoped variable: `--ca-menu-max` (default `32rem`) caps the panel height together with the room beside the trigger; a longer menu scrolls inside `.ca-dropdown-content` and opens with its checked item in view.
+
 ## EmptyState
 
 `.ca-empty` `.ca-empty--hero` `.ca-empty__actions` `.ca-empty__description` `.ca-empty__icon` `.ca-empty__title` `.ca-empty__title--display`

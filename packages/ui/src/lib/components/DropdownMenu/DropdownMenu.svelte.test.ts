@@ -8,6 +8,7 @@ import Harness from "./DropdownMenu.test.svelte";
 import AnchorHarness from "./DropdownMenuAnchor.test.svelte";
 import AttrsHarness from "./DropdownMenuAttrs.test.svelte";
 import IconHarness from "./DropdownMenuIcon.test.svelte";
+import LongHarness from "./DropdownMenuLong.test.svelte";
 import OpenHarness from "./DropdownMenuOpen.test.svelte";
 import SelectionHarness from "./DropdownMenuSelection.test.svelte";
 import SubHarness from "./DropdownMenuSub.test.svelte";
@@ -593,4 +594,50 @@ describe("DropdownMenu destructive item, highlighted", () => {
 			}
 		}
 	);
+});
+
+// #1074: a 22-item menu opened ~800px tall with no scroll of its own; the last items were out of reach.
+describe("DropdownMenu long list", () => {
+	const within = (el: Element, box: Element) => {
+		const r = el.getBoundingClientRect();
+		const b = box.getBoundingClientRect();
+		// Inside the panel AND on screen: an uncapped panel can hold the item below the viewport.
+		return (
+			r.top >= Math.max(b.top, 0) - 0.5 && r.bottom <= Math.min(b.bottom, window.innerHeight) + 0.5
+		);
+	};
+	const openByPointer = async (props = {}) => {
+		const screen = await render(LongHarness, props);
+		await screen.getByRole("button", { name: "Stage" }).click();
+		const menu = page.getByRole("menu");
+		await expect.element(menu).toBeVisible();
+		await settled();
+		return menu.element() as HTMLElement;
+	};
+
+	it("caps its height and scrolls inside the panel", async () => {
+		const menu = await openByPointer();
+		const height = menu.getBoundingClientRect().height;
+		expect(height).toBeLessThanOrEqual(Math.min(32 * 16, window.innerHeight) + 0.5);
+		expect(menu.scrollHeight).toBeGreaterThan(menu.clientHeight);
+		expect(getComputedStyle(menu).overscrollBehaviorY).toBe("contain");
+		await userEvent.keyboard("{End}");
+		const last = page.getByRole("menuitemradio", { name: "stage-22" });
+		await expect.element(last).toHaveFocus();
+		expect(within(last.element(), menu)).toBe(true);
+	});
+
+	it("opens with the checked item in view", async () => {
+		const menu = await openByPointer({ value: "stage-21" });
+		const checked = page.getByRole("menuitemradio", { name: "stage-21" });
+		await expect.element(checked).toHaveAttribute("aria-checked", "true");
+		await expect.poll(() => within(checked.element(), menu)).toBe(true);
+		// A pointer open leaves focus on the menu itself.
+		expect(document.activeElement).toBe(menu);
+	});
+
+	it("a short menu keeps its natural height", async () => {
+		const menu = await openByPointer({ count: 3, value: "stage-1" });
+		expect(menu.scrollHeight).toBeLessThanOrEqual(menu.clientHeight);
+	});
 });
