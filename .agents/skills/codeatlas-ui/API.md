@@ -1752,6 +1752,7 @@ Parts: `ca-external-link`
 | `description?` | `string` |  | Help text under the control, read after the label. |
 | `error?` | `string` |  | Error under the control: `role="alert"`, and the control gets `aria-invalid`. |
 | `required?` | `boolean` | `false` |  |
+| `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children` (`Snippet<[FieldControlProps]>`): The control. Spread the props it receives onto the element that takes the value.
