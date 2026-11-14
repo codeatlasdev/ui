@@ -4,10 +4,20 @@
   import TabsTrigger from './TabsTrigger.svelte';
   import TabsContent from './TabsContent.svelte';
 
-  let { value = $bindable('a'), onchange }: { value?: string; onchange?: (v: string) => void } = $props();
+  let {
+    value = $bindable('a'),
+    onchange,
+    onbeforechange,
+    activation,
+  }: {
+    value?: string;
+    onchange?: (v: string) => void;
+    onbeforechange?: (next: string) => boolean | Promise<boolean>;
+    activation?: 'automatic' | 'manual';
+  } = $props();
 </script>
 
-<Tabs bind:value {onchange}>
+<Tabs bind:value {onchange} {onbeforechange} {activation}>
   <TabsList>
     <TabsTrigger value="a">Account</TabsTrigger>
     <TabsTrigger value="b">Password</TabsTrigger>

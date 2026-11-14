@@ -361,3 +361,45 @@ describe("Tabs trigger tokens", () => {
 		probe.remove();
 	});
 });
+
+// #1075: guarding a draft across tabs ("discard changes?") needs a veto before the panel unmounts, and a focus
+// that does not select (a dialog returning focus to the clicked tab reopened itself).
+describe("Tabs guard (#1075)", () => {
+	it("onbeforechange false keeps the tab and skips onchange", async () => {
+		const onchange = vi.fn();
+		const onbeforechange = vi.fn(() => false);
+		const screen = await render(TabsHarness, { onchange, onbeforechange });
+		await screen.getByRole("tab", { name: "Password" }).click();
+		expect(onbeforechange).toHaveBeenCalledWith("b");
+		await expect.element(screen.getByTestId("value")).toHaveTextContent("a");
+		await expect.element(screen.getByRole("tabpanel")).toHaveTextContent("Account panel");
+		expect(onchange).not.toHaveBeenCalled();
+	});
+
+	it("an async onbeforechange switches once it resolves true", async () => {
+		let allow: (ok: boolean) => void = () => {};
+		const onbeforechange = vi.fn(() => new Promise<boolean>((r) => (allow = r)));
+		const onchange = vi.fn();
+		const screen = await render(TabsHarness, { onchange, onbeforechange });
+		await screen.getByRole("tab", { name: "Password" }).click();
+		await screen.getByRole("tab", { name: "Team" }).click();
+		expect(onbeforechange).toHaveBeenCalledTimes(1);
+		await expect.element(screen.getByTestId("value")).toHaveTextContent("a");
+		allow(true);
+		await expect.element(screen.getByTestId("value")).toHaveTextContent("b");
+		expect(onchange).toHaveBeenCalledWith("b");
+	});
+
+	it("manual activation: focus moves, Enter selects", async () => {
+		const onbeforechange = vi.fn(() => true);
+		const screen = await render(TabsHarness, { activation: "manual", onbeforechange });
+		(screen.getByRole("tab", { name: "Account" }).element() as HTMLElement).focus();
+		await userEvent.keyboard("{ArrowRight}");
+		await expect.element(screen.getByRole("tab", { name: "Password" })).toHaveFocus();
+		await expect.element(screen.getByTestId("value")).toHaveTextContent("a");
+		(screen.getByRole("tab", { name: "Team" }).element() as HTMLElement).focus();
+		expect(onbeforechange).not.toHaveBeenCalled();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(screen.getByTestId("value")).toHaveTextContent("d");
+	});
+});

@@ -11,6 +11,8 @@ export interface TabsContext {
 	readonly variant: TabsVariant;
 	/** The list stretches across its container. */
 	readonly fill: boolean;
+	/** `automatic`: focusing a tab selects it. `manual`: focus only moves; Enter, Space or a click selects (#1075). */
+	readonly activation: "automatic" | "manual";
 	select(value: string): void;
 	/** A `TabsContent` for `value` is mounted: its trigger may point `aria-controls` at it. */
 	hasPanel(value: string): boolean;
