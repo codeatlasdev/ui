@@ -88,7 +88,7 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 If nothing above fits, it may be a real gap in the library.
 
 1. Look the prop or component up: `get_component` for a name, `search_demos` for a task. A demo often shows the combination you need.
-2. If it is not there, write the smallest workaround and mark it with the issue number: `// ca-ui-workaround(#<issue>): <why>`. In markup use `<!-- ca-ui-workaround(#<issue>): <why> -->`.
+2. If it is not there, write the smallest workaround and mark it with the issue number: `// ca-ui-workaround(#<issue>): <why>`. In markup use `<!-- ca-ui-workaround(#<issue>): <why> -->`. Before the issue exists, write `// ca-ui-workaround(pending: <why>)` and replace `pending:` with the number once it is open; never borrow another issue's number.
 3. Call `report_issue` to draft the sanitized issue, and open it.
 
 Details and what never goes into a report: [Reporting problems](/docs/getting-started/reporting/).

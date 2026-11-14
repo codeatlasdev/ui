@@ -10,7 +10,7 @@
  *   bunx @codeatlasdev/ui compare <urlA> <urlB> [--selector <css,...>] [--viewport 390,1280] [--props <list>] [--tolerance <px>]
  *   bunx @codeatlasdev/ui tokens import <css|json> [--map <json>] [--out <file>] [--force] [--strict]
  *   bunx @codeatlasdev/ui brand [--theme <file>] [--mark <svg>] [--out <dir>] ...
- *   bunx @codeatlasdev/ui workarounds [--strict] [paths...]
+ *   bunx @codeatlasdev/ui workarounds [--strict] [--pending] [paths...]
  *   bunx @codeatlasdev/ui pick [ids...] [--url <gallery>] [--timeout <seconds>]
  *
  * `init` is a dry run unless `--write` is passed: it reports the files it would create and prints a
@@ -72,12 +72,13 @@ const HELP = `codeatlas-ui <command>
   doctor   Check peers, theme wiring, viewport meta, root font size and markers; one-line fixes (--fix applies the safe ones)
   tokens   tokens import <css|json>: turn your design tokens into theme.ts, alpha flattened and every low-contrast pair listed
   brand    Render the brand icons and src/generated/brand.ts without a Vite run (type-check jobs)
-  workarounds  List the ca-ui-workaround(#n) markers in src and which issues are closed; flag .ca-* selectors that target non-stable parts (read-only)
+  workarounds  List the ca-ui-workaround(#n) markers in src and which issues are closed, and the pending ones (ca-ui-workaround(pending: reason), no issue yet); flag .ca-* selectors that target non-stable parts (read-only)
   pick     Open the gallery, pick numbered demos, print their ids (e.g. #012 #045) for your AI
 
 Options:
   --write      create the missing files and apply the proposed changes (without it init only reports)
-  --strict     migrate: exit 1 when a usage was left for you to finish; workarounds: exit 1 when a selector targets a non-stable part
+  --strict     migrate: exit 1 when a usage was left for you to finish; workarounds: exit 1 when a selector targets a non-stable part or a marker is pending
+  --pending    workarounds: list only the pending markers (file:line and reason), offline
   --selector <l>  compare: CSS selectors, comma separated (default: every [data-testid])
   --viewport <l>  compare: widths, comma separated (default: 390,1280)
   --props <l>  compare: computed style properties, camelCase (default: weight, size, color, padding, margin, radius, gap)
@@ -198,7 +199,8 @@ if (cmd === "init") {
 	const parts: PartsData | undefined = existsSync(partsFile)
 		? JSON.parse(readFileSync(partsFile, "utf8"))
 		: undefined;
-	process.exit(await runWorkarounds(args.length ? args : ["src"], { parts, strict }));
+	const pendingOnly = rest.includes("--pending");
+	process.exit(await runWorkarounds(args.length ? args : ["src"], { parts, strict, pendingOnly }));
 } else if (cmd === "pick") {
 	const ids = args.length ? parseIds(args.join(",")) : [];
 	if (!ids) {

@@ -17,6 +17,14 @@ When an agent building with CodeAtlas UI hits a problem (a bug, a missing prop o
    ```
 
    In markup: `<!-- ca-ui-workaround(#227): why -->`. The number is the issue it filed (or found).
+
+   The workaround usually comes before the issue (you find the defect, unblock yourself, then file it with the measurement). Until the issue exists, mark it pending, with the reason inside the parentheses:
+
+   ```ts
+   // ca-ui-workaround(pending: Select closes when the list scrolls inside a dialog)
+   ```
+
+   `pendente:` works too. A pending marker excuses the line for `codeatlas-ui lint` and `workarounds` like a numbered one, and `workarounds` lists it apart until you replace `pending:` with the issue number. Never write `#0` or another issue's number as a placeholder: `#0` is reported as `invalid`, and a borrowed number reports that issue's state (a `closed` one tells you to remove a workaround that still holds).
 2. **Draft the report.** The MCP tool `report_issue` takes `kind` (`bug`, `missing`, `migration-gap` or `docs`), `title`, `expected`, `actual` and optionally `component`, `repro`, `workaround` and `version`. It returns the sanitized markdown body, the list of redactions it applied, a prefilled link to the [AI report form](https://github.com/codeatlasdev/ui/issues/new?template=ai_report.yml) and a `gh issue create` command. It never posts by itself: the agent shows you the body and you open the link or run the command.
 3. **Clean up later.** After you upgrade, list the markers and see which issues were closed:
 
@@ -24,7 +32,7 @@ When an agent building with CodeAtlas UI hits a problem (a bug, a missing prop o
    bunx @codeatlasdev/ui workarounds        # scans src; pass paths to scan others
    ```
 
-   Each line is `file:line  #issue  open|closed|unknown  reason`. A closed issue means the library fixed it: remove the workaround and its marker. The command only reads, asks the public GitHub API without a token, and exits 0 even offline (the state is then `unknown`).
+   Each line is `file:line  #issue  open|closed|not found|unknown|invalid  reason`. A closed issue means the library fixed it: remove the workaround and its marker. `not found` means the number is wrong (the API answered 404), `unknown` that the state could not be read (offline or rate limited), `invalid` a `#0`, which is never asked. Pending markers follow in their own section; `--pending` prints only those, offline, so you can file the issues and replace them. The command only reads, asks the public GitHub API without a token, and exits 0 even offline. `--strict` exits 1 when a selector targets a non-stable part or a marker is still pending, so a change does not ship with a workaround nobody filed.
 
 ## What is never reported
 
