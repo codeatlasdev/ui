@@ -60,6 +60,23 @@
     thumbWidth = box.width;
   }
 
+  /**
+   * Content sizing: bring the selected segment into the track when it is scrolled out (a long last
+   * option selected at mount, or picked from outside), without moving the page (#1051).
+   */
+  function reveal() {
+    const node = root;
+    const el = node?.querySelectorAll<HTMLElement>('.ca-seg__item')[index];
+    if (!node || !el || node.scrollWidth <= node.clientWidth) return;
+    const box = el.getBoundingClientRect();
+    const track = node.getBoundingClientRect();
+    const pad = Number.parseFloat(getComputedStyle(node).paddingInlineStart) || 0;
+    const left = track.left + node.clientLeft + pad;
+    const right = track.left + node.clientLeft + node.clientWidth - pad;
+    if (box.left < left) node.scrollLeft -= left - box.left;
+    else if (box.right > right) node.scrollLeft += box.right - right;
+  }
+
   // Re-measure on selection, label/item changes, any size change of the track or a segment
   // (container resize, locale change that lengthens labels) and once web fonts have loaded.
   $effect(() => {
@@ -68,12 +85,46 @@
     void items;
     const node = root;
     measure();
-    tick().then(measure);
+    tick().then(() => {
+      measure();
+      reveal();
+    });
     const ro = new ResizeObserver(measure);
     ro.observe(node);
     for (const item of node.querySelectorAll('.ca-seg__item')) ro.observe(item);
     let live = true;
-    document.fonts?.ready.then(() => live && measure());
+    document.fonts?.ready.then(() => {
+      if (!live) return;
+      measure();
+      reveal();
+    });
+    return () => {
+      live = false;
+      ro.disconnect();
+    };
+  });
+
+  // Equal columns shrink and cut a long label with an ellipsis: that label carries its full text
+  // as `title`, so a pointer can still read it; one that fits gets none (#1051).
+  let cut = $state<ReadonlySet<string>>(new Set());
+  $effect(() => {
+    if (sizing === 'content' || !root) return;
+    void items;
+    const node = root;
+    const check = () => {
+      const next = new Set<string>();
+      node.querySelectorAll<HTMLElement>('.ca-seg__item').forEach((el, i) => {
+        if (el.scrollWidth > el.clientWidth && items[i]) next.add(items[i].value);
+      });
+      // Untracked: the effect re-runs on items and size, not on its own result.
+      const prev = untrack(() => cut);
+      if (next.size !== prev.size || [...next].some((v) => !prev.has(v))) cut = next;
+    };
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(node);
+    let live = true;
+    document.fonts?.ready.then(() => live && check());
     return () => {
       live = false;
       ro.disconnect();
@@ -124,6 +175,7 @@
       role="radio"
       aria-checked={on}
       aria-label={item['aria-label']}
+      title={item.label && cut.has(item.value) ? item.label : undefined}
       disabled={off}
       data-state={on ? 'on' : 'off'}
       data-disabled={off ? '' : undefined}
