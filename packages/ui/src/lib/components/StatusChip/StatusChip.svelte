@@ -1,14 +1,17 @@
 <script lang="ts">
-  interface Props {
+  import type { HTMLAttributes } from 'svelte/elements';
+
+  /** Other attributes go to the `<span>`; a `role` replaces the default `status` (e.g. `role="none"` in a table of chips). */
+  interface Props extends Omit<HTMLAttributes<HTMLSpanElement>, 'class' | 'children'> {
     status: 'success' | 'warning' | 'error' | 'info' | 'neutral';
     label: string;
     class?: string;
   }
 
-  let { status, label, class: className = '' }: Props = $props();
+  let { status, label, class: className = '', ...rest }: Props = $props();
 </script>
 
-<span class="ca-status-chip ca-status-chip--{status} {className}" role="status">
+<span role="status" {...rest} class="ca-status-chip ca-status-chip--{status} {className}">
   <span class="ca-status-chip__label">{label}</span>
 </span>
 

@@ -60,6 +60,8 @@ Data attributes: `data-divided`, `data-state` (`closed` `open`), `data-variant` 
 
 Snippets: `children`
 
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'title'>`
+
 Parts: `ca-alert` `ca-alert--banner` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-alert--warning` `ca-alert__bar` `ca-alert__body` `ca-alert__close` `ca-alert__content` `ca-alert__icon` `ca-alert__title`
 
 Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-info-fg` `--ca-semantic-info-muted` `--ca-semantic-success-fg` `--ca-semantic-success-muted` `--ca-semantic-warning-fg` `--ca-semantic-warning-muted`
@@ -335,6 +337,8 @@ Avatar: user identity display component.
 | `decorative?` | `boolean` | `false` | The avatar repeats a name that is already visible next to it: hidden from assistive tech (no name, no image role, no status label) so a screen reader does not say the name twice. |
 | `class?` | `string` | `''` |  |
 
+Also accepts: `Omit<HTMLAttributes<HTMLSpanElement>, 'class' \| 'children' \| 'onerror'>`
+
 Parts: `ca-avatar` `ca-avatar__fallback` `ca-avatar__fallback--covered` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
 
 Variables: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fallback-size` `--ca-avatar-fallback-weight` `--ca-avatar-lg-fallback-size` `--ca-avatar-lg-fallback-weight` `--ca-avatar-md-fallback-size` `--ca-avatar-md-fallback-weight` `--ca-avatar-sm-fallback-size` `--ca-avatar-sm-fallback-weight` `--ca-avatar-xl-fallback-size` `--ca-avatar-xl-fallback-weight` `--ca-avatar-xs-fallback-size` `--ca-avatar-xs-fallback-weight` `--ca-bg-body`
@@ -383,6 +387,8 @@ Tokens: `--ca-avatar-group-overlap` `--ca-avatar-group-ring`
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLSpanElement>, 'class' \| 'children' \| 'color'>`
 
 Parts: `ca-badge` `ca-badge--brand` `ca-badge--custom` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
 
@@ -746,6 +752,8 @@ Data attributes: `data-disabled`, `data-state` (`checked` `indeterminate`)
 | `variant?` | `'default' \| 'success' \| 'error' \| 'warning' \| 'info' \| 'brand'` | `'default'` |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `class?` | `string` | `''` |  |
+
+Also accepts: `Omit<HTMLAttributes<HTMLSpanElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex' \| 'aria-pressed'>`
 
 Parts: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--interactive` `ca-chip--selected` `ca-chip--sm` `ca-chip--success` `ca-chip--warning` `ca-chip__delete` `ca-chip__icon` `ca-chip__label`
 
@@ -1354,6 +1362,8 @@ Dialog: second-layer modal.
 
 Snippets: `children`; `actions`
 
+Also accepts: `Omit<HTMLDialogAttributes, 'children' \| 'open' \| 'title' \| 'class' \| 'role' \| 'onclose' \| 'oncancel'>`
+
 Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet`
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
@@ -1372,6 +1382,8 @@ Tokens: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-heig
 |---|---|---|---|
 | `orientation?` | `'horizontal' \| 'vertical'` | `'horizontal'` |  |
 | `class?` | `string` | `''` |  |
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role' \| 'aria-orientation'>`
 
 Parts: `ca-divider` `ca-divider--horizontal` `ca-divider--vertical`
 
@@ -1698,6 +1710,8 @@ Data attributes: `data-open`
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`; `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'title'>`
 
 Parts: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty--row` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
 
@@ -2182,6 +2196,8 @@ Tokens: `--ca-kanban-col-width` `--ca-kanban-color` `--ca-kanban-gap`
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children'>`
 
 Parts: `ca-kbd`
 
@@ -3094,6 +3110,8 @@ Data attributes: `data-active`, `data-dragging`, `data-loaded`
 | `label?` | `string` |  |  |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'lg'` | Bar height: `'sm'` (4px), `'md'` (6px) or `'lg'` (8px, the default). For another height set `--ca-progress-height` on the element or an ancestor; the ends stay pill-shaped. |
 
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role' \| 'aria-valuenow' \| 'aria-valuemin' \| 'aria-valuemax'>`
+
 Parts: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeterminate` `ca-progress__track`
 
 Internal (may change in any release): `ca-progress-shimmer`
@@ -3484,6 +3502,8 @@ Tokens: `--ca-seg-gap` `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
+Also accepts: `Omit<HTMLButtonAttributes, 'value' \| 'class' \| 'children' \| 'type' \| 'name' \| 'disabled' \| 'onchange' \| 'onclick' \| 'onkeydown' \| 'aria-label' \| 'aria-labelledby' \| 'aria-haspopup' \| 'aria-expanded' \| 'aria-controls' \| 'aria-invalid'>`
+
 Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__group-label` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
 Variables: `--ca-anchor-width` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height` `--ca-surface-floating`
@@ -3534,12 +3554,15 @@ Parts: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `ca-
 | `open?` | `boolean` | `false` | `bind:` |
 | `title?` | `string` |  |  |
 | `description?` | `string` |  |  |
+| `class?` | `string` | `""` |  |
 | `onclose?` | `() => void` |  |  |
 | `swipeToDismiss?` | `boolean` | `true` | Drag the handle/header down to dismiss (bottom-sheet layout only). Default: true. |
 | `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. |
 | `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 
 Snippets: `children`; `footer`
+
+Also accepts: `Omit<HTMLDialogAttributes, "children" \| "open" \| "title" \| "class" \| "role" \| "onclose" \| "oncancel">`
 
 Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
 
@@ -3601,6 +3624,8 @@ Parts: `ca-site-header` `ca-site-header__bc-sep` `ca-site-header__breadcrumb` `c
 | `height?` | `string \| number` |  |  |
 | `rows?` | `number` | `1` |  |
 | `class?` | `string` | `''` |  |
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'aria-hidden'>`
 
 Parts: `ca-skeleton` `ca-skeleton--circular` `ca-skeleton--rectangular` `ca-skeleton--rounded` `ca-skeleton--text` `ca-skeleton-rows`
 
@@ -3723,6 +3748,8 @@ Parts: `ca-sound-toggle` `ca-sound-toggle__btn` `ca-sound-toggle__volume`
 | `class?` | `string` | `''` |  |
 | `label?` | `string` |  |  |
 
+Also accepts: `Omit<SVGAttributes<SVGSVGElement>, 'class' \| 'children' \| 'viewBox' \| 'fill' \| 'xmlns'>`
+
 Parts: `ca-spinner` `ca-spinner__arc` `ca-spinner__track`
 
 Internal (may change in any release): `ca-spin`
@@ -3790,6 +3817,8 @@ Stat — a card-less statistic: label, big number, optional unit, trend and hint
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
 | `class?` | `string` | `''` |  |
 
+Also accepts: `Omit<HTMLAttributes<HTMLDListElement>, 'class' \| 'children'>`
+
 Parts: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__unit` `ca-stat__value`
 
 Variables: `--ca-stat-gap` `--ca-stat-label-size` `--ca-stat-label-weight` `--ca-stat-value-font` `--ca-stat-value-line-height` `--ca-stat-value-size` `--ca-stat-value-weight`
@@ -3807,6 +3836,8 @@ Tokens: `--ca-stat-gap` `--ca-stat-label-size` `--ca-stat-label-weight` `--ca-st
 | `status` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` |  |  |
 | `label` | `string` |  |  |
 | `class?` | `string` | `''` |  |
+
+Also accepts: `Omit<HTMLAttributes<HTMLSpanElement>, 'class' \| 'children'>`
 
 Parts: `ca-status-chip` `ca-status-chip--error` `ca-status-chip--info` `ca-status-chip--neutral` `ca-status-chip--success` `ca-status-chip--warning` `ca-status-chip__label`
 
@@ -3946,6 +3977,8 @@ Tokens: `--ca-swatch-color`
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(checked: boolean) => void` |  |  |
 | `sound?` | `SoundProp` |  | Plays `toggle-on` / `toggle-off` on a user change (a cue name plays that cue both ways) when `@codeatlasdev/ui/sound` is on. |
+
+Also accepts: `Omit<HTMLInputAttributes, 'checked' \| 'class' \| 'children' \| 'onchange' \| 'type' \| 'value' \| 'group' \| 'size' \| 'role' \| 'aria-checked' \| 'aria-label' \| 'aria-labelledby'>`
 
 Parts: `ca-switch` `ca-switch-wrapper` `ca-switch__input` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
 

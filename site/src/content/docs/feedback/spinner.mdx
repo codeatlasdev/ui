@@ -32,3 +32,5 @@ The spinner has `role="status"` and a localized `aria-label`. Under `prefers-red
   { name: "label", type: "string", default: "'Loading…' (localized)", description: "Accessible label. Defaults to the active locale's string." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `aria-*`) are forwarded to the `<svg>`; a `role` or `aria-label` replaces the default `status` and its localized name.

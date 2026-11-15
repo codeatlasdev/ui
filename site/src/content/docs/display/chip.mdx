@@ -65,9 +65,13 @@ A chip is 28px tall and gets its 44px touch target from an invisible overhang. A
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
 
+Other attributes (`data-testid`, `id`, `title`, `aria-*`, `onkeydown`) are forwarded to the chip `<span>`; `role`, `tabindex` and `aria-pressed` follow `onclick` and stay owned.
+
 
 <Props for="StatusChip" title="StatusChip props" rows={[
   { name: "status", type: "'success' | 'warning' | 'error' | 'info' | 'neutral'", description: "Semantic status. Required." },
   { name: "label", type: "string", description: "Text shown next to the dot. Required." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `title`, `aria-*`) are forwarded to the `<span>`. A `role` replaces the default `status`, for example `role="none"` for a table of chips that should not each be a live region.

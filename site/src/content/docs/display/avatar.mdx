@@ -59,3 +59,5 @@ Without `src`, or when the image fails to load, the avatar shows initials derive
   { name: "decorative", type: "boolean", default: "false", description: "A visible name sits beside it: `aria-hidden`, empty image `alt`, no status role or label." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `title`, `aria-*`) are forwarded to the root `<span>`; `style` is added after the size variables.

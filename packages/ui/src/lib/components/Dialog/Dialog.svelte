@@ -2,6 +2,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { dialog } from '../../i18n/groups/dialog.js';
   import type { Snippet } from 'svelte';
+  import type { HTMLDialogAttributes } from 'svelte/elements';
   import { X } from '@lucide/svelte';
   import './dialog.css';
   import { devWarn } from '../../utils/dev-warn.js';
@@ -30,7 +31,12 @@
    *   </Dialog>
    */
 
-  interface Props {
+  /**
+   * Other attributes (`data-testid`, `id`, `aria-*`) go to the `<dialog>`, like `Drawer`. An `aria-labelledby`
+   * or `aria-label` replaces the title reference; `aria-describedby` is added to the description's.
+   */
+  interface Props
+    extends Omit<HTMLDialogAttributes, 'children' | 'open' | 'title' | 'class' | 'role' | 'onclose' | 'oncancel'> {
     open?:         boolean;
     title?:        string;
     description?:  string;
@@ -89,6 +95,9 @@
     actions,
     onOpenChange,
     sound,
+    'aria-labelledby': ariaLabelledby,
+    'aria-describedby': ariaDescribedby,
+    ...rest
   }: Props = $props();
 
   // `open` is bindable and can flip from outside: follow the value, not the handlers. The first run is
@@ -102,9 +111,9 @@
     if (cue) soundBus.emit(cue);
   });
 
-  // The panel is labelled by its title; without `title` it has no accessible name.
+  // The panel is labelled by its title; without `title` (or an aria-label/aria-labelledby) it has no accessible name.
   $effect(() => {
-    if (open && !title?.trim())
+    if (open && !title?.trim() && !rest['aria-label'] && !ariaLabelledby)
       devWarn('dialog-title', '<Dialog> has no `title`, so the dialog has no accessible name. Pass title (use chromeless to hide the header and keep the label).');
   });
 
@@ -125,12 +134,13 @@
   <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
   <!-- svelte-ignore a11y_no_redundant_roles -->
   <dialog
+    {...rest}
     class="ca-overlay ca-dialog ca-dialog--{size} {chromeless ? 'ca-dialog--chromeless' : ''} {inline ? 'ca-overlay--inline' : ''} {className}"
     role="dialog"
     tabindex="-1"
     data-ca-blur="sheet"
-    aria-labelledby={title ? ids.part('title') : undefined}
-    aria-describedby={description ? ids.part('description') : undefined}
+    aria-labelledby={ariaLabelledby ?? (rest['aria-label'] || !title ? undefined : ids.part('title'))}
+    aria-describedby={[description ? ids.part('description') : '', ariaDescribedby ?? ''].filter(Boolean).join(' ') || undefined}
     data-state={open ? 'open' : 'closed'}
     data-fullscreen-below={fullscreenBelow}
     data-placement={placement === 'top' ? 'top' : undefined}

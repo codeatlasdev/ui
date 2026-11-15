@@ -47,3 +47,5 @@ The inline pill is tunable without a selector: `--ca-badge-h` (height), `--ca-ba
   { name: "class", type: "string", default: "''", description: "Extra class names." },
   { name: "children", type: "Snippet", default: "undefined", description: "The element the badge is anchored to." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `title`, `aria-*`, handlers) are forwarded to the pill `<span>`, or to the wrapper `<span>` of an anchored badge; the corner indicator keeps its own `role="status"` and label. `style` is added after the custom tone colour.

@@ -41,3 +41,5 @@ Below 900px the sheet rises from the bottom edge with a drag handle, safe-area p
   { name: "children", type: "Snippet", description: "Required. Scrollable body." },
   { name: "footer", type: "Snippet", description: "Pinned footer below the body." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `aria-*`) are forwarded to the `<dialog>`, like `Drawer`. An `aria-labelledby` or `aria-label` replaces the title reference, an `aria-describedby` is added to the description's, and `class` and `style` merge with the sheet's own.

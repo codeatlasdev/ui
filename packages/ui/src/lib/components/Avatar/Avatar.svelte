@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { avatar } from '../../i18n/groups/avatar.js';
   const t = useMessages(avatar);
@@ -23,7 +24,8 @@
   type Status = 'online' | 'offline' | 'busy' | 'away';
   type Tone   = 'palette' | 'neutral';
 
-  interface Props {
+  /** Other attributes go to the root `<span>`; `style` is appended to the size variables. */
+  interface Props extends Omit<HTMLAttributes<HTMLSpanElement>, 'class' | 'children' | 'onerror'> {
     /** Image URL. Rendered as a real `<img>`; the fallback shows beneath it while it loads and after it fails. */
     src?:      string;
     alt?:      string;
@@ -99,6 +101,8 @@
     tone     = 'palette',
     decorative = false,
     class: className = '',
+    style,
+    ...rest
   }: Props = $props();
 
   const px       = $derived(typeof size === 'number' ? size : (SIZES[size] ?? 36));
@@ -122,13 +126,14 @@
 </script>
 
 <span
+  {...rest}
   class="ca-avatar {className}"
   data-tone={tone === 'neutral' ? 'neutral' : undefined}
   data-size={typeof size === 'string' ? size : undefined}
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
   aria-hidden={decorative ? 'true' : undefined}
-  style="--av-size:{px}px;--av-radius:{radius};{tone === 'neutral' ? '' : `--av-bg:${palette.bg};--av-fg:${palette.fg};`}--av-fs:{fontSize}px;--av-dot:{dotSize}px;"
+  style="--av-size:{px}px;--av-radius:{radius};{tone === 'neutral' ? '' : `--av-bg:${palette.bg};--av-fg:${palette.fg};`}--av-fs:{fontSize}px;--av-dot:{dotSize}px;{style ?? ''}"
 >
   <!-- The fallback is always rendered beneath the <img>, so a slow or failed load never changes the box. -->
   <span class="ca-avatar__fallback" class:ca-avatar__fallback--covered={covered} aria-hidden={covered ? 'true' : undefined}>
