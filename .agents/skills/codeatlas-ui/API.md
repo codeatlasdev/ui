@@ -3606,6 +3606,8 @@ Tokens: `--ca-table-cell-color` `--ca-table-cell-px` `--ca-table-cell-py` `--ca-
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `labels?` | `Record<string, string>` |  | Crumb text by full path from the root, without a trailing slash: `{ "/propostas": "Propostas", "/propostas/novo": "Nova proposta" }`. A bare segment key does not match, so the same segment under two parents can read differently. Wins over `resolveSegment`. |
+| `resolveSegment?` | `(segment: string, index: number, segments: string[]) => string \| undefined` |  | Names a crumb `labels` does not list, such as a dynamic id (`/propostas/123` → "Proposta"). Gets the raw segment, its index and every segment of the path. `undefined` (or `""`) keeps the default: the segment capitalised, `-` read as a space. Links stay the same paths either way. |
 | `display?` | `boolean` | `false` | Display text role (family, `--ca-display-tracking`) for the current-page crumb. |
 | `class?` | `string` | `''` |  |
 

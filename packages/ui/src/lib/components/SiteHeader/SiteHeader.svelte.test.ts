@@ -51,6 +51,74 @@ describe("SiteHeader", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("resolveSegment names a dynamic id (#1177)", async () => {
+		const resolveSegment = (seg: string, i: number, segs: string[]) =>
+			/^\d+$/.test(seg) && segs[i - 1] === "propostas" ? "Proposta" : undefined;
+		const screen = await render(Harness, { pathname: "/propostas/123", resolveSegment });
+		const bc = screen.getByRole("navigation", { name: "Breadcrumb" });
+		await expect
+			.element(bc.getByRole("link", { name: "Propostas" }))
+			.toHaveAttribute("href", "/propostas");
+		await expect
+			.element(bc.getByText("Proposta", { exact: true }))
+			.toHaveAttribute("aria-current", "page");
+		expect(bc.element().textContent).not.toContain("123");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("labels match full paths; others keep the fallback", async () => {
+		const screen = await render(Harness, {
+			pathname: "/financeiro/contas-a-receber/novo",
+			// A segment key is not a path: "contas-a-receber" keeps its fallback label.
+			labels: {
+				"/financeiro": "Finanças",
+				"contas-a-receber": "AR",
+				"/financeiro/contas-a-receber/novo": "Nova conta",
+			},
+			// labels win over resolveSegment for the same crumb.
+			resolveSegment: (seg: string) => (seg === "novo" ? "Resolvido" : undefined),
+		});
+		const bc = screen.getByRole("navigation", { name: "Breadcrumb" });
+		await expect
+			.element(bc.getByRole("link", { name: "Finanças" }))
+			.toHaveAttribute("href", "/financeiro");
+		await expect
+			.element(bc.getByRole("link", { name: "Contas a receber" }))
+			.toHaveAttribute("href", "/financeiro/contas-a-receber");
+		await expect.element(bc.getByText("Nova conta")).toHaveAttribute("aria-current", "page");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("long trail truncates on one line at 390px (#1177)", async () => {
+		await page.viewport(390, 844);
+		try {
+			const screen = await render(Harness, {
+				pathname: "/contas-a-receber/relatorio-de-inadimplencia/detalhamento-completo-por-cliente",
+				action: "Exportar",
+			});
+			const nav = screen.getByRole("navigation", { name: "Breadcrumb" }).element() as HTMLElement;
+			const action = screen.getByRole("button", { name: "Exportar" }).element();
+			const current = nav.querySelector<HTMLElement>("[aria-current='page']") as HTMLElement;
+			// One row: every crumb is centred on the same line of the bar.
+			const centres = [...nav.querySelectorAll("li")].map((li) => {
+				const r = li.getBoundingClientRect();
+				return (r.top + r.bottom) / 2;
+			});
+			expect(Math.max(...centres) - Math.min(...centres)).toBeLessThan(1);
+			// The trail ends before the trailing action instead of running under it.
+			expect(nav.getBoundingClientRect().right).toBeLessThanOrEqual(
+				action.getBoundingClientRect().left
+			);
+			expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+			// The current crumb is cut with an ellipsis.
+			expect(getComputedStyle(current).textOverflow).toBe("ellipsis");
+			expect(current.scrollWidth).toBeGreaterThan(current.clientWidth);
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		} finally {
+			await page.viewport(1280, 800);
+		}
+	});
+
 	it("marketing nav + locale + two CTAs do not overflow at 390px", async () => {
 		await page.viewport(390, 800);
 		const screen = await render(Marketing);

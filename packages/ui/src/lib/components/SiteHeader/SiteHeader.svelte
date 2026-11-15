@@ -15,23 +15,41 @@
      * hidden below 600px (it never fits beside a CTA): give phones the same links in a menu of your own.
      */
     trailing?: Snippet;
+    /**
+     * Crumb text by full path from the root, without a trailing slash:
+     * `{ "/propostas": "Propostas", "/propostas/novo": "Nova proposta" }`. A bare segment key does
+     * not match, so the same segment under two parents can read differently. Wins over `resolveSegment`.
+     */
+    labels?: Record<string, string>;
+    /**
+     * Names a crumb `labels` does not list, such as a dynamic id (`/propostas/123` → "Proposta").
+     * Gets the raw segment, its index and every segment of the path. `undefined` (or `""`) keeps the
+     * default: the segment capitalised, `-` read as a space. Links stay the same paths either way.
+     */
+    resolveSegment?: (segment: string, index: number, segments: string[]) => string | undefined;
     /** Display text role (family, `--ca-display-tracking`) for the current-page crumb. */
     display?:  boolean;
     class?:    string;
   }
 
-  let { trailing, display = false, class: className = '' }: Props = $props();
+  let { trailing, labels, resolveSegment, display = false, class: className = '' }: Props = $props();
 
   const shell = getContext<SidebarState>('appshell');
 
   // Breadcrumb: split pathname into segments, build crumbs
   let crumbs = $derived.by(() => {
     const parts = (shell?.pathname ?? '').replace(/\/$/, '').split('/').filter(Boolean);
-    return parts.map((seg, i) => ({
-      label: seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, ' '),
-      href:  '/' + parts.slice(0, i + 1).join('/'),
-      isLast: i === parts.length - 1,
-    }));
+    return parts.map((seg, i) => {
+      const href = '/' + parts.slice(0, i + 1).join('/');
+      return {
+        label:
+          labels?.[href] ||
+          resolveSegment?.(seg, i, parts) ||
+          seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, ' '),
+        href,
+        isLast: i === parts.length - 1,
+      };
+    });
   });
 </script>
 
@@ -147,24 +165,35 @@
       flex-shrink: 0;
     }
 
-    /* Breadcrumb */
+    /* Breadcrumb: one row. A trail too long for the bar shrinks every crumb in proportion to its
+       length and cuts it with an ellipsis, so it ends before the trailing actions (#1177). */
+    .ca-site-header__breadcrumb {
+      min-width: 0;
+    }
     .ca-site-header__breadcrumb ol {
       list-style: none;
       display: flex;
       align-items: center;
       gap: var(--ca-space-0-5);
+      min-width: 0;
     }
     .ca-site-header__breadcrumb li {
       display: flex;
       align-items: center;
       gap: var(--ca-space-0-5);
+      min-width: 0;
     }
     .ca-site-header__breadcrumb a,
     .ca-site-header__breadcrumb span[aria-current] {
       font-size: var(--ca-font-size-body2);
-      line-height: 1;
+      /* Not 1: the ellipsis needs overflow: hidden, which clips descenders when the line box is
+         shorter than the font's ascent plus descent. Centred in the row, so the text does not move. */
+      line-height: var(--ca-line-height-snug);
       text-decoration: none;
       white-space: nowrap;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .ca-site-header__breadcrumb a {
       color: var(--ca-text-secondary);
@@ -180,6 +209,7 @@
       letter-spacing: var(--ca-display-tracking);
     }
     .ca-site-header__bc-sep {
+      flex-shrink: 0;
       font-size: var(--ca-font-size-caption);
       color: var(--ca-text-hint);
       margin: 0 var(--ca-space-0-5);

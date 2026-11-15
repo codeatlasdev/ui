@@ -88,6 +88,27 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "children", type: "Snippet", description: "Page content." },
 ]} />
 
+## Header breadcrumb
+
+Inside the shell, `SiteHeader` builds its breadcrumb from the shell's `pathname`: one crumb per segment, each a link to its own path, the last one the current page. A segment is shown capitalised with `-` read as a space (`contas-a-receber` reads "Contas a receber"), which is wrong for screen names and for ids. `labels` names a crumb by its full path from the root, without a trailing slash, so the same segment under two parents can read differently. `resolveSegment` names the crumbs a map cannot list, such as a numeric id: it gets the raw segment, its index and every segment of the path, and returns `undefined` to keep the default. A crumb in `labels` is never passed to `resolveSegment`. Only the text changes: the links stay the same paths.
+
+```svelte
+<SiteHeader
+  labels={{ "/propostas": "Propostas", "/contas-a-receber": "A receber" }}
+  resolveSegment={(segment, index, segments) =>
+    /^\d+$/.test(segment) && segments[index - 1] === "propostas" ? "Proposta" : undefined}
+/>
+```
+
+`/propostas/123` reads "Propostas / Proposta". A trail too long for the bar stays on one row: every crumb shrinks in proportion to its length and ends in an ellipsis before the `trailing` actions, which keep their size.
+
+<Props for="SiteHeader" title="SiteHeader props" rows={[
+  { name: "labels", type: "Record<string, string>", description: "Crumb text by full path from the root, without a trailing slash (`\"/propostas\"`, `\"/propostas/novo\"`). A bare segment key does not match. It wins over `resolveSegment`." },
+  { name: "resolveSegment", type: "(segment: string, index: number, segments: string[]) => string | undefined", description: "Names a crumb `labels` does not list, such as a dynamic id. Gets the raw segment, its index and all the segments of the path. `undefined` or an empty string keeps the default: the segment capitalised, `-` read as a space." },
+  { name: "trailing", type: "Snippet", description: "Actions at the end of the bar: a `LocaleSwitcher`, a call to action, a user menu. They keep their size and the breadcrumb shrinks first. A `NavigationMenu` placed directly here is hidden below 600px." },
+  { name: "display", type: "boolean", default: "false", description: "Display text role (family, `--ca-display-tracking`) for the current-page crumb." },
+]} />
+
 ## Rail labels, search slot, badges and More
 
 `railLabels` adds a caption under each rail icon. `railTop` is a slot above the modules for a search trigger: render a `Button` that opens your `CommandPalette` (see [CommandPalette](/docs/navigation/command-palette/)). Below 900px the bottom navigation holds up to `bottomNavPrimary` tabs (5 by default). With more modules it keeps `bottomNavPrimary - 1` and adds a More tab that opens a dialog with the rest plus whatever `bottomNavOverflow` renders (an account row, sign out): no module is hidden. The built-in dialog is a native `<dialog>` (focus trap, Escape and focus restore come from the browser) and adds about 1 kB gzip. For swipe to dismiss and an exit animation pass `moreSheet={NavMoreSheet}`, which swaps in a full `Sheet` (opt-in like `reorder` and `itemMenu`, because `Sheet` adds about 10 kB gzip).
