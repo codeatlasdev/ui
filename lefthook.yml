@@ -1,5 +1,5 @@
 # Git hooks. pre-commit formats staged files, commit-msg enforces Conventional Commits,
-# pre-push runs `bun run validate` (types, lint, unit, build, size). Browser suites run on CI.
+# pre-push checks the diff (Biome + affected unit tests); `validate` runs on the PR (pr.yml) and in the land gate.
 pre-commit:
   jobs:
     - name: biome (staged)
@@ -12,5 +12,5 @@ commit-msg:
       run: bun scripts/commit-msg.ts {1}
 pre-push:
   jobs:
-    - name: validate (themes, types, lint, unit, build, size)
+    - name: quick check (Biome + affected unit tests)
       run: bun scripts/pre-push.ts
