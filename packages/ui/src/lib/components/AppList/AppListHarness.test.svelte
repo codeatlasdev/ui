@@ -5,17 +5,22 @@
 		id: number;
 		name: string;
 		role: string;
+		code?: number;
+		active?: boolean;
 	}
 
 	interface Props {
 		perPage?: number;
 		withEmpty?: boolean;
+		/** Omit `searchKeys`, so the list searches its default fields. */
+		allFields?: boolean;
 		data?: User[];
 	}
 
 	let {
 		perPage = 3,
 		withEmpty = false,
+		allFields = false,
 		data = [
 			{ id: 1, name: "Ana", role: "Admin" },
 			{ id: 2, name: "Bruno", role: "User" },
@@ -27,7 +32,13 @@
 </script>
 
 <main>
-	<AppList title="Users" {data} {perPage} searchKeys={["name"]} searchPlaceholder="Search…">
+	<AppList
+		title="Users"
+		{data}
+		{perPage}
+		searchKeys={allFields ? undefined : ["name"]}
+		searchPlaceholder="Search…"
+	>
 		{#snippet actions()}
 			<button type="button">New</button>
 		{/snippet}

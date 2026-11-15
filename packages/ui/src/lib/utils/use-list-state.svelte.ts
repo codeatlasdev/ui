@@ -24,7 +24,7 @@ export interface UseListStateOptions<T extends object> {
 	data: T[];
 	/** Rows per page. Default: 20 */
 	perPage?: number;
-	/** Which fields are included in text search (ignores case and accents: "joao" finds "João") */
+	/** Which fields are included in text search (ignores case and accents: "joao" finds "João"). Default: every string and number field of the row; booleans, `Date` objects and nested objects are not searched. */
 	searchKeys?: (keyof T)[];
 	/** Field used as row identifier for selection. Default: 'id' */
 	idKey?: keyof T;
@@ -75,13 +75,19 @@ export interface UseListStateReturn<T> {
 	clearSelection(): void;
 }
 
-/** Reactive list controller for client-side tables: search over `searchKeys` (ignoring case and accents), filters, pagination and row selection. Returns `UseListStateReturn`. */
+/** Reactive list controller for client-side tables: search over `searchKeys` or, without them, every string and number field (ignoring case and accents), filters, pagination and row selection. Returns `UseListStateReturn`. */
 export function useListState<T extends object>(
 	options: UseListStateOptions<T>
 ): UseListStateReturn<T> {
-	const { data, perPage = 20, searchKeys = [], idKey = "id" as keyof T, ofLabel } = options;
+	const { data, perPage = 20, searchKeys, idKey = "id" as keyof T, ofLabel } = options;
 
 	const t = useMessages(common);
+
+	/** What the search reads in a row: its `searchKeys`, or else every string and number field. */
+	const searchValues = (row: T): unknown[] =>
+		searchKeys
+			? searchKeys.map((key) => row[key])
+			: Object.values(row).filter((v) => typeof v === "string" || typeof v === "number");
 
 	// ── Mutable state ───────────────────────────────────────────────────
 	let _search = $state("");
@@ -94,12 +100,12 @@ export function useListState<T extends object>(
 		const q = foldText(_search.trim());
 
 		return data.filter((row) => {
-			// Text search, ignoring case and accents ("joao" finds "João")
-			if (q && searchKeys.length > 0) {
-				const matches = searchKeys.some((key) => {
-					const val = row[key];
-					return val != null && foldText(String(val)).includes(q);
-				});
+			// Text search, ignoring case and accents ("joao" finds "João"). An empty `searchKeys`
+			// searches nothing, so the query keeps every row.
+			if (q && searchKeys?.length !== 0) {
+				const matches = searchValues(row).some(
+					(val) => val != null && foldText(String(val)).includes(q)
+				);
 				if (!matches) return false;
 			}
 
