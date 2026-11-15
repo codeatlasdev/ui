@@ -413,3 +413,4 @@ id	group	page	title	names	tags	summary
 5030	inputs	text-field	Counter and warning tone		text-field,counter,maxlength,character count,limit	Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier.
 5031	inputs	text-area	Soft limit and threshold		text-area,textarea,counter,maxlength,character count,limit	Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters.
 5032	inputs	date-picker	Calendar that fills its container		calendar,range-calendar,fill,full-width,responsive,date	A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.
+5033	display	clamped-text	Posts in a feed		clamped-text,line-clamp,show-more,read-more,feed,post	Two posts in Cards: a long one cut to 3 lines by ClampedText with a Show more button, and a short one that fits and shows no button.

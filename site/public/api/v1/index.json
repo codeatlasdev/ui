@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 414,
+	"count": 415,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,12 +8,12 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 375,
+			"component": 376,
 			"motion": 39
 		},
 		"subtype": {
 			"component/chart": 30,
-			"component/display": 73,
+			"component/display": 74,
 			"component/feedback": 38,
 			"component/foundation": 19,
 			"component/input": 100,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 397,
+			"default": 398,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,15 +42,15 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 106,
-			"subtle": 248
+			"subtle": 249
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 35,
 			"hover": 79,
-			"keyboard": 290,
+			"keyboard": 291,
 			"none": 82,
-			"press": 245,
+			"press": 246,
 			"scroll": 22
 		},
 		"layout": {
@@ -60,26 +60,26 @@
 			"overlay": 50,
 			"single-column": 138,
 			"split": 18,
-			"stack": 153,
+			"stack": 154,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 412,
+			"both": 413,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 53,
-			"regular": 348
+			"regular": 349
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 414,
+			"css": 415,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 374,
+			"css": 375,
 			"js-light": 40
 		},
 		"component": {
@@ -105,7 +105,7 @@
 			"ButtonGroup": 2,
 			"Calendar": 3,
 			"Callout": 1,
-			"Card": 70,
+			"Card": 71,
 			"CardGrid": 1,
 			"Carousel": 3,
 			"CarouselItem": 3,
@@ -115,6 +115,7 @@
 			"Chip": 10,
 			"ChipGroup": 3,
 			"ChipRow": 1,
+			"ClampedText": 1,
 			"CodeSnippet": 1,
 			"CodeTab": 1,
 			"CodeTabs": 1,
@@ -685,6 +686,7 @@
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["MonthPicker"],"aliases":["month year picker","billing month","period month"],"related":["018","015","5028"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5029","path":"inputs/month-picker/Default","title":"MonthPicker","summary":"Two MonthPickers: a field showing month and year with a twelve-month popover grid, one free and one limited to a single year.","use":"Choosing a billing or reporting month where the day does not matter.","tags":["month-picker","month","year","popover","grid","billing"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["TextField"],"aliases":["character counter","char count","length limit","remaining characters"],"related":["056","058","5031"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-14","review":{"industry":"pending"},"id":"5030","path":"inputs/text-field/Counter","title":"Counter and warning tone","summary":"Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier.","use":"Single-line fields with a length limit where the writer needs to see how much room is left.","tags":["text-field","counter","maxlength","character count","limit"],"names":[]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["TextArea"],"aliases":["character counter","char count","soft limit","composer"],"related":["054","055","5030"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-14","review":{"industry":"pending"},"id":"5031","path":"inputs/text-area/Counter","title":"Soft limit and threshold","summary":"Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters.","use":"Composers and long-form fields where a length limit matters only near the end.","tags":["text-area","textarea","counter","maxlength","character count","limit"],"names":[]},
-		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Calendar","RangeCalendar"],"aliases":["full width calendar","fluid calendar","stretch calendar","responsive calendar"],"related":["015","018"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-14","review":{"industry":"pending"},"id":"5032","path":"inputs/date-picker/Fill","title":"Calendar that fills its container","summary":"A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.","use":"A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.","tags":["calendar","range-calendar","fill","full-width","responsive","date"],"names":[]}
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Calendar","RangeCalendar"],"aliases":["full width calendar","fluid calendar","stretch calendar","responsive calendar"],"related":["015","018"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-14","review":{"industry":"pending"},"id":"5032","path":"inputs/date-picker/Fill","title":"Calendar that fills its container","summary":"A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.","use":"A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.","tags":["calendar","range-calendar","fill","full-width","responsive","date"],"names":[]},
+		{"kind":"component","subtype":"display","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Card","ClampedText"],"aliases":["read more","show more","line clamp","truncated text","expandable text"],"related":["073"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-15","review":{"industry":"pending"},"id":"5033","path":"display/clamped-text/Feed","title":"Posts in a feed","summary":"Two posts in Cards: a long one cut to 3 lines by ClampedText with a Show more button, and a short one that fits and shows no button.","use":"A feed, comment list or description where long text is cut to a few lines and opened on demand, with no button on text that already fits.","tags":["clamped-text","line-clamp","show-more","read-more","feed","post"],"names":[]}
 	]
 }

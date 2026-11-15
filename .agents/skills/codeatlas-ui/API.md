@@ -807,6 +807,28 @@ Parts: `ca-chip-row` `ca-chip-row--fade` `ca-chip-row--sm` `ca-chip-row--wrap`
 
 Variables: `--ca-chip-row-h`
 
+## ClampedText
+
+`import { ClampedText } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `lines?` | `number` | `3` | Lines shown while collapsed (at least 1). |
+| `expanded?` | `boolean` | `false` | `bind:` Whether the whole text is shown. |
+| `moreLabel?` | `string` |  | Toggle text while collapsed. Defaults to the catalog's "Show more". |
+| `lessLabel?` | `string` |  | Toggle text while expanded. Defaults to the catalog's "Show less". |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`: The text: inline content or paragraphs.
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children'>`
+
+Parts: `ca-clamped-text` `ca-clamped-text__content` `ca-clamped-text__toggle`
+
+Internal (may change in any release): `ca-x-anchor-off` `ca-x-measure`
+
+Data attributes: `data-state` (`collapsed`)
+
 ## CodeSnippet
 
 `import { CodeSnippet } from "@codeatlasdev/ui/code"`

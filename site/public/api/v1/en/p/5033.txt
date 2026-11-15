@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #5033 "Posts in a feed" (display/clamped-text).
+What it shows: Two posts in Cards: a long one cut to 3 lines by ClampedText with a Show more button, and a short one that fits and shows no button. When to use: A feed, comment list or description where long text is cut to a few lines and opened on demand, with no button on text that already fits.
+Spec:
+- `const posts` has 2 entries with `id`, `author` and `body`: a long paragraph and one short sentence
+- Each post is a `<Card>` around an `<article class="post">` with a `<strong class="author">` and `<ClampedText lines={3}>{p.body}</ClampedText>`
+- `.feed` is a grid with `gap: var(--ca-space-4)` and `max-width: 560px`
+- Only the long post shows the Show more button; it reveals the rest and turns into Show less
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5033 Posts in a feed → file, what changed, https://ui.codeatlas.com.br/docs/display/clamped-text#posts-in-a-feed; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5033.txt   Components API: ca-ui-mcp get_component(Card)

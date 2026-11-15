@@ -21,6 +21,7 @@ import { carousel } from "./groups/carousel.js";
 import { charts } from "./groups/charts.js";
 import { chat } from "./groups/chat.js";
 import { chip } from "./groups/chip.js";
+import { clampedText } from "./groups/clampedText.js";
 import { codeSnippet } from "./groups/codeSnippet.js";
 import { colorField } from "./groups/colorField.js";
 import { colorPicker } from "./groups/colorPicker.js";
@@ -103,6 +104,7 @@ export const groups = {
 	timePicker,
 	monthPicker,
 	chip,
+	clampedText,
 	tour,
 	rating,
 	codeSnippet,
