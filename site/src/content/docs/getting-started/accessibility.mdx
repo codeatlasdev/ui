@@ -161,7 +161,7 @@ Brand presets generated from a hex color use the same generator, so they keep th
 
 ## Testing
 
-`@codeatlasdev/ui/testing` is the helper the library uses on its own components: axe-core run after animations settle, with the library's known exceptions, plus `withTheme`, `coarsePointer` and `measure` for the theme matrix, touch devices and fidelity checks. It takes any `Element` or `Document`, so it works in Vitest browser mode, Playwright component tests or any DOM test environment. `axe-core` is an optional peer dependency: install it where you import the helper.
+`@codeatlasdev/ui/testing` is the helper the library uses on its own components: axe-core run after animations settle, with the library's known exceptions, plus `withTheme`, `coarsePointer` and `measure` for the theme matrix, touch devices and fidelity checks, and `expectOpaqueSurface` for the opaque-overlay contract. It takes any `Element` or `Document`, so it works in Vitest browser mode, Playwright component tests or any DOM test environment. `axe-core` is an optional peer dependency: install it where you import the helper.
 
 ```bash
 bun add -d axe-core
@@ -192,8 +192,34 @@ A theme and viewport matrix is a loop around the same assertion: `withTheme({ sc
 | `coarsePointer()` | `() => void` | Makes `matchMedia` answer as a touch device (`(pointer: coarse)`, `(hover: none)`) for code that reads it from JavaScript; the returned function restores it. CSS media queries cannot be changed from a page, use the runner's emulation for those. |
 | `measure(el, props)` | `{ rect, styles }` | `getBoundingClientRect` plus the computed style properties you name. Measure the same element in two renderings and diff the results to find the exact property that differs. |
 | `auditLayout({ mobile?, intentional? })` | `string[]` | The layout audit that gates every page of this site: no sideways scroll, no overlapping text or controls in `main` and `header`, no clipped text (an ellipsis or a scroll region is fine) and, with `mobile`, every control in `main` at least `--ca-touch-target` square. Empty when clean. Self-contained, so Playwright can run it in the page. |
+| `expectOpaqueSurface(el, { min? })` | `Promise<number>` | Waits for animations to settle, then rejects when the element's fill (background-color alpha times its own `opacity`) is below `min` (default `OPAQUE_SURFACE_MIN`, 0.9); resolves with the alpha. The message names the element, the computed color and the alpha. |
+| `surfaceAlpha(el)` | `number` | That alpha, read now: the computed `background-color` alpha times the element's `opacity`. A `background-image` is not measured. |
+| `colorAlpha(color)` | `number` | The alpha (0 to 1) of a computed color: `rgb()`/`rgba()`, `hsl()`, `hwb()`, `lab()`, `lch()`, `oklab()`, `oklch()`, `color()`, hex and keywords, which is every form Chromium returns, `color-mix()` and relative colors included. Throws a `TypeError` on what it cannot resolve (`currentcolor`, `var()`, an unresolved `color-mix()`) instead of guessing opaque. |
 
 `options` is the axe `RunOptions`; its `rules` are merged over the exceptions, so `{ rules: { region: { enabled: true } } }` re-enables one. `axe.run` is not reentrant: never run two checks concurrently. Contrast needs real layout and styles, so run in a browser rather than jsdom.
+
+### Opaque overlays
+
+A panel that carries text (`Dialog`, `AlertDialog`, `Drawer`, `Sheet`, `Popover`, `DropdownMenu`) keeps a fill of alpha 0.9 or more in both schemes and under every style, `glass` and `frosted` included, so the page behind cannot pull its text below its contrast. The library tests this on its own panels; run the same check after you override `--ca-sheet-bg`, `--ca-overlay-bg` or `--ca-popover-bg`:
+
+```ts
+import { render } from "vitest-browser-svelte";
+import { page } from "vitest/browser";
+import { expectOpaqueSurface, withTheme } from "@codeatlasdev/ui/testing";
+
+let restore = () => {};
+afterEach(() => restore());
+
+for (const scheme of ["light", "dark"] as const)
+  it(`the edit dialog stays opaque in ${scheme}`, async () => {
+    restore = withTheme({ scheme, style: "glass" });
+    await render(EditDialog);
+    await page.getByRole("button", { name: "Edit" }).click();
+    await expectOpaqueSurface(page.getByRole("dialog").element());
+  });
+```
+
+A fill at alpha 0.8 rejects with the element, its computed color and the alpha. Pass `{ min: 0.94 }` for a stricter floor. The check reads `background-color`: a panel painted by a gradient (`background-image`) is reported as such, not measured.
 
 Check a page's layout at a phone width with the same audit:
 

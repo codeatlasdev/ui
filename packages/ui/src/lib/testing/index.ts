@@ -1,5 +1,6 @@
 /**
- * Test helpers: `@codeatlasdev/ui/testing` (axe checks, theme matrix, measuring, coarse-pointer emulation).
+ * Test helpers: `@codeatlasdev/ui/testing` (axe checks, theme matrix, measuring, coarse-pointer
+ * emulation, the opaque-overlay contract).
  *
  * Framework- and runner-agnostic: every helper takes a DOM `Element` or `Document` and works in
  * any real-browser or DOM environment (Vitest browser mode, Playwright component tests, Jest +
@@ -10,7 +11,10 @@ import type { AxeResults, ElementContext, Result, RunOptions } from "axe-core";
 import type { SurfaceStyle } from "../stores/color-scheme.svelte.js";
 import type { PresetId } from "../tokens/presets.js";
 
+import { describeElement, OPAQUE_SURFACE_MIN, surfaceAlpha } from "./opaque.js";
+
 export { auditLayout, type LayoutAuditOptions } from "./layout-audit.js";
+export { colorAlpha, OPAQUE_SURFACE_MIN, surfaceAlpha } from "./opaque.js";
 export type { AxeResults, ElementContext, Result, RunOptions };
 
 /**
@@ -113,6 +117,32 @@ export async function expectNoA11yViolations(
 	const { violations } = await checkA11y(target, options);
 	if (violations.length > 0)
 		throw new Error(`${violations.length} axe violation(s):\n${formatViolations(violations)}`);
+}
+
+/**
+ * The opaque-overlay contract (#1158) as an assertion: once animations have settled, rejects when
+ * `el`'s fill (its computed `background-color` alpha times its own `opacity`) is below `min`
+ * (default {@link OPAQUE_SURFACE_MIN}, 0.9), and resolves with the alpha otherwise. Run it on every
+ * panel that carries text (Dialog, Sheet, Drawer, Popover...) in light and dark, and under the
+ * blurred styles (`withTheme({ style: "glass" })`), where a see-through tint lets the page behind
+ * pull the text below its contrast. A `background-image` (gradient) fill is named, not measured.
+ */
+export async function expectOpaqueSurface(
+	el: Element,
+	{ min = OPAQUE_SURFACE_MIN }: { min?: number } = {}
+): Promise<number> {
+	if (!(min >= 0 && min <= 1)) throw new RangeError(`min must be between 0 and 1, got ${min}`);
+	await settled();
+	const alpha = surfaceAlpha(el);
+	if (alpha >= min) return alpha;
+	const cs = getComputedStyle(el);
+	const image =
+		cs.backgroundImage === "none"
+			? ""
+			: `; a background-image paints it (${cs.backgroundImage}), which this check does not measure`;
+	throw new Error(
+		`${describeElement(el)} is see-through: background ${cs.backgroundColor} times opacity ${cs.opacity} is alpha ${alpha}, below ${min}${image}`
+	);
 }
 
 /** The box and the computed styles of one element: what a fidelity comparison reads. */
