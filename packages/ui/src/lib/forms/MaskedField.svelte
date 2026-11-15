@@ -28,6 +28,8 @@
     name?:         string;
     /** The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. */
     id?:           string;
+    /** Ids of other elements that describe the input, kept ahead of its hint or error ids (passed to `TextField`). */
+    'aria-describedby'?: string;
     oninput?:      (value: string) => void;
     onchange?:     (value: string) => void;
     onblur?:       (e: FocusEvent) => void;

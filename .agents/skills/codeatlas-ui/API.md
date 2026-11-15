@@ -695,6 +695,7 @@ Data attributes: `data-surface` (`mesh`)
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
 | `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
+| `aria-describedby?` | `string` |  | Ids of other elements that describe the input, kept ahead of its hint or error ids (passed to `TextField`). |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 ## ChartScope
@@ -2444,6 +2445,7 @@ Parts: `ca-map` `ca-map__canvas` `ca-map__overlay`
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
 | `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
+| `aria-describedby?` | `string` |  | Ids of other elements that describe the input, kept ahead of its hint or error ids (passed to `TextField`). |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
@@ -2624,6 +2626,7 @@ Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
 | `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
+| `aria-describedby?` | `string` |  | Ids of other elements that describe the input, kept ahead of its hint or error ids (passed to `TextField`). |
 | `onchange?` | `(cents: number) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
@@ -3007,6 +3010,7 @@ Tokens: `--ca-pwstrength-empty-bg` `--ca-pwstrength-gap` `--ca-pwstrength-label-
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
 | `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
+| `aria-describedby?` | `string` |  | Ids of other elements that describe the input, kept ahead of its hint or error ids (passed to `TextField`). |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 Snippets: `leading`; `trailing`
@@ -4172,6 +4176,7 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
 | `id?` | `string \| null` |  | The textarea's `id`, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`). |
+| `aria-describedby?` | `string \| null` |  | Ids of other elements that describe the textarea (a help paragraph, an error summary). They are read after the field's own hint or error and counter ids. |
 | `ref?` | `HTMLTextAreaElement \| null` | `null` | `bind:` The native `<textarea>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
@@ -4217,6 +4222,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
 | `id?` | `string \| null` |  | The input's `id`, generated when absent. The label's `for` and the hint, error, counter and text-addon ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`, `<id>-pre`, `<id>-suf`). |
+| `aria-describedby?` | `string \| null` |  | Ids of other elements that describe the input (a help paragraph, an error summary). They are read after the field's own text-addon, hint or error and counter ids. |
 | `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |

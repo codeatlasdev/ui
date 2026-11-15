@@ -37,6 +37,8 @@
     name?:        string;
     /** The textarea's `id`, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`). */
     id?:          string | null;
+    /** Ids of other elements that describe the textarea (a help paragraph, an error summary). They are read after the field's own hint or error and counter ids. */
+    'aria-describedby'?: string | null;
     /** The native `<textarea>`, to focus it or read it. */
     ref?:         HTMLTextAreaElement | null;
     oninput?:     (value: string) => void;
@@ -64,6 +66,7 @@
     class: className = '',
     name,
     id: idProp,
+    'aria-describedby': ariaDescribedby,
     ref          = $bindable(null),
     oninput,
     onchange,
@@ -78,9 +81,14 @@
   const id    = $derived(idProp || generatedId);
   const hint  = $derived(description ?? helperText);
   const count = useFieldCounter(() => ({ counter, maxlength: rest.maxlength, value, focused }));
+  // The field's own ids first, then a caller's (a help paragraph, an error summary), which are kept (#1316);
+  // the same order as Select, Dialog and Sheet (#1066).
   const describedBy = $derived(
-    [error ? `${id}-err` : hint ? `${id}-hint` : '', count.visible ? `${id}-count` : '']
-      .filter(Boolean).join(' ') || undefined
+    [
+      error ? `${id}-err` : hint ? `${id}-hint` : '',
+      count.visible ? `${id}-count` : '',
+      ariaDescribedby,
+    ].filter(Boolean).join(' ') || undefined
   );
 
   // min-height is computed in CSS from the row count so it follows density and font scale

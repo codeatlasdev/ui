@@ -59,6 +59,7 @@ With `allowNegative`, a sign button follows the input (`aria-pressed` while the 
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "id", type: "string", description: "Id of the input, generated when absent. The label, hint and error ids follow it, as in TextField." },
+  { name: "aria-describedby", type: "string", description: "Ids of other elements that describe the input, read before its hint or error, as in TextField." },
   { name: "leading / trailing", type: "Snippet", description: "Content before or after the input." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(cents: number) => void", description: "Called on every edit with the new cents value." },

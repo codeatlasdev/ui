@@ -53,6 +53,7 @@ Documents try these values: CPF `123.456.789-09` is valid and `111.111.111-11` i
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "id", type: "string", description: "Id of the input, generated when absent. The label, hint and error ids follow it, as in TextField. PhoneField and CepField take it too." },
+  { name: "aria-describedby", type: "string", description: "Ids of other elements that describe the input, read before its hint or error, as in TextField. PhoneField and CepField take it too." },
   { name: "oninput / onchange", type: "(value: string) => void", description: "Called with the masked value." },
   { name: "onblur", type: "(e: FocusEvent) => void", description: "Called when the input loses focus." },
 ]} />

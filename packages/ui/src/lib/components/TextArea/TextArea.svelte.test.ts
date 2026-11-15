@@ -5,6 +5,7 @@ import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import { setLocale } from "../../i18n/index.js";
 import TextArea from "./TextArea.svelte";
+import TextAreaDescribedBy from "./TextAreaDescribedBy.test.svelte";
 import TextAreaRef from "./TextAreaRef.test.svelte";
 
 describe("TextArea", () => {
@@ -194,6 +195,36 @@ describe("TextArea caller id (#1313)", () => {
 		const field = screen.getByRole("textbox", { name: "Bio" });
 		await expect.element(field).toHaveAttribute("aria-describedby", "bio-err bio-count");
 		expect(document.getElementById("bio-err")?.textContent).toBe("Too long");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+// #1316: a caller's aria-describedby is kept, after the field's own hint, error and counter ids.
+describe("TextArea describedby (#1316)", () => {
+	it("keeps the caller's ids alone", async () => {
+		const screen = await render(TextAreaDescribedBy, {});
+		const field = screen.getByRole("textbox", { name: "Bio" });
+		await expect.element(field).toHaveAttribute("aria-describedby", "help");
+		await expect.element(field).toHaveAccessibleDescription("Shown on your profile");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("the error, then the caller's ids", async () => {
+		const screen = await render(TextAreaDescribedBy, { error: "Too long" });
+		const field = screen.getByRole("textbox", { name: "Bio" });
+		await expect.element(field).toHaveAttribute("aria-describedby", "bio-err help");
+		await expect.element(field).toHaveAccessibleDescription("Too long Shown on your profile");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("error, counter, then the caller's", async () => {
+		const screen = await render(TextAreaDescribedBy, {
+			error: "Too long",
+			maxlength: 20,
+			counter: true,
+		});
+		const field = screen.getByRole("textbox", { name: "Bio" });
+		await expect.element(field).toHaveAttribute("aria-describedby", "bio-err bio-count help");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

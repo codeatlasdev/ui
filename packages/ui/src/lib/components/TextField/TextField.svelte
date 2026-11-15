@@ -66,6 +66,8 @@
     name?:         string;
     /** The input's `id`, generated when absent. The label's `for` and the hint, error, counter and text-addon ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`, `<id>-pre`, `<id>-suf`). */
     id?:           string | null;
+    /** Ids of other elements that describe the input (a help paragraph, an error summary). They are read after the field's own text-addon, hint or error and counter ids. */
+    'aria-describedby'?: string | null;
     /** The native `<input>`, to focus it or read it. */
     ref?:          HTMLInputElement | null;
     oninput?:      (value: string) => void;
@@ -103,6 +105,7 @@
     class: className = '',
     name,
     id: idProp,
+    'aria-describedby': ariaDescribedby,
     ref          = $bindable(null),
     oninput,
     onchange,
@@ -120,12 +123,15 @@
   // Text addons describe the field ("https://", ".com"), so they join the accessible description.
   const prefixId = $derived(`${id}-pre`);
   const suffixId = $derived(`${id}-suf`);
+  // The field's own ids first, then a caller's (a help paragraph, an error summary), which are kept (#1316);
+  // the same order as Select, Dialog and Sheet (#1066).
   const describedBy = $derived(
     [
       typeof prefix === 'string' && prefix ? prefixId : '',
       typeof suffix === 'string' && suffix ? suffixId : '',
       error ? `${id}-err` : hint ? `${id}-hint` : '',
       count.visible ? `${id}-count` : '',
+      ariaDescribedby,
     ].filter(Boolean).join(' ') || undefined
   );
 
