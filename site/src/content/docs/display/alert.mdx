@@ -36,6 +36,8 @@ The parent owns visibility: render the alert conditionally and hide it from `onc
   { name: "children", type: "Snippet", default: "undefined", description: "Alert body content." },
 ]} />
 
+Other attributes (`data-testid`, `id`, `aria-*`) are forwarded to the root `<div>`. A `role` or `aria-live` replaces the default `alert` / `polite`, for example `role="note"` for a notice that is on the page from the start.
+
 ## Banner
 
 `variant="banner"` spans its container edge to edge, square, with the severity on the bottom border: a page-wide notice at the top of a page or of the shell (maintenance, a trial that ends soon).

@@ -2,10 +2,15 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { alert } from '../../i18n/groups/alert.js';
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { CheckCircle2, AlertTriangle, XCircle, Info, X } from '@lucide/svelte';
   const t = useMessages(alert);
 
-  interface Props {
+  /**
+   * Other attributes go to the root `<div>`; a `role` or `aria-live` replaces the default `alert` / `polite`
+   * (e.g. `role="note"` for a notice that is on the page from the start).
+   */
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'title'> {
     severity: 'success' | 'warning' | 'error' | 'info';
     title?: string;
     /** `inline` (default) is a card in the flow; `banner` spans its container edge to edge, square, for a page-wide notice (maintenance, trial ending) at the top of a page or shell. */
@@ -16,7 +21,7 @@
     children?: Snippet;
   }
 
-  let { severity, title, variant = 'inline', closable = false, onclose, class: className = '', children }: Props = $props();
+  let { severity, title, variant = 'inline', closable = false, onclose, class: className = '', children, ...rest }: Props = $props();
 
   const icons = {
     success: CheckCircle2,
@@ -28,7 +33,7 @@
   let Icon = $derived(icons[severity]);
 </script>
 
-<div class="ca-alert ca-alert--{severity} {className}" class:ca-alert--banner={variant === 'banner'} role="alert" aria-live="polite">
+<div role="alert" aria-live="polite" {...rest} class="ca-alert ca-alert--{severity} {className}" class:ca-alert--banner={variant === 'banner'}>
   <div class="ca-alert__bar" aria-hidden="true"></div>
   <span class="ca-alert__icon" aria-hidden="true">
     <Icon size={18} stroke-width={2} />

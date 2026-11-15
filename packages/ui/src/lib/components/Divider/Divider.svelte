@@ -1,12 +1,16 @@
 <script lang="ts">
-  interface Props {
+  import type { HTMLAttributes } from 'svelte/elements';
+
+  /** Other attributes go to the `role="separator"` element; the role and orientation stay owned. */
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'role' | 'aria-orientation'> {
     orientation?: 'horizontal' | 'vertical';
     class?: string;
   }
-  let { orientation = 'horizontal', class: className = '' }: Props = $props();
+  let { orientation = 'horizontal', class: className = '', ...rest }: Props = $props();
 </script>
 
 <div
+  {...rest}
   role="separator"
   aria-orientation={orientation}
   class="ca-divider ca-divider--{orientation} {className}"

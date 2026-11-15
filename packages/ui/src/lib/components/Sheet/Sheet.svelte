@@ -5,6 +5,7 @@
 	import { createIds, createPresence } from "../../primitives/index.js";
 	import { modalLayer } from "../Dialog/modal-layer.svelte.js";
 	import type { Snippet } from "svelte";
+	import type { HTMLDialogAttributes } from "svelte/elements";
 	import { Spring } from "svelte/motion";
 	import { reducedMotion } from "../../stores/reduced-motion.svelte";
 	import "../Dialog/dialog.css";
@@ -27,10 +28,16 @@
 	 *     {#snippet footer()}<Button fullWidth>New session</Button>{/snippet}
 	 *   </Sheet>
 	 */
-	interface Props {
+	/**
+	 * Other attributes (`data-testid`, `id`, `aria-*`) go to the `<dialog>`, like `Drawer`. An `aria-labelledby`
+	 * or `aria-label` replaces the title reference; `aria-describedby` is added to the description's.
+	 */
+	interface Props
+		extends Omit<HTMLDialogAttributes, "children" | "open" | "title" | "class" | "role" | "onclose" | "oncancel"> {
 		open?: boolean;
 		title?: string;
 		description?: string;
+		class?: string;
 		onclose?: () => void;
 		children: Snippet;
 		footer?: Snippet;
@@ -52,6 +59,12 @@
 		swipeToDismiss = true,
 		inline = false,
 		history = true,
+		class: className = "",
+		style,
+		"aria-label": ariaLabel,
+		"aria-labelledby": ariaLabelledby,
+		"aria-describedby": ariaDescribedby,
+		...rest
 	}: Props = $props();
 
 	const DISMISS_RATIO = 0.3;
@@ -118,16 +131,17 @@
 	<!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
 	<!-- svelte-ignore a11y_no_redundant_roles -->
 	<dialog
+		{...rest}
 		bind:this={panel}
-		class="ca-overlay ca-sheet__overlay ca-sheet {inline ? 'ca-overlay--inline' : ''}"
+		class="ca-overlay ca-sheet__overlay ca-sheet {inline ? 'ca-overlay--inline' : ''} {className}"
 		role="dialog"
 		tabindex="-1"
-		aria-label={title ? undefined : t().sheet.panel}
-		aria-labelledby={title ? ids.part("title") : undefined}
-		aria-describedby={description ? ids.part("description") : undefined}
+		aria-label={ariaLabel ?? (title || ariaLabelledby ? undefined : t().sheet.panel)}
+		aria-labelledby={ariaLabelledby ?? (ariaLabel || !title ? undefined : ids.part("title"))}
+		aria-describedby={[description ? ids.part("description") : "", ariaDescribedby ?? ""].filter(Boolean).join(" ") || undefined}
 		data-state={open ? "open" : "closed"}
 		data-inline={inline ? "" : undefined}
-		style={offset.current > 0 ? `translate: 0 ${offset.current}px` : undefined}
+		style={offset.current > 0 ? `translate: 0 ${offset.current}px;${style ?? ""}` : style}
 		{@attach presence.ref}
 		{@attach modalLayer(() => ({ onDismiss: dismiss, closing: !open, inline, history }))}
 	>

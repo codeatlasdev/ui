@@ -10,12 +10,14 @@
    * Semantics are a description list: the label is the `<dt>`, the value the `<dd>`.
    */
   import { getContext } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { KPI_CONTEXT } from './context.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { kpiCard } from '../../i18n/groups/kpiCard.js';
   const t = useMessages(kpiCard);
 
-  interface Props {
+  /** Other attributes go to the `<dl>`. */
+  interface Props extends Omit<HTMLAttributes<HTMLDListElement>, 'class' | 'children'> {
     /** What is measured. One line: truncates with an ellipsis when the container is narrow. */
     label: string;
     /** The number (or short text). Tabular numerals, never wraps. */
@@ -56,6 +58,7 @@
     valueFont = 'display',
     skeleton = false,
     class: className = '',
+    ...rest
   }: Props = $props();
 
   // Inside a KpiCard the parts also carry its documented `ca-kpi__*` classes (rendered in the markup, so SSR has them).
@@ -81,6 +84,7 @@
 </script>
 
 <dl
+  {...rest}
   class="ca-stat {className}"
   data-size={size}
   data-align={align}

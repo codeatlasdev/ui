@@ -1,21 +1,24 @@
 <script lang="ts">
   import { useMessages } from '../../i18n/state.svelte.js';
   import { spinner } from '../../i18n/groups/spinner.js';
+  import type { SVGAttributes } from 'svelte/elements';
   const t = useMessages(spinner);
-  interface Props {
+  /** Other attributes go to the `<svg>`; a `role` or `aria-label` replaces the default `status` and localized name. */
+  interface Props extends Omit<SVGAttributes<SVGSVGElement>, 'class' | 'children' | 'viewBox' | 'fill' | 'xmlns'> {
     size?: number | string;
     class?: string;
     label?: string;
   }
-  let { size = 24, class: className = '', label }: Props = $props();
+  let { size = 24, class: className = '', label, style, ...rest }: Props = $props();
   let px = $derived(typeof size === 'number' ? `${size}px` : size);
 </script>
 
 <svg
   role="status"
   aria-label={label ?? t().spinner.label}
+  {...rest}
   class="ca-spinner {className}"
-  style="--spinner-size:{px}"
+  style="--spinner-size:{px};{style ?? ''}"
   viewBox="0 0 24 24"
   fill="none"
   xmlns="http://www.w3.org/2000/svg"

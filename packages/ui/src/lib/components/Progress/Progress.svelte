@@ -1,5 +1,8 @@
 <script lang="ts">
-  interface Props {
+  import type { HTMLAttributes } from 'svelte/elements';
+
+  /** Other attributes go to the `role="progressbar"` element (`aria-valuetext`, `aria-labelledby`, `data-testid`); the role and values stay owned. */
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'role' | 'aria-valuenow' | 'aria-valuemin' | 'aria-valuemax'> {
     value?: number;
     max?: number;
     indeterminate?: boolean;
@@ -19,6 +22,7 @@
     class: className = '',
     label,
     size = 'lg',
+    ...rest
   }: Props = $props();
 
   let pct = $derived(
@@ -27,13 +31,14 @@
 </script>
 
 <div
+  aria-label={label}
+  {...rest}
   class="ca-progress {className}"
   data-size={size}
   role="progressbar"
   aria-valuenow={indeterminate ? undefined : value}
   aria-valuemin={0}
   aria-valuemax={max}
-  aria-label={label}
 >
   <div class="ca-progress__track">
     <div

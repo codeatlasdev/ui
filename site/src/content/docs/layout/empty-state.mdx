@@ -86,3 +86,5 @@ import DenseCrmSrc from "~/demos/layout/empty-state/DenseCrm.svelte?raw";
   { name: "children", type: "Snippet", description: "Extra content below the description." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `aria-*`) are forwarded to the root `<div>`; a `role` or `aria-label` replaces the default `status` named by `title`.

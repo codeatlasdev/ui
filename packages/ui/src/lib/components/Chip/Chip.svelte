@@ -3,9 +3,12 @@
   import { chip } from '../../i18n/groups/chip.js';
   import type { IconComponent as IconType } from '../../types.js';
   import { X } from '@lucide/svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   const t = useMessages(chip);
 
-  interface Props {
+  /** Other attributes go to the chip `<span>`. `role`, `tabindex` and `aria-pressed` follow `onclick` and stay owned. */
+  interface Props
+    extends Omit<HTMLAttributes<HTMLSpanElement>, 'class' | 'children' | 'onclick' | 'role' | 'tabindex' | 'aria-pressed'> {
     label: string;
     icon?: IconType;
     deletable?: boolean;
@@ -27,11 +30,13 @@
     variant = 'default',
     size = 'md',
     class: className = '',
+    ...rest
   }: Props = $props();
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <span
+  {...rest}
   class="ca-chip {className}"
   data-ca-blur="thin"
   class:ca-chip--selected={selected}
@@ -46,7 +51,7 @@
   tabindex={onclick ? 0 : undefined}
   aria-pressed={onclick ? selected : undefined}
   onclick={onclick}
-  onkeydown={(e) => { if (onclick && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onclick(); } }}
+  onkeydown={(e) => { rest.onkeydown?.(e); if (onclick && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onclick(); } }}
 >
   {#if IconComponent}
     <span class="ca-chip__icon" aria-hidden="true">

@@ -41,3 +41,5 @@ Use `size="sm"` or `"md"` for compact bars in cards and headers. For a height ou
   { name: "label", type: "string", default: "undefined", description: "Accessible name, set as `aria-label`." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
+
+Other attributes (`aria-valuetext`, `aria-labelledby`, `data-testid`, `id`) are forwarded to the `role="progressbar"` element, and an `aria-label` replaces `label`. The role and the `aria-valuenow`/`min`/`max` numbers stay owned.

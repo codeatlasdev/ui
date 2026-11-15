@@ -83,6 +83,8 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
   { name: "class", type: "string", default: "''", description: "Extra classes on the panel." },
 ]} />
 
+Other attributes (`data-testid`, `id`, `aria-*`) are forwarded to the `<dialog>`, like `Drawer`. An `aria-labelledby` or `aria-label` replaces the title reference (and silences the missing-title warning); an `aria-describedby` is added to the description's.
+
 ## Palette dialogs
 
 A command palette or quick switcher sits near the top and keeps its place while results change: `placement="top"`, plus two tokens on the panel for its width and corner radius, with no selector against `.ca-dialog`.

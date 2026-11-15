@@ -1,9 +1,11 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import type { HeadingLevel, IconComponent } from '../../types.js';
   import { sectionHeadingLevel } from '../PageShell/heading-context.js';
 
-  interface Props {
+  /** Other attributes go to the root `<div>`; a `role` or `aria-label` replaces the default `status` named by `title`. */
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'title'> {
     /** Lucide icon component */
     icon?:        IconComponent;
     title:        string;
@@ -37,7 +39,7 @@
     children?:    Snippet;
   }
 
-  let { icon: Icon, title, headingLevel, variant = 'default', size = 'default', description, display = false, bare = false, actionsFill = false, actions, children, class: className = '' }: Props = $props();
+  let { icon: Icon, title, headingLevel, variant = 'default', size = 'default', description, display = false, bare = false, actionsFill = false, actions, children, class: className = '', ...rest }: Props = $props();
 
   // Read once at init: context lookups are only valid during component initialisation.
   const inheritedLevel = sectionHeadingLevel(5);
@@ -49,7 +51,7 @@
   const iconSize = $derived(row ? 16 : variant === 'hero' ? 32 : 24);
 </script>
 
-<div class="ca-empty ca-empty--{modifier} {className}" class:ca-empty--bare={bare} class:ca-empty--fill={actionsFill && !row} role="status" aria-label={title}>
+<div role="status" aria-label={title} {...rest} class="ca-empty ca-empty--{modifier} {className}" class:ca-empty--bare={bare} class:ca-empty--fill={actionsFill && !row}>
   {#if Icon}
     <div class="ca-empty__icon" aria-hidden="true">
       <Icon size={iconSize} stroke-width={row ? 2 : 1.5} />

@@ -53,6 +53,8 @@ Spacing, label and hint typography and the typed text come from the shared field
   { name: "onchange", type: "(value: string) => void", description: "Called when the selection changes." },
 ]} />
 
+Other attributes (`data-testid`, `id`, `title`, `aria-describedby`, `onfocus`, `onblur`) are forwarded to the trigger `<button>`, the element that takes focus, and `class` to the wrapper. An `id` replaces the generated one (the label follows it); `aria-describedby` is added to the hint or error reference.
+
 ## A different text in the closed trigger
 
 An option's `triggerLabel` is what the closed trigger shows once it is selected; the open list keeps `label`. A "view as" selector lists plain names and reads as a sentence once one is picked:

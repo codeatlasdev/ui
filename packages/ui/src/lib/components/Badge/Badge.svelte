@@ -2,11 +2,16 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { badge } from '../../i18n/groups/badge.js';
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   const t = useMessages(badge);
 
   type Tone = 'brand' | 'success' | 'danger' | 'warning' | 'info' | 'neutral' | 'custom';
 
-  interface Props {
+  /**
+   * Other attributes (`data-testid`, `id`, `title`, `aria-*`, handlers) go to the pill `<span>`, or to the
+   * wrapper `<span>` of an anchored badge (the corner indicator keeps its own `role="status"` and label).
+   */
+  interface Props extends Omit<HTMLAttributes<HTMLSpanElement>, 'class' | 'children' | 'color'> {
     count?: number;
     /** Anchored badge: counts above `max` show as `max+` (the label keeps the real count). Default 99. */
     max?: number;
@@ -40,7 +45,9 @@
     subtle = false,
     size = 'sm',
     class: className = '',
-    children
+    children,
+    style,
+    ...rest
   }: Props = $props();
 
   let showBadge = $derived(dot || (count !== undefined && count > 0));
@@ -49,15 +56,16 @@
 
 {#if tone}
   <span
+    {...rest}
     class="ca-badge ca-badge--inline ca-badge--{tone} ca-badge--{size} {className}"
     class:ca-badge--subtle={subtle}
-    style={tone === 'custom' ? `--ca-badge-custom: ${color}` : undefined}
+    style={tone === 'custom' ? `--ca-badge-custom: ${color};${style ?? ''}` : style}
   >
     {#if dot}<span class="ca-badge__dot" aria-hidden="true"></span>{/if}
     {@render children?.()}
   </span>
 {:else}
-<span class="ca-badge-wrapper {className}">
+<span {...rest} class="ca-badge-wrapper {className}" {style}>
   {@render children?.()}
   {#if showBadge}
     <span

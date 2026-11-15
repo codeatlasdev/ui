@@ -10,6 +10,7 @@
   import { ChevronDown, Check } from '@lucide/svelte';
   import { common } from '../../i18n/groups/common.js';
   import '../field-optional.css';
+  import type { HTMLButtonAttributes } from 'svelte/elements';
   const t = useMessages(select, common);
 
   interface Option {
@@ -22,7 +23,12 @@
     group?:    string;
   }
 
-  interface Props {
+  /**
+   * Other attributes (`data-testid`, `id`, `title`, `aria-describedby`, `onfocus`) go to the trigger
+   * `<button>`, the element that takes focus; `class` goes to the wrapper. An `id` replaces the generated
+   * one (the label follows it) and `aria-describedby` is added to the hint or error reference.
+   */
+  interface Props extends Omit<HTMLButtonAttributes, 'value' | 'class' | 'children' | 'type' | 'name' | 'disabled' | 'onchange' | 'onclick' | 'onkeydown' | 'aria-label' | 'aria-labelledby' | 'aria-haspopup' | 'aria-expanded' | 'aria-controls' | 'aria-invalid'> {
     value?:        string;
     placeholder?:  string;
     options:       Option[];
@@ -69,9 +75,16 @@
     'aria-labelledby': ariaLabelledby,
     class: className = '',
     onchange,
+    id: idProp,
+    'aria-describedby': ariaDescribedby,
+    ...rest
   }: Props = $props();
 
-  const id       = uid('sel');
+  const generatedId = uid('sel');
+  const id = $derived(idProp ?? generatedId);
+  const describedBy = $derived(
+    [error ? `${id}-err` : description ? `${id}-hint` : '', ariaDescribedby ?? ''].filter(Boolean).join(' ') || undefined
+  );
 
   // Consecutive options with the same `group` form one section; `i` stays the index into `options`,
   // which is what the listbox navigates, so headers (not options) are never highlighted or typed to.
@@ -157,6 +170,7 @@
 
   <!-- svelte-ignore a11y_role_supports_aria_props_implicit -->
   <button
+    {...rest}
     type="button"
     {id}
     bind:this={trigger}
@@ -167,7 +181,7 @@
     aria-controls={open ? `${id}-list` : undefined}
     aria-label={label ? undefined : fallbackName}
     aria-labelledby={namedBy ? `${ariaLabelledby || `${id}-name`} ${id}-value` : undefined}
-    aria-describedby={error ? `${id}-err` : description ? `${id}-hint` : undefined}
+    aria-describedby={describedBy}
     aria-invalid={error ? 'true' : undefined}
     data-state={open ? 'open' : 'closed'}
     data-placeholder={selected ? undefined : ''}

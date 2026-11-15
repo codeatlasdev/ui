@@ -17,7 +17,9 @@ const HEADROOM = 1.05;
 
 // Divider has no package dependencies, so "Divider only" is the Svelte client runtime plus ~250 B
 // of ours: the floor any Svelte component costs. "Button only" minus that floor is what the
-// package adds (Spinner, its own i18n groups, clsx).
+// package adds (Spinner, its own i18n groups, clsx). Since #1066 Divider forwards attributes
+// (`{...rest}`), so the floor includes Svelte's attribute-spread runtime (17,998 -> 21,157 B gzip),
+// which every component that forwards attributes (Button, Card, TextField...) already pays.
 const ENTRIES: Entry[] = [
 	{
 		name: "floor: Divider only",

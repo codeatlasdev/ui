@@ -45,3 +45,5 @@ The sweep is a gradient band. Under the plain surface styles (`defaultStyle: "fl
   { name: "rows", type: "number", default: "1", description: "Renders several stacked lines. For the text variant the last one is 60% wide." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `title`) are forwarded to the root: the bar, or the `.ca-skeleton-rows` wrapper when `rows > 1` (`class` stays on every bar). `aria-hidden` stays owned.

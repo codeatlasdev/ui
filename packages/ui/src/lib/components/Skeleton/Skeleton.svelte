@@ -1,5 +1,11 @@
 <script lang="ts">
-  interface Props {
+  import type { HTMLAttributes } from 'svelte/elements';
+
+  /**
+   * Other attributes go to the root: the bar itself, or the `.ca-skeleton-rows` wrapper when `rows > 1`
+   * (`class` stays on every bar). `aria-hidden` stays owned: a skeleton is never read.
+   */
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'aria-hidden'> {
     variant?: 'text' | 'circular' | 'rectangular' | 'rounded';
     width?: string | number;
     height?: string | number;
@@ -12,6 +18,8 @@
     height,
     rows = 1,
     class: className = '',
+    style: extra,
+    ...rest
   }: Props = $props();
 
   function px(v: string | number | undefined) {
@@ -27,7 +35,7 @@
 </script>
 
 {#if rows > 1}
-  <div class="ca-skeleton-rows">
+  <div {...rest} class="ca-skeleton-rows" style={extra}>
     {#each { length: rows } as _, i}
       <div
         class="ca-skeleton ca-skeleton--{variant} {className}"
@@ -38,8 +46,9 @@
   </div>
 {:else}
   <div
+    {...rest}
     class="ca-skeleton ca-skeleton--{variant} {className}"
-    {style}
+    style={extra ? `${style};${extra}` : style}
     aria-hidden="true"
   ></div>
 {/if}

@@ -1,15 +1,17 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
 
-  interface Props {
+  /** Other attributes go to the `<kbd>`. */
+  interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children'> {
     class?: string;
     children?: Snippet;
   }
 
-  let { class: className = '', children }: Props = $props();
+  let { class: className = '', children, ...rest }: Props = $props();
 </script>
 
-<kbd class="ca-kbd {className}">{@render children?.()}</kbd>
+<kbd {...rest} class="ca-kbd {className}">{@render children?.()}</kbd>
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;

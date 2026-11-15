@@ -29,3 +29,5 @@ A vertical divider stretches to the height of its flex container, so place it in
   { name: "orientation", type: "'horizontal' | 'vertical'", default: "'horizontal'", description: "Direction of the separator." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
+
+Other attributes (`data-testid`, `id`, `aria-*`) are forwarded to the `role="separator"` element; the role and `aria-orientation` stay owned.

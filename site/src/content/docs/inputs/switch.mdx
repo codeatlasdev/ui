@@ -73,3 +73,5 @@ Keep the contrast of the thumb against both track colours at 3:1 or more when yo
   { name: "class", type: "string", description: "Extra classes on the wrapper." },
   { name: "onchange", type: "(checked: boolean) => void", description: "Called when the state changes." },
 ]} />
+
+Like `Checkbox`, other attributes (`data-testid`, `id`, `title`, `aria-describedby`, `onclick`, `onkeydown`) are forwarded to the native `<input role="switch">`, and `class` to the wrapper. An `id` replaces the generated one and the label follows it.

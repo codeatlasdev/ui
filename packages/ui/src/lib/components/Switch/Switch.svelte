@@ -1,7 +1,13 @@
 <script lang="ts">
   import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
+  import type { HTMLInputAttributes } from 'svelte/elements';
 
-  interface Props {
+  /**
+   * Like `Checkbox`, other attributes (`data-testid`, `id`, `title`, `aria-describedby`, `onclick`) go to
+   * the native `<input role="switch">`; `class` goes to the wrapper. An `id` replaces the generated one
+   * and the visible label follows it.
+   */
+  interface Props extends Omit<HTMLInputAttributes, 'checked' | 'class' | 'children' | 'onchange' | 'type' | 'value' | 'group' | 'size' | 'role' | 'aria-checked' | 'aria-label' | 'aria-labelledby'> {
     checked?: boolean;
     disabled?: boolean;
     label?: string;
@@ -32,9 +38,12 @@
     class: className = '',
     onchange,
     sound,
+    id,
+    ...rest
   }: Props = $props();
 
-  const switchId = $props.id();
+  const generatedId = $props.id();
+  const switchId = $derived(id ?? generatedId);
 </script>
 
 <div class="ca-switch-wrapper {className}">
@@ -42,6 +51,7 @@
        the track and thumb around it only paint. -->
   <span class="ca-switch" data-size={size === 'sm' ? 'sm' : undefined} data-state={checked ? 'checked' : 'unchecked'} data-disabled={disabled ? '' : undefined}>
     <input
+      {...rest}
       id={switchId}
       {name}
       type="checkbox"
@@ -59,6 +69,7 @@
         onchange?.(checked);
       }}
       onkeydown={(e) => {
+        rest.onkeydown?.(e);
         // APG switch: Space (native) and Enter both toggle.
         if (e.key === 'Enter') {
           e.preventDefault();
