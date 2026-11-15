@@ -7,9 +7,21 @@
 		onToggle?: () => void;
 		panelOpen?: boolean;
 		display?: boolean;
+		labels?: Record<string, string>;
+		resolveSegment?: (segment: string, index: number, segments: string[]) => string | undefined;
+		/** Renders a trailing button with this text. */
+		action?: string;
 	}
 
-	let { pathname = "/painel/usuarios/novo-cadastro", onToggle, panelOpen = true, display = false }: Props = $props();
+	let {
+		pathname = "/painel/usuarios/novo-cadastro",
+		onToggle,
+		panelOpen = true,
+		display = false,
+		labels,
+		resolveSegment,
+		action,
+	}: Props = $props();
 
 	setContext("appshell", {
 		get panelOpen() {
@@ -24,4 +36,12 @@
 	});
 </script>
 
-<SiteHeader {display} />
+{#if action}
+	<SiteHeader {display} {labels} {resolveSegment}>
+		{#snippet trailing()}
+			<button type="button">{action}</button>
+		{/snippet}
+	</SiteHeader>
+{:else}
+	<SiteHeader {display} {labels} {resolveSegment} />
+{/if}
