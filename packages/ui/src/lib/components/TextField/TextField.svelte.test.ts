@@ -526,15 +526,15 @@ describe("TextField describedby (#1316)", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
-	it("caller's ids, then the error", async () => {
+	it("the error, then the caller's ids", async () => {
 		const screen = await render(TextFieldDescribedBy, { error: "Required" });
 		const input = screen.getByRole("textbox", { name: "Email" });
 		await expect.element(input).toHaveAttribute("aria-describedby", "email-err help");
-		await expect.element(input).toHaveAccessibleDescription("Used on invoices Required");
+		await expect.element(input).toHaveAccessibleDescription("Required Used on invoices");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
-	it("caller's, error, counter", async () => {
+	it("error, counter, then the caller's", async () => {
 		const screen = await render(TextFieldDescribedBy, {
 			error: "Required",
 			maxlength: 20,

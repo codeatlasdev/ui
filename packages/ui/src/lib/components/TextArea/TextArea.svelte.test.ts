@@ -209,15 +209,15 @@ describe("TextArea describedby (#1316)", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
-	it("caller's ids, then the error", async () => {
+	it("the error, then the caller's ids", async () => {
 		const screen = await render(TextAreaDescribedBy, { error: "Too long" });
 		const field = screen.getByRole("textbox", { name: "Bio" });
 		await expect.element(field).toHaveAttribute("aria-describedby", "bio-err help");
-		await expect.element(field).toHaveAccessibleDescription("Shown on your profile Too long");
+		await expect.element(field).toHaveAccessibleDescription("Too long Shown on your profile");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
-	it("caller's, error, counter", async () => {
+	it("error, counter, then the caller's", async () => {
 		const screen = await render(TextAreaDescribedBy, {
 			error: "Too long",
 			maxlength: 20,
