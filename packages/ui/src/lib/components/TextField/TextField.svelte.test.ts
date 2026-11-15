@@ -7,6 +7,7 @@ import { settled } from "../../../../tests/settled";
 import { setLocale } from "../../i18n/index.js";
 import TextField from "./TextField.svelte";
 import TextFieldAddons from "./TextFieldAddons.test.svelte";
+import TextFieldDescribedBy from "./TextFieldDescribedBy.test.svelte";
 import TextFieldRef from "./TextFieldRef.test.svelte";
 
 describe("TextField", () => {
@@ -510,6 +511,37 @@ describe("TextField caller id (#1313)", () => {
 		await expect.element(input).toHaveAttribute("id", "email");
 		await expect.element(input).toHaveAttribute("aria-describedby", "email-err email-count");
 		expect(document.getElementById("email-err")?.textContent).toBe("Required");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+// #1316: a caller's aria-describedby (a help paragraph, an error summary) is kept, ahead of the
+// field's own hint, error and counter ids, instead of being overwritten by them.
+describe("TextField describedby (#1316)", () => {
+	it("keeps the caller's ids alone", async () => {
+		const screen = await render(TextFieldDescribedBy, {});
+		const input = screen.getByRole("textbox", { name: "Email" });
+		await expect.element(input).toHaveAttribute("aria-describedby", "help");
+		await expect.element(input).toHaveAccessibleDescription("Used on invoices");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("caller's ids, then the error", async () => {
+		const screen = await render(TextFieldDescribedBy, { error: "Required" });
+		const input = screen.getByRole("textbox", { name: "Email" });
+		await expect.element(input).toHaveAttribute("aria-describedby", "help email-err");
+		await expect.element(input).toHaveAccessibleDescription("Used on invoices Required");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("caller's, error, counter", async () => {
+		const screen = await render(TextFieldDescribedBy, {
+			error: "Required",
+			maxlength: 20,
+			counter: true,
+		});
+		const input = screen.getByRole("textbox", { name: "Email" });
+		await expect.element(input).toHaveAttribute("aria-describedby", "help email-err email-count");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

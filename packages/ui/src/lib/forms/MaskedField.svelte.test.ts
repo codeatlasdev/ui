@@ -2,9 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../tests/a11y";
+import CepField from "./CepField.svelte";
 import MaskedField from "./MaskedField.svelte";
 import Harness from "./MaskedField.test.svelte";
+import MoneyInput from "./MoneyInput.svelte";
 import { maskCEP, maskDateBR } from "./masks";
+import PhoneField from "./PhoneField.svelte";
 
 describe("MaskedField", () => {
 	it("masks while typing and binds the masked value", async () => {
@@ -132,5 +135,20 @@ describe("MaskedField caller id (#1313)", () => {
 		expect(screen.container.querySelector("label")?.getAttribute("for")).toBe("cep");
 		await expect.element(input).toHaveAttribute("aria-describedby", "cep-err");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+// #1316: the wrappers hand a caller's aria-describedby to TextField, which keeps it ahead of its own.
+describe("Field wrappers describedby (#1316)", () => {
+	it("reach the input, before the error id", async () => {
+		const own = { error: "Invalid", "aria-describedby": "help" };
+		await render(MaskedField, { ...own, id: "masked", label: "Masked", mask: maskCEP });
+		await render(MoneyInput, { ...own, id: "money", label: "Money" });
+		await render(PhoneField, { ...own, id: "phone", label: "Phone" });
+		await render(CepField, { ...own, id: "cep", label: "CEP" });
+		for (const id of ["masked", "money", "phone", "cep"])
+			expect(document.getElementById(id)?.getAttribute("aria-describedby"), id).toBe(
+				`help ${id}-err`
+			);
 	});
 });

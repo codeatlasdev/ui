@@ -21,7 +21,7 @@ import CounterSrc from "~/demos/inputs/text-area/Counter.svelte?raw";
 <TextArea label="Message" bind:value={message} rows={4} />
 ```
 
-The label sits above the field. `description` is hidden while an `error` is shown, and the error is announced with `role="alert"`. Text stays at 16px or more on touch devices so iOS Safari does not zoom on focus. Native textarea attributes (`maxlength`, `data-*`, `onkeydown`, `aria-label`...) are spread on the `<textarea>` (an `id` replaces the generated one, and the label's `for` and the hint, error and counter ids follow it), `bind:ref` gives you the element, and `hideLabel` keeps the label for screen readers only.
+The label sits above the field. `description` is hidden while an `error` is shown, and the error is announced with `role="alert"`. Text stays at 16px or more on touch devices so iOS Safari does not zoom on focus. Native textarea attributes (`maxlength`, `data-*`, `onkeydown`, `aria-label`...) are spread on the `<textarea>` (an `id` replaces the generated one, and the label's `for` and the hint, error and counter ids follow it; an `aria-describedby` is kept and read before them), `bind:ref` gives you the element, and `hideLabel` keeps the label for screen readers only.
 
 <Demo title="Basic" description="Empty, with a placeholder, and pre-filled." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and resize=&quot;none&quot;." src={StatesSrc}><States client:visible /></Demo>
@@ -54,6 +54,7 @@ The same counter as [TextField](/docs/inputs/text-field/#character-counter). `co
   { name: "readonly", type: "boolean", default: "false", description: "Makes the textarea read-only." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "id", type: "string", description: "Id of the textarea, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`)." },
+  { name: "aria-describedby", type: "string", description: "Ids of other elements that describe the textarea. They come first, then the hint or error and counter ids." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "ref", type: "HTMLTextAreaElement | null", description: "Bindable native textarea element." },
   { name: "oninput", type: "(value: string) => void", description: "Called on every keystroke with the new value." },
