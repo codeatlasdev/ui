@@ -2,6 +2,19 @@
 
 Thanks for taking the time to contribute. This is a Svelte 5 glass-first design system. Every improvement is welcome: bug fixes, new components, docs, and ideas.
 
+## Start here
+
+Came from the banner on the Issues tab? Find what you want to do:
+
+| You want to | Where |
+|---|---|
+| Report a bug | The [bug report form](https://github.com/codeatlasdev/ui/issues/new?template=bug_report.yml): your `@codeatlasdev/ui` version, browser or device, and the smallest snippet that reproduces it. |
+| Report what your AI agent hit while building with the library | Let the agent file it with the `report_issue` tool of `ca-ui-mcp`; it drafts a sanitized report ([how it works](https://ui.codeatlas.com.br/docs/getting-started/reporting/)). |
+| Propose a component or a change | The [feature request form](https://github.com/codeatlasdev/ui/issues/new?template=feature_request.yml). Describe the screen or use case first; we agree on the API before anyone writes code. |
+| Ask a question | [Discussions](https://github.com/codeatlasdev/ui/discussions). |
+| Report a vulnerability | Privately, as [SECURITY.md](./SECURITY.md) explains. Never in a public issue. |
+| Make your first contribution | Pick a [good first issue](https://github.com/codeatlasdev/ui/contribute): small, scoped, and it says where to look and what done means. Then follow [Working on an issue](#working-on-an-issue). |
+
 ## Code of Conduct
 
 By participating you agree to abide by our [Code of Conduct](./CODE_OF_CONDUCT.md). Please read it before contributing.
