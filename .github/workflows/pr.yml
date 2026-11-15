@@ -1,0 +1,23 @@
+name: PR
+# `validate` on every PR, on GitHub's runner instead of each contributor's machine (#1324). The pre-push hook
+# only runs a quick check of the diff; the land gate still runs validate + affected tests on the rebased tree.
+on:
+  pull_request:
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      # No wall-time budget on hosted runners (budgets are measured on the owner's machine, #643).
+      - run: bun scripts/validate.ts

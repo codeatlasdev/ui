@@ -10,7 +10,7 @@ export const PREFIX = "@codeatlasdev/ui@";
  * stamps the new version into the generated catalog ("Needs: @codeatlasdev/ui@<version>"), so the
  * manifest is rebuilt before `git add -A`; otherwise main keeps the previous stamp until an unrelated PR
  * rebuilds it. Which files that covers is `TREE_OUTPUTS` (packages/ui/scripts/build-manifest.ts), checked
- * against `scripts/generated-paths.sh`, the one list of generated files.
+ * against `scripts/generated-paths.ts`, the one list of generated files.
  */
 export function versionSteps(): string[][] {
 	return [

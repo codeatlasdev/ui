@@ -2,7 +2,7 @@
 /**
  * `bun run test` / `bun run test:changed`: run what the diff against origin/main affects, say what was
  * selected and why, and stay inside the `changed` time budget (scripts/test-run.ts). `--land` is the
- * same selection plus the route canaries, the gate `issue-land.sh` runs. `bun run test:full`, `test:e2e`
+ * same selection plus the route canaries, the gate `issue-land.ts` runs. `bun run test:full`, `test:e2e`
  * and `test:routes` run the whole suite and `bun run test:vrt` every screenshot; all four run at release.
  *
  * A SHARED change (a shared component file, or a route-wide one: styles, tokens, theme, primitives, the
@@ -97,8 +97,8 @@ const changed = [
 	]),
 ].filter((f) => f !== "bun.lock" || !lockIsDevOnly());
 const short = base.slice(0, 8);
-// The budget follows the selection's scope (scripts/test-graph.ts `resolveBudget`): scripts/test-changed.sh and
-// `issue-land.sh` read it from here before the clock starts.
+// The budget follows the selection's scope (scripts/test-graph.ts `resolveBudget`): scripts/test-changed-run.ts and
+// `issue-land.ts` read it from here before the clock starts.
 const budget = resolveBudget(changed, land);
 if (process.argv.includes("--print-budget")) {
 	console.log(budget);
@@ -276,7 +276,7 @@ if (vrtArgs)
 
 if (!land && (pkgStale || siteStale)) {
 	console.log(
-		"test:changed: site SKIPPED: site/dist is older than the diff. Run `bun run build` once and repeat, or let the land gate (`issue-land.sh`) run it."
+		"test:changed: site SKIPPED: site/dist is older than the diff. Run `bun run build` once and repeat, or let the land gate (`issue-land.ts`) run it."
 	);
 	process.exit(failed.length ? 1 : 0);
 }
