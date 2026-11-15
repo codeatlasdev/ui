@@ -180,6 +180,38 @@ formatMoneyCompact(null); // "—"
 - **Bytes** step by 1024 with the units B, KB, MB, GB, TB and PB; `maximumFractionDigits` defaults to 1, and a value that would round to 1024 moves up a unit.
 - **Names**: `formatName` writes a name in title case with single spaces, keeps `da`, `das`, `de`, `do`, `dos` and `e` in lowercase after the first word (`particles` replaces the list) and keeps a word typed in mixed case (`DiCaprio`) as typed. `getInitials` takes the first and last words that are not particles; `Avatar` derives its own initials from `alt`.
 
+### Copy, plurals, phones, companies and months
+
+The same subpath fills message templates, picks the plural of a word and writes Brazilian phones, company names and month labels:
+
+```ts
+import {
+  formatCompanyName,
+  formatCopy,
+  formatPhone,
+  monthLabels,
+  phoneDigits,
+  plural,
+} from "@codeatlasdev/ui/utils/format";
+
+formatCopy("Olá {nome}", { nome: "Ana" }); // "Olá Ana"
+formatCopy("Olá {nome}", {}); // "Olá {nome}": a missing value stays visible
+plural(1, "item", "itens"); // "1 item"
+plural(1000, "item", "itens"); // "1.000 itens"
+plural(0, "item", "itens"); // "0 item": pt counts 0 and 1,5 as singular
+formatPhone("+5511987654321"); // "(11) 98765-4321"
+phoneDigits("(11) 3456-7890"); // "1134567890"
+formatCompanyName("  acme   comércio ltda - me"); // "acme comércio Ltda. - ME"
+monthLabels(); // ["Janeiro", "Fevereiro", …, "Dezembro"]
+monthLabels("pt-BR", "short"); // ["Jan.", "Fev.", …, "Dez."]
+```
+
+- **`formatCopy(template, values)`** replaces each `{key}` in one pass. A key that is absent, `null` or `undefined` stays in the text as `{key}`, so a missing value shows on the page instead of `"Olá undefined"`. Values are inserted with `String()`: format a number first with `plural` or `formatNumber`.
+- **`plural(count, one, many, locale = "pt-BR")`** asks `Intl.PluralRules` for the category and writes the count with `Intl.NumberFormat` in the same locale. The `one` category takes `one`, every other category takes `many`. Portuguese follows CLDR, where `one` is any count whose integer part is 0 or 1: `plural(0, "item", "itens")` is `"0 item"`, so write your own text for zero (`"Nenhum item"`) when you want one. In English `plural(0, "item", "items", "en")` is `"0 items"`.
+- **Phones** accept E.164 (`+5511987654321`), bare digits or masked text. `phoneDigits` returns the national number (area code first, 10 or 11 digits), dropping the country code `55` and a trunk `0`; it returns `""` when the text is not a whole Brazilian number (another country, a partial number, a 9-digit number that does not start with 9), and `` `+55${phoneDigits(text)}` `` is its E.164. A number in area code 55 keeps it. `formatPhone` applies the mask of `PhoneField` (`maskPhoneBR` from `@codeatlasdev/ui/forms`) and shows any other text as given, trimmed.
+- **`formatCompanyName`** trims, collapses spaces and writes the legal-form suffixes at the end of the name one way: `ltda` is `Ltda.`; `sa`, `s.a`, `s/a` and `S. A.` are `S.A.`; `me`, `epp`, `eireli` and `slu` are in capitals. It never changes the case of the rest of the name, keeps the separators between suffixes (`Ltda. - ME`, `Ltda.-ME`), and leaves a suffix-like word alone when it is the first word or joined to a word by a bare hyphen (`Encontre-me`).
+- **`monthLabels(locale = "pt-BR", style = "long")`** returns the 12 Gregorian month names from `Intl.DateTimeFormat` in the standalone form (Russian `Январь`, not `января`), `"long"` or `"short"`. They are labels for a select, a chart axis or a column, so the first letter is capitalised in the locale, as `MonthPicker` shows them; the rest is what `Intl` returns (pt-BR short names keep their period). Inside a sentence pt-BR writes months in lowercase: use `formatDate` there.
+
 ## In tests
 
 The default is English. In browser tests, call `setLocale("pt-BR")` where a test asserts Portuguese text and reset with `setLocale("en")` in `afterEach`, so the module state does not leak between tests. In server-render tests, wrap the component in `I18nProvider` instead.

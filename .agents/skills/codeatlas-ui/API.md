@@ -5005,6 +5005,26 @@ A CSS color string for an OKLCH triple and alpha: `oklch(L C H)` (with `/ alpha`
 function formatColor(color: Oklch, alpha: number, format: "oklch" | "hex"): string
 ```
 
+### formatCompanyName
+
+`import { formatCompanyName } from "@codeatlasdev/ui"`
+
+A company name with single spaces and its legal-form suffixes written one way: `ltda` is `Ltda.`, `sa`, `s.a`, `s/a` and `S. A.` are `S.A.`, and `me`, `epp`, `eireli` and `slu` are in capitals: `"  acme   comércio  ltda "` is `"acme comércio Ltda."`. Only suffixes at the end of the name, after its first word, are touched (`"Acme Ltda - me"` is `"Acme Ltda. - ME"`); the rest keeps the case it was typed in, and the spaces, commas and dashes between suffixes are kept. A bare hyphen joins two suffixes (`"LTDA-ME"`), never a word and a suffix (`"Encontre-me"`).
+
+```ts
+function formatCompanyName(name: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
+```
+
+### formatCopy
+
+`import { formatCopy } from "@codeatlasdev/ui"`
+
+Fills the `{key}` placeholders of a template in one pass: `formatCopy("Olá {nome}", { nome: "Ana" })` is `"Olá Ana"`. A key with no value (absent, `null` or `undefined`) stays visible, so `formatCopy("Olá {nome}", {})` is `"Olá {nome}"` and a missing value shows on the page instead of reading `"Olá undefined"` or `"Olá "`. Values go in with `String()` (format a number first with `plural` or `formatNumber`) and are never expanded again.
+
+```ts
+function formatCopy(template: string, values: CopyValues): string
+```
+
 ### formatCurrency
 
 `import { formatCurrency } from "@codeatlasdev/ui"`
@@ -5103,6 +5123,16 @@ A ratio as a percentage, like `Intl`: `formatPercent(0.125)` is `"12,5%"`, `-0.0
 
 ```ts
 function formatPercent(ratio: number | null | undefined, options?: PercentOptions): string
+```
+
+### formatPhone
+
+`import { formatPhone } from "@codeatlasdev/ui"`
+
+A Brazilian phone as people read it, `"(11) 98765-4321"` or `"(11) 3456-7890"`, from what `phoneDigits` reads, with the mask of `PhoneField` (`maskPhoneBR` from `@codeatlasdev/ui/forms`). Text that is not a whole Brazilian number (a foreign or partial one) is shown as given, trimmed, so nothing is hidden; a blank one is `empty`.
+
+```ts
+function formatPhone(input: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
 ```
 
 ### formatRelativeTime
@@ -5345,6 +5375,16 @@ Merge partial themes: `b` wins; the nested option groups merge key by key.
 function mergeTheme(a: Partial<ThemeDefinition>, b: Partial<ThemeDefinition>): Partial<ThemeDefinition>
 ```
 
+### monthLabels
+
+`import { monthLabels } from "@codeatlasdev/ui"`
+
+The 12 month names of a locale, January first, from `Intl.DateTimeFormat` (Gregorian calendar, standalone form) instead of a hand-kept list: `monthLabels()` is `["Janeiro", …, "Dezembro"]`, `monthLabels("pt-BR", "short")` is `["Jan.", …, "Dez."]`. They are labels (a select, a chart axis, a column header), so the first letter is capitalised in the locale, as `MonthPicker` shows them; the rest is what `Intl` returns. Inside a sentence pt-BR writes months in lowercase: use `formatDate` there.
+
+```ts
+function monthLabels(locale?: string, style?: "long" | "short"): string[]
+```
+
 ### neutralRamp
 
 `import { neutralRamp } from "@codeatlasdev/ui"`
@@ -5405,6 +5445,16 @@ Pure, dependency-free strength estimate: unique characters and character classes
 function passwordScore(value: string): PasswordScore
 ```
 
+### phoneDigits
+
+`import { phoneDigits } from "@codeatlasdev/ui"`
+
+The national digits of a Brazilian phone, area code first (`"11987654321"`, `"1134567890"`), from E.164 (`"+5511987654321"`), bare digits or masked text. The country code (`+55`, or `55` before 10 or 11 more digits) and a trunk `0` are dropped; a number in area code 55 keeps it. Empty when the text is not a whole Brazilian number: another country, a partial number, an area code with a 0, or 9 digits after the area code that do not start with 9. Its E.164 is `` `+55${phoneDigits(text)}` ``.
+
+```ts
+function phoneDigits(text: string | null | undefined): string
+```
+
 ### pickBrand
 
 `import { pickBrand } from "@codeatlasdev/ui"`
@@ -5413,6 +5463,16 @@ Pick the brand color of a palette: the most vivid cluster that is neither near-w
 
 ```ts
 function pickBrand(palette: PaletteColor[]): PaletteColor | null
+```
+
+### plural
+
+`import { plural } from "@codeatlasdev/ui"`
+
+A count and the word that agrees with it: the form chosen by `Intl.PluralRules`, the number written by `Intl.NumberFormat`, both in `locale` (default `"pt-BR"`): `plural(1, "item", "itens")` is `"1 item"`, `plural(1000, "item", "itens")` is `"1.000 itens"`. The `one` category takes `one`; every other (`other`, and `zero`, `two`, `few` or `many` where the locale has them) takes `many`. In Portuguese (CLDR) `one` is any count whose integer part is 0 or 1: `plural(0, "item", "itens")` is `"0 item"` and `plural(1.5, "hora", "horas")` is `"1,5 hora"`; write your own text for zero (`"Nenhum item"`) when you want one. A missing count is `"—"`.
+
+```ts
+function plural(count: number | null | undefined, one: string, many: string, locale?: string): string
 ```
 
 ### presetContrastIssues
@@ -5886,6 +5946,7 @@ Types:
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
 | `CompactMoneyOptions` | `interface CompactMoneyOptions extends FormatOptions { currency?: string; }` | Options of `formatMoneyCompact` and `formatMoneyAxis`. |
 | `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; localeSwitcher?: LocaleSwitcherTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `CopyValues` | `type CopyValues = Readonly<Record<string, string \| number \| null \| undefined>>;` | Values `formatCopy` puts into a template; `null` and `undefined` count as missing. |
 | `CsvOptions` | `interface CsvOptions { locale?: string; delimiter?: "," \| ";" \| "\t"; bom?: boolean; }` |  |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateInZoneOptions` | `interface DateInZoneOptions extends FormatOptions { timeZone?: string; dateStyle?: Intl.DateTimeFormatOptions["dateStyle"]; }` | Options of `formatDateInZone`. |
@@ -9114,6 +9175,26 @@ A size in bytes in steps of 1024, with the locale's decimal separator: `formatBy
 function formatBytes(bytes: number | null | undefined, options?: BytesOptions): string
 ```
 
+### formatCompanyName
+
+`import { formatCompanyName } from "@codeatlasdev/ui/utils/format"`
+
+A company name with single spaces and its legal-form suffixes written one way: `ltda` is `Ltda.`, `sa`, `s.a`, `s/a` and `S. A.` are `S.A.`, and `me`, `epp`, `eireli` and `slu` are in capitals: `"  acme   comércio  ltda "` is `"acme comércio Ltda."`. Only suffixes at the end of the name, after its first word, are touched (`"Acme Ltda - me"` is `"Acme Ltda. - ME"`); the rest keeps the case it was typed in, and the spaces, commas and dashes between suffixes are kept. A bare hyphen joins two suffixes (`"LTDA-ME"`), never a word and a suffix (`"Encontre-me"`).
+
+```ts
+function formatCompanyName(name: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
+```
+
+### formatCopy
+
+`import { formatCopy } from "@codeatlasdev/ui/utils/format"`
+
+Fills the `{key}` placeholders of a template in one pass: `formatCopy("Olá {nome}", { nome: "Ana" })` is `"Olá Ana"`. A key with no value (absent, `null` or `undefined`) stays visible, so `formatCopy("Olá {nome}", {})` is `"Olá {nome}"` and a missing value shows on the page instead of reading `"Olá undefined"` or `"Olá "`. Values go in with `String()` (format a number first with `plural` or `formatNumber`) and are never expanded again.
+
+```ts
+function formatCopy(template: string, values: CopyValues): string
+```
+
 ### formatCurrency
 
 `import { formatCurrency } from "@codeatlasdev/ui/utils/format"`
@@ -9204,6 +9285,16 @@ A ratio as a percentage, like `Intl`: `formatPercent(0.125)` is `"12,5%"`, `-0.0
 function formatPercent(ratio: number | null | undefined, options?: PercentOptions): string
 ```
 
+### formatPhone
+
+`import { formatPhone } from "@codeatlasdev/ui/utils/format"`
+
+A Brazilian phone as people read it, `"(11) 98765-4321"` or `"(11) 3456-7890"`, from what `phoneDigits` reads, with the mask of `PhoneField` (`maskPhoneBR` from `@codeatlasdev/ui/forms`). Text that is not a whole Brazilian number (a foreign or partial one) is shown as given, trimmed, so nothing is hidden; a blank one is `empty`.
+
+```ts
+function formatPhone(input: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
+```
+
 ### formatRelativeTime
 
 `import { formatRelativeTime } from "@codeatlasdev/ui/utils/format"`
@@ -9234,12 +9325,43 @@ The capital initials of the first and last words, particles skipped: `"Maria da 
 function getInitials(name: string | null | undefined, options?: NameOptions): string
 ```
 
+### monthLabels
+
+`import { monthLabels } from "@codeatlasdev/ui/utils/format"`
+
+The 12 month names of a locale, January first, from `Intl.DateTimeFormat` (Gregorian calendar, standalone form) instead of a hand-kept list: `monthLabels()` is `["Janeiro", …, "Dezembro"]`, `monthLabels("pt-BR", "short")` is `["Jan.", …, "Dez."]`. They are labels (a select, a chart axis, a column header), so the first letter is capitalised in the locale, as `MonthPicker` shows them; the rest is what `Intl` returns. Inside a sentence pt-BR writes months in lowercase: use `formatDate` there.
+
+```ts
+function monthLabels(locale?: string, style?: "long" | "short"): string[]
+```
+
+### phoneDigits
+
+`import { phoneDigits } from "@codeatlasdev/ui/utils/format"`
+
+The national digits of a Brazilian phone, area code first (`"11987654321"`, `"1134567890"`), from E.164 (`"+5511987654321"`), bare digits or masked text. The country code (`+55`, or `55` before 10 or 11 more digits) and a trunk `0` are dropped; a number in area code 55 keeps it. Empty when the text is not a whole Brazilian number: another country, a partial number, an area code with a 0, or 9 digits after the area code that do not start with 9. Its E.164 is `` `+55${phoneDigits(text)}` ``.
+
+```ts
+function phoneDigits(text: string | null | undefined): string
+```
+
+### plural
+
+`import { plural } from "@codeatlasdev/ui/utils/format"`
+
+A count and the word that agrees with it: the form chosen by `Intl.PluralRules`, the number written by `Intl.NumberFormat`, both in `locale` (default `"pt-BR"`): `plural(1, "item", "itens")` is `"1 item"`, `plural(1000, "item", "itens")` is `"1.000 itens"`. The `one` category takes `one`; every other (`other`, and `zero`, `two`, `few` or `many` where the locale has them) takes `many`. In Portuguese (CLDR) `one` is any count whose integer part is 0 or 1: `plural(0, "item", "itens")` is `"0 item"` and `plural(1.5, "hora", "horas")` is `"1,5 hora"`; write your own text for zero (`"Nenhum item"`) when you want one. A missing count is `"—"`.
+
+```ts
+function plural(count: number | null | undefined, one: string, many: string, locale?: string): string
+```
+
 Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
 | `BytesOptions` | `interface BytesOptions extends FormatOptions { maximumFractionDigits?: number; }` | Options of `formatBytes`. |
 | `CompactMoneyOptions` | `interface CompactMoneyOptions extends FormatOptions { currency?: string; }` | Options of `formatMoneyCompact` and `formatMoneyAxis`. |
+| `CopyValues` | `type CopyValues = Readonly<Record<string, string \| number \| null \| undefined>>;` | Values `formatCopy` puts into a template; `null` and `undefined` count as missing. |
 | `DateInZoneOptions` | `interface DateInZoneOptions extends FormatOptions { timeZone?: string; dateStyle?: Intl.DateTimeFormatOptions["dateStyle"]; }` | Options of `formatDateInZone`. |
 | `DateTimeInZoneOptions` | `interface DateTimeInZoneOptions extends DateInZoneOptions { timeStyle?: Intl.DateTimeFormatOptions["timeStyle"]; }` | Options of `formatDateTimeInZone`. |
 | `FormatOptions` | `interface FormatOptions { locale?: string; empty?: string; }` | Options every formatter below takes. |

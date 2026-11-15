@@ -10,5 +10,5 @@
 	"./sound (own code, Svelte external)": 4096,
 	"inline: theme init script (default theme)": 1000,
 	"./utils/money": 1244,
-	"./utils/format": 1863
+	"./utils/format": 2663
 }
