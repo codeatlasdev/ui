@@ -29,7 +29,7 @@ Interactive components run on a headless layer of our own that implements the WA
 
 ## Motion
 
-When the user prefers reduced motion, `--ca-motion-scale` becomes `0`. Every duration token (`--ca-duration-fast`, `--ca-duration-base`, `--ca-duration-slow`, `--ca-duration-press`) is multiplied by it, so every token-driven transition is instant. Components with JavaScript-driven motion check the `reducedMotion` store: `Sheet` disables its swipe, `AppShellLayout` skips the panel spring and `SegmentedControl` turns off its indicator animation.
+When the user prefers reduced motion, `--ca-motion-scale` becomes `0`. Every duration token (`--ca-duration-fast`, `--ca-duration-base`, `--ca-duration-slow`, `--ca-duration-press`, and the [named springs](/docs/motion/transitions/#named-springs) `--ca-spring-*-duration`) is multiplied by it, so every token-driven transition is instant; `springCurve` and `springTween` return `duration: 0` under the same preference. Components with JavaScript-driven motion check the `reducedMotion` store: `Sheet` disables its swipe, `AppShellLayout` skips the panel spring and `SegmentedControl` turns off its indicator animation.
 
 ```ts
 import { reducedMotion, reducedTransparency } from "@codeatlasdev/ui";

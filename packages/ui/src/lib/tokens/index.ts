@@ -5,6 +5,7 @@ export * from "./presets.js";
 export { onTokensChange, type Rgba, tokenRgba } from "./rgba.js";
 export * from "./shadows.js";
 export * from "./shape.js";
+export * from "./springs.js";
 export * from "./transitions.js";
 export * from "./typography.js";
 export * from "./zIndex.js";

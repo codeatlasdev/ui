@@ -86,6 +86,7 @@
 		"./styles/marks.css": "./dist/styles/marks.css",
 		"./styles/breakpoints.css": "./dist/styles/breakpoints.css",
 		"./styles/text.css": "./dist/styles/text.css",
+		"./styles/springs.css": "./dist/styles/springs.css",
 		"./styles/type-roles.css": "./dist/styles/type-roles.css",
 		"./tokens": {
 			"types": "./dist/tokens/index.d.ts",

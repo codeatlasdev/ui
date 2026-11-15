@@ -39,3 +39,67 @@ Say the name, or the number. `Use #360 for the plan cards` and `Use a shared ele
 <Demo title="Sheet spring" description={"A spring sheet (bottom sheet with swipe to dismiss): it springs up with stiffness 0.2 and damping 0.75, follows your finger when dragged down, and dismisses past 30% of its height or a flick faster than 0.5 px/ms; otherwise it springs back. Use it for mobile pickers and filters. Ask: \"Use #365\" or \"a spring sheet with drag to dismiss\"."} src={SheetSpringSrc}><SheetSpring client:visible /></Demo>
 
 <Demo title="Filter list" description={"An animated filter (list exit animation): rows that no longer match shrink and fade in 240ms, survivors slide into the gap in 320ms, and the total counts to its new value in 420ms. Use it for catalogs and task lists so the user sees what disappeared. Ask: \"Use #366\" or \"an animated filter\"."} src={FilterListSrc}><FilterList client:visible /></Demo>
+
+## Named springs
+
+A spring is described by three physical numbers: `damping` (friction against speed), `stiffness` (pull toward the target) and `mass`. The package names three of them once, in `springs` (exported by `@codeatlasdev/ui` and `@codeatlasdev/ui/tokens`), and mirrors each as a CSS easing and duration, so a panel, a sheet and a picker that should move alike share one name instead of three sets of loose numbers.
+
+| Name | damping / stiffness / mass | Damping ratio | Overshoot | Settles in | CSS |
+|---|---|---|---|---|---|
+| `snappy` | 12 / 200 / 0.1 | 1.34 | none | 357 ms | `--ca-spring-snappy`, `--ca-spring-snappy-duration` |
+| `soft` | 20 / 170 / 0.5 | 1.08 | none | 612 ms | `--ca-spring-soft`, `--ca-spring-soft-duration` |
+| `bouncy` | 15 / 400 / 0.5 | 0.53 | 14% | 449 ms | `--ca-spring-bouncy`, `--ca-spring-bouncy-duration` |
+
+"Settles in" is the time after which the spring stays within 0.1% of its target (`springSettle`); it is the duration of the CSS and WAAPI curve. Under `prefers-reduced-motion: reduce` every spring resolves to 0 ms: the CSS durations are multiplied by `--ca-motion-scale`, and `springCurve` and `springTween` return `duration: 0` (they read the media query when you do not pass `reducedMotion`).
+
+Each runtime reads the same numbers. The CSS tokens live in an opt-in sheet (the three curves weigh about 0.5 kB gzip, so apps that do not use them do not pay for them); import it once, next to `global.css`:
+
+```ts
+import "@codeatlasdev/ui/styles/springs.css";
+```
+
+```css
+.panel {
+  transition: transform var(--ca-spring-snappy-duration) var(--ca-spring-snappy);
+}
+```
+
+```ts
+import { springCurve, springs } from "@codeatlasdev/ui";
+
+// WAAPI: a linear() easing sampled from the spring, and its settle time
+el.animate([{ translate: "0 100%" }, { translate: "0 0" }], springCurve("soft"));
+
+// A physics animation library that takes { damping, stiffness, mass } reads the preset as it is
+animate(el, { x: 240 }, { type: "spring", ...springs.snappy });
+```
+
+```svelte
+<script lang="ts">
+  import { springTween } from "@codeatlasdev/ui";
+  import { Tween } from "svelte/motion";
+  import { fly } from "svelte/transition";
+
+  let saved = $state(false);
+  const x = new Tween(0);
+</script>
+
+<button onclick={() => x.set(x.target ? 0 : 240, springTween("bouncy"))}>Move</button>
+<button onclick={() => (saved = !saved)}>Save</button>
+<div class="dot" style="--x:{x.current}px"></div>
+{#if saved}<p transition:fly={{ y: 16, ...springTween("snappy") }}>Saved</p>{/if}
+```
+
+Svelte's `Spring` counts in frames, with `stiffness` and `damping` between 0 and 1, so it cannot take these physical numbers (`snappy` would diverge at 60 fps). Use `springTween` with `Tween` or a transition: it is the exact curve, as an easing function over the settle time. The demos above keep their own frame-based `Spring` values.
+
+### Mapping a spring you already have
+
+`nearestSpring({ damping, stiffness, mass })` returns the preset whose curve is closest and the largest gap between the two curves, as a fraction of the travel. A gap of 0.05 or less (the curves never differ by more than 5% of the distance) counts as that preset: use its name. A larger gap means none of the three fits: add a named preset to the package instead of keeping the numbers in the app.
+
+| Your spring (damping / stiffness / mass) | Nearest | Largest gap | Use |
+|---|---|---|---|
+| 12 / 200 / 0.1 | `snappy` | 0 | `snappy` |
+| 13 / 210 / 0.1 | `snappy` | 0.013 | `snappy` |
+| 18 / 160 / 0.5 | `soft` | 0.021 | `soft` |
+| 14 / 400 / 0.5 | `bouncy` | 0.033 | `bouncy` |
+| 9 / 420 / 0.1 (5% overshoot, settles in 160 ms) | `snappy` | 0.462 | none: a new named preset |

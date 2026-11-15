@@ -13,7 +13,7 @@ export interface ManifestToken {
 	value: string;
 	/** Value under `.dark`, when it differs. */
 	dark?: string;
-	/** Where it is defined: `tokens.css` or `presets/<id>.css`. */
+	/** Where it is defined: `tokens.css`, `springs.css` (opt-in sheet) or `presets/<id>.css`. */
 	source: string;
 	/** Nearest preceding section comment, e.g. "Spacing scale". */
 	group?: string;
@@ -68,6 +68,8 @@ export function buildTokens(): ManifestToken[] {
 	const out = new Map<string, ManifestToken>();
 	const styles = join(LIB, "styles");
 	extractTokens(readFileSync(join(styles, "tokens.css"), "utf8"), "tokens.css", out);
+	// Opt-in sheet (`@codeatlasdev/ui/styles/springs.css`): listed so search_tokens finds the springs.
+	extractTokens(readFileSync(join(styles, "springs.css"), "utf8"), "springs.css", out);
 	// Built-ins repeat the same names per preset; the amber file (`:root` default) is the canonical value.
 	const presets = join(styles, "presets");
 	extractTokens(readFileSync(join(presets, "amber.css"), "utf8"), "presets/amber.css", out);

@@ -5385,6 +5385,16 @@ The 12 month names of a locale, January first, from `Intl.DateTimeFormat` (Grego
 function monthLabels(locale?: string, style?: "long" | "short"): string[]
 ```
 
+### nearestSpring
+
+`import { nearestSpring } from "@codeatlasdev/ui"`
+
+The preset whose curve is closest to `spring`, and the largest gap between the two curves (fraction of the travel). Maps an existing spring onto a name.
+
+```ts
+function nearestSpring(spring: SpringConfig): { name: SpringName; distance: number }
+```
+
 ### neutralRamp
 
 `import { neutralRamp } from "@codeatlasdev/ui"`
@@ -5678,6 +5688,60 @@ function slugify(text: string): string
 
 ```ts
 const soundBus: { emit(cue: CueName): void; listen(fn: Listener): () => void; }
+```
+
+### springCurve
+
+`import { springCurve } from "@codeatlasdev/ui"`
+
+The spring as a CSS `linear()` easing and its settle `duration` in ms, for WAAPI (`el.animate(kf, springCurve("snappy"))`) or a style. The curve is sampled every ms and kept within 0.2% of the travel; under reduced motion `duration` is 0.
+
+```ts
+function springCurve(spring: SpringInput, options?: SpringOptions): { easing: string; duration: number }
+```
+
+### springPosition
+
+`import { springPosition } from "@codeatlasdev/ui"`
+
+Position of a spring released from rest at 0 toward 1, `ms` milliseconds later (the exact solution, not a simulation).
+
+```ts
+function springPosition(spring: SpringInput, ms: number): number
+```
+
+### springs
+
+`import { springs } from "@codeatlasdev/ui"`
+
+Named springs: `snappy` (no overshoot, ~360 ms), `soft` (no overshoot, slower, ~610 ms), `bouncy` (~14% overshoot, ~450 ms). Mirrored in CSS by `--ca-spring-<name>` and `--ca-spring-<name>-duration` (opt-in `@codeatlasdev/ui/styles/springs.css`).
+
+```ts
+const springs: {
+  snappy: { readonly damping: 12; readonly stiffness: 200; readonly mass: 0.1; };
+  soft: { readonly damping: 20; readonly stiffness: 170; readonly mass: 0.5; };
+  bouncy: { readonly damping: 15; readonly stiffness: 400; readonly mass: 0.5; };
+}
+```
+
+### springSettle
+
+`import { springSettle } from "@codeatlasdev/ui"`
+
+Milliseconds until the spring stays within `restDelta` (default 0.1%) of its target: the duration of its CSS and WAAPI curve.
+
+```ts
+function springSettle(spring: SpringInput, restDelta?: number): number
+```
+
+### springTween
+
+`import { springTween } from "@codeatlasdev/ui"`
+
+The spring as an easing function over its settle `duration` in ms, for Svelte's `Tween` and transitions (`new Tween(0, springTween("soft"))`, `transition:fly={{ y: 16, ...springTween("snappy") }}`). 0 ms under reduced motion.
+
+```ts
+function springTween(spring: SpringInput, options?: SpringOptions): { easing: (t: number) => number; duration: number }
 ```
 
 ### stageInsets
@@ -6041,6 +6105,10 @@ Types:
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; liftKeys?: readonly string[]; touchHold?: boolean; instantTouch?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
 | `SoundProp` | `type SoundProp = boolean \| CueName;` | What a component's `sound` prop accepts: `true` plays the component's own cue, a name overrides it. |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
+| `SpringConfig` | `interface SpringConfig { readonly damping: number; readonly stiffness: number; readonly mass: number; }` | A damped spring in physical units, the convention of Motion and of most spring APIs: `damping` (friction against speed), `stiffness` (pull toward the target), `mass`. |
+| `SpringInput` | `type SpringInput = SpringName \| SpringConfig;` | A preset name or your own physical numbers. |
+| `SpringName` | `type SpringName = keyof typeof springs;` | Name of a preset in `springs`. |
+| `SpringOptions` | `interface SpringOptions { reducedMotion?: boolean; restDelta?: number; }` | Options of `springCurve` and `springTween`. |
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material, the `defaultStyle` knob of the theme (default `solid`). glass/frosted blur the backdrop and are opt-in; the rest are opaque. |
@@ -6763,6 +6831,21 @@ Types:
 | `instantTouch?` | `string` | CSS selector of elements inside an item whose touch drags start at once (no hold), while the rest of the item keeps the press and hold. Use it for a grip with `touch-action: none` on an item that must still scroll or swipe by its body. |
 | `disabled?` | `boolean` |  |
 | `onDrop` | `(e: DndDropEvent) => void` | Commit the move (same container: reorder; another container: move). |
+
+#### SpringConfig
+
+| Field | Type | Notes |
+|---|---|---|
+| `damping` | `number` |  |
+| `stiffness` | `number` |  |
+| `mass` | `number` |  |
+
+#### SpringOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `reducedMotion?` | `boolean` | `true` resolves the duration to 0 ms. Left out, it reads `prefers-reduced-motion` where `matchMedia` exists (false on the server). |
+| `restDelta?` | `number` | Distance from the target, as a fraction of the travel, under which the spring counts as settled. Default 0.001 (0.1%). |
 
 #### StageInsets
 
@@ -8778,6 +8861,16 @@ const MATERIAL_BLUR_VARS: Record<Thickness, string>
 const MATERIAL_CSS_VARS: Record<Thickness, string>
 ```
 
+### nearestSpring
+
+`import { nearestSpring } from "@codeatlasdev/ui/tokens"`
+
+The preset whose curve is closest to `spring`, and the largest gap between the two curves (fraction of the travel). Maps an existing spring onto a name.
+
+```ts
+function nearestSpring(spring: SpringConfig): { name: SpringName; distance: number }
+```
+
 ### neutralRamp
 
 `import { neutralRamp } from "@codeatlasdev/ui/tokens"`
@@ -8864,6 +8957,60 @@ const shadows: {
 }
 ```
 
+### springCurve
+
+`import { springCurve } from "@codeatlasdev/ui/tokens"`
+
+The spring as a CSS `linear()` easing and its settle `duration` in ms, for WAAPI (`el.animate(kf, springCurve("snappy"))`) or a style. The curve is sampled every ms and kept within 0.2% of the travel; under reduced motion `duration` is 0.
+
+```ts
+function springCurve(spring: SpringInput, options?: SpringOptions): { easing: string; duration: number }
+```
+
+### springPosition
+
+`import { springPosition } from "@codeatlasdev/ui/tokens"`
+
+Position of a spring released from rest at 0 toward 1, `ms` milliseconds later (the exact solution, not a simulation).
+
+```ts
+function springPosition(spring: SpringInput, ms: number): number
+```
+
+### springs
+
+`import { springs } from "@codeatlasdev/ui/tokens"`
+
+Named springs: `snappy` (no overshoot, ~360 ms), `soft` (no overshoot, slower, ~610 ms), `bouncy` (~14% overshoot, ~450 ms). Mirrored in CSS by `--ca-spring-<name>` and `--ca-spring-<name>-duration` (opt-in `@codeatlasdev/ui/styles/springs.css`).
+
+```ts
+const springs: {
+  snappy: { readonly damping: 12; readonly stiffness: 200; readonly mass: 0.1; };
+  soft: { readonly damping: 20; readonly stiffness: 170; readonly mass: 0.5; };
+  bouncy: { readonly damping: 15; readonly stiffness: 400; readonly mass: 0.5; };
+}
+```
+
+### springSettle
+
+`import { springSettle } from "@codeatlasdev/ui/tokens"`
+
+Milliseconds until the spring stays within `restDelta` (default 0.1%) of its target: the duration of its CSS and WAAPI curve.
+
+```ts
+function springSettle(spring: SpringInput, restDelta?: number): number
+```
+
+### springTween
+
+`import { springTween } from "@codeatlasdev/ui/tokens"`
+
+The spring as an easing function over its settle `duration` in ms, for Svelte's `Tween` and transitions (`new Tween(0, springTween("soft"))`, `transition:fly={{ y: 16, ...springTween("snappy") }}`). 0 ms under reduced motion.
+
+```ts
+function springTween(spring: SpringInput, options?: SpringOptions): { easing: (t: number) => number; duration: number }
+```
+
 ### THEME_PRESETS
 
 `import { THEME_PRESETS } from "@codeatlasdev/ui/tokens"`
@@ -8919,6 +9066,10 @@ Types:
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
+| `SpringConfig` | `interface SpringConfig { readonly damping: number; readonly stiffness: number; readonly mass: number; }` | A damped spring in physical units, the convention of Motion and of most spring APIs: `damping` (friction against speed), `stiffness` (pull toward the target), `mass`. |
+| `SpringInput` | `type SpringInput = SpringName \| SpringConfig;` | A preset name or your own physical numbers. |
+| `SpringName` | `type SpringName = keyof typeof springs;` | Name of a preset in `springs`. |
+| `SpringOptions` | `interface SpringOptions { reducedMotion?: boolean; restDelta?: number; }` | Options of `springCurve` and `springTween`. |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
@@ -8963,6 +9114,21 @@ Types:
 | `warning` | `string` |  |
 | `info` | `string` |  |
 | `error` | `string` |  |
+
+#### SpringConfig
+
+| Field | Type | Notes |
+|---|---|---|
+| `damping` | `number` |  |
+| `stiffness` | `number` |  |
+| `mass` | `number` |  |
+
+#### SpringOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `reducedMotion?` | `boolean` | `true` resolves the duration to 0 ms. Left out, it reads `prefers-reduced-motion` where `matchMedia` exists (false on the server). |
+| `restDelta?` | `number` | Distance from the target, as a fraction of the travel, under which the spring counts as settled. Default 0.001 (0.1%). |
 
 #### SurfaceColors
 
