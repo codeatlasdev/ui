@@ -1,0 +1,37 @@
+---
+title: Clamped Text
+description: Long text cut to a number of lines, with a Show more toggle that appears only when the text really overflows.
+group: Display
+order: 26
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Feed from "~/demos/display/clamped-text/Feed.svelte";
+import FeedSrc from "~/demos/display/clamped-text/Feed.svelte?raw";
+
+```svelte
+<script>
+  import { ClampedText } from "@codeatlasdev/ui";
+</script>
+
+<ClampedText lines={6}>{post.body}</ClampedText>
+```
+
+`ClampedText` cuts its text after `lines` lines (3 by default) with the same CSS `line-clamp` as the opt-in [`.ca-clamp` utility](/docs/layout/layout-primitives/#truncate-and-clamp), and adds a "Show more" button only when the text really overflows: it compares the text's `scrollHeight` with its `clientHeight`, and measures again when its width changes (`ResizeObserver`), when the text changes, when web fonts finish loading and when `lines` changes. A post that fits shows whole, with no button. When a wider screen makes a long text fit, the button goes away.
+
+The button carries `aria-expanded` and `aria-controls` (the id of the text), and its accessible name is its visible text. The labels come from the i18n catalog (`clampedText.more` and `clampedText.less`: "Show more" / "Show less", "Ver mais" / "Ver menos" in `pt-BR`), so they follow `setLocale`; `moreLabel` and `lessLabel` override them. The clamp only hides the text visually: it is in the server render and screen readers read all of it.
+
+Expanding grows the text downward and keeps the page where it is, even when the text has scrolled above the fold and only the button is in view: the browser's scroll anchoring would then scroll the page by the height of the revealed lines and leave them out of sight, so it is paused on the component's ancestors (`overflow-anchor: none` through the internal class `ca-x-anchor-off`) until the expanded layout has painted. Collapsing a long text from its end scrolls the button back into view, so focus does not land above the fold. There is no height animation, so nothing changes under reduced motion.
+
+<Demo title="Posts in a feed" description="The long post is cut to 3 lines with a Show more button; the short one fits and has no button." src={FeedSrc}><Feed client:visible /></Demo>
+
+<Props rows={[
+  { name: "lines", type: "number", default: "3", description: "Lines shown while collapsed (at least 1)." },
+  { name: "expanded", type: "boolean", default: "false", description: "Whether the whole text is shown. Bindable." },
+  { name: "moreLabel", type: "string", description: "Button text while collapsed. Defaults to the catalog's \"Show more\"." },
+  { name: "lessLabel", type: "string", description: "Button text while expanded. Defaults to the catalog's \"Show less\"." },
+  { name: "class", type: "string", default: "''", description: "Extra class names on the root." },
+  { name: "children", type: "Snippet", description: "The text: inline content or paragraphs." },
+]} />
+
+Other attributes (`id`, `data-*`, `aria-*`, `style`) go to the root `<div class="ca-clamped-text">`, which has `data-state="collapsed" | "expanded"`. The text is `.ca-clamped-text__content` and the button `.ca-clamped-text__toggle`.

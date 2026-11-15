@@ -131,6 +131,12 @@ Tokens: `--ca-chip-row-h` (height of the row's chips; `md` by default, `sm` with
 
 State attributes on `.ca-chip-group__chip`: `data-state="checked|unchecked"`, `data-disabled`; on the root: `data-invalid`, `data-disabled`. The list is a 3-column grid below 600px and a wrapping flex row from 600px.
 
+## ClampedText
+
+`.ca-clamped-text` `.ca-clamped-text__content` `.ca-clamped-text__toggle`
+
+`data-state="collapsed|expanded"` on `.ca-clamped-text`. `.ca-clamped-text__content` is clamped to `lines` while collapsed; `.ca-clamped-text__toggle` is rendered only when the text overflows. `.ca-x-measure` (on the text for one synchronous read while expanded) and `.ca-x-anchor-off` (on the ancestors for the two frames of an expansion) are internal.
+
 ## CodeSnippet
 
 `.ca-code-snippet` `.ca-code-snippet__copy` `.ca-code-snippet__lang` `.ca-code-snippet__pre` `.ca-code-snippet__pre--raw` `.ca-code-snippet__toolbar`

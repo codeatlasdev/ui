@@ -416,6 +416,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5027 | Record page | layout/record-list | Avatar, Button, Card, DropdownMenu, DropdownMenuItem, IconButton, PageShell, RecordCell, RecordList, RecordRow |
 | 5028 | TimePicker | inputs/time-picker | TimePicker |
 | 5029 | MonthPicker | inputs/month-picker | MonthPicker |
-| 5030 | Counter and warning tone | inputs/text-field | TextField |
-| 5031 | Soft limit and threshold | inputs/text-area | TextArea |
-| 5032 | Calendar that fills its container | inputs/date-picker | Calendar, RangeCalendar |
+| 5033 | Posts in a feed | display/clamped-text | Card, ClampedText |

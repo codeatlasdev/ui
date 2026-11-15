@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 414,
+	"count": 412,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5032",
-			"count": 100
+			"last": "5029",
+			"count": 97
 		},
 		{
 			"slug": "surfaces",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "5024",
-			"count": 68
+			"last": "5033",
+			"count": 69
 		},
 		{
 			"slug": "navigation",
@@ -36644,199 +36644,33 @@
 			"needs": "@codeatlasdev/ui@4.6.0"
 		},
 		{
-			"id": "5030",
-			"group": "inputs",
-			"page": "text-field",
-			"variant": "Counter",
-			"slug": "counter-and-warning-tone",
-			"title": "Counter and warning tone",
-			"description": "",
-			"summary": "Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier.",
-			"use": "Single-line fields with a length limit where the writer needs to see how much room is left.",
+			"id": "5033",
+			"group": "display",
+			"page": "clamped-text",
+			"variant": "Feed",
+			"slug": "posts-in-a-feed",
+			"title": "Posts in a feed",
+			"description": "The long post is cut to 3 lines with a Show more button; the short one fits and has no button.",
+			"summary": "Two posts in Cards: a long one cut to 3 lines by ClampedText with a Show more button, and a short one that fits and shows no button.",
+			"use": "A feed, comment list or description where long text is cut to a few lines and opened on demand, with no button on text that already fits.",
 			"spec": [
-				"Headline has `maxlength={40}`, `counter` and a 37-character value, so the count reads 37/40 in the warning tone",
-				"Promo code has `maxlength={12}` and `counter={{ warnAt: 0.75 }}`: the warning tone starts at 9 characters",
-				"The count sits beside the description and is the field's accessible description; crossing the threshold is announced once",
-				"Column wrapper has `max-width: 400px`"
+				"`const posts` has 2 entries with `id`, `author` and `body`: a long paragraph and one short sentence",
+				"Each post is a `<Card>` around an `<article class=\"post\">` with a `<strong class=\"author\">` and `<ClampedText lines={3}>{p.body}</ClampedText>`",
+				"`.feed` is a grid with `gap: var(--ca-space-4)` and `max-width: 560px`",
+				"Only the long post shows the Show more button; it reveals the rest and turns into Show less"
 			],
 			"tags": [
-				"text-field",
-				"counter",
-				"maxlength",
-				"character count",
-				"limit"
+				"clamped-text",
+				"line-clamp",
+				"show-more",
+				"read-more",
+				"feed",
+				"post"
 			],
 			"shape": "wide",
 			"index": {
 				"kind": "component",
-				"subtype": "input",
-				"industry": [
-					"general"
-				],
-				"style": [
-					"default"
-				],
-				"motion": "subtle",
-				"interaction": [
-					"keyboard"
-				],
-				"layout": "stack",
-				"colorMode": "both",
-				"density": "regular",
-				"tech": [
-					"css"
-				],
-				"cost": "css",
-				"components": [
-					"TextField"
-				],
-				"aliases": [
-					"character counter",
-					"char count",
-					"length limit",
-					"remaining characters"
-				],
-				"related": [
-					"056",
-					"058",
-					"5031"
-				],
-				"a11y": {
-					"reducedMotion": true,
-					"keyboard": true
-				},
-				"added": "2026-11-14",
-				"review": {
-					"industry": "pending"
-				}
-			},
-			"components": [
-				"TextField"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"TextField"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#counter-and-warning-tone",
-			"needs": "@codeatlasdev/ui@4.6.0"
-		},
-		{
-			"id": "5031",
-			"group": "inputs",
-			"page": "text-area",
-			"variant": "Counter",
-			"slug": "soft-limit-and-threshold",
-			"title": "Soft limit and threshold",
-			"description": "",
-			"summary": "Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters.",
-			"use": "Composers and long-form fields where a length limit matters only near the end.",
-			"spec": [
-				"Post has `counter={{ max: 280 }}` and no `maxlength`: typing may go past 280 and the count turns to the error tone",
-				"Report details has `maxlength={500}` and `counter={{ from: 400 }}`: no count below 400 characters",
-				"Both have `rows={3}` and a description beside the count",
-				"Column wrapper has `max-width: 480px`"
-			],
-			"tags": [
-				"text-area",
-				"textarea",
-				"counter",
-				"maxlength",
-				"character count",
-				"limit"
-			],
-			"shape": "wide",
-			"index": {
-				"kind": "component",
-				"subtype": "input",
-				"industry": [
-					"general"
-				],
-				"style": [
-					"default"
-				],
-				"motion": "subtle",
-				"interaction": [
-					"keyboard"
-				],
-				"layout": "stack",
-				"colorMode": "both",
-				"density": "regular",
-				"tech": [
-					"css"
-				],
-				"cost": "css",
-				"components": [
-					"TextArea"
-				],
-				"aliases": [
-					"character counter",
-					"char count",
-					"soft limit",
-					"composer"
-				],
-				"related": [
-					"054",
-					"055",
-					"5030"
-				],
-				"a11y": {
-					"reducedMotion": true,
-					"keyboard": true
-				},
-				"added": "2026-11-14",
-				"review": {
-					"industry": "pending"
-				}
-			},
-			"components": [
-				"TextArea"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"TextArea"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-area#soft-limit-and-threshold",
-			"needs": "@codeatlasdev/ui@4.6.0"
-		},
-		{
-			"id": "5032",
-			"group": "inputs",
-			"page": "date-picker",
-			"variant": "Fill",
-			"slug": "calendar-that-fills-its-container",
-			"title": "Calendar that fills its container",
-			"description": "With fill the calendar is as wide as its column: the seven columns share the width and each day keeps its square size, centred. The two months of the range sit side by side when they fit and stack on a phone.",
-			"summary": "A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.",
-			"use": "A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.",
-			"spec": [
-				"`<Calendar bind:value={day} fill label=\"Appointment day\" locale=\"en-US\" weekStartsOn={0} />` preselects today",
-				"`<RangeCalendar bind:value={stay} fill label=\"Stay\" locale=\"en-US\" weekStartsOn={0} />` shows its default two months, side by side when they fit and stacked when they do not",
-				"With `fill` the seven columns share the width and each day keeps its square size, centred in its column",
-				"Output lines show `fmt(day)`, `fmt(stay.start)` and `fmt(stay.end)`, with `–` when unset",
-				"Wrapper `.col` is a full-width flex column"
-			],
-			"tags": [
-				"calendar",
-				"range-calendar",
-				"fill",
-				"full-width",
-				"responsive",
-				"date"
-			],
-			"shape": "wide",
-			"index": {
-				"kind": "component",
-				"subtype": "input",
+				"subtype": "display",
 				"industry": [
 					"general"
 				],
@@ -36856,47 +36690,43 @@
 				],
 				"cost": "css",
 				"components": [
-					"Calendar",
-					"RangeCalendar"
+					"Card",
+					"ClampedText"
 				],
 				"aliases": [
-					"full width calendar",
-					"fluid calendar",
-					"stretch calendar",
-					"responsive calendar"
+					"read more",
+					"show more",
+					"line clamp",
+					"truncated text",
+					"expandable text"
 				],
 				"related": [
-					"015",
-					"018"
+					"073"
 				],
 				"a11y": {
 					"reducedMotion": true,
 					"keyboard": true
 				},
-				"added": "2026-11-14",
+				"added": "2026-11-15",
 				"review": {
 					"industry": "pending"
 				}
 			},
 			"components": [
-				"Calendar",
-				"RangeCalendar"
+				"Card",
+				"ClampedText"
 			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"Calendar",
-						"RangeCalendar",
-						"getLocalTimeZone",
-						"today",
-						"DateRange",
-						"DateValue"
+						"Card",
+						"ClampedText"
 					]
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-that-fills-its-container",
+			"demo": "https://ui.codeatlas.com.br/docs/display/clamped-text#posts-in-a-feed",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

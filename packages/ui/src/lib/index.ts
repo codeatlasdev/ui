@@ -79,6 +79,7 @@ export { default as Chip } from "./components/Chip/Chip.svelte";
 export { default as ChipRow } from "./components/Chip/ChipRow.svelte";
 export type { ChipGroupItem } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as ChipGroup } from "./components/ChipGroup/ChipGroup.svelte";
+export { default as ClampedText } from "./components/ClampedText/ClampedText.svelte";
 export { default as Collapsible } from "./components/Collapsible/Collapsible.svelte";
 export { default as ColorField } from "./components/ColorField/ColorField.svelte";
 export { default as ColorPicker } from "./components/ColorPicker/ColorPicker.svelte";
