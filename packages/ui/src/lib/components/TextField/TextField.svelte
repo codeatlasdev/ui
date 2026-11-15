@@ -64,6 +64,8 @@
     skeleton?:     boolean;
     class?:        string;
     name?:         string;
+    /** The input's `id`, generated when absent. The label's `for` and the hint, error, counter and text-addon ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`, `<id>-pre`, `<id>-suf`). */
+    id?:           string | null;
     /** The native `<input>`, to focus it or read it. */
     ref?:          HTMLInputElement | null;
     oninput?:      (value: string) => void;
@@ -100,6 +102,7 @@
     skeleton     = false,
     class: className = '',
     name,
+    id: idProp,
     ref          = $bindable(null),
     oninput,
     onchange,
@@ -109,12 +112,14 @@
   }: Props = $props();
 
   let focused = $state(false);
-  const id    = uid('tf');
+  const generatedId = uid('tf');
+  // A caller's id replaces the generated one, and every related id follows it (#1313).
+  const id    = $derived(idProp || generatedId);
   const count = useFieldCounter(() => ({ counter, maxlength: rest.maxlength, value, focused }));
   const hint  = $derived(description ?? helperText);
   // Text addons describe the field ("https://", ".com"), so they join the accessible description.
-  const prefixId = `${id}-pre`;
-  const suffixId = `${id}-suf`;
+  const prefixId = $derived(`${id}-pre`);
+  const suffixId = $derived(`${id}-suf`);
   const describedBy = $derived(
     [
       typeof prefix === 'string' && prefix ? prefixId : '',

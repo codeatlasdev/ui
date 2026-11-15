@@ -684,6 +684,7 @@ Data attributes: `data-surface` (`mesh`)
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 ## ChartScope
@@ -714,6 +715,7 @@ Parts: `ca-chart-scope`
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `""` |  |
+| `id?` | `string \| null` |  | The input's `id`, generated when absent; the label's `for` follows it. |
 | `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
 | `onchange?` | `(checked: boolean, event: Event) => void` |  | `event` is the native `change` event. For Shift range selection read `shiftKey` in `onclick` (forwarded to the input, fires just before `change`). |
 
@@ -2421,6 +2423,7 @@ Parts: `ca-map` `ca-map__canvas` `ca-map__overlay`
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
@@ -2600,6 +2603,7 @@ Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `onchange?` | `(cents: number) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
@@ -2982,6 +2986,7 @@ Tokens: `--ca-pwstrength-empty-bg` `--ca-pwstrength-gap` `--ca-pwstrength-label-
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 Snippets: `leading`; `trailing`
@@ -4126,6 +4131,7 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 | `counter?` | `boolean \| { max?: number; from?: number; warnAt?: number }` |  | Character counter `n/max` beside the hint, counting against `maxlength`. `{ max }` sets a soft limit instead (typing goes past it, error tone), `{ from }` hides it below that many characters and `{ warnAt }` (default `0.9`) is where the warning tone starts and a screen reader hears the count, once. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
+| `id?` | `string \| null` |  | The textarea's `id`, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`). |
 | `ref?` | `HTMLTextAreaElement \| null` | `null` | `bind:` The native `<textarea>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
@@ -4170,6 +4176,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
+| `id?` | `string \| null` |  | The input's `id`, generated when absent. The label's `for` and the hint, error, counter and text-addon ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`, `<id>-pre`, `<id>-suf`). |
 | `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |

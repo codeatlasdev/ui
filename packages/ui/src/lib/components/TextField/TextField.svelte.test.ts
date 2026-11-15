@@ -481,3 +481,35 @@ describe("TextField counter (#1120)", () => {
 			.toHaveAccessibleDescription("3 de 10 caracteres");
 	});
 });
+
+describe("TextField caller id (#1313)", () => {
+	it("keeps the id; label, addon and hint follow it", async () => {
+		const screen = await render(TextField, {
+			id: "email",
+			label: "Email",
+			prefix: "@",
+			description: "Work address",
+		});
+		const input = screen.getByRole("textbox", { name: "Email" });
+		await expect.element(input).toHaveAttribute("id", "email");
+		expect(screen.container.querySelector("label")?.getAttribute("for")).toBe("email");
+		await expect.element(input).toHaveAttribute("aria-describedby", "email-pre email-hint");
+		await expect.element(input).toHaveAccessibleDescription("@ Work address");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("error and counter ids derive from it", async () => {
+		const screen = await render(TextField, {
+			id: "email",
+			label: "Email",
+			error: "Required",
+			maxlength: 20,
+			counter: true,
+		});
+		const input = screen.getByRole("textbox", { name: "Email" });
+		await expect.element(input).toHaveAttribute("id", "email");
+		await expect.element(input).toHaveAttribute("aria-describedby", "email-err email-count");
+		expect(document.getElementById("email-err")?.textContent).toBe("Required");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
