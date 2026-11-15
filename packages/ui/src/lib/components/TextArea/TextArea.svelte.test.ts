@@ -199,7 +199,7 @@ describe("TextArea caller id (#1313)", () => {
 	});
 });
 
-// #1316: a caller's aria-describedby is kept, ahead of the field's own hint, error and counter ids.
+// #1316: a caller's aria-describedby is kept, after the field's own hint, error and counter ids.
 describe("TextArea describedby (#1316)", () => {
 	it("keeps the caller's ids alone", async () => {
 		const screen = await render(TextAreaDescribedBy, {});
@@ -212,7 +212,7 @@ describe("TextArea describedby (#1316)", () => {
 	it("caller's ids, then the error", async () => {
 		const screen = await render(TextAreaDescribedBy, { error: "Too long" });
 		const field = screen.getByRole("textbox", { name: "Bio" });
-		await expect.element(field).toHaveAttribute("aria-describedby", "help bio-err");
+		await expect.element(field).toHaveAttribute("aria-describedby", "bio-err help");
 		await expect.element(field).toHaveAccessibleDescription("Shown on your profile Too long");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -224,7 +224,7 @@ describe("TextArea describedby (#1316)", () => {
 			counter: true,
 		});
 		const field = screen.getByRole("textbox", { name: "Bio" });
-		await expect.element(field).toHaveAttribute("aria-describedby", "help bio-err bio-count");
+		await expect.element(field).toHaveAttribute("aria-describedby", "bio-err bio-count help");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

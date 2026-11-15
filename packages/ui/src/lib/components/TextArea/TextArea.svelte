@@ -37,7 +37,7 @@
     name?:        string;
     /** The textarea's `id`, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`). */
     id?:          string | null;
-    /** Ids of other elements that describe the textarea (a help paragraph, an error summary). They come first, then the hint or error and counter ids. */
+    /** Ids of other elements that describe the textarea (a help paragraph, an error summary). They are read after the field's own hint or error and counter ids. */
     'aria-describedby'?: string | null;
     /** The native `<textarea>`, to focus it or read it. */
     ref?:         HTMLTextAreaElement | null;
@@ -81,12 +81,13 @@
   const id    = $derived(idProp || generatedId);
   const hint  = $derived(description ?? helperText);
   const count = useFieldCounter(() => ({ counter, maxlength: rest.maxlength, value, focused }));
-  // A caller's ids (a help paragraph, an error summary) are kept, ahead of the field's own (#1316).
+  // The field's own ids first, then a caller's (a help paragraph, an error summary), which are kept (#1316);
+  // the same order as Select, Dialog and Sheet (#1066).
   const describedBy = $derived(
     [
-      ariaDescribedby,
       error ? `${id}-err` : hint ? `${id}-hint` : '',
       count.visible ? `${id}-count` : '',
+      ariaDescribedby,
     ].filter(Boolean).join(' ') || undefined
   );
 

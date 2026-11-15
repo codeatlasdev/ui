@@ -515,7 +515,7 @@ describe("TextField caller id (#1313)", () => {
 	});
 });
 
-// #1316: a caller's aria-describedby (a help paragraph, an error summary) is kept, ahead of the
+// #1316: a caller's aria-describedby (a help paragraph, an error summary) is kept, after the
 // field's own hint, error and counter ids, instead of being overwritten by them.
 describe("TextField describedby (#1316)", () => {
 	it("keeps the caller's ids alone", async () => {
@@ -529,7 +529,7 @@ describe("TextField describedby (#1316)", () => {
 	it("caller's ids, then the error", async () => {
 		const screen = await render(TextFieldDescribedBy, { error: "Required" });
 		const input = screen.getByRole("textbox", { name: "Email" });
-		await expect.element(input).toHaveAttribute("aria-describedby", "help email-err");
+		await expect.element(input).toHaveAttribute("aria-describedby", "email-err help");
 		await expect.element(input).toHaveAccessibleDescription("Used on invoices Required");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -541,7 +541,7 @@ describe("TextField describedby (#1316)", () => {
 			counter: true,
 		});
 		const input = screen.getByRole("textbox", { name: "Email" });
-		await expect.element(input).toHaveAttribute("aria-describedby", "help email-err email-count");
+		await expect.element(input).toHaveAttribute("aria-describedby", "email-err email-count help");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

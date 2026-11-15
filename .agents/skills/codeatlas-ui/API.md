@@ -4176,7 +4176,7 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
 | `id?` | `string \| null` |  | The textarea's `id`, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`). |
-| `aria-describedby?` | `string \| null` |  | Ids of other elements that describe the textarea (a help paragraph, an error summary). They come first, then the hint or error and counter ids. |
+| `aria-describedby?` | `string \| null` |  | Ids of other elements that describe the textarea (a help paragraph, an error summary). They are read after the field's own hint or error and counter ids. |
 | `ref?` | `HTMLTextAreaElement \| null` | `null` | `bind:` The native `<textarea>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
@@ -4222,7 +4222,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
 | `id?` | `string \| null` |  | The input's `id`, generated when absent. The label's `for` and the hint, error, counter and text-addon ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`, `<id>-pre`, `<id>-suf`). |
-| `aria-describedby?` | `string \| null` |  | Ids of other elements that describe the input (a help paragraph, an error summary). They come first, then the text-addon, hint or error and counter ids. |
+| `aria-describedby?` | `string \| null` |  | Ids of other elements that describe the input (a help paragraph, an error summary). They are read after the field's own text-addon, hint or error and counter ids. |
 | `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |

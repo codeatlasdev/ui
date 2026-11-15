@@ -138,7 +138,7 @@ describe("MaskedField caller id (#1313)", () => {
 	});
 });
 
-// #1316: the wrappers hand a caller's aria-describedby to TextField, which keeps it ahead of its own.
+// #1316: the wrappers hand a caller's aria-describedby to TextField, which keeps it after its own.
 describe("Field wrappers describedby (#1316)", () => {
 	it("reach the input, before the error id", async () => {
 		const own = { error: "Invalid", "aria-describedby": "help" };
@@ -148,7 +148,7 @@ describe("Field wrappers describedby (#1316)", () => {
 		await render(CepField, { ...own, id: "cep", label: "CEP" });
 		for (const id of ["masked", "money", "phone", "cep"])
 			expect(document.getElementById(id)?.getAttribute("aria-describedby"), id).toBe(
-				`help ${id}-err`
+				`${id}-err help`
 			);
 	});
 });

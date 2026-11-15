@@ -54,7 +54,7 @@ The same counter as [TextField](/docs/inputs/text-field/#character-counter). `co
   { name: "readonly", type: "boolean", default: "false", description: "Makes the textarea read-only." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "id", type: "string", description: "Id of the textarea, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`)." },
-  { name: "aria-describedby", type: "string", description: "Ids of other elements that describe the textarea. They come first, then the hint or error and counter ids." },
+  { name: "aria-describedby", type: "string", description: "Ids of other elements that describe the textarea. They are read after the field's own hint or error and counter ids." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "ref", type: "HTMLTextAreaElement | null", description: "Bindable native textarea element." },
   { name: "oninput", type: "(value: string) => void", description: "Called on every keystroke with the new value." },
