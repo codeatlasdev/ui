@@ -155,6 +155,109 @@ describe("ui guard: forbidden terms (#1156)", () => {
 	});
 });
 
+describe("ui guard: hard navigation (#1155)", () => {
+	const nav = (file: string, src: string, reloadRoutes?: string[]) =>
+		guardSource(file, src, { reloadRoutes, rules: ["hard-navigation"] }).map(
+			(v) => `${v.rule}:${v.line}`
+		);
+
+	it("flags href, assign, replace and location to an internal path", () => {
+		const src = [
+			"export function go(id: string) {",
+			'  location.href = "/orders";',
+			"  window.location.href = '/x';",
+			`  location.assign(\`/orders/\${id}\`);`,
+			'  window.location.replace("../login?next=/");',
+			"  document.location = '/y';",
+			'  location = "?page=2";',
+			"}",
+		].join("\n");
+		expect(nav("src/lib/nav.ts", src)).toEqual(
+			[2, 3, 4, 5, 6, 7].map((l) => `hard-navigation:${l}`)
+		);
+	});
+
+	it("flags it in a .svelte script and an event handler", () => {
+		const src = [
+			'<script lang="ts">',
+			'  const out = () => { location.href = "/dashboard"; };',
+			"</script>",
+			'<button onclick={() => (window.location.href = "/x")}>{m.go}</button>',
+		].join("\n");
+		expect(nav("A.svelte", src)).toEqual(["hard-navigation:2", "hard-navigation:4"]);
+	});
+
+	it("names the path and the fix in the message", () => {
+		const [v] = guardSource("a.ts", 'location.href = "/orders";', { rules: ["hard-navigation"] });
+		expect(v?.message).toContain('"/orders"');
+		expect(v?.message).toContain("goto()");
+		expect(v?.message).toContain("reloadRoutes");
+	});
+
+	it("base from $app/paths is still the app's own origin", () => {
+		expect(nav("a.ts", `location.href = \`\${base}/orders\`;`)).toEqual(["hard-navigation:1"]);
+	});
+
+	it("external URLs, hashes and unknown targets are not flagged", () => {
+		const src = [
+			'location.href = "https://example.com/x";',
+			'location.assign("mailto:a@b.co");',
+			'window.location.href = "//cdn.example.com/x";',
+			'location.href = "#top";',
+			"location.replace(url);",
+			`location.href = \`\${apiOrigin}/x\`;`,
+			'<a href="/orders">{m.orders}</a>',
+		].join("\n");
+		expect(nav("A.svelte", src)).toEqual([]);
+	});
+
+	it("reads, comparisons, comments and locals are not navigation", () => {
+		const src = [
+			'if (location.href === "/x") go();',
+			"const here = location.pathname;",
+			'// location.href = "/x";',
+			'/* location.assign("/x") */',
+			'let location = "/x";',
+			'let { location = "/x", b } = $props();',
+			'url.location = "/x";',
+		].join("\n");
+		expect(nav("a.ts", src)).toEqual([]);
+	});
+
+	it("reloadRoutes allows exact routes and /prefix/* globs", () => {
+		const src = [
+			'location.href = "/logout";',
+			'location.href = "/logout?next=/";',
+			'location.assign("/auth/callback");',
+			'location.href = "/orders";',
+		].join("\n");
+		expect(nav("a.ts", src, ["/logout", "/auth/*"])).toEqual(["hard-navigation:4"]);
+	});
+
+	it("a ca-ui-workaround marker on the line or above excuses it", () => {
+		const src = '// ca-ui-workaround(pending: SSO must reload)\nlocation.href = "/sso";';
+		expect(nav("a.ts", src)).toEqual([]);
+	});
+
+	it("runGuard reads .ts for this rule only and skips test files", () => {
+		const dir = tmpDir("ca-guard-nav-");
+		const files = {
+			"src/lib/nav.ts": 'export const go = () => {\n  location.href = "/x";\n};\n',
+			"src/lib/css.ts": 'export const css = "<style>.a { color: #fff; }</style>";\n',
+			"src/lib/nav.test.ts": 'location.href = "/x";\n',
+		};
+		for (const [p, c] of Object.entries(files)) {
+			mkdirSync(dirname(join(dir, p)), { recursive: true });
+			writeFileSync(join(dir, p), c);
+		}
+		const lines: string[] = [];
+		expect(runGuard(["src"], { cwd: dir, log: (l) => lines.push(l) })).toBe(1);
+		expect(lines.filter((l) => l.startsWith("src/"))).toEqual([
+			expect.stringContaining("src/lib/nav.ts:2 hard-navigation"),
+		]);
+	});
+});
+
 describe("runGuard", () => {
 	const setup = (files: Record<string, string>) => {
 		const dir = tmpDir("ca-guard-");
@@ -332,9 +435,13 @@ describe("codeatlas-ui lint --rules (#920)", () => {
 	it("lists forbidden-term (#1156)", () => {
 		expect(lint("--rules").out).toContain("forbidden-term");
 	});
+
+	it("lists hard-navigation (#1155)", () => {
+		expect(lint("--rules").out).toContain("hard-navigation");
+	});
 });
 
-describe("codeatlas-ui lint: forbiddenTerms config (#1156)", () => {
+describe("codeatlas-ui lint: ui-guard.config.json", () => {
 	const lintIn = (files: Record<string, string>, ...args: string[]) => {
 		const dir = tmpDir("ca-guard-cli-");
 		for (const [p, c] of Object.entries(files)) {
@@ -345,7 +452,7 @@ describe("codeatlas-ui lint: forbiddenTerms config (#1156)", () => {
 		return { code: r.exitCode, out: r.stdout.toString(), err: r.stderr.toString() };
 	};
 
-	it("reads the terms from ui-guard.config.json", () => {
+	it("reads forbiddenTerms (#1156)", () => {
 		const r = lintIn(
 			{
 				"ui-guard.config.json": JSON.stringify({
@@ -369,5 +476,24 @@ describe("codeatlas-ui lint: forbiddenTerms config (#1156)", () => {
 		});
 		expect(r.code).toBe(2);
 		expect(r.err).toContain("forbiddenTerms[1]");
+	});
+
+	it("reads reloadRoutes (#1155)", () => {
+		const src = 'export const out = () => {\n  location.href = "/logout";\n};\n';
+		const files = { "src/lib/auth.ts": src };
+		const config = { "ui-guard.config.json": JSON.stringify({ reloadRoutes: ["/logout"] }) };
+		const bare = lintIn(files, "--rules", "hard-navigation");
+		expect(bare.code).toBe(1);
+		expect(bare.out).toContain("src/lib/auth.ts:2 hard-navigation");
+		expect(lintIn({ ...files, ...config }, "--rules", "hard-navigation").code).toBe(0);
+	});
+
+	it("a reloadRoutes entry that is not a path exits 2 (#1155)", () => {
+		const r = lintIn({
+			"ui-guard.config.json": JSON.stringify({ reloadRoutes: ["/logout", "logout"] }),
+			"src/a.svelte": "<p>{m.x}</p>\n",
+		});
+		expect(r.code).toBe(2);
+		expect(r.err).toContain("reloadRoutes[1]");
 	});
 });

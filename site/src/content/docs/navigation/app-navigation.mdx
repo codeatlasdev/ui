@@ -1,6 +1,6 @@
 ---
 title: App navigation
-description: Make SvelteKit navigations feel instant. Preload defaults, where to mount NavigationProgress and RouteAnnouncer, LoadingBoundary for slow data, pendingLink for the tapped link and view transitions.
+description: Make SvelteKit navigations feel instant. Preload defaults, where to mount NavigationProgress and RouteAnnouncer, LoadingBoundary for slow data, pendingLink for the tapped link, view transitions and the lint rule against hard navigation.
 group: Navigation
 order: 11
 ---
@@ -165,6 +165,34 @@ SvelteKit's `onNavigate` hook starts the transition and waits for the new page. 
 
 The browser cross-fades screenshots, so there is no per-element code. To animate only the content inside the shell, name the content region (`view-transition-name` on the page's main column) and leave the bars unnamed, or skip the transition: a changed list is not worth a flicker of the chrome. It does not replace the progress bar: for a navigation that takes time, `NavigationProgress` is what tells the user something is happening, and the transition runs once the page is ready.
 
+## No hard navigation: `hard-navigation`
+
+`location.href = "/orders"` throws the app away: the browser loads the whole document again, the shell, stores and scroll position are rebuilt from nothing, and neither preloading nor `NavigationProgress` takes part. Navigate with `goto()` from `$app/navigation` (`navigate()` from `astro:transitions/client` under Astro's `ClientRouter`). A plain `<a href="/orders">` is already a client-side navigation in SvelteKit and is never flagged.
+
+`codeatlas-ui lint` reports each hard navigation to a page of the app, with file and line:
+
+```text
+src/lib/auth.ts:14 hard-navigation "/orders" reloads the whole app: use goto() (navigate() with Astro's ClientRouter), or list the route in reloadRoutes (ui-guard.config.json) if it must reload
+```
+
+It reads the `<script>` blocks and event handlers of `.svelte` and `.astro` files and the `.ts` and `.js` modules (`*.test.*`, `*.spec.*` and `.d.ts` aside). It flags `location.href =`, `location.pathname =`, `location =` (also through `window.` or `document.`), `location.assign()` and `location.replace()` when the value is a string or template literal that stays in the app: a path (`"/orders"`, `` `/orders/${id}` ``, `` `${base}/orders` ``), a relative path (`"../login"`) or a query (`"?page=2"`). It does not flag:
+
+- another origin: `"https://…"`, `"mailto:…"`, `"tel:…"`, or a protocol-relative `"//cdn.example.com/x"`;
+- a hash in the same page (`"#top"`), which does not reload;
+- a target a source scan cannot read: a variable (`location.assign(url)`) or a template that starts with another expression (`` `${apiOrigin}/x` ``);
+- reading `location` (`location.pathname`, `location.href === "/x"`), comments, and a local variable or prop named `location`.
+
+Some routes must reload: logging out (so no store survives the session), a path served by another app behind the same domain, a single sign-on hand-off. List them in `reloadRoutes` in `ui-guard.config.json` (the project root, next to `allow`):
+
+```json
+{
+  "allow": [],
+  "reloadRoutes": ["/logout", "/auth/*"]
+}
+```
+
+An entry is a path of the app that starts with `/`. It matches the target's path whatever its query, hash or trailing slash (`"/logout?next=/"` is `/logout`), and `*` matches any run of characters (`/auth/*` covers `/auth/callback`). An entry that is not such a path stops the run with exit code 2 and names it. A one-off that must stay takes a `ca-ui-workaround(#n)` marker on the line or the one above instead. The rule is on by default, like every other rule; a site without client-side routing (Astro without `ClientRouter`) reloads on every navigation anyway and picks its rules with `--rules`.
+
 ## Putting it together
 
 | Layer | Handles | Tool |
@@ -175,3 +203,4 @@ The browser cross-fades screenshots, so there is no per-element code. To animate
 | Data inside a page | A region that awaits | `LoadingBoundary` around it |
 | Screen reader | The page changed | `RouteAnnouncer` in the root layout |
 | Between frames | Opening a full-screen detail outside the shell | `onNavigate` with `document.startViewTransition`, only when the route group changes; never over persistent bars |
+| Code that navigates | No full reload of the app | `goto()`; `codeatlas-ui lint` reports `location.href = "/x"` (`hard-navigation`), routes that must reload go in `reloadRoutes` |
