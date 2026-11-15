@@ -137,7 +137,7 @@ AppList: fullscreen CRUD/list layout.
 | `title?` | `string` |  |  |
 | `description?` | `string` |  |  |
 | `data?` | `T[]` |  | Full dataset. When provided, AppList manages search/filter/pagination internally. |
-| `searchKeys?` | `NoInfer<keyof T>[]` |  | Fields to include in text search, which ignores case and accents ("joao" finds "João"). Default: all string fields. |
+| `searchKeys?` | `NoInfer<keyof T>[]` |  | Fields to include in text search, which ignores case and accents ("joao" finds "João"). Default: every string and number field of the row; booleans, `Date` objects and nested objects are not searched. |
 | `perPage?` | `number` | `20` | Rows per page. Default: 20. |
 | `idKey?` | `NoInfer<keyof T>` |  | Row identifier field. Default: 'id'. |
 | `searchPlaceholder?` | `string` |  | Placeholder for the auto-rendered search input. Default: 'Search…' |
@@ -203,19 +203,20 @@ Variables: `--ca-aside-width`
 | `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
 | `railWidth?` | `number` |  | Width of the rail in px (default 52). Sets `--ca-rail-width` on the shell; the content offset, `--ca-shell-inset-left` and the stage inset all follow it. Setting `--ca-rail-width` in CSS (on `:root` or an ancestor) does the same, with no prop. |
 | `railSeparators?` | `boolean` | `true` | Draws the hairlines under the brand and above `railBottom`. `false` removes them, for a rail whose design separates the groups by spacing alone. |
-| `mobileHeader?` | `boolean` | `true` | Renders the header (brand, page title, `mobileHeaderActions`) below 900px. `false` renders none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile, so keep an account entry point elsewhere (`bottomNavOverflow`). |
+| `mobileBreakpoint?` | `number` |  | Width in px from which the rail and panel show; below it the mobile header and the bottom navigation take over. Unset, the switch is the static 900px media query, painted before any JS. Set, the shell follows a `matchMedia` at this width and marks its root `data-ca-shell="mobile\|desktop"` (a media query cannot read a prop); a server-rendered page shows the 900px layout until it hydrates. |
+| `mobileHeader?` | `boolean` | `true` | Renders the header (brand, page title, `mobileHeaderActions`) in the mobile layout. `false` renders none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile, so keep an account entry point elsewhere (`bottomNavOverflow`). |
 | `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
 | `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
-Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`): A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering while it is true. The content region passes pointer events through to the stage; give a page's panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell paints nothing behind the content when a stage is set, so the stage shows.; `header`; `brand`: Brand mark (logo) shown at the top of the Rail and in the mobile header.; `railBottom`: Items pinned to the bottom of the Rail (avatar, notifications…); `railTop`: Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger.; `bottomNavOverflow`: Extra content in the "More" dialog under the modules (search, account, sign out).; `mobileHeaderActions`: Compact controls rendered at the trailing edge of the single mobile header (session/workspace switcher, account menu…). Below 900px the desktop `header` snippet is hidden, so put anything that must stay reachable here.; `mobileTitle`: Replaces the plain page-title text in the mobile header, e.g. a tappable session title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.; `children`
+Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`): A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering while it is true. The content region passes pointer events through to the stage; give a page's panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell paints nothing behind the content when a stage is set, so the stage shows.; `header`; `brand`: Brand mark (logo) shown at the top of the Rail and in the mobile header.; `railBottom`: Items pinned to the bottom of the Rail (avatar, notifications…); `railTop`: Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger.; `bottomNavOverflow`: Extra content in the "More" dialog under the modules (search, account, sign out).; `mobileHeaderActions`: Compact controls rendered at the trailing edge of the single mobile header (session/workspace switcher, account menu…). In the mobile layout the desktop `header` snippet is hidden, so put anything that must stay reachable here.; `mobileTitle`: Replaces the plain page-title text in the mobile header, e.g. a tappable session title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.; `children`
 
 Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--no-mobile-header` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
 Variables: `--ca-main-ml` `--ca-panel-w-stored` `--ca-shell-inset-bottom` `--ca-shell-inset-left` `--ca-shell-inset-right` `--ca-shell-inset-top`
 
-Data attributes: `data-ca-hydrated`, `data-ca-panel` (`closed`)
+Data attributes: `data-ca-hydrated`, `data-ca-panel` (`closed`), `data-ca-shell` (`mobile`)
 
 Tokens: `--ca-main-ml`
 
@@ -419,6 +420,8 @@ Tokens: `--ca-badge-border` `--ca-badge-font-size` `--ca-badge-h` `--ca-badge-we
 Snippets: `overflow`: Extra content in the "More" sheet under the modules (search, account, sign out).
 
 Parts: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
+
+Data attributes: `data-ca-shell` (`desktop` `mobile`)
 
 ## Box
 
@@ -684,6 +687,7 @@ Data attributes: `data-surface` (`mesh`)
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 ## ChartScope
@@ -714,6 +718,7 @@ Parts: `ca-chart-scope`
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `""` |  |
+| `id?` | `string \| null` |  | The input's `id`, generated when absent; the label's `for` follows it. |
 | `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
 | `onchange?` | `(checked: boolean, event: Event) => void` |  | `event` is the native `change` event. For Shift range selection read `shiftKey` in `onclick` (forwarded to the input, fires just before `change`). |
 
@@ -2421,6 +2426,7 @@ Parts: `ca-map` `ca-map__canvas` `ca-map__overlay`
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
@@ -2600,6 +2606,7 @@ Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `onchange?` | `(cents: number) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
@@ -2982,6 +2989,7 @@ Tokens: `--ca-pwstrength-empty-bg` `--ca-pwstrength-gap` `--ca-pwstrength-label-
 | `size?` | `'sm' \| 'md'` |  |  |
 | `class?` | `string` |  |  |
 | `name?` | `string` |  |  |
+| `id?` | `string` |  | The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 Snippets: `leading`; `trailing`
@@ -4123,8 +4131,10 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 | `optional?` | `boolean` | `false` | Shows "(optional)" after the label, as text in the accessible name (ignored with `required`, #1215). |
 | `readonly?` | `boolean` | `false` |  |
 | `resize?` | `'none' \| 'vertical' \| 'horizontal' \| 'both'` | `'vertical'` |  |
+| `counter?` | `boolean \| { max?: number; from?: number; warnAt?: number }` |  | Character counter `n/max` beside the hint, counting against `maxlength`. `{ max }` sets a soft limit instead (typing goes past it, error tone), `{ from }` hides it below that many characters and `{ warnAt }` (default `0.9`) is where the warning tone starts and a screen reader hears the count, once. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
+| `id?` | `string \| null` |  | The textarea's `id`, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`). |
 | `ref?` | `HTMLTextAreaElement \| null` | `null` | `bind:` The native `<textarea>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
@@ -4133,9 +4143,9 @@ Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weigh
 
 Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 'rows' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-field-optional` `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
+Parts: `ca-field-counter` `ca-field-counter--over` `ca-field-counter--warn` `ca-field-foot` `ca-field-optional` `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-radius-control-multiline` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
+Variables: `--ca-field-gap` `--ca-field-hint-leading` `--ca-field-label-leading` `--ca-radius-control-multiline` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
 Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
@@ -4162,12 +4172,14 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `prefix?` | `string \| Snippet` |  | Addon before the input, inside the field border, set apart by a divider. A string is static text (`https://`, `$`): it is read after the label, as part of the field's description, and a click on it focuses the input. A snippet is interactive content (a `Button`, `IconButton` or select) that keeps its own name and Tab stop. |
 | `suffix?` | `string \| Snippet` |  | Addon after the input, same rules as `prefix`. |
 | `revealable?` | `boolean` | `false` | `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). |
+| `counter?` | `boolean \| { max?: number; from?: number; warnAt?: number }` |  | Character counter `n/max` beside the hint, counting against `maxlength`. `{ max }` sets a soft limit instead (typing goes past it, error tone), `{ from }` hides it below that many characters and `{ warnAt }` (default `0.9`) is where the warning tone starts and a screen reader hears the count, once. |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `width?` | `FieldWidth` |  | `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
+| `id?` | `string \| null` |  | The input's `id`, generated when absent. The label's `for` and the hint, error, counter and text-addon ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`, `<id>-pre`, `<id>-suf`). |
 | `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
@@ -4178,7 +4190,7 @@ Snippets: `leading`; `trailing`; `below`: Content under the field and its hint, 
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'prefix' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-field-counter` `ca-field-counter--over` `ca-field-counter--warn` `ca-field-foot` `ca-field-optional` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
 Variables: `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-tf-addon-bg` `--ca-tf-error-ring` `--ca-tf-gap` `--ca-tf-hint-leading` `--ca-tf-hint-tracking` `--ca-tf-label-line-height` `--ca-tf-label-tracking` `--ca-tf-letter-spacing` `--ca-tf-line-height` `--ca-tf-reveal-icon-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-size`
 
@@ -4312,6 +4324,8 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 Parts: `ca-bottom-nav` `ca-toaster` `ca-toaster--inline`
 
 Variables: `--ca-toaster-bottom`
+
+Data attributes: `data-ca-shell` (`mobile`)
 
 Tokens: `--ca-toaster-bottom`
 
@@ -4991,6 +5005,26 @@ A CSS color string for an OKLCH triple and alpha: `oklch(L C H)` (with `/ alpha`
 function formatColor(color: Oklch, alpha: number, format: "oklch" | "hex"): string
 ```
 
+### formatCompanyName
+
+`import { formatCompanyName } from "@codeatlasdev/ui"`
+
+A company name with single spaces and its legal-form suffixes written one way: `ltda` is `Ltda.`, `sa`, `s.a`, `s/a` and `S. A.` are `S.A.`, and `me`, `epp`, `eireli` and `slu` are in capitals: `"  acme   comércio  ltda "` is `"acme comércio Ltda."`. Only suffixes at the end of the name, after its first word, are touched (`"Acme Ltda - me"` is `"Acme Ltda. - ME"`); the rest keeps the case it was typed in, and the spaces, commas and dashes between suffixes are kept. A bare hyphen joins two suffixes (`"LTDA-ME"`), never a word and a suffix (`"Encontre-me"`).
+
+```ts
+function formatCompanyName(name: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
+```
+
+### formatCopy
+
+`import { formatCopy } from "@codeatlasdev/ui"`
+
+Fills the `{key}` placeholders of a template in one pass: `formatCopy("Olá {nome}", { nome: "Ana" })` is `"Olá Ana"`. A key with no value (absent, `null` or `undefined`) stays visible, so `formatCopy("Olá {nome}", {})` is `"Olá {nome}"` and a missing value shows on the page instead of reading `"Olá undefined"` or `"Olá "`. Values go in with `String()` (format a number first with `plural` or `formatNumber`) and are never expanded again.
+
+```ts
+function formatCopy(template: string, values: CopyValues): string
+```
+
 ### formatCurrency
 
 `import { formatCurrency } from "@codeatlasdev/ui"`
@@ -5089,6 +5123,16 @@ A ratio as a percentage, like `Intl`: `formatPercent(0.125)` is `"12,5%"`, `-0.0
 
 ```ts
 function formatPercent(ratio: number | null | undefined, options?: PercentOptions): string
+```
+
+### formatPhone
+
+`import { formatPhone } from "@codeatlasdev/ui"`
+
+A Brazilian phone as people read it, `"(11) 98765-4321"` or `"(11) 3456-7890"`, from what `phoneDigits` reads, with the mask of `PhoneField` (`maskPhoneBR` from `@codeatlasdev/ui/forms`). Text that is not a whole Brazilian number (a foreign or partial one) is shown as given, trimmed, so nothing is hidden; a blank one is `empty`.
+
+```ts
+function formatPhone(input: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
 ```
 
 ### formatRelativeTime
@@ -5331,6 +5375,16 @@ Merge partial themes: `b` wins; the nested option groups merge key by key.
 function mergeTheme(a: Partial<ThemeDefinition>, b: Partial<ThemeDefinition>): Partial<ThemeDefinition>
 ```
 
+### monthLabels
+
+`import { monthLabels } from "@codeatlasdev/ui"`
+
+The 12 month names of a locale, January first, from `Intl.DateTimeFormat` (Gregorian calendar, standalone form) instead of a hand-kept list: `monthLabels()` is `["Janeiro", …, "Dezembro"]`, `monthLabels("pt-BR", "short")` is `["Jan.", …, "Dez."]`. They are labels (a select, a chart axis, a column header), so the first letter is capitalised in the locale, as `MonthPicker` shows them; the rest is what `Intl` returns. Inside a sentence pt-BR writes months in lowercase: use `formatDate` there.
+
+```ts
+function monthLabels(locale?: string, style?: "long" | "short"): string[]
+```
+
 ### nearestSpring
 
 `import { nearestSpring } from "@codeatlasdev/ui"`
@@ -5401,6 +5455,16 @@ Pure, dependency-free strength estimate: unique characters and character classes
 function passwordScore(value: string): PasswordScore
 ```
 
+### phoneDigits
+
+`import { phoneDigits } from "@codeatlasdev/ui"`
+
+The national digits of a Brazilian phone, area code first (`"11987654321"`, `"1134567890"`), from E.164 (`"+5511987654321"`), bare digits or masked text. The country code (`+55`, or `55` before 10 or 11 more digits) and a trunk `0` are dropped; a number in area code 55 keeps it. Empty when the text is not a whole Brazilian number: another country, a partial number, an area code with a 0, or 9 digits after the area code that do not start with 9. Its E.164 is `` `+55${phoneDigits(text)}` ``.
+
+```ts
+function phoneDigits(text: string | null | undefined): string
+```
+
 ### pickBrand
 
 `import { pickBrand } from "@codeatlasdev/ui"`
@@ -5409,6 +5473,16 @@ Pick the brand color of a palette: the most vivid cluster that is neither near-w
 
 ```ts
 function pickBrand(palette: PaletteColor[]): PaletteColor | null
+```
+
+### plural
+
+`import { plural } from "@codeatlasdev/ui"`
+
+A count and the word that agrees with it: the form chosen by `Intl.PluralRules`, the number written by `Intl.NumberFormat`, both in `locale` (default `"pt-BR"`): `plural(1, "item", "itens")` is `"1 item"`, `plural(1000, "item", "itens")` is `"1.000 itens"`. The `one` category takes `one`; every other (`other`, and `zero`, `two`, `few` or `many` where the locale has them) takes `many`. In Portuguese (CLDR) `one` is any count whose integer part is 0 or 1: `plural(0, "item", "itens")` is `"0 item"` and `plural(1.5, "hora", "horas")` is `"1,5 hora"`; write your own text for zero (`"Nenhum item"`) when you want one. A missing count is `"—"`.
+
+```ts
+function plural(count: number | null | undefined, one: string, many: string, locale?: string): string
 ```
 
 ### presetContrastIssues
@@ -5559,6 +5633,16 @@ const semanticLight: {
   info: "oklch(0.50 0.125 235)";
   error: "oklch(0.55 0.190 25)";
 }
+```
+
+### setAppBadge
+
+`import { setAppBadge } from "@codeatlasdev/ui"`
+
+Shows `count` on the installed app's icon with the Badging API, from a page or a service worker. `0`, a negative number, `null`, `undefined` or anything that is not a number clears the badge. A fraction is rounded down, a numeric string (an untyped push payload) is read as its number and the value is capped at `Number.MAX_SAFE_INTEGER`, so a push handler and a page that hold the same total make the same call. Never throws: resolves `false` when the browser has no Badging API or refuses the call (app not installed, no permission), `true` once the browser accepted it.
+
+```ts
+function setAppBadge(count: number | string | null | undefined): Promise<boolean>
 ```
 
 ### setLocale
@@ -5837,7 +5921,7 @@ function useForm<K extends string, A extends Record<string, unknown> = Record<ne
 
 `import { useListState } from "@codeatlasdev/ui"`
 
-Reactive list controller for client-side tables: search over `searchKeys` (ignoring case and accents), filters, pagination and row selection. Returns `UseListStateReturn`.
+Reactive list controller for client-side tables: search over `searchKeys` or, without them, every string and number field (ignoring case and accents), filters, pagination and row selection. Returns `UseListStateReturn`.
 
 ```ts
 function useListState<T extends object>(options: UseListStateOptions<T>): UseListStateReturn<T>
@@ -5926,6 +6010,7 @@ Types:
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
 | `CompactMoneyOptions` | `interface CompactMoneyOptions extends FormatOptions { currency?: string; }` | Options of `formatMoneyCompact` and `formatMoneyAxis`. |
 | `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; localeSwitcher?: LocaleSwitcherTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `CopyValues` | `type CopyValues = Readonly<Record<string, string \| number \| null \| undefined>>;` | Values `formatCopy` puts into a template; `null` and `undefined` count as missing. |
 | `CsvOptions` | `interface CsvOptions { locale?: string; delimiter?: "," \| ";" \| "\t"; bom?: boolean; }` |  |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateInZoneOptions` | `interface DateInZoneOptions extends FormatOptions { timeZone?: string; dateStyle?: Intl.DateTimeFormatOptions["dateStyle"]; }` | Options of `formatDateInZone`. |
@@ -6919,7 +7004,7 @@ Types:
 |---|---|---|
 | `data` | `T[]` | Full dataset |
 | `perPage?` | `number` | Rows per page. Default: 20 |
-| `searchKeys?` | `(keyof T)[]` | Which fields are included in text search (ignores case and accents: "joao" finds "João") |
+| `searchKeys?` | `(keyof T)[]` | Which fields are included in text search (ignores case and accents: "joao" finds "João"). Default: every string and number field of the row; booleans, `Date` objects and nested objects are not searched. |
 | `idKey?` | `keyof T` | Field used as row identifier for selection. Default: 'id' |
 | `ofLabel?` | `string` | Word between the numbers in `count` / `pageInfo` ("8 of 24"). Default: 'of'; use 'de' in pt-BR. |
 
@@ -9076,6 +9161,18 @@ Types:
 | `semanticLight` | `SemanticColors` |  |
 | `semanticDark` | `SemanticColors` |  |
 
+## @codeatlasdev/ui/utils/app-badge
+
+### setAppBadge
+
+`import { setAppBadge } from "@codeatlasdev/ui/utils/app-badge"`
+
+Shows `count` on the installed app's icon with the Badging API, from a page or a service worker. `0`, a negative number, `null`, `undefined` or anything that is not a number clears the badge. A fraction is rounded down, a numeric string (an untyped push payload) is read as its number and the value is capped at `Number.MAX_SAFE_INTEGER`, so a push handler and a page that hold the same total make the same call. Never throws: resolves `false` when the browser has no Badging API or refuses the call (app not installed, no permission), `true` once the browser accepted it.
+
+```ts
+function setAppBadge(count: number | string | null | undefined): Promise<boolean>
+```
+
 ## @codeatlasdev/ui/utils/color
 
 ### contrast
@@ -9244,6 +9341,26 @@ A size in bytes in steps of 1024, with the locale's decimal separator: `formatBy
 function formatBytes(bytes: number | null | undefined, options?: BytesOptions): string
 ```
 
+### formatCompanyName
+
+`import { formatCompanyName } from "@codeatlasdev/ui/utils/format"`
+
+A company name with single spaces and its legal-form suffixes written one way: `ltda` is `Ltda.`, `sa`, `s.a`, `s/a` and `S. A.` are `S.A.`, and `me`, `epp`, `eireli` and `slu` are in capitals: `"  acme   comércio  ltda "` is `"acme comércio Ltda."`. Only suffixes at the end of the name, after its first word, are touched (`"Acme Ltda - me"` is `"Acme Ltda. - ME"`); the rest keeps the case it was typed in, and the spaces, commas and dashes between suffixes are kept. A bare hyphen joins two suffixes (`"LTDA-ME"`), never a word and a suffix (`"Encontre-me"`).
+
+```ts
+function formatCompanyName(name: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
+```
+
+### formatCopy
+
+`import { formatCopy } from "@codeatlasdev/ui/utils/format"`
+
+Fills the `{key}` placeholders of a template in one pass: `formatCopy("Olá {nome}", { nome: "Ana" })` is `"Olá Ana"`. A key with no value (absent, `null` or `undefined`) stays visible, so `formatCopy("Olá {nome}", {})` is `"Olá {nome}"` and a missing value shows on the page instead of reading `"Olá undefined"` or `"Olá "`. Values go in with `String()` (format a number first with `plural` or `formatNumber`) and are never expanded again.
+
+```ts
+function formatCopy(template: string, values: CopyValues): string
+```
+
 ### formatCurrency
 
 `import { formatCurrency } from "@codeatlasdev/ui/utils/format"`
@@ -9334,6 +9451,16 @@ A ratio as a percentage, like `Intl`: `formatPercent(0.125)` is `"12,5%"`, `-0.0
 function formatPercent(ratio: number | null | undefined, options?: PercentOptions): string
 ```
 
+### formatPhone
+
+`import { formatPhone } from "@codeatlasdev/ui/utils/format"`
+
+A Brazilian phone as people read it, `"(11) 98765-4321"` or `"(11) 3456-7890"`, from what `phoneDigits` reads, with the mask of `PhoneField` (`maskPhoneBR` from `@codeatlasdev/ui/forms`). Text that is not a whole Brazilian number (a foreign or partial one) is shown as given, trimmed, so nothing is hidden; a blank one is `empty`.
+
+```ts
+function formatPhone(input: string | null | undefined, options?: Pick<FormatOptions, "empty">): string
+```
+
 ### formatRelativeTime
 
 `import { formatRelativeTime } from "@codeatlasdev/ui/utils/format"`
@@ -9364,12 +9491,43 @@ The capital initials of the first and last words, particles skipped: `"Maria da 
 function getInitials(name: string | null | undefined, options?: NameOptions): string
 ```
 
+### monthLabels
+
+`import { monthLabels } from "@codeatlasdev/ui/utils/format"`
+
+The 12 month names of a locale, January first, from `Intl.DateTimeFormat` (Gregorian calendar, standalone form) instead of a hand-kept list: `monthLabels()` is `["Janeiro", …, "Dezembro"]`, `monthLabels("pt-BR", "short")` is `["Jan.", …, "Dez."]`. They are labels (a select, a chart axis, a column header), so the first letter is capitalised in the locale, as `MonthPicker` shows them; the rest is what `Intl` returns. Inside a sentence pt-BR writes months in lowercase: use `formatDate` there.
+
+```ts
+function monthLabels(locale?: string, style?: "long" | "short"): string[]
+```
+
+### phoneDigits
+
+`import { phoneDigits } from "@codeatlasdev/ui/utils/format"`
+
+The national digits of a Brazilian phone, area code first (`"11987654321"`, `"1134567890"`), from E.164 (`"+5511987654321"`), bare digits or masked text. The country code (`+55`, or `55` before 10 or 11 more digits) and a trunk `0` are dropped; a number in area code 55 keeps it. Empty when the text is not a whole Brazilian number: another country, a partial number, an area code with a 0, or 9 digits after the area code that do not start with 9. Its E.164 is `` `+55${phoneDigits(text)}` ``.
+
+```ts
+function phoneDigits(text: string | null | undefined): string
+```
+
+### plural
+
+`import { plural } from "@codeatlasdev/ui/utils/format"`
+
+A count and the word that agrees with it: the form chosen by `Intl.PluralRules`, the number written by `Intl.NumberFormat`, both in `locale` (default `"pt-BR"`): `plural(1, "item", "itens")` is `"1 item"`, `plural(1000, "item", "itens")` is `"1.000 itens"`. The `one` category takes `one`; every other (`other`, and `zero`, `two`, `few` or `many` where the locale has them) takes `many`. In Portuguese (CLDR) `one` is any count whose integer part is 0 or 1: `plural(0, "item", "itens")` is `"0 item"` and `plural(1.5, "hora", "horas")` is `"1,5 hora"`; write your own text for zero (`"Nenhum item"`) when you want one. A missing count is `"—"`.
+
+```ts
+function plural(count: number | null | undefined, one: string, many: string, locale?: string): string
+```
+
 Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
 | `BytesOptions` | `interface BytesOptions extends FormatOptions { maximumFractionDigits?: number; }` | Options of `formatBytes`. |
 | `CompactMoneyOptions` | `interface CompactMoneyOptions extends FormatOptions { currency?: string; }` | Options of `formatMoneyCompact` and `formatMoneyAxis`. |
+| `CopyValues` | `type CopyValues = Readonly<Record<string, string \| number \| null \| undefined>>;` | Values `formatCopy` puts into a template; `null` and `undefined` count as missing. |
 | `DateInZoneOptions` | `interface DateInZoneOptions extends FormatOptions { timeZone?: string; dateStyle?: Intl.DateTimeFormatOptions["dateStyle"]; }` | Options of `formatDateInZone`. |
 | `DateTimeInZoneOptions` | `interface DateTimeInZoneOptions extends DateInZoneOptions { timeStyle?: Intl.DateTimeFormatOptions["timeStyle"]; }` | Options of `formatDateTimeInZone`. |
 | `FormatOptions` | `interface FormatOptions { locale?: string; empty?: string; }` | Options every formatter below takes. |
