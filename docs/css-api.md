@@ -4,9 +4,7 @@
 
 `--ca-*` `--ca-<component>-<property>` `--ca-<component>-<size|part>-<property>` `.ca-*` `@keyframes` `API.md` `Data attributes` `Internal` `Parts` `Variables` `ca-block--modifier` `ca-block__element` `ca-x-` `codeatlas-ui workarounds --strict` `dist/components.json` `dist/parts.json` `list_parts` `packages/ui/scripts/build-manifest.ts` `packages/ui/src/lib/styles/tokens.css` `styling` `tests/styling-parts.test.ts`
 
-Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
-
-Total: 836 unique classes across 84 components.
+First generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/`, now kept by hand and checked by `packages/ui/tests/css-api-drift.test.ts` (#1308): every stable part the manifest reads from a component's CSS (the extraction behind `dist/parts.json` and `list_parts`) must be listed in a section whose heading names the component or its folder, and every class listed here must still exist in the library. When you add or rename a class, update its section in the same change. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
 ---
 
@@ -26,15 +24,15 @@ Variants are `[data-variant="boxed" | "flush"]` and `[data-divided]` on `.ca-acc
 
 ## AppForm
 
-`.ca-app-form` `.ca-app-form__body` `.ca-app-form__desc` `.ca-app-form__footer` `.ca-app-form__footer-inner` `.ca-app-form__header` `.ca-app-form__header-inner` `.ca-app-form__inner` `.ca-app-form__leading` `.ca-app-form__meta` `.ca-app-form__title` `.ca-app-form__trailing` `.ca-shell__content`
+`.ca-app-form` `.ca-app-form--embedded` `.ca-app-form__aside` `.ca-app-form__body` `.ca-app-form__desc` `.ca-app-form__footer` `.ca-app-form__footer-inner` `.ca-app-form__header` `.ca-app-form__header-inner` `.ca-app-form__inner` `.ca-app-form__leading` `.ca-app-form__meta` `.ca-app-form__title` `.ca-app-form__trailing` `.ca-shell__content`
 
 ## AppList
 
-`.ca-app-list` `.ca-app-list__actions` `.ca-app-list__body` `.ca-app-list__clear` `.ca-app-list__desc` `.ca-app-list__empty` `.ca-app-list__empty-msg` `.ca-app-list__footer` `.ca-app-list__header` `.ca-app-list__meta` `.ca-app-list__sel-label` `.ca-app-list__spacer` `.ca-app-list__title` `.ca-app-list__toolbar` `.ca-app-list__toolbar-sep` `.ca-page-info` `.ca-search-field` `.ca-shell__content`
+`.ca-app-list` `.ca-app-list--embedded` `.ca-app-list__actions` `.ca-app-list__body` `.ca-app-list__clear` `.ca-app-list__desc` `.ca-app-list__empty` `.ca-app-list__empty-msg` `.ca-app-list__footer` `.ca-app-list__header` `.ca-app-list__meta` `.ca-app-list__sel-label` `.ca-app-list__spacer` `.ca-app-list__title` `.ca-app-list__toolbar` `.ca-app-list__toolbar-sep` `.ca-page-info` `.ca-search-field` `.ca-shell__content`
 
 ## AppSettings
 
-`.ca-app-settings` `.ca-app-settings__actions` `.ca-app-settings__body` `.ca-app-settings__content` `.ca-app-settings__desc` `.ca-app-settings__header` `.ca-app-settings__meta` `.ca-app-settings__nav` `.ca-app-settings__nav-badge` `.ca-app-settings__nav-icon` `.ca-app-settings__nav-item` `.ca-app-settings__nav-label` `.ca-app-settings__title` `.ca-shell__content`
+`.ca-app-settings` `.ca-app-settings--embedded` `.ca-app-settings__actions` `.ca-app-settings__aside` `.ca-app-settings__body` `.ca-app-settings__content` `.ca-app-settings__desc` `.ca-app-settings__header` `.ca-app-settings__leading` `.ca-app-settings__meta` `.ca-app-settings__nav` `.ca-app-settings__nav-badge` `.ca-app-settings__nav-icon` `.ca-app-settings__nav-item` `.ca-app-settings__nav-label` `.ca-app-settings__title` `.ca-shell__content`
 
 ## AppShell
 
@@ -60,7 +58,7 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 ## Avatar
 
-`.ca-avatar` `.ca-avatar__fallback` `.ca-avatar__img` `.ca-avatar__status` `.ca-avatar__status--away` `.ca-avatar__status--busy` `.ca-avatar__status--offline` `.ca-avatar__status--online`
+`.ca-avatar` `.ca-avatar__fallback` `.ca-avatar__fallback--covered` `.ca-avatar__img` `.ca-avatar__status` `.ca-avatar__status--away` `.ca-avatar__status--busy` `.ca-avatar__status--offline` `.ca-avatar__status--online`
 
 ## AvatarGroup
 
@@ -103,9 +101,13 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 `.ca-card` `.ca-card--flush` `.ca-card--full` `.ca-card__header` `.ca-card__header-actions` `.ca-card__title`
 
+## ChartScope
+
+`.ca-chart-scope` (`@codeatlasdev/ui/charts`): the element whose theme tokens the charts below it read (a `data-theme-scope` or `data-preset` island).
+
 ## Checkbox
 
-`.ca-checkbox` `.ca-checkbox-wrapper` `.ca-checkbox__indicator` `.ca-checkbox__label` `.ca-checkbox__label--disabled`
+`.ca-checkbox` `.ca-checkbox-wrapper` `.ca-checkbox__indicator` `.ca-checkbox__input` `.ca-checkbox__label` `.ca-checkbox__label--disabled`
 
 ## Carousel
 
@@ -153,11 +155,11 @@ Variants are `[data-variant="boxed" | "flush"]` and `[data-divided]` on `.ca-col
 
 ## Combobox
 
-`.ca-combobox--error` `.ca-combobox--multiple` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__chip` `.ca-combobox__chips` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__group` `.ca-combobox__group-label` `.ca-combobox__hint--error` `.ca-combobox__hint` `.ca-combobox__input` `.ca-combobox__item--create` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__item` `.ca-combobox__label` `.ca-combobox__refusal` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger-count` `.ca-combobox__trigger-label` `.ca-combobox__trigger` `.ca-combobox__viewport` `.ca-combobox`
+`.ca-combobox--error` `.ca-combobox--multiple` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__chip` `.ca-combobox__chips` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__group` `.ca-combobox__group-label` `.ca-combobox__hint--error` `.ca-combobox__hint` `.ca-combobox__input` `.ca-combobox__item--create` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__item` `.ca-combobox__label` `.ca-combobox__refusal` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger-count` `.ca-combobox__trigger-label` `.ca-combobox__trigger` `.ca-combobox__viewport` `.ca-combobox` `.ca-validity-proxy`
 
 ## CommandPalette
 
-`.ca-cmd-dialog` `.ca-cmd-empty` `.ca-cmd-error` `.ca-cmd-fade-in` `.ca-cmd-fade-out` `.ca-cmd-group__label` `.ca-cmd-group` `.ca-cmd-item--active` `.ca-cmd-item__icon` `.ca-cmd-item__label` `.ca-cmd-item__module` `.ca-cmd-item` `.ca-cmd-list` `.ca-cmd-loading` `.ca-cmd-overlay` `.ca-cmd-search__hint` `.ca-cmd-search__icon` `.ca-cmd-search__input` `.ca-cmd-search__spinner` `.ca-cmd-search` `.ca-cmd-slide-in` `.ca-cmd-slide-out`
+`.ca-cmd-dialog` `.ca-cmd-empty` `.ca-cmd-error` `.ca-cmd-group__label` `.ca-cmd-group` `.ca-cmd-item--active` `.ca-cmd-item__icon` `.ca-cmd-item__label` `.ca-cmd-item__module` `.ca-cmd-item` `.ca-cmd-list` `.ca-cmd-loading` `.ca-cmd-overlay` `.ca-cmd-search__hint` `.ca-cmd-search__icon` `.ca-cmd-search__input` `.ca-cmd-search__spinner` `.ca-cmd-search` `.ca-cmd-slide-in` `.ca-cmd-slide-out`
 
 ## Container
 
@@ -188,11 +190,12 @@ Token: `--ca-cf-gap` (falls back to `--ca-field-gap`). The value box is `user-se
 
 ## Date
 
-`.ca-cal` `.ca-cal--fill` `.ca-cal--standalone` `.ca-cal__cell` `.ca-cal__day` `.ca-cal__grid` `.ca-cal__head-cell` `.ca-cal__header` `.ca-cal__heading` `.ca-cal__months` `.ca-cal__nav` `.ca-date` `.ca-date--disabled` `.ca-date--error` `.ca-date--sm` `.ca-date-in` `.ca-date-native` `.ca-date-out` `.ca-date__content` `.ca-date__hint` `.ca-date__hint--error` `.ca-date__input` `.ca-date__label` `.ca-date__preset` `.ca-date__presets` `.ca-date__range-sep` `.ca-date__req` `.ca-date__segment` `.ca-date__sep` `.ca-date__clear` `.ca-date__trigger` `.ca-date__wrap` `.ca-mp__cell` `.ca-mp__grid` `.ca-mp__month` `.ca-mp__value` `.ca-tf` `.ca-tp__item`
+`.ca-cal` `.ca-cal--fill` `.ca-cal--standalone` `.ca-cal__cell` `.ca-cal__day` `.ca-cal__grid` `.ca-cal__head-cell` `.ca-cal__header` `.ca-cal__heading` `.ca-cal__months` `.ca-cal__nav` `.ca-date` `.ca-date--disabled` `.ca-date--error` `.ca-date--sm` `.ca-date-in` `.ca-date-native` `.ca-date-out` `.ca-date__content` `.ca-date__hint` `.ca-date__hint--error` `.ca-date__input` `.ca-date__label` `.ca-date__preset` `.ca-date__presets` `.ca-date__range-sep` `.ca-date__req` `.ca-date__segment` `.ca-date__clear` `.ca-date__trigger` `.ca-date__wrap` `.ca-mp__cell` `.ca-mp__grid` `.ca-mp__month` `.ca-mp__value` `.ca-tf` `.ca-tp__item`
+`.ca-cal` `.ca-cal--standalone` `.ca-cal__cell` `.ca-cal__day` `.ca-cal__grid` `.ca-cal__head-cell` `.ca-cal__header` `.ca-cal__heading` `.ca-cal__months` `.ca-cal__nav` `.ca-date` `.ca-date--disabled` `.ca-date--error` `.ca-date--sm` `.ca-date-in` `.ca-date-native` `.ca-date-out` `.ca-date__content` `.ca-date__hint` `.ca-date__hint--error` `.ca-date__input` `.ca-date__label` `.ca-date__preset` `.ca-date__presets` `.ca-date__range-sep` `.ca-date__req` `.ca-date__segment` `.ca-date__clear` `.ca-date__trigger` `.ca-date__wrap` `.ca-mp__cell` `.ca-mp__grid` `.ca-mp__month` `.ca-mp__value` `.ca-tf` `.ca-tp__item`
 
 ## Dialog
 
-`.ca-dialog` `.ca-dialog--chromeless` `.ca-dialog--split` `.ca-dialog-in` `.ca-dialog-out` `.ca-dialog__actions` `.ca-dialog__body` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__sr-only` `.ca-dialog__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay-in` `.ca-overlay-out`
+`.ca-dialog` `.ca-dialog--chromeless` `.ca-dialog--split` `.ca-dialog-in` `.ca-dialog-out` `.ca-dialog__actions` `.ca-dialog__body` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay-in` `.ca-overlay-out`
 
 Dialog panel: `--ca-dialog-width` (overrides the size's max width), `--ca-dialog-radius`, `--ca-dialog-top-offset` (with `placement="top"`, which adds `data-placement="top"` to `dialog.ca-dialog`).
 
@@ -210,7 +213,7 @@ Dialog panel: `--ca-dialog-width` (overrides the size's max width), `--ca-dialog
 
 ## Docs
 
-`.ca-alert__content` `.ca-callout` `.ca-card-grid` `.ca-code` `.ca-codetab` `.ca-codetabs` `.ca-codetabs__bar` `.ca-codetabs__copy` `.ca-codetabs__panels` `.ca-codetabs__tab` `.ca-codetabs__tabs` `.ca-docs` `.ca-docs--bare` `.ca-docs-brand` `.ca-docs-content` `.ca-docs-header` `.ca-docs-header__inner` `.ca-docs-icon` `.ca-docs-main` `.ca-docs-menu` `.ca-docs-nav` `.ca-docs-nav__group` `.ca-docs-nav__label` `.ca-docs-nav__link` `.ca-docs-nav__title` `.ca-docs-search` `.ca-docs-search-btn` `.ca-docs-search-btn__label` `.ca-docs-search-icon` `.ca-docs-search-in` `.ca-docs-search-opt` `.ca-docs-search-out` `.ca-docs-search-pop-in` `.ca-docs-search-pop-out` `.ca-docs-search-results` `.ca-docs-search__bar` `.ca-docs-search__body` `.ca-docs-search__cancel` `.ca-docs-search__context` `.ca-docs-search__empty` `.ca-docs-search__enter` `.ca-docs-search__esc` `.ca-docs-search__icon` `.ca-docs-search__input` `.ca-docs-search__overlay` `.ca-docs-search__result` `.ca-docs-search__result--on` `.ca-docs-search__results` `.ca-docs-search__sr` `.ca-docs-search__text` `.ca-docs-search__title` `.ca-docs-section` `.ca-docs-sections` `.ca-docs-sheet-sections` `.ca-docs-sidebar` `.ca-docs-skip` `.ca-docs-spacer` `.ca-docs-theme` `.ca-docs-toc` `.ca-docs-toc-inline` `.ca-kbd` `.ca-link-card` `.ca-link-card__desc` `.ca-link-card__title` `.ca-method` `.ca-method--pill` `.ca-method--plain` `.ca-overlay` `.ca-prose` `.ca-rail-btn` `.ca-step` `.ca-steps` `.ca-toc` `.ca-toc--inline` `.ca-toc--rail` `.ca-toc__current` `.ca-toc__label` `.ca-toc__list` `.ca-toc__sub` `.ca-toc__summary-label` `.ca-release` `.ca-release-jump` `.ca-release-thanks` `.ca-release__meta`
+`.ca-alert__content` `.ca-callout` `.ca-card-grid` `.ca-code` `.ca-codetab` `.ca-codetabs` `.ca-codetabs__bar` `.ca-codetabs__copy` `.ca-codetabs__panels` `.ca-codetabs__tab` `.ca-codetabs__tabs` `.ca-docs` `.ca-docs--bare` `.ca-docs-actions` `.ca-docs-brand` `.ca-docs-header` `.ca-docs-header__inner` `.ca-docs-icon` `.ca-docs-main` `.ca-docs-menu` `.ca-docs-nav` `.ca-docs-nav__group` `.ca-docs-nav__label` `.ca-docs-nav__link` `.ca-docs-nav__title` `.ca-docs-pager` `.ca-docs-pager__link` `.ca-docs-pager__link--next` `.ca-docs-pager__text` `.ca-docs-pager__title` `.ca-docs-search` `.ca-docs-search-btn` `.ca-docs-search-btn__label` `.ca-docs-search-icon` `.ca-docs-search-in` `.ca-docs-search-out` `.ca-docs-search-pop-in` `.ca-docs-search-pop-out` `.ca-docs-search-results` `.ca-docs-search__bar` `.ca-docs-search__body` `.ca-docs-search__cancel` `.ca-docs-search__context` `.ca-docs-search__empty` `.ca-docs-search__enter` `.ca-docs-search__esc` `.ca-docs-search__icon` `.ca-docs-search__input` `.ca-docs-search__overlay` `.ca-docs-search__result` `.ca-docs-search__result--on` `.ca-docs-search__results` `.ca-docs-search__text` `.ca-docs-search__title` `.ca-docs-section` `.ca-docs-sections` `.ca-docs-sheet-sections` `.ca-docs-sidebar` `.ca-docs-skip` `.ca-docs-spacer` `.ca-docs-theme` `.ca-docs-toc` `.ca-docs-toc-inline` `.ca-kbd` `.ca-link-card` `.ca-link-card__desc` `.ca-link-card__title` `.ca-method` `.ca-method--pill` `.ca-method--plain` `.ca-overlay` `.ca-prose` `.ca-rail-btn` `.ca-step` `.ca-steps` `.ca-toc` `.ca-toc--inline` `.ca-toc--rail` `.ca-toc__current` `.ca-toc__label` `.ca-toc__list` `.ca-toc__sub` `.ca-toc__summary-label` `.ca-release` `.ca-release-jump` `.ca-release-thanks` `.ca-release__meta`
 
 DocsShell content gutter: tokens `--ca-docs-main-pt` `--ca-docs-main-pb` `--ca-docs-main-px` (set on `:root` or an ancestor); prop `padding="none|x|y"` adds `.ca-docs-main--flush`, `.ca-docs-main--flush-x`, `.ca-docs-main--flush-y`; `data-ca-bleed` on a child of the content spans it edge to edge (cancels the horizontal gutter).
 
@@ -228,7 +231,7 @@ Scoped variable: `--ca-menu-max` (default `32rem`) caps the panel height togethe
 
 ## EmptyState
 
-`.ca-empty` `.ca-empty--hero` `.ca-empty__actions` `.ca-empty__description` `.ca-empty__icon` `.ca-empty__title` `.ca-empty__title--display`
+`.ca-empty` `.ca-empty--fill` `.ca-empty--hero` `.ca-empty__actions` `.ca-empty__description` `.ca-empty__icon` `.ca-empty__title` `.ca-empty__title--display`
 
 `.ca-empty--row` (prop `size="row"`, #992): icon, title, description and actions on one line for an empty slot in a list or a grid; the title is a `<p>`, not a heading, and the variant class is not emitted. Token `--ca-empty-row-padding` (default `--ca-space-2 --ca-space-3`; `.ca-empty--bare` wins); the stacked tokens do not apply to a row.
 
@@ -238,7 +241,7 @@ Scoped variable: `--ca-menu-max` (default `32rem`) caps the panel height togethe
 
 ## ExternalLink
 
-`.ca-external-link` `.ca-external-link__icon` `.ca-external-link__sr`
+`.ca-external-link` `.ca-external-link__icon`
 
 ## FileUpload
 
@@ -275,9 +278,25 @@ Scoped variable: `--ca-menu-max` (default `32rem`) caps the panel height togethe
 
 `.ca-heading` `.ca-heading--display` `.ca-heading--display-2` `.ca-heading--display-3` `.ca-heading--h1` `.ca-heading--h2` `.ca-heading--h3` `.ca-heading--h4` `.ca-heading--h5` `.ca-heading--h6` `.ca-highlight` `.ca-highlight--animated`
 
+## Heading
+
+`.ca-heading` `.ca-heading--display` `.ca-heading--display-2` `.ca-heading--display-3` `.ca-heading--h1` `.ca-heading--h2` `.ca-heading--h3` `.ca-heading--h4` `.ca-heading--h5` `.ca-heading--h6`
+
+The modifier is the look (`size`, default the `level`), independent of the `h1`-`h6` element.
+
+## Highlight
+
+`.ca-highlight` `.ca-highlight--animated`
+
 ## HoverCard
 
 `.ca-hovercard-content` `.ca-hovercard-in` `.ca-hovercard-out` `.ca-hovercard__trigger`
+
+## Image
+
+`.ca-image` `.ca-image--contain` `.ca-image--cover` `.ca-image--ratio`
+
+`.ca-image--ratio` is set with the `ratio` prop, plus `.ca-image--cover` or `.ca-image--contain` from `fit`.
 
 ## InstallPrompt
 
@@ -315,7 +334,7 @@ The trend element (`.ca-kpi__trend`, `.ca-stat__trend`) carries `data-tone="good
 
 ## Lightbox
 
-`.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__action` `.ca-lightbox__caption` `.ca-lightbox__caption-text` `.ca-lightbox__close` `.ca-lightbox__counter` `.ca-lightbox__img` `.ca-lightbox__meta` `.ca-lightbox__nav` `.ca-lightbox__nav--next` `.ca-lightbox__nav--prev` `.ca-lightbox__overlay` `.ca-lightbox__sr` `.ca-lightbox__stage` `.ca-lightbox__tools` `.ca-lightbox__video`
+`.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__action` `.ca-lightbox__caption` `.ca-lightbox__caption-text` `.ca-lightbox__close` `.ca-lightbox__counter` `.ca-lightbox__img` `.ca-lightbox__meta` `.ca-lightbox__nav` `.ca-lightbox__nav--next` `.ca-lightbox__nav--prev` `.ca-lightbox__stage` `.ca-lightbox__tools` `.ca-lightbox__video`
 
 ## LiveList
 
@@ -326,6 +345,22 @@ The trend element (`.ca-kpi__trend`, `.ca-stat__trend`) carries `data-tone="good
 `.ca-loading-boundary` `.ca-loading-boundary__content` `.ca-loading-boundary__pending`
 
 `.ca-locale` `.ca-locale--compact` `.ca-locale--sm` `.ca-locale__chevron` `.ca-locale__code` `.ca-locale__icon` `.ca-locale__name` `.ca-map` `.ca-map-controls` `.ca-map-controls__needle` `.ca-map__canvas` `.ca-map__overlay`
+
+## LocaleSwitcher
+
+`.ca-locale` `.ca-locale--compact` `.ca-locale--sm` `.ca-locale__code` `.ca-locale__name`
+
+## MapControls
+
+`.ca-map-controls` `.ca-map-controls__needle` (`@codeatlasdev/ui/map`)
+
+## MapStage
+
+`.ca-map` `.ca-map__canvas` `.ca-map__overlay` (`@codeatlasdev/ui/map`)
+
+## MaskedField
+
+`.ca-masked` (`@codeatlasdev/ui/forms`): the wrapper around the `TextField` (`.ca-tf`).
 
 ## MasterDetail
 
@@ -377,11 +412,11 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## PageFrame
 
-`.ca-page-frame` `.ca-page-frame__body` `.ca-page-frame__footer` `.ca-page-frame__grip` `.ca-page-frame__handle` `.ca-page-frame__header` `.ca-page-frame__panel` `.ca-page-frame__toolbar`. State is on `data-mode`, `data-side`, `data-width`, `data-sheet`, `data-detent`, `data-dragging` of the root. Custom properties: `--ca-stage-inset-top|right|bottom|left` on `<html>` (the covered area). Tokens: `--ca-frame-pad-x` (inline padding of header, toolbar, body and footer, default `var(--ca-space-5)`), `--ca-frame-pad-y` (their block padding; each part keeps its own default), `--ca-frame-border-width` (header and footer separators, default `var(--ca-border-width)`).
+`.ca-page-frame` `.ca-page-frame__aside` `.ca-page-frame__body` `.ca-page-frame__footer` `.ca-page-frame__grip` `.ca-page-frame__handle` `.ca-page-frame__header` `.ca-page-frame__panel` `.ca-page-frame__toolbar`. State is on `data-mode`, `data-side`, `data-width`, `data-sheet`, `data-detent`, `data-dragging` of the root. Custom properties: `--ca-stage-inset-top|right|bottom|left` on `<html>` (the covered area). Tokens: `--ca-frame-pad-x` (inline padding of header, toolbar, body and footer, default `var(--ca-space-5)`), `--ca-frame-pad-y` (their block padding; each part keeps its own default), `--ca-frame-border-width` (header and footer separators, default `var(--ca-border-width)`).
 
 ## PageShell
 
-`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__count` `.ca-page-shell__extra` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__heading` `.ca-page-shell__icon` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__more` `.ca-page-shell__title` `.ca-page-shell__title--display` `.ca-shell__content`
+`.ca-page-shell` `.ca-page-shell--flow` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__count` `.ca-page-shell__extra` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__heading` `.ca-page-shell__icon` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__leading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__more` `.ca-page-shell__title` `.ca-page-shell__title--display` `.ca-shell__content`
 
 `.ca-page-shell__actions` is a right-aligned wrapping flex row (`flex: 0 1 auto`, `min-width: 0`), so many actions wrap instead of being clipped; the title column keeps `min-width: min(12rem, 100%)`. With a `data-priority="primary"` action in it the row gets `data-collapse` (one line, children `flex: none`): `.ca-page-shell__more` wraps the "More" `IconButton` (`ca-icon-btn`) and is shown (`data-shown`) only while an action is hidden; a hidden action carries `data-overflowed` and `display: none` (it stays in the DOM, and its menu entry clicks it). `data-overflow="Label"` names an action's menu entry. The same mechanics as `.ca-toolbar__more`.
 
@@ -397,9 +432,13 @@ Header: `.ca-page-shell__icon` is the decorative tile (`icon`), `.ca-page-shell_
 
 `data-score="0|1|2|3"` and `data-layout="stacked|inline"` on `.ca-pwstrength` (`data-empty` while `hideWhenEmpty` hides a score-0 meter: the box collapses, the live label stays in the accessibility tree); `data-on` on a filled `.ca-pwstrength__seg`. Tokens: `--ca-pwstrength-gap` `--ca-pwstrength-empty-bg` `--ca-pwstrength-label-leading` `--ca-pwstrength-label-tracking` (theme key `components.passwordStrength`).
 
+## PieChart
+
+`.ca-pie-center` `.ca-pie-center__label` `.ca-pie-center__value` (`@codeatlasdev/ui/charts`): the `centerLabel` of a donut.
+
 ## PinInput
 
-`.ca-pin` `.ca-pin--disabled` `.ca-pin--error` `.ca-pin-blink` `.ca-pin__caret` `.ca-pin__cell` `.ca-pin__cells` `.ca-pin__hint` `.ca-pin__hint--error` `.ca-pin__label` `.ca-pin__root`
+`.ca-pin` `.ca-pin--disabled` `.ca-pin--error` `.ca-pin-blink` `.ca-pin__caret` `.ca-pin__cell` `.ca-pin__cells` `.ca-pin__hint` `.ca-pin__hint--error` `.ca-pin__input` `.ca-pin__label` `.ca-pin__root`
 
 ## Popover
 
@@ -417,7 +456,7 @@ Header: `.ca-page-shell__icon` is the decorative tile (`icon`), `.ca-page-shell_
 
 ## RadioGroup
 
-`.ca-radio-group` `.ca-radio-group--horizontal` `.ca-radio-group--vertical` `.ca-radio-indicator` `.ca-radio-input` `.ca-radio-item` `.ca-radio-label` `.ca-radio-label--disabled`
+`.ca-radio-card__desc` `.ca-radio-card__head` `.ca-radio-card__input` `.ca-radio-card__label` `.ca-radio-group` `.ca-radio-group--horizontal` `.ca-radio-group--vertical` `.ca-radio-indicator` `.ca-radio-input` `.ca-radio-input__native` `.ca-radio-item` `.ca-radio-label` `.ca-radio-label--disabled`
 
 `variant="cards"`: `.ca-radio-group--cards` holds `.ca-radio-card` items; `data-columns="1|2|3"` (the `columns` prop) caps the cards per row. Scoped variable: `--ca-radio-card-min` (default `min(100%, 168px)`), the narrowest a card gets before the grid drops a column.
 
@@ -454,7 +493,7 @@ Re-flow: the list is a size container (`container-type: inline-size`), rows stac
 
 ## Select
 
-`.ca-sel` `.ca-sel--disabled` `.ca-sel--error` `.ca-sel--sm` `.ca-sel__check` `.ca-sel__content` `.ca-sel__group` `.ca-sel__group-label` `.ca-sel__hint` `.ca-sel__hint--error` `.ca-sel__icon` `.ca-sel__item` `.ca-sel__item-label` `.ca-sel__label` `.ca-sel__req` `.ca-sel__trigger` `.ca-sel__value` `.ca-sel__value--placeholder`
+`.ca-sel` `.ca-sel--disabled` `.ca-sel--error` `.ca-sel--sm` `.ca-sel__check` `.ca-sel__content` `.ca-sel__group` `.ca-sel__group-label` `.ca-sel__hint` `.ca-sel__hint--error` `.ca-sel__icon` `.ca-sel__item` `.ca-sel__item-label` `.ca-sel__label` `.ca-sel__req` `.ca-sel__trigger` `.ca-sel__value` `.ca-sel__value--placeholder` `.ca-validity-proxy`
 
 ## SettingItem
 
@@ -480,7 +519,7 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 
 ## Slider
 
-`.ca-slider` `.ca-slider__range` `.ca-slider__thumb` `.ca-slider__track`
+`.ca-slider` `.ca-slider--sm` `.ca-slider__range` `.ca-slider__thumb` `.ca-slider__track`
 
 ## SliderField
 
@@ -542,15 +581,19 @@ State attribute on a row: `data-dragging`. Each row carries `data-dnd-item="<id>
 
 `.ca-surface-panel`
 
+## SwatchGroup
+
+`.ca-swatch` `.ca-swatch-group` `.ca-swatch-group--sm`
+
 ## Switch
 
-`.ca-switch` `.ca-switch-wrapper` `.ca-switch__label` `.ca-switch__label--disabled` `.ca-switch__thumb`
+`.ca-switch` `.ca-switch-wrapper` `.ca-switch__input` `.ca-switch__label` `.ca-switch__label--disabled` `.ca-switch__thumb`
 
 Tokens: `--ca-switch-{track-width,track-height,padding,border-width,border-color,thumb-size,thumb-bg,thumb-shadow,on-bg}`, `--ca-switch-sm-{track-width,track-height,padding,thumb-size}` (prop `size="sm"`, `data-size="sm"`). Theme key `components.switch`.
 
 ## Table
 
-`.ca-table` `.ca-table--bare` `.ca-table--cards` `.ca-table--compact` `.ca-table--pinned` `.ca-table--sentence` `.ca-table-empty` `.ca-table-group` `.ca-table-group__chevron` `.ca-table-group__toggle` `.ca-table-root--static` `.ca-table-row--interactive` `.ca-table-sort` `.ca-table-sort__icon` `.ca-table-wrap` `.ca-table-wrap--cards` `.ca-user-cell` `.ca-user-cell__email` `.ca-user-cell__info` `.ca-user-cell__name`
+`.ca-table` `.ca-table--bare` `.ca-table--cards` `.ca-table--compact` `.ca-table--no-hover` `.ca-table--pinned` `.ca-table--sentence` `.ca-table-empty` `.ca-table-group` `.ca-table-group__chevron` `.ca-table-group__toggle` `.ca-table-root` `.ca-table-root--static` `.ca-table-row--interactive` `.ca-table-sort` `.ca-table-sort__icon` `.ca-table-wrap` `.ca-table-wrap--cards` `.ca-user-cell` `.ca-user-cell__email` `.ca-user-cell__info` `.ca-user-cell__name`
 
 ## Tabs
 
@@ -576,13 +619,13 @@ The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-ro
 
 `.ca-field-optional`: the "(optional)" text after the label of TextField, TextArea, NumberField, Select, Combobox and Label with `optional` (#1215). A `required` Select or Combobox also carries a visually hidden "(required)" in its label, because its trigger is a button and cannot take `aria-required`.
 
-## Field counter (shared)
+## Field counter (shared by TextField and TextArea)
 
 `.ca-field-foot` `.ca-field-counter` `.ca-field-counter--warn` `.ca-field-counter--over`: the `counter` of TextField and TextArea (#1120). `.ca-field-foot` is the row under the field that holds the description or error and the count; `.ca-field-counter` is the `n/max` text (`--ca-text-secondary`), `--warn` from `warnAt` of the limit (`--ca-semantic-warning`), `--over` past it (`--ca-semantic-error`).
 
 ## TextField
 
-`.ca-tf` `.ca-tf--disabled` `.ca-tf--error` `.ca-tf--sm` `.ca-tf__addon` `.ca-tf__addon--prefix` `.ca-tf__addon--suffix` `.ca-tf__addon--text` `.ca-tf__adorn` `.ca-tf__adorn--lead` `.ca-tf__adorn--trail` `.ca-tf__hint` `.ca-tf__hint--error` `.ca-tf__input` `.ca-tf__label` `.ca-tf__req` `.ca-tf__wrap` `.ca-tf__wrap--addons` `.ca-tf__wrap--error` `.ca-tf__wrap--focused`
+`.ca-tf` `.ca-tf--disabled` `.ca-tf--error` `.ca-tf--sm` `.ca-tf__addon` `.ca-tf__addon--prefix` `.ca-tf__addon--suffix` `.ca-tf__addon--text` `.ca-tf__adorn` `.ca-tf__adorn--lead` `.ca-tf__adorn--trail` `.ca-tf__below` `.ca-tf__hint` `.ca-tf__hint--error` `.ca-tf__input` `.ca-tf__label` `.ca-tf__req` `.ca-tf__reveal` `.ca-tf__wrap` `.ca-tf__wrap--addons` `.ca-tf__wrap--error` `.ca-tf__wrap--focused`
 
 ## ThemeIsland
 
