@@ -64,7 +64,7 @@ const SKILL_DEMOS = resolve(ROOT, "../../.agents/skills/codeatlas-ui/DEMOS.md");
 
 /**
  * What a manifest run writes into the git tree, as repo-relative paths (directories end in `/`). The land gate
- * (`scripts/generated-paths.sh`, the one list of generated files) must accept every one of them, or a rebase
+ * (`scripts/generated-paths.ts`, the one list of generated files) must accept every one of them, or a rebase
  * would take a side of a file the manifest rebuilds; `tests/issue-workflow.test.ts` checks it (#653).
  */
 export const TREE_OUTPUTS = [

@@ -2,7 +2,7 @@
 // pre-push (lefthook.yml): a seconds-long check of what the branch changed, not the full `validate` (#1324).
 //
 // `validate` (~50 s on the owner's machine, ~10 min on Windows with Defender) already runs where it decides
-// something: on every PR (.github/workflows/pr.yml, GitHub runner) and in the land gate (scripts/issue-land.sh,
+// something: on every PR (.github/workflows/pr.yml, GitHub runner) and in the land gate (scripts/issue-land.ts,
 // on the tree rebased onto main). Running it on each contributor push paid that cost N times for nothing.
 // Here: Biome on the files changed since origin/main, and the unit tests whose module graph reaches them.
 //

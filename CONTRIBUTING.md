@@ -66,7 +66,17 @@ Then, in the worktree (use paths inside it; your editor or agent must not edit t
 1. **Understand and reproduce.** Write the regression test first and run it: it must fail on the current code. Paste that output in the PR.
 2. **Fix** the root cause until the test passes. No workarounds for a symptom. Run every test you added or changed, Playwright included.
 3. **Before review:** `bun run test` (what your diff reaches), a changeset if the package changes, docs if behavior changed. You do not need to run `bun run validate` locally: the PR workflow runs it on GitHub, and the maintainer's land gate runs it again on the rebased tree. Never bypass the pre-push hook (`--no-verify`, `LEFTHOOK=0`): it takes under a second; a gate that fails only under load is a bug; open an issue for it.
-4. **Landing (maintainers):** `sh scripts/issue-land.sh 47` rebases on `main`, rebuilds generated files (lockfile, API.md, components.json, css-api), runs `bun run validate` (90 second budget) and the land gate (`scripts/test-changed.ts --land`: the tests and screenshots the diff affects plus 5 canary routes, 3 minute budget; a screenshot mismatch stops it: review and commit `bun run test:vrt:update`, then rerun), pushes and squash-merges. GitHub closes the issue through `Closes #47`; the script then runs `issue:done` (worktree, branch and `in progress` label cleanup).
+4. **Landing (maintainers):** `bun run issue:land 47` rebases on `main`, rebuilds generated files (lockfile, API.md, components.json, css-api), runs `bun run validate` (90 second budget) and the land gate (the tests and screenshots the diff affects; every component test when a shared file changed), pushes and squash-merges. GitHub closes the issue through `Closes #47`; the script then runs `issue:done` (worktree, branch and `in progress` label cleanup). Every workflow command is TypeScript run by Bun: the same on Windows, macOS and Linux.
+
+### Why the workflow is shaped this way
+
+| Choice | Reason |
+|---|---|
+| Small PRs, one issue each, landed within hours | DORA finds working in small batches predicts delivery performance and amplifies the gains of AI-assisted coding, and calls large AI-generated changes hard to review and integrate ([DORA, small batches](https://dora.dev/capabilities/working-in-small-batches/)) |
+| Checks ordered by feedback time: diff-only on push, `validate` on the PR, affected tests at land, full suites at release | the same source names fast feedback as the reason small batches work; a 10-minute local `validate` on every push (Windows with Defender, #1324) was paid again at land |
+| `AGENTS.md` starts with instructions and keeps contracts, not a tour | context files: instructions are followed, overviews raise cost by over 20% without raising success ([Gloaguen et al., 2026](https://arxiv.org/abs/2602.11988)); a context file was associated with 28.6% lower median agent runtime at comparable completion ([Lulla et al., 2026](https://arxiv.org/abs/2601.20404)) |
+| Parallel work only on disjoint files | two PRs editing the same file conflict at rebase and re-run the gate; `issue:triage` links related issues so they go in one queue |
+| No `sh` in the tooling | 12 issues titled "Windows" between 2026-10-14 and 2026-11-15, mostly tooling portability bugs (path separators, `PATH` joined with `:`, `sh`-only scripts, cold-start timeouts) |
 
 Issues filed by an AI agent through the `report_issue` MCP tool use the **AI report** form (`ai-report` label) and are sanitized before posting (no project names, paths, URLs, env, secrets or data). Treat them like any bug report; when you close one, `bunx @codeatlasdev/ui workarounds` is how its reporter finds the workaround to remove. See [Reporting problems](https://ui.codeatlas.com.br/docs/getting-started/reporting/).
 
@@ -91,13 +101,13 @@ If you find the issue is already fixed or obsolete, prove it with a test that pa
 
 **Test first.** A bug fix starts with a regression test that reproduces the problem: run it, watch it fail on the current code, then fix until it passes, and put that fail-before/pass-after evidence in the PR. Tests prove behavior; tests that only pad coverage (wiring, copies, mock echoes, incidental defaults) are rejected.
 
-> **The land gate is local.** A PR is merged after `bun run validate` and `bun run test` pass on a tree rebased onto the latest `main` (the pre-push hook runs `validate`, skipped for a tree that already passed it). CI runs the full suites on `main` after the merge; `bun run test:full` and `bun run test:vrt` run everything and are what a release runs. PR titles are checked (`pr-title.yml`).
+> **The land gate is local.** A PR is merged after `bun run validate` and `bun run test` pass on a tree rebased onto the latest `main` (`bun run issue:land`). `validate` also runs on every PR on GitHub (`pr.yml`). CI runs the full suites on `main` after the merge; `bun run test:full` and `bun run test:vrt` run everything and are what a release runs. PR titles are checked (`pr-title.yml`).
 
-CI (`.github/workflows/ci.yml`) runs the same gates. Locally, both must exit with code 0:
+While you work, run `bun run test` (it exits 0 when what your diff reaches passes). `validate` runs on your PR; run it locally only to reproduce a PR failure:
 
 ```bash
+bun run test       # unit + component tests + screenshots + docs routes the diff reaches
 bun run validate   # generated themes, bun --check + svelte-check + astro check, Biome, unit tests, size budget
-bun run test       # unit (bun test) + component tests (Chromium) + site E2E/a11y (Playwright)
 ```
 
 Unit tests run on `bun test` (`bunfig.toml` points it at `packages/ui/tests`); component and visual tests need a real browser and stay on Vitest, so prefer `bun run test` for the full suite. Type checking is split by who understands the files: `bun --check` (the native checker, config in the root `tsconfig.json`) covers scripts, unit tests and Playwright specs, `svelte-check` covers `packages/ui` and `astro check` covers `site`. Bun >= 1.4.3 and Node >= 22.17 are required.

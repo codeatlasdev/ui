@@ -4,6 +4,18 @@ If you are building an app that uses `@codeatlasdev/ui` (not working on this rep
 
 This document covers everything an AI agent needs to know to work in this repository.
 
+## Start here (contributors and agents)
+
+Instructions, not an overview: an evaluation of context files found that agents follow their instructions while repository overviews add cost without raising task success ([Gloaguen et al., 2026](https://arxiv.org/abs/2602.11988)). Read the rest of this file only for the section your task touches.
+
+1. `bun run issue:start <n>`, then work **only** under the absolute path it prints (a relative path edits `main`). Never `git stash`.
+2. Failing test first, then the fix, then the passing run; paste both outputs in the PR.
+3. While iterating run the narrowest check (table "Inner loop" below), `bun run test` before pushing. Never `validate`, e2e, route sweeps or VRT per edit.
+4. Push; the hook takes under a second and `pr.yml` runs `validate` on GitHub. Keep the PR small (one issue, hours not days) and leave it as draft.
+5. Pick the next issue at once: never wait on CI, and never take an issue that shares a file with one in progress (same file = same queue; `bun run issue:status`).
+
+Every command is TypeScript run by Bun, so it behaves the same on Windows, macOS and Linux; never add a `sh` script, a `:`-joined `PATH`, or a `/`-only path split to the tooling.
+
 ---
 
 ## What this project is
@@ -43,9 +55,9 @@ site/                 → Astro site (landing + MDX docs + templates) at ui.code
 - **Triage before a batch ("fix all issues"):** never start coding first. (1) `bun run issue:triage` creates the labels and writes every open issue with comments, linked PRs and the commits on `main` that close it (closing keyword or `(#issue) (#pr)` subject; a bare `(#n)` is a PR number) to `.cache/triage.md`. (2) Read all of them and check each against current `main` source (issues usually quote an older `dist/`). (3) Already fixed: prove it as in **Check first** (a passing test on `main`), comment the evidence and close (`gh issue close <n> --reason completed`); duplicate: close as `duplicate` pointing to the survivor; not planned: `not planned` with the reason. (4) Every remaining issue gets exactly one type (`bug` / `enhancement` / `documentation`) and one or more `area:*` labels. (5) Link related issues with a comment `Related: #a, #b (same file/root cause)` on each side; when one must land first, label `blocked` and comment `Blocked by #n`. (6) Order the work: blockers, then bugs, then enhancements and docs; fix issues sharing a file in the same worktree sequence, never in parallel worktrees. Tooling edits go through a worktree and PR too, never on the main checkout.
 - **Check first:** `bun run issue:status`. Skip issues labeled `in progress` by someone else. Re-read the issue against current `main`: if it is already fixed, prove it with a passing test, comment the evidence and close it.
 - **Test first** (critical rule 0): failing regression test, then the fix, then the passing run. Both outputs go in the PR body. A test you did not run proves nothing: run every test you add or change (Playwright included) before pushing.
-- **The land gate is local; the full suites run after the merge** (#859): `issue-land.sh` rebases onto the latest `main`, runs `validate` and the tests the diff affects (every component test when a shared file changed), pushes and squash-merges at once (~2 min). Before the merge, only `validate` runs on GitHub (`pr.yml`, #1324): it replaces the contributor's local `validate` and is not a required check, so it never holds a land. `.github/workflows/ci.yml` runs the full suites on every push to `main`; a red `main` is fixed forward before the next land. Releases still run the four full suites locally. Visual baselines are native renders compared locally (`bun run test:vrt:update`, `bun run test:vrt`; see Tests), never in Docker.
+- **The land gate is local; the full suites run after the merge** (#859): `bun run issue:land <n>` rebases onto the latest `main`, runs `validate` and the tests the diff affects (every component test when a shared file changed), pushes and squash-merges at once (~2 min). Before the merge, only `validate` runs on GitHub (`pr.yml`, #1324): it replaces the contributor's local `validate` and is not a required check, so it never holds a land. `.github/workflows/ci.yml` runs the full suites on every push to `main`; a red `main` is fixed forward before the next land. Releases still run the four full suites locally. Visual baselines are native renders compared locally (`bun run test:vrt:update`, `bun run test:vrt`; see Tests), never in Docker.
 - **Gates are real:** never push with `--no-verify` or `LEFTHOOK=0`. A gate that fails only under load is a bug to fix (#73 was exponential regex backtracking; #75, #76, #81 were real races), not to bypass. Open an issue for it.
-- **Done:** `bun run test` green, changeset when the package changes, docs when behavior changes; push and leave the PR as draft. You do **not** run `bun run validate` yourself: the PR workflow (`.github/workflows/pr.yml`) runs it on GitHub's runner, and the pre-push hook only checks the diff (Biome on changed files + `bun test --changed`, under a second; `CA_PREPUSH=full git push` runs the full validate). A maintainer lands it with `sh scripts/issue-land.sh <n>`: rebase on `main` (generated files are rebuilt, real conflicts stop it), `validate` (it marks the tree, so the pre-push hook skips it), `bun run test` (the unit, component and screenshot tests the diff affects; every component test when a shared file changed; a screenshot mismatch stops it: review and commit `test:vrt:update`, then rerun), push, squash-merge, `issue:done`. Land one PR at a time: each one is rebased onto the previous merge.
+- **Done:** `bun run test` green, changeset when the package changes, docs when behavior changes; push and leave the PR as draft. You do **not** run `bun run validate` yourself: the PR workflow (`.github/workflows/pr.yml`) runs it on GitHub's runner, and the pre-push hook only checks the diff (Biome on changed files + `bun test --changed`, under a second; `CA_PREPUSH=full git push` runs the full validate). A maintainer lands it with `bun run issue:land <n>`: rebase on `main` (generated files are rebuilt, real conflicts stop it), `validate` (it marks the tree, so the pre-push hook skips it), `bun run test` (the unit, component and screenshot tests the diff affects; every component test when a shared file changed; a screenshot mismatch stops it: review and commit `test:vrt:update`, then rerun), push, squash-merge, `issue:done`. Land one PR at a time: each one is rebased onto the previous merge.
 
 ### Inner loop: what to run, when (#1324)
 
@@ -58,7 +70,7 @@ Feedback time is the budget. Run the narrowest check that can fail for your chan
 |Before pushing|`bun run test` (what the diff reaches; prints why)|≤ 60 s|
 |`git push`|pre-push hook: Biome + affected unit tests|< 1 s|
 |PR opened or updated|`validate` on GitHub (`pr.yml`)|automatic|
-|Land (maintainer)|`issue-land.sh`: validate + affected tests on the rebased tree|~2 min|
+|Land (maintainer)|`bun run issue:land <n>`: validate + affected tests on the rebased tree|~2 min|
 |Release only|`test:full`, `test:e2e`, `test:routes`, `test:vrt`|never while iterating|
 
 Never run e2e, route sweeps, VRT or `validate` after each edit, and never wait for post-merge CI before starting the next issue.

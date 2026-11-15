@@ -98,6 +98,8 @@ git clone https://github.com/codeatlasdev/ui && cd ui
 bun install && bun dev     # lib watcher + docs site, one command
 ```
 
+one issue, one small PR: `bun run issue:start <n>`, failing test first, `bun run test` before pushing; `validate` runs on the PR. same commands on windows, macos and linux.
+
 [contributing](https://github.com/codeatlasdev/ui/blob/main/CONTRIBUTING.md) · [code of conduct](https://github.com/codeatlasdev/ui/blob/main/CODE_OF_CONDUCT.md) · [security](https://github.com/codeatlasdev/ui/blob/main/SECURITY.md) · MIT
 
 <br>

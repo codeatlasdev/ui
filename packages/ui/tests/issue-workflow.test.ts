@@ -12,6 +12,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { $ } from "bun";
+import { isGenerated } from "../../../scripts/generated-paths.ts";
 import {
 	blockingPrs,
 	ownPr,
@@ -154,28 +155,21 @@ describe("issue:done", () => {
 	});
 });
 
-describe("issue-land.sh", () => {
+describe("issue-land.ts", () => {
 	// With --delete-branch, gh switches the issue worktree to main (already checked out in the main
 	// checkout) and deletes the local branch (checked out in the worktree): it fails after the merge,
-	// and `set -e` skips `issue.ts done` (#103).
+	// and `issue.ts done` never runs (#103).
 	it("merges without gh's local branch cleanup (#103)", () => {
-		const sh = readFileSync(join(import.meta.dir, "../../../scripts/issue-land.sh"), "utf8");
-		const merges = sh.split("\n").filter((l) => /^\s*(?:if\s+)?gh pr merge\b/.test(l));
+		const src = readFileSync(join(import.meta.dir, "../../../scripts/issue-land.ts"), "utf8");
+		const merges = src.split("\n").filter((l) => l.includes('"pr", "merge"'));
 		expect(merges).toHaveLength(1);
 		expect(merges[0]).not.toContain("--delete-branch");
 	});
 
 	// The files the land rebuilds instead of merging (#241): css-api.md is hand-written (a picked side
 	// dropped #237's .ca-install rows); the demo catalog output and DEMOS.md stopped every rebase.
-	const generated = (path: string) =>
-		Bun.spawnSync([
-			"sh",
-			"-c",
-			`. "${join(import.meta.dir, "../../../scripts/generated-paths.sh")}" && is_generated "$1"`,
-			"sh",
-			path,
-		]).exitCode === 0;
-	// One list (#653): every path a manifest run writes into the tree is accepted by `is_generated`, the list the land
+	const generated = isGenerated;
+	// One list (#653): every path a manifest run writes into the tree is accepted by `isGenerated`, the list the land
 	// reads, so a new generated output cannot be left out of it (and `release.ts` stages whatever the manifest wrote).
 	it("accepts every path the manifest writes into the tree (#653)", async () => {
 		const { TREE_OUTPUTS } = await import("../scripts/build-manifest.ts");

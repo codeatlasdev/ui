@@ -218,10 +218,10 @@ export const BUDGETS = {
 	changed: 60,
 	/** `bun run validate`: build, types, lint, unit tests, size */
 	validate: 90,
-	/** `issue-land.sh`: `test:changed --land` (affected tests, changed screenshots, the route canaries) */
+	/** `issue-land.ts`: `test:changed --land` (affected tests, changed screenshots, the route canaries) */
 	land: 180,
 	/**
-	 * `issue-land.sh` when a SHARED file changed: every component test, and the route sweep thinned to representatives
+	 * `issue-land.ts` when a SHARED file changed: every component test, and the route sweep thinned to representatives
 	 * (gallery items, atlas terms, the docs pages that still render every component folder; the pages the diff changed
 	 * stay), no screenshots. It was 420 s (#596): unit 8 s + components 80 s + package 12 s + site 134 s + routes 148 s =
 	 * 382.5 s, which broke the rule that no test command takes 5 minutes. Now the social cards are cached and rendered
