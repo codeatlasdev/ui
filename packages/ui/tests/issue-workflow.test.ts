@@ -15,6 +15,7 @@ import { $ } from "bun";
 import { isGenerated } from "../../../scripts/generated-paths.ts";
 import {
 	blockingPrs,
+	mainCheckout,
 	ownPr,
 	type PrRef,
 	prTitle,
@@ -156,6 +157,14 @@ describe("issue:done", () => {
 });
 
 describe("issue-land.ts", () => {
+	// Run from a worktree's copy of the script, the land must still clean up from the main checkout: from inside the
+	// worktree it removes, `issue.ts done` fails with `getcwd ENOENT` (#1326).
+	it("resolves the main checkout from inside a worktree (#1326)", async () => {
+		const { root, wt } = await repoWithWorktree();
+		expect(mainCheckout(wt)).toBe(root);
+		expect(mainCheckout(root)).toBe(root);
+	});
+
 	// With --delete-branch, gh switches the issue worktree to main (already checked out in the main
 	// checkout) and deletes the local branch (checked out in the worktree): it fails after the merge,
 	// and `issue.ts done` never runs (#103).

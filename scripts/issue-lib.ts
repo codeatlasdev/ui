@@ -1,9 +1,20 @@
 /** Decisions and git helpers of scripts/issue.ts (tests: packages/ui/tests/issue-workflow.test.ts). */
+import { spawnSync } from "node:child_process";
 import { existsSync, realpathSync, rmSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { $ } from "bun";
 
 export const REPO_OWNER = "codeatlasdev";
+
+/** The main checkout of the repository `dir` belongs to, also when `dir` is one of its worktrees (#1326). */
+export function mainCheckout(dir: string): string {
+	const common = spawnSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
+		cwd: dir,
+		encoding: "utf8",
+	}).stdout.trim();
+	if (!common) throw new Error(`${dir} is not inside a git repository`);
+	return realpathSync(dirname(common));
+}
 
 export interface PrRef {
 	number: number;

@@ -4,10 +4,12 @@
 // maintainer lands the same way on Windows, macOS and Linux (#1324).
 //   bun run issue:land <issue-number>
 import { spawnSync } from "node:child_process";
-import { resolve } from "node:path";
 import { isGenerated } from "./generated-paths.ts";
+import { mainCheckout } from "./issue-lib.ts";
 
-const ROOT = resolve(import.meta.dir, "..");
+// The main checkout, also when this copy of the script lives in a worktree: the cleanup must not run inside the
+// worktree it removes (#1326).
+const ROOT = mainCheckout(import.meta.dir);
 const N = process.argv[2];
 if (!N || !/^\d+$/.test(N)) {
 	console.error("usage: bun run issue:land <issue>");
