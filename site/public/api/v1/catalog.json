@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 411,
+	"count": 413,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5029",
-			"count": 97
+			"last": "5031",
+			"count": 99
 		},
 		{
 			"slug": "surfaces",
@@ -36641,6 +36641,171 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/month-picker#monthpicker",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5030",
+			"group": "inputs",
+			"page": "text-field",
+			"variant": "Counter",
+			"slug": "counter-and-warning-tone",
+			"title": "Counter and warning tone",
+			"description": "",
+			"summary": "Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier.",
+			"use": "Single-line fields with a length limit where the writer needs to see how much room is left.",
+			"spec": [
+				"Headline has `maxlength={40}`, `counter` and a 37-character value, so the count reads 37/40 in the warning tone",
+				"Promo code has `maxlength={12}` and `counter={{ warnAt: 0.75 }}`: the warning tone starts at 9 characters",
+				"The count sits beside the description and is the field's accessible description; crossing the threshold is announced once",
+				"Column wrapper has `max-width: 400px`"
+			],
+			"tags": [
+				"text-field",
+				"counter",
+				"maxlength",
+				"character count",
+				"limit"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"TextField"
+				],
+				"aliases": [
+					"character counter",
+					"char count",
+					"length limit",
+					"remaining characters"
+				],
+				"related": [
+					"056",
+					"058",
+					"5031"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-14",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#counter-and-warning-tone",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5031",
+			"group": "inputs",
+			"page": "text-area",
+			"variant": "Counter",
+			"slug": "soft-limit-and-threshold",
+			"title": "Soft limit and threshold",
+			"description": "",
+			"summary": "Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters.",
+			"use": "Composers and long-form fields where a length limit matters only near the end.",
+			"spec": [
+				"Post has `counter={{ max: 280 }}` and no `maxlength`: typing may go past 280 and the count turns to the error tone",
+				"Report details has `maxlength={500}` and `counter={{ from: 400 }}`: no count below 400 characters",
+				"Both have `rows={3}` and a description beside the count",
+				"Column wrapper has `max-width: 480px`"
+			],
+			"tags": [
+				"text-area",
+				"textarea",
+				"counter",
+				"maxlength",
+				"character count",
+				"limit"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"TextArea"
+				],
+				"aliases": [
+					"character counter",
+					"char count",
+					"soft limit",
+					"composer"
+				],
+				"related": [
+					"054",
+					"055",
+					"5030"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-14",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"TextArea"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextArea"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-area#soft-limit-and-threshold",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

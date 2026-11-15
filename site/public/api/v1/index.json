@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 411,
+	"count": 413,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 372,
+			"component": 374,
 			"motion": 39
 		},
 		"subtype": {
@@ -16,7 +16,7 @@
 			"component/display": 73,
 			"component/feedback": 38,
 			"component/foundation": 19,
-			"component/input": 97,
+			"component/input": 99,
 			"component/layout": 56,
 			"component/map": 1,
 			"component/navigation": 39,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 394,
+			"default": 396,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,13 +42,13 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 106,
-			"subtle": 245
+			"subtle": 247
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 35,
 			"hover": 79,
-			"keyboard": 287,
+			"keyboard": 289,
 			"none": 82,
 			"press": 244,
 			"scroll": 22
@@ -60,26 +60,26 @@
 			"overlay": 50,
 			"single-column": 138,
 			"split": 18,
-			"stack": 150,
+			"stack": 152,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 409,
+			"both": 411,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
 			"compact": 53,
-			"regular": 345
+			"regular": 347
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 411,
+			"css": 413,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 371,
+			"css": 373,
 			"js-light": 40
 		},
 		"component": {
@@ -254,8 +254,8 @@
 			"TabsList": 7,
 			"TabsTrigger": 7,
 			"Text": 1,
-			"TextArea": 5,
-			"TextField": 32,
+			"TextArea": 6,
+			"TextField": 33,
 			"ThemeIsland": 2,
 			"ThemeToggle": 1,
 			"TimeField": 2,
@@ -682,6 +682,8 @@
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["drag","keyboard","press"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AppSettings","Button","Divider","EditableRow","FormSection","SettingItem","SortableList","Switch","TextField"],"aliases":["settings editor","editable list page","stage editor"],"related":["997"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5026","path":"layout/sortable-list/SettingsPage","title":"Settings page","summary":"A complete settings page: AppSettings tabs with a reorderable list of pipeline stages (grip, menu, Edit on a phone) and a notifications tab of switches.","use":"The configuration screen of a CRM: editable lists such as stages, tags or loss reasons next to plain toggles, with one Save action.","tags":["app-settings","sortable-list","editable-row","settings","crm","stages","recipe"],"names":["Settings editor page","Pipeline stages settings","Configurações do funil","Ajustes del embudo"]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"none","interaction":["press","keyboard"],"layout":"split","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["Avatar","Button","Card","DropdownMenu","DropdownMenuItem","IconButton","PageShell","RecordCell","RecordList","RecordRow"],"aliases":["detail page","account page","company record"],"related":["245","246"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5027","path":"layout/record-list/RecordPage","title":"Record page","summary":"A complete record page: a PageShell with a back link, an edit action and a summary aside, around a Card that holds a RecordList of the company's contacts.","use":"The detail screen of one CRM record (company, account, project): facts beside the page, related records as dense rows that stack on a phone.","tags":["record-list","page-shell","card","record","detail","crm","recipe"],"names":["Record detail page","Company page","Página do registro","Página del registro"]},
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["TimePicker"],"aliases":["time list","time dropdown","appointment time"],"related":["017","018","5029"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5028","path":"inputs/time-picker/Default","title":"TimePicker","summary":"Two TimePickers: segments plus a popover list of times, one in 12h with the default 15-minute step and one in 24h with a 30-minute step bounded to the afternoon.","use":"Choosing an opening hour or an appointment time where the user can type it or pick it from a list.","tags":["time-picker","time","listbox","popover","step","hour-cycle"],"names":[]},
-		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["MonthPicker"],"aliases":["month year picker","billing month","period month"],"related":["018","015","5028"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5029","path":"inputs/month-picker/Default","title":"MonthPicker","summary":"Two MonthPickers: a field showing month and year with a twelve-month popover grid, one free and one limited to a single year.","use":"Choosing a billing or reporting month where the day does not matter.","tags":["month-picker","month","year","popover","grid","billing"],"names":[]}
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["MonthPicker"],"aliases":["month year picker","billing month","period month"],"related":["018","015","5028"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5029","path":"inputs/month-picker/Default","title":"MonthPicker","summary":"Two MonthPickers: a field showing month and year with a twelve-month popover grid, one free and one limited to a single year.","use":"Choosing a billing or reporting month where the day does not matter.","tags":["month-picker","month","year","popover","grid","billing"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["TextField"],"aliases":["character counter","char count","length limit","remaining characters"],"related":["056","058","5031"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-14","review":{"industry":"pending"},"id":"5030","path":"inputs/text-field/Counter","title":"Counter and warning tone","summary":"Two text fields with a character counter: a headline already in the warning tone and a promo code that warns earlier.","use":"Single-line fields with a length limit where the writer needs to see how much room is left.","tags":["text-field","counter","maxlength","character count","limit"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["TextArea"],"aliases":["character counter","char count","soft limit","composer"],"related":["054","055","5030"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-14","review":{"industry":"pending"},"id":"5031","path":"inputs/text-area/Counter","title":"Soft limit and threshold","summary":"Two text areas with a character counter: a post with a soft 280-character limit and a report whose count appears only from 400 characters.","use":"Composers and long-form fields where a length limit matters only near the end.","tags":["text-area","textarea","counter","maxlength","character count","limit"],"names":[]}
 	]
 }

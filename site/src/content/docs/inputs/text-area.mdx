@@ -9,6 +9,8 @@ import Basic from "~/demos/inputs/text-area/Basic.svelte";
 import BasicSrc from "~/demos/inputs/text-area/Basic.svelte?raw";
 import States from "~/demos/inputs/text-area/States.svelte";
 import StatesSrc from "~/demos/inputs/text-area/States.svelte?raw";
+import Counter from "~/demos/inputs/text-area/Counter.svelte";
+import CounterSrc from "~/demos/inputs/text-area/Counter.svelte?raw";
 
 ```svelte
 <script>
@@ -24,6 +26,12 @@ The label sits above the field. `description` is hidden while an `error` is show
 <Demo title="Basic" description="Empty, with a placeholder, and pre-filled." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and resize=&quot;none&quot;." src={StatesSrc}><States client:visible /></Demo>
 
+## Character counter
+
+The same counter as [TextField](/docs/inputs/text-field/#character-counter). `counter` shows `n/max` under the field, at the end of the row the description or error sits on, and updates on every keystroke. With `counter` alone it counts against `maxlength`; the object form takes `max` (a soft limit when there is no `maxlength`: typing goes on past it and the count turns to the error tone, so block the submit yourself), `from` (no count below that many characters, for a limit that matters only near the end) and `warnAt` (the fraction of the limit where the warning tone starts, default `0.9`). The count is part of the field's accessible description ("120 of 280 characters", localized from the catalog), and crossing `warnAt` or the limit is announced once, politely, through the shared `announce()` region: never on every keystroke, and not when the value changes while the field is not focused. Classes: `.ca-field-foot` (the row), `.ca-field-counter`, `--warn`, `--over`.
+
+<Demo title="Soft limit and threshold" description={"A soft `max` of 280 with no `maxlength`, and a count that appears only from 400 of 500 characters."} src={CounterSrc}><Counter client:visible /></Demo>
+
 ## Tokens
 
 `--ca-field-gap` and the other `--ca-field-*` tokens are shared with every field ([Field tokens](/docs/getting-started/theming/#field-tokens)); `--ca-ta-gap` and `--ca-ta-label-line-height` set this component only. `--ca-ta-min-height` is the height of the **visible box**, border included (`64px` is a 64px field); unset, it is `rows`-based.
@@ -36,6 +44,7 @@ The label sits above the field. `description` is hidden while an `error` is show
   { name: "rows", type: "number", default: "4", description: "Visible row count." },
   { name: "minRows", type: "number", description: "Row count used for the minimum height. Defaults to rows." },
   { name: "resize", type: "'none' | 'vertical' | 'horizontal' | 'both'", default: "'vertical'", description: "CSS resize behavior." },
+  { name: "counter", type: "boolean | { max?: number; from?: number; warnAt?: number }", description: "Character counter `n/max` beside the hint, against `maxlength` or `max` (soft limit). `from` hides it below that count; `warnAt` (default 0.9) starts the warning tone and one polite announcement." },
   { name: "error", type: "string", description: "Error message. Sets the error styling." },
   { name: "description", type: "string", description: "Helper text shown below. Hidden when error is set." },
   { name: "helperText", type: "string", description: "Deprecated alias of description. Use description." },

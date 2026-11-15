@@ -38,6 +38,7 @@ import { editableRow } from "./groups/editableRow.js";
 import { errorPage } from "./groups/errorPage.js";
 import { exportMenu } from "./groups/exportMenu.js";
 import { externalLink } from "./groups/externalLink.js";
+import { fieldCounter } from "./groups/fieldCounter.js";
 import { fileUpload } from "./groups/fileUpload.js";
 import { forms } from "./groups/forms.js";
 import { installPrompt } from "./groups/installPrompt.js";
@@ -120,6 +121,7 @@ export const groups = {
 	docs,
 	drawer,
 	errorPage,
+	fieldCounter,
 	fileUpload,
 	forms,
 	installPrompt,
