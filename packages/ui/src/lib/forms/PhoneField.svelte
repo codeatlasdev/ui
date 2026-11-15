@@ -21,6 +21,8 @@
     size?:         'sm' | 'md';
     class?:        string;
     name?:         string;
+    /** The input's `id` (passed to `TextField`): the label, hint and error ids follow it. Generated when absent. */
+    id?:           string;
     leading?:      Snippet;
     trailing?:     Snippet;
     onblur?:       (e: FocusEvent) => void;

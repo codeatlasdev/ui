@@ -118,3 +118,19 @@ describe("MaskedField", () => {
 		await expect.element(screen.getByLabelText("CEP")).toHaveValue("01310-100");
 	});
 });
+
+describe("MaskedField caller id (#1313)", () => {
+	it("reaches the input; label and error follow it", async () => {
+		const screen = await render(MaskedField, {
+			id: "cep",
+			label: "CEP",
+			mask: maskCEP,
+			error: "Unknown CEP",
+		});
+		const input = screen.getByRole("textbox", { name: "CEP" });
+		await expect.element(input).toHaveAttribute("id", "cep");
+		expect(screen.container.querySelector("label")?.getAttribute("for")).toBe("cep");
+		await expect.element(input).toHaveAttribute("aria-describedby", "cep-err");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});

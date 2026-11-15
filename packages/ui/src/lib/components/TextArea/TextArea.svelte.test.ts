@@ -172,3 +172,28 @@ describe("TextArea counter (#1120)", () => {
 			.toHaveAccessibleDescription("3 de 10 caracteres");
 	});
 });
+
+describe("TextArea caller id (#1313)", () => {
+	it("keeps the id; label and hint follow it", async () => {
+		const screen = await render(TextArea, { id: "bio", label: "Bio", description: "Short" });
+		const field = screen.getByRole("textbox", { name: "Bio" });
+		await expect.element(field).toHaveAttribute("id", "bio");
+		expect(screen.container.querySelector("label")?.getAttribute("for")).toBe("bio");
+		await expect.element(field).toHaveAttribute("aria-describedby", "bio-hint");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("error and counter ids derive from it", async () => {
+		const screen = await render(TextArea, {
+			id: "bio",
+			label: "Bio",
+			error: "Too long",
+			maxlength: 20,
+			counter: true,
+		});
+		const field = screen.getByRole("textbox", { name: "Bio" });
+		await expect.element(field).toHaveAttribute("aria-describedby", "bio-err bio-count");
+		expect(document.getElementById("bio-err")?.textContent).toBe("Too long");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});

@@ -72,4 +72,14 @@ describe("Checkbox", () => {
 		const screen = await render(CheckboxHarness, { "aria-label": "Pick" });
 		await expect.element(screen.getByTestId("ref-tag")).toHaveTextContent("INPUT");
 	});
+
+	it("keeps a caller's id and the label follows it (#1313)", async () => {
+		const screen = await render(CheckboxHarness, { id: "terms", label: "I accept" });
+		const box = screen.getByRole("checkbox", { name: "I accept" });
+		await expect.element(box).toHaveAttribute("id", "terms");
+		expect(screen.container.querySelector("label")?.getAttribute("for")).toBe("terms");
+		await screen.getByText("I accept").click();
+		await expect.element(box).toBeChecked();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
 });

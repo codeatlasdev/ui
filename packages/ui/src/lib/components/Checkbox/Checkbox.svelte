@@ -19,6 +19,8 @@
 		"aria-label"?: string;
 		"aria-labelledby"?: string;
 		class?: string;
+		/** The input's `id`, generated when absent; the label's `for` follows it. */
+		id?: string | null;
 		/** The native `<input>`, to focus it or read it. */
 		ref?: HTMLInputElement | null;
 		/** `event` is the native `change` event. For Shift range selection read `shiftKey` in `onclick` (forwarded to the input, fires just before `change`). */
@@ -35,12 +37,15 @@
 		"aria-label": ariaLabel,
 		"aria-labelledby": ariaLabelledby,
 		class: className = "",
+		id: idProp,
 		ref = $bindable(null),
 		onchange,
 		...rest
 	}: Props = $props();
 
-	const checkId = $props.id();
+	const generatedId = $props.id();
+	// A caller's id replaces the generated one and the label follows it (#1313).
+	const checkId = $derived(idProp || generatedId);
 
 	const dataState = $derived(indeterminate ? "indeterminate" : checked ? "checked" : "unchecked");
 </script>

@@ -35,6 +35,8 @@
     counter?:     boolean | { max?: number; from?: number; warnAt?: number };
     class?:       string;
     name?:        string;
+    /** The textarea's `id`, generated when absent. The label's `for` and the hint, error and counter ids derive from it (`<id>-hint`, `<id>-err`, `<id>-count`). */
+    id?:          string | null;
     /** The native `<textarea>`, to focus it or read it. */
     ref?:         HTMLTextAreaElement | null;
     oninput?:     (value: string) => void;
@@ -61,6 +63,7 @@
     counter,
     class: className = '',
     name,
+    id: idProp,
     ref          = $bindable(null),
     oninput,
     onchange,
@@ -70,7 +73,9 @@
   }: Props = $props();
 
   let focused = $state(false);
-  const id    = uid('ta');
+  const generatedId = uid('ta');
+  // A caller's id replaces the generated one, and every related id follows it (#1313).
+  const id    = $derived(idProp || generatedId);
   const hint  = $derived(description ?? helperText);
   const count = useFieldCounter(() => ({ counter, maxlength: rest.maxlength, value, focused }));
   const describedBy = $derived(
