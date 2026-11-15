@@ -135,7 +135,7 @@ State attributes on `.ca-chip-group__chip`: `data-state="checked|unchecked"`, `d
 
 `.ca-clamped-text` `.ca-clamped-text__content` `.ca-clamped-text__toggle`
 
-`data-state="collapsed|expanded"` on `.ca-clamped-text`. `.ca-clamped-text__content` is clamped to `lines` while collapsed; `.ca-clamped-text__toggle` is rendered only when the text overflows. `.ca-x-measure` (on the text for one synchronous read while expanded) and `.ca-x-anchor-off` (on the ancestors for the two frames of an expansion) are internal.
+`data-state="collapsed|expanded"` on `.ca-clamped-text`. `.ca-clamped-text__content` is clamped to `lines` while collapsed; `.ca-clamped-text__toggle` is rendered only when the text overflows. Two internal `ca-x-*` classes, set for one measurement while expanded and on the ancestors during the two frames of an expansion, are not hooks.
 
 ## CodeSnippet
 
