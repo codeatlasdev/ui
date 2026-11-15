@@ -203,7 +203,7 @@ Do not branch layout on `responsive.width` or `responsive.down("md")`: it is `un
 
 ### BottomNav and AppShellLayout
 
-Below 900px `AppShellLayout` swaps the Rail and Panel for a `MobileHeader` and a `BottomNav` (up to five modules). The bar is `--ca-bottom-nav-h` (56px) plus `--ca-safe-bottom`, and the content area reserves exactly that space.
+Below 900px `AppShellLayout` swaps the Rail and Panel for a `MobileHeader` and a `BottomNav` (up to five modules). The bar is `--ca-bottom-nav-h` (56px) plus `--ca-safe-bottom`, and the content area reserves exactly that space. `mobileBreakpoint` moves that switch for the shell alone (`mobileBreakpoint={768}` keeps the rail on a portrait tablet); the other components in the table above keep their widths.
 
 ### MobilePane
 

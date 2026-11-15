@@ -186,6 +186,14 @@
       }
     }
 
+    /* Inside a shell with `mobileBreakpoint`, the layout it measured decides at any width (#1172). */
+    :global([data-ca-shell='mobile']) .ca-bottom-nav {
+      display: flex;
+    }
+    :global([data-ca-shell='desktop']) .ca-bottom-nav {
+      display: none;
+    }
+
     .ca-bottom-nav__btn {
       /* Equal columns that may shrink below content width, so 5 items fit at 320px. */
       flex: 1 1 0;

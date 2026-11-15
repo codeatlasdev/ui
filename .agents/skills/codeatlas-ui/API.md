@@ -203,19 +203,20 @@ Variables: `--ca-aside-width`
 | `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
 | `railWidth?` | `number` |  | Width of the rail in px (default 52). Sets `--ca-rail-width` on the shell; the content offset, `--ca-shell-inset-left` and the stage inset all follow it. Setting `--ca-rail-width` in CSS (on `:root` or an ancestor) does the same, with no prop. |
 | `railSeparators?` | `boolean` | `true` | Draws the hairlines under the brand and above `railBottom`. `false` removes them, for a rail whose design separates the groups by spacing alone. |
-| `mobileHeader?` | `boolean` | `true` | Renders the header (brand, page title, `mobileHeaderActions`) below 900px. `false` renders none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile, so keep an account entry point elsewhere (`bottomNavOverflow`). |
+| `mobileBreakpoint?` | `number` |  | Width in px from which the rail and panel show; below it the mobile header and the bottom navigation take over. Unset, the switch is the static 900px media query, painted before any JS. Set, the shell follows a `matchMedia` at this width and marks its root `data-ca-shell="mobile\|desktop"` (a media query cannot read a prop); a server-rendered page shows the 900px layout until it hydrates. |
+| `mobileHeader?` | `boolean` | `true` | Renders the header (brand, page title, `mobileHeaderActions`) in the mobile layout. `false` renders none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile, so keep an account entry point elsewhere (`bottomNavOverflow`). |
 | `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
 | `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
-Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`): A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering while it is true. The content region passes pointer events through to the stage; give a page's panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell paints nothing behind the content when a stage is set, so the stage shows.; `header`; `brand`: Brand mark (logo) shown at the top of the Rail and in the mobile header.; `railBottom`: Items pinned to the bottom of the Rail (avatar, notifications…); `railTop`: Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger.; `bottomNavOverflow`: Extra content in the "More" dialog under the modules (search, account, sign out).; `mobileHeaderActions`: Compact controls rendered at the trailing edge of the single mobile header (session/workspace switcher, account menu…). Below 900px the desktop `header` snippet is hidden, so put anything that must stay reachable here.; `mobileTitle`: Replaces the plain page-title text in the mobile header, e.g. a tappable session title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.; `children`
+Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`): A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering while it is true. The content region passes pointer events through to the stage; give a page's panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell paints nothing behind the content when a stage is set, so the stage shows.; `header`; `brand`: Brand mark (logo) shown at the top of the Rail and in the mobile header.; `railBottom`: Items pinned to the bottom of the Rail (avatar, notifications…); `railTop`: Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger.; `bottomNavOverflow`: Extra content in the "More" dialog under the modules (search, account, sign out).; `mobileHeaderActions`: Compact controls rendered at the trailing edge of the single mobile header (session/workspace switcher, account menu…). In the mobile layout the desktop `header` snippet is hidden, so put anything that must stay reachable here.; `mobileTitle`: Replaces the plain page-title text in the mobile header, e.g. a tappable session title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.; `children`
 
 Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--no-mobile-header` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
 Variables: `--ca-main-ml` `--ca-panel-w-stored` `--ca-shell-inset-bottom` `--ca-shell-inset-left` `--ca-shell-inset-right` `--ca-shell-inset-top`
 
-Data attributes: `data-ca-hydrated`, `data-ca-panel` (`closed`)
+Data attributes: `data-ca-hydrated`, `data-ca-panel` (`closed`), `data-ca-shell` (`mobile`)
 
 Tokens: `--ca-main-ml`
 
@@ -419,6 +420,8 @@ Tokens: `--ca-badge-border` `--ca-badge-font-size` `--ca-badge-h` `--ca-badge-we
 Snippets: `overflow`: Extra content in the "More" sheet under the modules (search, account, sign out).
 
 Parts: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
+
+Data attributes: `data-ca-shell` (`desktop` `mobile`)
 
 ## Box
 
@@ -4321,6 +4324,8 @@ Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca
 Parts: `ca-bottom-nav` `ca-toaster` `ca-toaster--inline`
 
 Variables: `--ca-toaster-bottom`
+
+Data attributes: `data-ca-shell` (`mobile`)
 
 Tokens: `--ca-toaster-bottom`
 
