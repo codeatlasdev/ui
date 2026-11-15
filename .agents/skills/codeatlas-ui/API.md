@@ -197,6 +197,7 @@ Variables: `--ca-aside-width`
 | `panelWidth?` | `number` | `PANEL_WIDTH` | Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open/close animation follow it. With `resizablePanel` it is the width used until the user drags the edge. |
 | `resizablePanel?` | `boolean` | `false` | Adds a drag handle (a keyboard-operable separator) on the panel's trailing edge. The width the user picks is kept with `persistPanel`, like the open state, and restored before paint. |
 | `collapseShortPanel?` | `boolean` | `false` | Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a whole column of empty background. Off by default: a 2-item panel stays open (a single-destination module never shows one either way). Opening the panel for a longer module still works. |
+| `sectionsDefaultOpen?` | `boolean` | `true` | Open state of a panel section that sets no `defaultOpen` of its own. `false` starts those sections closed; the section holding the current page still opens, also when the user navigates into it. A section's own `defaultOpen` and the user's last choice win over it. |
 | `reorder?` | `NavExtras['reorder']` |  | Enables `onReorder` on sections and modules: pass the exported `NavReorder` component. Opt-in so the drag engine is only bundled by apps that reorder. |
 | `itemMenu?` | `NavExtras['itemMenu']` |  | Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component. Opt-in so DropdownMenu is only bundled by apps that use per-item menus. |
 | `stageVisible?` | `boolean` | `true` | `false` hides the stage (`visibility: hidden`, `inert`) and tells it to pause, without unmounting it: for a full-page route that covers it. A page can also set `data-ca-stage="hidden"` on `<html>` (what `PageFrame mode="page"` does). |
@@ -2946,6 +2947,7 @@ Parts: `ca-pagination` `ca-pagination__ellipsis` `ca-pagination__nav` `ca-pagina
 | `onResize?` | `(width: number) => void` |  |  |
 | `onCommit?` | `(width: number) => void` |  |  |
 | `onResizing?` | `(resizing: boolean) => void` |  |  |
+| `sectionsDefaultOpen?` | `boolean` | `true` | Open state of a section that sets no `defaultOpen` (`AppShellLayout` passes its `sectionsDefaultOpen`). |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
@@ -3455,6 +3457,8 @@ Data attributes: `data-lg-py`, `data-md-py`, `data-py`, `data-size` (`1` `3`), `
 | `section` | `NavSection` |  |  |
 | `pathname` | `string` |  |  |
 | `active?` | `(item: NavItem) => boolean` |  | Decides which link is current (the shell passes the module-wide winner); defaults to `isItemActive`. |
+| `moduleId?` | `string` |  | `id` of the module the section belongs to (`Panel` sets it). The open state is kept under `<moduleId>/<label>`, so the same label in two modules is two sections. |
+| `defaultOpen?` | `boolean` | `true` | Open state when `section.defaultOpen` is not set (`AppShellLayout` passes `sectionsDefaultOpen`). |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-section__header` `ca-section__label` `ca-section__trigger`
@@ -6690,7 +6694,7 @@ Types:
 |---|---|---|
 | `label?` | `string` |  |
 | `collapsible?` | `boolean` |  |
-| `defaultOpen?` | `boolean` |  |
+| `defaultOpen?` | `boolean` | Starts open (`true`) or closed (`false`) until the user toggles it. Unset follows `AppShellLayout`'s `sectionsDefaultOpen` (open by default). The section holding the current page always opens. |
 | `items` | `NavItem[]` |  |
 | `onReorder?` | `(e: NavReorderEvent) => void` | Makes the items of this section reorderable: each row gets a grip (mouse, touch press-and-hold and keyboard through `useDnd`). Needs `reorder={NavReorder}` on `AppShellLayout` (opt-in, so the drag engine is only bundled by apps that reorder). The shell never reorders `items` itself; commit the move in your state, the new order flows back in. Not called when the drop lands where it started. |
 

@@ -25,7 +25,10 @@ export interface ShellState {
 	module?: string;
 	/** Panel width in px the user dragged it to (`resizablePanel`); `undefined` when never resized. */
 	panelWidth?: number;
-	/** Section label → open. Only sections the user toggled are present. */
+	/**
+	 * Section key (`sectionKey`: `<module id>/<label>`) → open. Only sections the user toggled are
+	 * present. A bare `<label>` key is what versions before #1173 stored; it is still read.
+	 */
 	sections: Record<string, boolean>;
 }
 
@@ -76,6 +79,29 @@ export function writeShellState(patch: Partial<ShellState>): void {
 		if (patch.sections) Object.assign(next.sections, patch.sections);
 		localStorage.setItem(SHELL_KEY, JSON.stringify(next));
 	} catch {}
+}
+
+/**
+ * Key of a panel section: its module `id` and `label` (`"crm/Cadastros"`), so the same label in two
+ * modules is two sections (#1173). Without a module (a bare `SectionGroup`) it is the label alone.
+ */
+export function sectionKey(moduleId: string | undefined, label: string): string {
+	return moduleId ? `${moduleId}/${label}` : label;
+}
+
+/**
+ * Stored open state of a section, `undefined` when the user never toggled it. Falls back to the
+ * label-only key written before #1173 (one value shared by every module with that label), so an
+ * upgrade keeps what users chose; their next toggle writes the per-module key.
+ */
+export function readSectionOpen(moduleId: string | undefined, label: string): boolean | undefined {
+	const { sections } = readShellState();
+	return sections[sectionKey(moduleId, label)] ?? sections[label];
+}
+
+/** Stores the open state of a section under its per-module key. Never throws. */
+export function writeSectionOpen(moduleId: string | undefined, label: string, open: boolean): void {
+	writeShellState({ sections: { [sectionKey(moduleId, label)]: open } });
 }
 
 /** Saved `.ca-panel__nav` scrollTop per module id. Invalid entries are dropped. */

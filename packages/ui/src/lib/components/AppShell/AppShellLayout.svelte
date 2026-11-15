@@ -50,6 +50,12 @@
      */
     collapseShortPanel?: boolean;
     /**
+     * Open state of a panel section that sets no `defaultOpen` of its own. `false` starts those
+     * sections closed; the section holding the current page still opens, also when the user
+     * navigates into it. A section's own `defaultOpen` and the user's last choice win over it.
+     */
+    sectionsDefaultOpen?: boolean;
+    /**
      * Enables `onReorder` on sections and modules: pass the exported `NavReorder` component.
      * Opt-in so the drag engine is only bundled by apps that reorder.
      */
@@ -166,6 +172,7 @@
     panelWidth    = PANEL_WIDTH,
     resizablePanel = false,
     collapseShortPanel = false,
+    sectionsDefaultOpen = true,
     reorder,
     itemMenu,
     stage,
@@ -394,6 +401,7 @@
       onResize={resizeTo}
       onCommit={commitWidth}
       onResizing={(v) => (resizing = v)}
+      {sectionsDefaultOpen}
     />
   </div>
   {#if persistPanel}{@html shellScript(resizablePanel)}{/if}

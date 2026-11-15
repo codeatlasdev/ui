@@ -62,6 +62,7 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "panelWidth", type: "number", default: "200", description: "Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open and close animation follow it, so nothing misaligns. Prefer it to overriding `--ca-panel-width`, which the layout does not read." },
   { name: "resizablePanel", type: "boolean", default: "false", description: "Adds a drag handle on the panel's trailing edge. It is a keyboard-operable separator: Arrow keys move it by 8px, Shift by 32px, Home and End jump to the bounds. With `persistPanel` the chosen width is kept like the open state and restored before the first paint; `panelWidth` is the width used until the user picks one." },
   { name: "collapseShortPanel", type: "boolean", default: "false", description: "Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a 200px column. A module with a single destination never shows a panel either way; with three or more it stays open." },
+  { name: "sectionsDefaultOpen", type: "boolean", default: "true", description: "Open state of a panel section that sets no `defaultOpen` of its own. `false` starts those sections closed, for a long panel that should show only its section titles. The section holding the current page still opens, and so does a closed one when the user navigates to a page inside it. A section's own `defaultOpen` and the user's stored choice win over it." },
   { name: "reorder", type: "Component", description: "Pass the exported `NavReorder` to enable `onReorder` on sections and modules. Opt-in so the drag engine is only bundled by apps that reorder." },
   { name: "itemMenu", type: "Component", description: "Pass the exported `NavItemMenu` to render `NavItem.actions` as a \"…\" menu. Opt-in so the dropdown menu is only bundled by apps that use it." },
   { name: "filterModules", type: "(module: NavModule) => boolean", description: "Hides modules the user may not see (role, plan, flag). Rail, panel, bottom navigation and the active-module logic all use the filtered list, so a hidden module never shifts the indexes. Return `true` to keep one." },
@@ -236,9 +237,9 @@ On a multi-page site (Astro, a full reload) every link loads a new document, so 
 | Panel open or closed, selected module, dragged panel width, section open map | `localStorage` | `ca-shell` |
 | Panel scroll, per module | `sessionStorage` | `ca-shell-scroll` |
 
-An inline script emitted right after the sidebar reads those keys and sets `data-ca-panel="open|closed"` and `data-ca-module="<id>"` on `<html>` before anything paints, so a panel the user closed is laid out closed from the first frame instead of flashing open. Stored values are validated and discarded when malformed. A section's last open or closed choice wins over `defaultOpen`, but the section that holds the current page always opens. The module comes from the URL when `modules` matches it, and from the stored choice otherwise.
+An inline script emitted right after the sidebar reads those keys and sets `data-ca-panel="open|closed"` and `data-ca-module="<id>"` on `<html>` before anything paints, so a panel the user closed is laid out closed from the first frame instead of flashing open. Stored values are validated and discarded when malformed. A section's last open or closed choice wins over `defaultOpen` and `sectionsDefaultOpen`, but the section that holds the current page always opens, on load and when the user navigates to a page inside it. A section is kept under its module `id` and its `label` (`crm/Cadastros`), so a `Cadastros` section in two modules opens and closes on its own in each. A choice stored by an earlier version under the label alone is still read, for every module that has that label, until the user toggles the section again. The module comes from the URL when `modules` matches it, and from the stored choice otherwise.
 
-Render the shell on the server so the first paint is not blank: the inline script and the markup travel together. A client-only mount gets the same restore on hydration, and a page whose CSP blocks inline scripts too. Keep `id` stable on each `NavModule` (it is the stored module key) and each section `label` unique within a module (it is the stored section key).
+Render the shell on the server so the first paint is not blank: the inline script and the markup travel together. A client-only mount gets the same restore on hydration, and a page whose CSP blocks inline scripts too. Keep `id` stable on each `NavModule` (it is the stored module key, and half of each section key) and each section `label` unique within a module (the other half of the section key).
 
 ## Building blocks for a custom panel
 
@@ -255,7 +256,7 @@ Render the shell on the server so the first paint is not blank: the inline scrip
 <PanelNavItem item={items[0]} isActive={pathname === items[0].path} href={items[0].path} />
 ```
 
-`PanelNavItem` renders a row with a plain `<a>` inside it (`aria-current="page"` when active); the actions button and the grip are siblings of the link, because a link cannot contain controls. `SectionGroup` opens itself when it holds the current page, and inside an `AppShellLayout` with `persistPanel` it stores its open state under the section `label`; a bare `SectionGroup` keeps nothing.
+`PanelNavItem` renders a row with a plain `<a>` inside it (`aria-current="page"` when active); the actions button and the grip are siblings of the link, because a link cannot contain controls. `SectionGroup` opens itself when it holds the current page, also when the page changes to one inside it, and inside an `AppShellLayout` with `persistPanel` it stores its open state under `moduleId` and the section `label`; a bare `SectionGroup` keeps nothing.
 
 <Props for="PanelNavItem" title="PanelNavItem props" rows={[
   { name: "item", type: "NavItem", description: "The destination: `id`, `label`, `icon`, `path`, and optional `badge`, `badgeTone`, `badgeLabel`, `count`, `color`, `leading`, `actions`, `isNew`, `shortcut`, `description`. Required." },
@@ -267,7 +268,9 @@ Render the shell on the server so the first paint is not blank: the inline scrip
 ]} />
 
 <Props for="SectionGroup" title="SectionGroup props" rows={[
-  { name: "section", type: "NavSection", description: "`label`, `items`, and optional `collapsible` (default `true`), `defaultOpen` (default `true`) and `onReorder` (makes the items reorderable). Required." },
+  { name: "section", type: "NavSection", description: "`label`, `items`, and optional `collapsible` (default `true`), `defaultOpen` (unset: the `defaultOpen` prop) and `onReorder` (makes the items reorderable). Required." },
   { name: "pathname", type: "string", description: "Current location, used to mark the active item and to keep the group holding it open. Required." },
+  { name: "moduleId", type: "string", description: "`id` of the module the section belongs to. With `persistPanel` the open state is stored under `<moduleId>/<label>`, so the same label in two modules is two sections. Without it the key is the label alone." },
+  { name: "defaultOpen", type: "boolean", default: "true", description: "Open state when `section.defaultOpen` is not set (`AppShellLayout` passes `sectionsDefaultOpen`)." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
