@@ -17,6 +17,11 @@
  *   vh-offset      calc(var(--ca-vh) - <length>): a magic offset; use the shell's inset tokens
  *   fixed-width-row a growing (flex: 1) nowrap item without min-width: 0, so it cannot shrink
  *   nested-surface a Card or Surface directly inside another: one frame per group
+ *   viewport-unit  a height in 100vh / 100dvh / 100svh / 100lvh: use var(--ca-vh) (#1154)
+ *   fixed-bottom-offset a `position: fixed` box whose bottom is a literal length (`bottom: 64px`):
+ *                  build it from tokens (--ca-shell-inset-bottom, --ca-safe-bottom, --ca-space-*)
+ *   safe-area-bottom a fixed bar on the bottom edge (`bottom: 0`, top unset) that never adds
+ *                  var(--ca-safe-bottom) or env(safe-area-inset-bottom): the home indicator covers it
  *
  * The layout rules follow /docs/getting-started/layout-principles/.
  * A `ca-ui-workaround(#n)` (or `ca-ui-workaround(pending: reason)`) marker on the line or the one above excuses it. Exit 1 on any finding.
@@ -41,6 +46,9 @@ export const GUARD_RULES = [
 	"vh-offset",
 	"fixed-width-row",
 	"nested-surface",
+	"viewport-unit",
+	"fixed-bottom-offset",
+	"safe-area-bottom",
 ] as const;
 export type GuardRule = (typeof GUARD_RULES)[number];
 
@@ -346,6 +354,67 @@ function nestedSurfaces(src: string): number[] {
 
 const scale: number[] = Object.values(BREAKPOINTS);
 
+/** A literal full viewport height: the regex of the package's own `lint:tokens` viewport-unit. */
+const RAW_VIEWPORT = /(?<![\w.-])100(?:vh|dvh|svh|lvh)\b/;
+/** `height`, `min-height`, `max-height` and their logical `block-size` forms, never `line-height`. */
+const HEIGHT_DECL = /(?<![\w-])((?:min-|max-)?(?:height|block-size))\s*:\s*([^;{}]+)/g;
+/** What clears the home indicator: the token or the env() it reads. */
+const SAFE_BOTTOM = /var\(\s*--ca-safe-bottom\b|env\(\s*safe-area-inset-bottom\b/;
+
+/** A value split on whitespace outside parentheses: `auto calc(1px + 2px) 0` is three parts. */
+function valueParts(value: string): string[] {
+	const parts: string[] = [];
+	let depth = 0;
+	let part = "";
+	for (const c of value.replace(/!\s*important/i, "").trim()) {
+		if (c === "(") depth++;
+		else if (c === ")") depth--;
+		if (depth === 0 && /\s/.test(c)) {
+			if (part) parts.push(part);
+			part = "";
+		} else part += c;
+	}
+	if (part) parts.push(part);
+	return parts;
+}
+
+interface Edge {
+	value: string;
+	/** Offset of the declaration that set it, in the block body. */
+	index: number;
+}
+
+/**
+ * The `position` of a rule block and its top and bottom edges, the last declaration winning:
+ * `top`/`bottom`, `inset-block-start`/`-end`, and the `inset-block` and `inset` shorthands.
+ */
+function fixedBox(body: string): { top?: Edge; bottom?: Edge } | undefined {
+	let position: string | undefined;
+	const box: { top?: Edge; bottom?: Edge } = {};
+	for (const d of body.matchAll(/(?<![\w-])([a-z-]+)\s*:\s*([^;]+)/g)) {
+		const v = valueParts(d[2] ?? "");
+		const index = d.index ?? 0;
+		const set = (top: string | undefined, bottom: string | undefined) => {
+			if (top !== undefined) box.top = { value: top, index };
+			if (bottom !== undefined) box.bottom = { value: bottom, index };
+		};
+		const prop = d[1];
+		if (prop === "position") position = v[0];
+		else if (prop === "top" || prop === "inset-block-start") set(v[0], undefined);
+		else if (prop === "bottom" || prop === "inset-block-end") set(undefined, v[0]);
+		// inset-block: start [end]; inset: top [right [bottom [left]]], bottom = top when absent.
+		else if (prop === "inset-block") set(v[0], v[1] ?? v[0]);
+		else if (prop === "inset") set(v[0], v[2] ?? v[0]);
+	}
+	return position === "fixed" ? box : undefined;
+}
+
+const isZero = (v: string) => /^[+-]?[\d.]+[a-z]*$/i.test(v) && Number.parseFloat(v) === 0;
+/** A non-zero length written out (`64px`, `4.5rem`, `calc(100% - 64px)`), with no token in it. */
+const isLiteralLength = (v: string) =>
+	!/\b(?:var|env)\(/.test(v) &&
+	[...v.matchAll(/(?<![\w.-])(\d*\.?\d+)[a-z]+\b/gi)].some((m) => Number(m[1]) !== 0);
+
 export function guardSource(
 	file: string,
 	src: string,
@@ -428,6 +497,35 @@ export function guardSource(
 					offset + (block.index ?? 0),
 					"fixed-width-row",
 					"a growing nowrap item needs min-width: 0 (and an ellipsis) to shrink"
+				);
+		}
+		// Mobile (#1154). `values` keeps `@supports (height: 100dvh)` out; a var() fallback is the token's.
+		for (const decl of values.matchAll(HEIGHT_DECL)) {
+			const raw = decl[2]?.replace(/var\([^)]*\)/g, "").match(RAW_VIEWPORT)?.[0];
+			if (raw)
+				add(
+					offset + (decl.index ?? 0),
+					"viewport-unit",
+					`${decl[1]}: ${raw}: use var(--ca-vh) (the dynamic viewport, 100vh where unsupported), or var(--ca-vh-min) for a section that must fit with the browser bars shown`
+				);
+		}
+		for (const block of text.matchAll(/\{([^{}]*)\}/g)) {
+			const body = block[1] ?? "";
+			const box = fixedBox(body);
+			if (!box?.bottom) continue;
+			const at = offset + (block.index ?? 0) + 1 + box.bottom.index;
+			if (isLiteralLength(box.bottom.value))
+				add(
+					at,
+					"fixed-bottom-offset",
+					`fixed box ${box.bottom.value} from the bottom: build the offset from tokens (--ca-shell-inset-bottom, --ca-bottom-nav-h + --ca-safe-bottom, --ca-space-*)`
+				);
+			const bar = isZero(box.bottom.value) && (!box.top || box.top.value === "auto");
+			if (bar && !SAFE_BOTTOM.test(body))
+				add(
+					at,
+					"safe-area-bottom",
+					"fixed bar on the bottom edge without the safe area: add var(--ca-safe-bottom) to its padding-bottom (or height), or the home indicator covers it"
 				);
 		}
 		for (const m of text.matchAll(/:global\(\s*\.ca-[\w-]+/g))

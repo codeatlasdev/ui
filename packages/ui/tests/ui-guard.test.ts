@@ -397,6 +397,102 @@ describe("ui guard: layout rules (#920)", () => {
 	});
 });
 
+describe("ui guard: mobile rules (#1154)", () => {
+	const MOBILE = ["viewport-unit", "fixed-bottom-offset", "safe-area-bottom"] as const;
+	type Rules = NonNullable<Parameters<typeof guardSource>[2]>["rules"];
+	const mobile = (file: string, src: string, only: readonly string[] = MOBILE) =>
+		guardSource(file, src, { rules: only as Rules }).map((v) => `${v.rule}:${v.line}`);
+
+	it("viewport-unit: a height in 100vh, dvh, svh or lvh", () => {
+		const src = [
+			".a { height: 100vh; }",
+			".b { min-height: 100dvh; }",
+			".c { max-height: calc(100svh - var(--ca-space-4)); }",
+			".d { block-size: 100lvh; }",
+		].join("\n");
+		expect(mobile("app.css", src)).toEqual([1, 2, 3, 4].map((l) => `viewport-unit:${l}`));
+	});
+
+	it("viewport-unit: a .svelte style block, with the token named", () => {
+		const src = "<div>{x}</div>\n<style>\n  .page { min-height: 100vh; }\n</style>";
+		const out = guardSource("A.svelte", src, { rules: MOBILE as Rules });
+		expect(out.map((v) => `${v.rule}:${v.line}`)).toEqual(["viewport-unit:3"]);
+		expect(out[0]?.message).toContain("var(--ca-vh)");
+	});
+
+	it("viewport-unit: the token, its fallback and @supports are fine", () => {
+		const src = [
+			".a { height: var(--ca-vh); min-height: var(--ca-vh-min); }",
+			".b { height: var(--ca-vh, 100vh); }",
+			"@supports (height: 100dvh) { .c { height: var(--ca-vh); } }",
+		].join("\n");
+		expect(mobile("app.css", src)).toEqual([]);
+	});
+
+	it("fixed-bottom-offset: a fixed box with a literal bottom", () => {
+		const src = [
+			".fab { position: fixed; bottom: 64px; right: var(--ca-space-4); }",
+			".bar {\n  position: fixed;\n  inset-block-end: 4.5rem;\n}",
+			".pill { position: fixed; inset: auto var(--ca-space-4) 72px; }",
+		].join("\n");
+		expect(mobile("app.css", src, ["fixed-bottom-offset"])).toEqual([
+			"fixed-bottom-offset:1",
+			"fixed-bottom-offset:4",
+			"fixed-bottom-offset:6",
+		]);
+	});
+
+	it("fixed-bottom-offset: a token offset or a box that is not fixed", () => {
+		const src = [
+			".a { position: fixed; bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom)); }",
+			".b { position: fixed; bottom: var(--ca-space-4); }",
+			".c { position: absolute; bottom: 64px; }",
+			".d { position: fixed; bottom: max(16px, var(--ca-safe-bottom)); }",
+		].join("\n");
+		expect(mobile("app.css", src, ["fixed-bottom-offset"])).toEqual([]);
+	});
+
+	it("safe-area-bottom: a fixed bottom bar without the safe area", () => {
+		const src = [
+			".bar { position: fixed; left: 0; right: 0; bottom: 0; padding: var(--ca-space-3); }",
+			".nav { position: fixed; inset-inline: 0; inset-block-end: 0; }",
+			".dock { position: fixed; inset: auto 0 0; }",
+		].join("\n");
+		const out = guardSource("app.css", src, { rules: ["safe-area-bottom"] as Rules });
+		expect(out.map((v) => `${v.rule}:${v.line}`)).toEqual(
+			[1, 2, 3].map((l) => `safe-area-bottom:${l}`)
+		);
+		expect(out[0]?.message).toContain("var(--ca-safe-bottom)");
+	});
+
+	it("safe-area-bottom: the token, env() or a full-height box", () => {
+		const src = [
+			".a { position: fixed; bottom: 0; padding-bottom: var(--ca-safe-bottom); }",
+			".b { position: fixed; bottom: 0; padding-block-end: env(safe-area-inset-bottom); }",
+			".scrim { position: fixed; top: 0; right: 0; bottom: 0; left: 0; }",
+			".overlay { position: fixed; inset: 0; }",
+			".c { position: absolute; bottom: 0; }",
+		].join("\n");
+		expect(mobile("app.css", src, ["safe-area-bottom"])).toEqual([]);
+	});
+
+	it("a ca-ui-workaround marker on the line or above excuses them", () => {
+		const src = "/* ca-ui-workaround(pending: kiosk build) */\n.a { height: 100vh; }";
+		expect(mobile("app.css", src)).toEqual([]);
+	});
+
+	it("runGuard prints file:line for a component style block", () => {
+		const dir = tmpDir("ca-guard-mobile-");
+		mkdirSync(join(dir, "src/routes"), { recursive: true });
+		const page = "<div>{m.x}</div>\n<style>\n  .bar { position: fixed; bottom: 0; }\n</style>\n";
+		writeFileSync(join(dir, "src/routes/+page.svelte"), page);
+		const lines: string[] = [];
+		const options = { cwd: dir, rules: MOBILE as Rules, log: (l: string) => lines.push(l) };
+		expect(runGuard(["src"], options)).toBe(1);
+		expect(lines.join("\n")).toContain("src/routes/+page.svelte:3 safe-area-bottom");
+	});
+});
+
 describe("ui guard: breakpoint convention (#916)", () => {
 	it("max-width is the scale minus 0.02px, min-width the full value", () => {
 		const out = guardSource(
@@ -438,6 +534,12 @@ describe("codeatlas-ui lint --rules (#920)", () => {
 
 	it("lists hard-navigation (#1155)", () => {
 		expect(lint("--rules").out).toContain("hard-navigation");
+	});
+
+	it("lists the mobile rules (#1154)", () => {
+		const out = lint("--rules").out;
+		for (const rule of ["viewport-unit", "fixed-bottom-offset", "safe-area-bottom"])
+			expect(out).toContain(rule);
 	});
 });
 

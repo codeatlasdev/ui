@@ -42,6 +42,8 @@ Never add `maximum-scale` or `user-scalable=no`. Zoom is an accessibility featur
 }
 ```
 
+`codeatlas-ui lint` reports the three usual misses in an app's styles: a height in a literal `100vh` (`viewport-unit`), a fixed box offset from the bottom by a written-out length such as `bottom: 64px` (`fixed-bottom-offset`), and a fixed bar on the bottom edge that never adds `var(--ca-safe-bottom)` (`safe-area-bottom`). See [layout principles](/docs/getting-started/layout-principles/#lint-rules).
+
 ## The on-screen keyboard
 
 `viewport.keyboardInset` is the number of pixels of the layout viewport covered by the virtual keyboard. It is computed from `visualViewport` against `document.documentElement.clientHeight`, never from `window.innerHeight`: on iOS `innerHeight` changes with the URL bar, which would read as a phantom keyboard. Changes under 80px (browser toolbars) and pinch zoom are ignored. The store mirrors the value to `--ca-kb-inset` on `<html>`.
