@@ -561,7 +561,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
   - `TimeField`: `value: Time`, `granularity="hour" | "minute" | "second"`, `hourCycle`
   - `TimePicker`: a `TimeField` plus a listbox popover of times (`step` minutes, default 15, `minValue`/`maxValue`, `bind:open`, `name`)
   - `MonthPicker`: month and year field plus a 12-month grid popover; `value` is a `CalendarDate` on the 1st of the month, `minValue`/`maxValue` disable whole months
-  - `Calendar` / `RangeCalendar`: inline grid (`fixedWeeks`, `isDateDisabled`, `isDateUnavailable`)
+  - `Calendar` / `RangeCalendar`: inline grid (`fixedWeeks`, `isDateDisabled`, `isDateUnavailable`; `fill` takes the container's width: the columns and months share it, a day stays square and centred)
 
 ```svelte
 <Button loading={saving} onclick={save}>Save</Button>

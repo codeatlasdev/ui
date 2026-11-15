@@ -23,6 +23,11 @@
     weekStartsOn?:  WeekStart;
     numberOfMonths?: number;
     fixedWeeks?:    boolean;
+    /**
+     * Take the full width of the container instead of sizing to the content: the seven columns (and the
+     * months) share it, and a day keeps its square size, centred in its column. Adds `.ca-cal--fill`.
+     */
+    fill?:          boolean;
     isDateDisabled?:    (date: DateValue) => boolean;
     isDateUnavailable?: (date: DateValue) => boolean;
     /** Screen-reader label; the visible month/year is appended automatically. */
@@ -42,6 +47,7 @@
     weekStartsOn = 1,
     numberOfMonths = 2,
     fixedWeeks   = false,
+    fill         = false,
     isDateDisabled,
     isDateUnavailable,
     label,
@@ -76,4 +82,4 @@
   });
 </script>
 
-<CalendarFrame state={cal} {disabled} {readonly} range standalone class={className} />
+<CalendarFrame state={cal} {disabled} {readonly} {fill} range standalone class={className} />

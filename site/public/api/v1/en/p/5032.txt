@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #5032 "Calendar that fills its container" (inputs/date-picker).
+What it shows: A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below. When to use: A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.
+Spec:
+- `<Calendar bind:value={day} fill label="Appointment day" locale="en-US" weekStartsOn={0} />` preselects today
+- `<RangeCalendar bind:value={stay} fill label="Stay" locale="en-US" weekStartsOn={0} />` shows its default two months, side by side when they fit and stacked when they do not
+- With `fill` the seven columns share the width and each day keeps its square size, centred in its column
+- Output lines show `fmt(day)`, `fmt(stay.start)` and `fmt(stay.end)`, with `–` when unset
+- Wrapper `.col` is a full-width flex column
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5032 Calendar that fills its container → file, what changed, https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-that-fills-its-container; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5032.txt   Components API: ca-ui-mcp get_component(Calendar)

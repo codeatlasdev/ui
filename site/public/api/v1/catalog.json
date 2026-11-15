@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 413,
+	"count": 414,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5031",
-			"count": 99
+			"last": "5032",
+			"count": 100
 		},
 		{
 			"slug": "surfaces",
@@ -36806,6 +36806,97 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-area#soft-limit-and-threshold",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5032",
+			"group": "inputs",
+			"page": "date-picker",
+			"variant": "Fill",
+			"slug": "calendar-that-fills-its-container",
+			"title": "Calendar that fills its container",
+			"description": "With fill the calendar is as wide as its column: the seven columns share the width and each day keeps its square size, centred. The two months of the range sit side by side when they fit and stack on a phone.",
+			"summary": "A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.",
+			"use": "A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.",
+			"spec": [
+				"`<Calendar bind:value={day} fill label=\"Appointment day\" locale=\"en-US\" weekStartsOn={0} />` preselects today",
+				"`<RangeCalendar bind:value={stay} fill label=\"Stay\" locale=\"en-US\" weekStartsOn={0} />` shows its default two months, side by side when they fit and stacked when they do not",
+				"With `fill` the seven columns share the width and each day keeps its square size, centred in its column",
+				"Output lines show `fmt(day)`, `fmt(stay.start)` and `fmt(stay.end)`, with `–` when unset",
+				"Wrapper `.col` is a full-width flex column"
+			],
+			"tags": [
+				"calendar",
+				"range-calendar",
+				"fill",
+				"full-width",
+				"responsive",
+				"date"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Calendar",
+					"RangeCalendar"
+				],
+				"aliases": [
+					"full width calendar",
+					"fluid calendar",
+					"stretch calendar",
+					"responsive calendar"
+				],
+				"related": [
+					"015",
+					"018"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-14",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Calendar",
+				"RangeCalendar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Calendar",
+						"RangeCalendar",
+						"getLocalTimeZone",
+						"today",
+						"DateRange",
+						"DateValue"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-that-fills-its-container",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

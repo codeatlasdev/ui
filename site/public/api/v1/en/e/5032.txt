@@ -1,0 +1,53 @@
+<!-- @codeatlasdev/ui demo #5032 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-that-fills-its-container -->
+Element: #5032 Calendar that fills its container (inputs/date-picker)
+What it shows: A Calendar and a two-month RangeCalendar with `fill`, each as wide as its column, printing the chosen value below.
+When to use: A calendar that spans a card or a phone screen, such as booking a slot or a stay, instead of a fixed-size grid with empty space beside it.
+Spec:
+- `<Calendar bind:value={day} fill label="Appointment day" locale="en-US" weekStartsOn={0} />` preselects today
+- `<RangeCalendar bind:value={stay} fill label="Stay" locale="en-US" weekStartsOn={0} />` shows its default two months, side by side when they fit and stacked when they do not
+- With `fill` the seven columns share the width and each day keeps its square size, centred in its column
+- Output lines show `fmt(day)`, `fmt(stay.start)` and `fmt(stay.end)`, with `–` when unset
+- Wrapper `.col` is a full-width flex column
+Tags: calendar, range-calendar, fill, full-width, responsive, date
+Needs: @codeatlasdev/ui@4.6.0
+Components: Calendar, RangeCalendar
+Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-that-fills-its-container
+
+<script lang="ts">
+  import {
+    Calendar,
+    RangeCalendar,
+    getLocalTimeZone,
+    today,
+    type DateRange,
+    type DateValue,
+  } from '@codeatlasdev/ui';
+
+  let day = $state<DateValue | undefined>(today(getLocalTimeZone()));
+  let stay = $state<DateRange>({ start: undefined, end: undefined });
+
+  const fmt = (d: DateValue | undefined) => (d ? d.toString() : '–');
+</script>
+
+<div class="col">
+  <Calendar bind:value={day} fill label="Appointment day" locale="en-US" weekStartsOn={0} />
+  <p class="out">value: <code>{fmt(day)}</code></p>
+
+  <RangeCalendar bind:value={stay} fill label="Stay" locale="en-US" weekStartsOn={0} />
+  <p class="out">start: <code>{fmt(stay.start)}</code> · end: <code>{fmt(stay.end)}</code></p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    width: 100%;
+  }
+
+  .out {
+    margin: 0;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

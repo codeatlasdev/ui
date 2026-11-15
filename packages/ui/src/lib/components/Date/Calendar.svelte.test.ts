@@ -1,9 +1,11 @@
 import { CalendarDate } from "@internationalized/date";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { userEvent } from "vitest/browser";
+import { cdp, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import { setLocale } from "../../i18n/index.js";
+import CalendarFillHarness from "./CalendarFillHarness.test.svelte";
 import DateHarness from "./DateHarness.test.svelte";
 
 // These tests assert the Portuguese wording of the catalog.
@@ -121,5 +123,101 @@ describe("Calendar", () => {
 		const screen = await render(DateHarness, { kind: "calendar", disabled: true });
 		await screen.getByRole("button", { name: /, 15 de março/ }).click({ force: true });
 		await expect.element(screen.getByTestId("date")).toHaveTextContent("");
+	});
+});
+
+// #1230: `fill` makes a standalone calendar take its container's width; the seven columns (and the
+// months of a RangeCalendar) share it and a day keeps its square size, centred in its column.
+describe("Calendar fill", () => {
+	const box = (el: Element) => el.getBoundingClientRect();
+	const centre = (el: Element) => box(el).left + box(el).width / 2;
+
+	async function inHost(props: {
+		width: number;
+		fill?: boolean;
+		range?: boolean;
+		numberOfMonths?: number;
+	}) {
+		const screen = await render(CalendarFillHarness, props);
+		const host = screen.getByTestId("host").element() as HTMLElement;
+		const cal = host.querySelector(".ca-cal") as HTMLElement;
+		const months = cal.querySelector(".ca-cal__months") as HTMLElement;
+		return { screen, host, cal, months };
+	}
+
+	it("296px coarse: fills, days touch-sized", async () => {
+		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+		try {
+			const { host, cal, months } = await inHost({ width: 296, fill: true });
+			expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+			expect(Math.abs(box(cal).width - box(host).width)).toBeLessThanOrEqual(0.5);
+			for (const el of [host, cal, months])
+				expect(el.scrollWidth, el.className).toBeLessThanOrEqual(el.clientWidth);
+			const days = [...cal.querySelectorAll<HTMLElement>("[data-ca-day]")];
+			expect(days.length).toBeGreaterThanOrEqual(28);
+			for (const d of days) {
+				expect(box(d).height, d.dataset.value).toBeGreaterThanOrEqual(touchTarget());
+				expect(box(d).width, d.dataset.value).toBeLessThanOrEqual(touchTarget());
+				expect(box(d).right, d.dataset.value).toBeLessThanOrEqual(box(months).right + 0.5);
+			}
+		} finally {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+		}
+	});
+
+	it("768px: fills with 7 equal columns", async () => {
+		const { host, cal, months } = await inHost({ width: 768, fill: true });
+		expect(Math.abs(box(cal).width - box(host).width)).toBeLessThanOrEqual(0.5);
+		const cols = [...cal.querySelectorAll(".ca-cal__head-cell")].map((th) => box(th).width);
+		expect(cols).toHaveLength(7);
+		for (const w of cols) expect(Math.abs(w - cols[0])).toBeLessThanOrEqual(1);
+		// The columns span the month, which spans the calendar's content box.
+		expect(Math.abs(cols.reduce((a, b) => a + b) - box(months).width)).toBeLessThanOrEqual(1);
+		// A day stays square (no pill) and sits in the middle of its column.
+		const day = cal.querySelector('[data-ca-day][data-value="2026-03-11"]') as HTMLElement;
+		expect(Math.abs(box(day).width - box(day).height)).toBeLessThanOrEqual(1);
+		expect(Math.abs(centre(day) - centre(day.closest("td") as HTMLElement))).toBeLessThanOrEqual(1);
+	});
+
+	it("without fill: keeps its own width", async () => {
+		const narrow = await inHost({ width: 768 });
+		const own = box(narrow.cal).width;
+		narrow.screen.unmount();
+		const wide = await inHost({ width: 1000 });
+		expect(own).toBeLessThan(768 / 2);
+		expect(Math.abs(box(wide.cal).width - own)).toBeLessThanOrEqual(0.5);
+	});
+
+	it("range: 2 months share a 768px host", async () => {
+		const { host, cal, months } = await inHost({
+			width: 768,
+			fill: true,
+			range: true,
+			numberOfMonths: 2,
+		});
+		expect(Math.abs(box(cal).width - box(host).width)).toBeLessThanOrEqual(0.5);
+		const [a, b] = [...cal.querySelectorAll(".ca-cal__grid")].map(box);
+		expect(Math.abs(a.width - b.width)).toBeLessThanOrEqual(1);
+		expect(Math.abs(a.top - b.top)).toBeLessThanOrEqual(0.5);
+		expect(Math.abs(b.right - a.left - box(months).width)).toBeLessThanOrEqual(1);
+	});
+
+	it("range: 2 months stack in a 296px host", async () => {
+		const { host, cal, months } = await inHost({
+			width: 296,
+			fill: true,
+			range: true,
+			numberOfMonths: 2,
+		});
+		expect(Math.abs(box(cal).width - box(host).width)).toBeLessThanOrEqual(0.5);
+		expect(months.scrollWidth).toBeLessThanOrEqual(months.clientWidth);
+		const [a, b] = [...cal.querySelectorAll(".ca-cal__grid")].map(box);
+		expect(b.top).toBeGreaterThanOrEqual(a.bottom);
+		for (const g of [a, b]) expect(Math.abs(g.width - box(months).width)).toBeLessThanOrEqual(1);
+	});
+
+	it("fill passes axe", async () => {
+		const { screen } = await inHost({ width: 768, fill: true });
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

@@ -292,6 +292,24 @@
     box-shadow: var(--ca-field-shadow);
   }
 
+  /* `fill` (#1230): as wide as the container instead of its content. The months share the width (side by side
+     while each is at least seven controls wide, stacked below that, always equal); in a month the seven
+     columns share it (fixed layout, no header widths); a day keeps its square size, centred in its column, and
+     narrows only when the column is narrower, so nothing scrolls sideways. */
+  .ca-cal--fill {
+    display: flex;
+    width: 100%;
+  }
+
+  .ca-cal--fill .ca-cal__months {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(7 * var(--ca-control-height))), 1fr));
+  }
+
+  .ca-cal--fill .ca-cal__grid { width: 100%; min-width: 0; table-layout: fixed; }
+  .ca-cal--fill .ca-cal__head-cell { width: auto; }
+  .ca-cal--fill .ca-cal__day { max-width: 100%; }
+
   .ca-cal__header {
     display: flex;
     align-items: center;

@@ -13,6 +13,8 @@ import Calendars from "~/demos/inputs/date-picker/Calendars.svelte";
 import CalendarsSrc from "~/demos/inputs/date-picker/Calendars.svelte?raw";
 import Constraints from "~/demos/inputs/date-picker/Constraints.svelte";
 import ConstraintsSrc from "~/demos/inputs/date-picker/Constraints.svelte?raw";
+import Fill from "~/demos/inputs/date-picker/Fill.svelte";
+import FillSrc from "~/demos/inputs/date-picker/Fill.svelte?raw";
 
 ```svelte
 <script>
@@ -49,6 +51,7 @@ Spacing, label and hint typography and the typed text come from the shared field
 <Demo title="DatePicker and DateRangePicker" description="Editable segments plus a calendar popover. The range picker shows two months." src={PickersSrc}><Pickers client:visible /></Demo>
 <Demo title="DateField and TimeField" description="Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h." src={FieldsSrc}><Fields client:visible /></Demo>
 <Demo title="Calendar and RangeCalendar" description="Inline calendars. Click a start date, then an end date for the range." src={CalendarsSrc}><Calendars client:visible /></Demo>
+<Demo title="Calendar that fills its container" description="With fill the calendar is as wide as its column: the seven columns share the width and each day keeps its square size, centred. The two months of the range sit side by side when they fit and stack on a phone." src={FillSrc}><Fill client:visible /></Demo>
 <Demo title="Min, max, error and disabled" description="Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid." src={ConstraintsSrc}><Constraints client:visible /></Demo>
 
 <Props for="DatePicker, DateRangePicker, DateField, TimeField, Calendar, RangeCalendar" title="Shared props" rows={[
@@ -72,6 +75,7 @@ Spacing, label and hint typography and the typed text come from the shared field
   { name: "open", type: "boolean", default: "false", description: "Bindable popover state. DatePicker and DateRangePicker." },
   { name: "numberOfMonths", type: "number", default: "1 (range components: 2)", description: "Months shown side by side." },
   { name: "fixedWeeks", type: "boolean", default: "false", description: "Always render six weeks. Calendar and RangeCalendar." },
+  { name: "fill", type: "boolean", default: "false", description: "Calendar and RangeCalendar: take the full width of the container (`.ca-cal--fill`). The seven columns share it and a day keeps its square size (the touch target under a coarse pointer), centred in its column, narrowing only when the column is narrower. Months sit side by side while each is at least seven controls wide and wrap below that. Without it the calendar is as wide as its content." },
   { name: "isDateDisabled", type: "(d: DateValue) => boolean", description: "Disables matching dates. Calendars and pickers." },
   { name: "isDateUnavailable", type: "(d: DateValue) => boolean", description: "Marks matching dates as unavailable. Calendars and pickers." },
   { name: "closeOnDateSelect", type: "boolean", default: "true", description: "DatePicker: close the popover after picking a date." },
